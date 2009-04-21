@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Create a multi select field
+ * Create a multi select field
+ * @class inputEx.MultiSelectField
  * @extends inputEx.SelectField
  * @constructor
  * @param {Object} options Added options:
@@ -15,11 +16,7 @@
 inputEx.MultiSelectField = function(options) {
 	inputEx.MultiSelectField.superclass.constructor.call(this,options);
  };
-YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField, 
-/**
- * @scope inputEx.MultiSelectField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,{
    
    /**
     * Build the DDList
@@ -103,9 +100,7 @@ YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,
    
 });
 
-/**
- * Register this class as "multiselect" type
- */
+// Register this class as "multiselect" type
 inputEx.registerType("multiselect", inputEx.MultiSelectField);
 
 })();

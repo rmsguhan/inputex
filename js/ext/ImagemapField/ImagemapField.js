@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
- * @class Create an image map field
+ * Create an image map field
+ * @class inputEx.ImagemapField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -11,14 +12,8 @@
 inputEx.ImagemapField = function(options) {
 	inputEx.ImagemapField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.ImagemapField, inputEx.Field,
-/**
- * @scope inputEx.ImagemapField.prototype
- */
-{
-    /**
-     * popup image and its image map coordinates
-     */
+lang.extend(inputEx.ImagemapField, inputEx.Field, {
+    // popup image and its image map coordinates
     tgimgsrc: '',
 
     tgmapcoords: null,
@@ -26,8 +21,8 @@ lang.extend(inputEx.ImagemapField, inputEx.Field,
     parent:'',
 
     /**
-	 * Render the image and the imagemap popup
-	 */
+	  * Render the image and the imagemap popup
+	  */
 	renderComponent: function() {
         var orgimagesrc = (this.options.orgimgsrc != null) ? this.options.orgimgsrc : '/images/game/chinesechecker/chinesecheckergrid_fc_s.png';
         YAHOO.log('renderComponent() - orgimgsrc: ' + orgimagesrc,'info','ImagemapField.js');
@@ -135,7 +130,7 @@ lang.extend(inputEx.ImagemapField, inputEx.Field,
 
 
     renderImageMap: function() {
-        var image = inputEx.cn('img', {className: 'inputEx-ImagemapField2'})
+        var image = inputEx.cn('img', {className: 'inputEx-ImagemapField2'});
         image.src = this.tgimgsrc;
         image.useMap = '#' + this.parent + 'planetmap';
 
@@ -207,9 +202,7 @@ lang.extend(inputEx.ImagemapField, inputEx.Field,
 
 });
 
-/**
- * Register this class as "imagemap" type
- */
+// Register this class as "imagemap" type
 inputEx.registerType("imagemap", inputEx.ImagemapField);
 
 })();

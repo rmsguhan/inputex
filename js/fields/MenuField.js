@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
- * @class Create a menu field
+ * Create a menu field
+ * @class inputEx.MenuField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -18,11 +19,7 @@ inputEx.MenuField = function(options) {
 	inputEx.MenuField.superclass.constructor.call(this,options);
 };
 
-lang.extend(inputEx.MenuField, inputEx.Field,
-/**
- * @scope inputEx.MenuField.prototype
- */
-{
+lang.extend(inputEx.MenuField, inputEx.Field, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -160,9 +157,7 @@ lang.extend(inputEx.MenuField, inputEx.Field,
 
 inputEx.messages.menuInvite = "Click here to select";
 
-/**
- * Register this class as "menu" type
- */
+// Register this class as "menu" type
 inputEx.registerType("menu", inputEx.MenuField);
 
 })();

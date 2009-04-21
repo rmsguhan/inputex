@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
- * @class Create a Color picker input field
+ * Create a Color picker input field
+ * @class inputEx.ColorField2
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -11,11 +12,7 @@
 inputEx.ColorField2 = function(options) {
 	inputEx.ColorField2.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.ColorField2, inputEx.Field,
-/**
- * @scope inputEx.ColorField2.prototype
- */
-{
+lang.extend(inputEx.ColorField2, inputEx.Field, {
 
     /**
     * How many color cells shall be shown in every line in the popup panel.
@@ -23,21 +20,21 @@ lang.extend(inputEx.ColorField2, inputEx.Field,
     */
     cellPerLine : 0,
 
-    /** Width of every color cell. cellPerLine*squareWidth+leftMargin = popupPanel.width */
+    // Width of every color cell. cellPerLine*squareWidth+leftMargin = popupPanel.width 
     cellWidth : 0,
 
-    /** cellPerLine*squareWidth+leftMargin = popupPanel.width */
+    // cellPerLine*squareWidth+leftMargin = popupPanel.width 
     leftMargin : 0,
 
-    /** x:y ratio to list color cell, it is used only if cellPerLine is not defined. Default is 16:9 */
+    // x:y ratio to list color cell, it is used only if cellPerLine is not defined. Default is 16:9 
     ratio:0,
 
-    /** Height of every color cell */
+    // Height of every color cell 
     cellHeight:0,
 
     /**
-	 * Render the color button and the colorpicker popup
-	 */
+     * Render the color button and the colorpicker popup
+	  */
 	renderComponent: function() {
 
 	   // A hidden input field to store the color code
@@ -257,9 +254,7 @@ inputEx.ColorField2.palettes = [
    ["000000","993300","333300","003300","003366","000080","333399","333333","800000","FF6600","808000","008000","008080","0000FF","666699","808080","FF0000","FF9900","99CC00","339966","33CCCC","3366FF","800080","969696","FF00FF","FFCC00","FFFF00","00FF00","00FFFF","00CCFF","993366","C0C0C0","FF99CC","FFCC99","FFFF99","CCFFCC","CCFFFF","99CCFF","CC99FF","F0F0F0"]
 ];
 
-/**
- * Register this class as "color" type
- */
+// Register this class as "color" type
 inputEx.registerType("color2", inputEx.ColorField2);
 
 })();

@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event;
 
 /**
- * @class A field limited to number inputs
+ * A field limited to number inputs
+ * @class inputEx.IntegerField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options Added options:
@@ -14,14 +15,9 @@
 inputEx.IntegerField = function(options) {
    inputEx.IntegerField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, 
-/**
- * @scope inputEx.IntegerField.prototype   
- */
-{
+YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
    /**
     * Adds the negative option
-    * @method setOptions
     * @param {Object} options
     */
    setOptions: function(options) {
@@ -45,7 +41,6 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField,
    
    /**
     * Validate  if is a number
-    * @method validate
     */
    validate: function() {
       var v = this.getValue();
@@ -59,9 +54,7 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField,
    
 });
 
-/**
- * Register this class as "integer" type
- */
+// Register this class as "integer" type
 inputEx.registerType("integer", inputEx.IntegerField);
 
 })();

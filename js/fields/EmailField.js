@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Field that adds the email regexp for validation. Result is always lower case.
+ * Field that adds the email regexp for validation. Result is always lower case.
+ * @class inputEx.EmailField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -11,11 +12,7 @@
 inputEx.EmailField = function(options) {
    inputEx.EmailField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, 
-/**
- * @scope inputEx.EmailField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
    
    /**
     * Set the email regexp and invalid message
@@ -41,9 +38,7 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField,
 // Specific message for the email field
 inputEx.messages.invalidEmail = "Invalid email, ex: sample@test.com";
 
-/**
- * Register this class as "email" type
- */
+// Register this class as "email" type
 inputEx.registerType("email", inputEx.EmailField);
 
 })();

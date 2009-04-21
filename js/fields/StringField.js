@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
- * @class Basic string field (equivalent to the input type "text")
+ * Basic string field (equivalent to the input type "text")
+ * @class inputEx.StringField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -24,11 +25,7 @@ inputEx.StringField = function(options) {
 	  }
 };
 
-lang.extend(inputEx.StringField, inputEx.Field,
-/**
- * @scope inputEx.StringField.prototype
- */
-{
+lang.extend(inputEx.StringField, inputEx.Field, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -242,9 +239,7 @@ lang.extend(inputEx.StringField, inputEx.Field,
 
 inputEx.messages.stringTooShort = ["This field should contain at least "," numbers or characters"];
 
-/**
- * Register this class as "string" type
- */
+// Register this class as "string" type
 inputEx.registerType("string", inputEx.StringField);
 
 })();

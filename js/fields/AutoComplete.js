@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
- * @class An autocomplete field that wraps the YUI autocompleter
+ * An autocomplete field that wraps the YUI autocompleter
+ * @class inputEx.AutoComplete
  * @constructor
  * @extends inputEx.StringField
  * @param {Object} options Added options for Autocompleter
@@ -17,11 +18,7 @@ inputEx.AutoComplete = function(options) {
    inputEx.AutoComplete.superclass.constructor.call(this, options);
 };
 
-lang.extend(inputEx.AutoComplete, inputEx.StringField, 
-/**
- * @scope inputEx.AutoComplete.prototype   
- */   
-{
+lang.extend(inputEx.AutoComplete, inputEx.StringField, {
 
    /**
     * Adds autocomplete options
@@ -172,9 +169,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField,
 });
 
 
-/**
-* Register this class as "autocomplete" type
-*/
+// Register this class as "autocomplete" type
 inputEx.registerType("autocomplete", inputEx.AutoComplete);
 
 })();

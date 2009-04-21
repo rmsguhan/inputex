@@ -1,7 +1,6 @@
 (function() {
 /**
  * Add inputEx modules to a YUI loader
- * @static
  * @param {YUILoader} yuiLoader YUI Loader instance
  * @param {String} inputExPath (optional) inputExPath
  */

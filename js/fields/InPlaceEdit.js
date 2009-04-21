@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom, CSS_PREFIX = 'inputEx-InPlaceEdit-';
 
 /**
- * @class Meta field providing in place editing (the editor appears when you click on the formatted value). 
+ * Meta field providing in place editing (the editor appears when you click on the formatted value). 
+ * @class inputEx.InPlaceEdit
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -17,11 +18,7 @@ inputEx.InPlaceEdit = function(options) {
    inputEx.InPlaceEdit.superclass.constructor.call(this, options);
 };
 
-lang.extend(inputEx.InPlaceEdit, inputEx.Field, 
-/**
- * @scope inputEx.InPlaceEdit.prototype   
- */   
-{
+lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -260,9 +257,7 @@ inputEx.messages.emptyInPlaceEdit = "(click to edit)";
 inputEx.messages.cancelEditor = "cancel";
 inputEx.messages.okEditor = "Ok";
 
-/**
- * Register this class as "inplaceedit" type
- */
+// Register this class as "inplaceedit" type
 inputEx.registerType("inplaceedit", inputEx.InPlaceEdit);
 
 })();

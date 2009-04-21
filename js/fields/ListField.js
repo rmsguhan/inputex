@@ -3,10 +3,11 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class   Meta field to create a list of other fields
+ * Meta field to create a list of other fields
+ * @class inputEx.ListField
  * @extends inputEx.Field
  * @constructor
- * @param {Object} options Added options:
+ * @param options Added options:
  * <ul>
  *   <li>sortable: Add arrows to sort the items if true (default false)</li>
  *   <li>elementType: an element type definition (default is {type: 'string'})</li>
@@ -25,11 +26,7 @@ inputEx.ListField = function(options) {
 	   
    inputEx.ListField.superclass.constructor.call(this, options);
 };
-lang.extend(inputEx.ListField,inputEx.Field, 
-/**
- * @scope inputEx.ListField.prototype   
- */   
-{
+lang.extend(inputEx.ListField,inputEx.Field, {
 	   
 	/**
 	 * Set the ListField classname
@@ -205,7 +202,7 @@ lang.extend(inputEx.ListField,inputEx.Field,
 	      newDiv.appendChild( delButton );
       }
 	      
-	   // Instanciate the new subField
+	   // Instantiate the new subField
 	   var opts = lang.merge({}, this.options.elementType);
 	   if(!opts.inputParams) opts.inputParams = {};
 	   if(!lang.isUndefined(value)) opts.inputParams.value = value;
@@ -379,9 +376,7 @@ lang.extend(inputEx.ListField,inputEx.Field,
 	
 });
 	
-/**
- * Register this class as "list" type
- */
+// Register this class as "list" type
 inputEx.registerType("list", inputEx.ListField);
 
 

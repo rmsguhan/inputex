@@ -3,7 +3,8 @@
 	var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class Create a checkbox.
+ * Create a checkbox.
+ * @class inputEx.CheckBox
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options for CheckBoxes:
@@ -15,11 +16,7 @@ inputEx.CheckBox = function(options) {
 	inputEx.CheckBox.superclass.constructor.call(this,options);
 };
 	
-lang.extend(inputEx.CheckBox, inputEx.Field, 
-/**
- * @scope inputEx.CheckBox.prototype   
- */
-{
+lang.extend(inputEx.CheckBox, inputEx.Field, {
 	   
 	/**
 	 * Adds the CheckBox specific options
@@ -137,9 +134,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field,
 	
 });   
 	
-/**
- * Register this class as "boolean" type
- */
+// Register this class as "boolean" type
 inputEx.registerType("boolean", inputEx.CheckBox);
 	
 })();

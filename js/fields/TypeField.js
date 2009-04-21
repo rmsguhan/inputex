@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom, lang = YAHOO.lang;
 
 /**
- * @class TypeField is a field to create fields. The user can create any value he wants by switching fields.
+ * TypeField is a field to create fields. The user can create any value he wants by switching fields.
+ * @class inputEx.TypeField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options  Standard inputEx inputParams definition
@@ -15,11 +16,7 @@ inputEx.TypeField = function(options) {
    this.updateFieldValue();
 };
 
-lang.extend(inputEx.TypeField, inputEx.Field, 
-/**
- * @scope inputEx.TypeField.prototype   
- */   
-{
+lang.extend(inputEx.TypeField, inputEx.Field, {
    
    /**
     * Render the TypeField: create a button with a property panel that contains the field options
@@ -246,9 +243,7 @@ lang.extend(inputEx.TypeField, inputEx.Field,
 });
 
 
-/**
- * Register this class as "select" type
- */
+// Register this class as "select" type
 inputEx.registerType("type", inputEx.TypeField);
 
 

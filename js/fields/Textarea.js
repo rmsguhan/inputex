@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event;
 
 /**
- * @class Create a textarea input
+ * Create a textarea input
+ * @class inputEx.Textarea
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -15,11 +16,7 @@
 inputEx.Textarea = function(options) {
 	inputEx.Textarea.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField, 
-/**
- * @scope inputEx.Textarea.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField, {
 
    /**
     * Set the specific options (rows and cols)
@@ -89,9 +86,7 @@ YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField,
 
 inputEx.messages.stringTooLong = ["This field should contain at most "," numbers or characters"];
 
-/**
- * Register this class as "text" type
- */
+// Register this class as "text" type
 inputEx.registerType("text", inputEx.Textarea);
 
 })();

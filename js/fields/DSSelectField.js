@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event;
 
 /**
- * @class Create a select field from a datasource
+ * Create a select field from a datasource
+ * @class inputEx.DSSelectField
  * @extends inputEx.SelectField
  * @constructor
  * @param {Object} options Added options:
@@ -19,11 +20,7 @@
 inputEx.DSSelectField = function(options) {
 	inputEx.DSSelectField.superclass.constructor.call(this,options);
  };
-YAHOO.lang.extend(inputEx.DSSelectField, inputEx.SelectField, 
-/**
- * @scope inputEx.DSSelectField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.DSSelectField, inputEx.SelectField, {
    /**
     * Setup the additional options for selectfield
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -110,9 +107,7 @@ YAHOO.lang.extend(inputEx.DSSelectField, inputEx.SelectField,
    
 });
 
-/**
- * Register this class as "dsselect" type
- */
+// Register this class as "dsselect" type
 inputEx.registerType("dsselect", inputEx.DSSelectField);
 
 })();

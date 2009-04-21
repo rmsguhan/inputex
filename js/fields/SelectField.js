@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
- * @class Create a select field
+ * Create a select field
+ * @class inputEx.SelectField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -16,11 +17,7 @@
 inputEx.SelectField = function(options) {
 	inputEx.SelectField.superclass.constructor.call(this,options);
  };
-lang.extend(inputEx.SelectField, inputEx.Field, 
-/**
- * @scope inputEx.SelectField.prototype
- */   
-{
+lang.extend(inputEx.SelectField, inputEx.Field, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -220,9 +217,7 @@ lang.extend(inputEx.SelectField, inputEx.Field,
    
 });
 
-/**
- * Register this class as "select" type
- */
+// Register this class as "select" type
 inputEx.registerType("select", inputEx.SelectField);
 
 })();

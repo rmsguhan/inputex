@@ -3,8 +3,10 @@
    var inputEx = YAHOO.inputEx;
 	
 /**
- * @class A meta field to put 2 fields on the same line
+ * A meta field to put 2 fields on the same line
+ * @class inputEx.PairField
  * @extends inputEx.Field
+ * @deprecated Use the CombineField instead
  * @constructor
  * @param {Object} options Added options:
  * <ul>
@@ -20,9 +22,7 @@ inputEx.PairField = function(options) {
 	
 YAHOO.lang.extend( inputEx.PairField, inputEx.CombineField);
 	
-/**
- * Register this class as "pair" type
- */
+// Register this class as "pair" type
 inputEx.registerType("pair", inputEx.PairField);
 	
 })();

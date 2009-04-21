@@ -50,7 +50,8 @@
 	};
 
 /**
- * @class Wrapper for Mapping APIs, including Google Maps, Yahoo Maps and Virtual Earth
+ * Wrapper for Mapping APIs, including Google Maps, Yahoo Maps and Virtual Earth
+ * @class inputEx.MapField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -68,11 +69,7 @@
 inputEx.MapField = function(options) {
 	inputEx.MapField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.MapField, inputEx.Field,
-/**
- * @scope inputEx.MapField.prototype
- */
-{
+lang.extend(inputEx.MapField, inputEx.Field, {
 	/**
 	 * Adds the 'inputEx-MapField' default className
 	 */
@@ -471,9 +468,7 @@ lang.extend(inputEx.MapField, inputEx.Field,
 	end : 0
 });
 
-/**
- * Register this class as "map" type
- */
+// Register this class as "map" type
 inputEx.registerType("map", inputEx.MapField);
 
 })();

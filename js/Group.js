@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
    
 /**
- * @class Handle a group of fields
+ * Handle a group of fields
+ * @class inputEx.Group
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options The following options are added for Groups and subclasses:
@@ -24,11 +25,7 @@ inputEx.Group = function(options) {
       }
    }
 };
-lang.extend(inputEx.Group, inputEx.Field, 
-/**
- * @scope inputEx.Group.prototype   
- */   
-{
+lang.extend(inputEx.Group, inputEx.Field, {
    
    /**
     * Adds some options: legend, collapsible, fields...
@@ -365,9 +362,7 @@ lang.extend(inputEx.Group, inputEx.Field,
 });
 
    
-/**
- * Register this class as "group" type
- */
+// Register this class as "group" type
 inputEx.registerType("group", inputEx.Group);
 
 

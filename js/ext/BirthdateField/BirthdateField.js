@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
 
 /**
- * @class A field to enter a date with 2 strings and a select
+ * A field to enter a date with 2 strings and a select
+ * @class inputEx.BirthdateField
  * @extends inputEx.CombineField
  */
 inputEx.BirthdateField = function(options) {
@@ -94,9 +95,7 @@ inputEx.messages.selectMonth = "- Select Month -";
 inputEx.messages.dayTypeInvite = "Day";
 inputEx.messages.yearTypeInvite = "Year";
 
-/**
-* Register this class as "birthdate" type
-*/
+// Register this class as "birthdate" type
 inputEx.registerType("birthdate", inputEx.BirthdateField);
 
 })();

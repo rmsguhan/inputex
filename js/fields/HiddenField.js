@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Create a hidden input, inherits from inputEx.Field
+ * Create a hidden input, inherits from inputEx.Field
+ * @class inputEx.HiddenField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -12,11 +13,7 @@ inputEx.HiddenField = function(options) {
 	inputEx.HiddenField.superclass.constructor.call(this,options);
 };
 
-YAHOO.lang.extend(inputEx.HiddenField, inputEx.Field, 
-/**
- * @scope inputEx.HiddenField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.HiddenField, inputEx.Field, {
    
    /**
     * Doesn't render much...
@@ -52,9 +49,7 @@ YAHOO.lang.extend(inputEx.HiddenField, inputEx.Field,
 
 });
    
-/**
- * Register this class as "hidden" type
- */
+// Register this class as "hidden" type
 inputEx.registerType("hidden", inputEx.HiddenField);
 
 })();

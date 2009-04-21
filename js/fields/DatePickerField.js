@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
- * @class A DatePicker Field.
+ * A DatePicker Field.
+ * @class inputEx.DatePickerField
  * @extends inputEx.DateField
  * @constructor
  * @param {Object} options No added option for this field (same as DateField)
@@ -15,11 +16,7 @@ inputEx.DatePickerField = function(options) {
    inputEx.DatePickerField.superclass.constructor.call(this,options);
 };
 
-lang.extend(inputEx.DatePickerField, inputEx.DateField, 
-/**
- * @scope inputEx.DatePickerField.prototype   
- */   
-{
+lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    /**
     * Set the default date picker CSS classes
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -192,9 +189,7 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField,
 
 inputEx.messages.defautCalendarOpts = { navigator: true };
 
-/**
- * Register this class as "datepicker" type
- */
+// Register this class as "datepicker" type
 inputEx.registerType("datepicker", inputEx.DatePickerField);
 
 })();

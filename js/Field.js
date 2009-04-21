@@ -2,7 +2,8 @@
    var inputEx = YAHOO.inputEx, Dom = YAHOO.util.Dom, lang = YAHOO.lang, util = YAHOO.util;
 
 /** 
- * @class An abstract class that contains the shared features for all fields
+ * An abstract class (never instantiated) that contains the shared features for all fields.
+ * @class inputEx.Field
  * @constructor
  * @param {Object} options Configuration object
  * <ul>
@@ -24,7 +25,8 @@ inputEx.Field = function(options) {
 	this.render();
 	
 	/**
-	 * @event
+	 * Event fired after the user changed the value of the field.
+	 * @event updatedEvt
 	 * @param {Any} value The new value of the field
 	 * @desc YAHOO custom event fired when the field is "updated"<br /> subscribe with: this.updatedEvt.subscribe(function(e, params) { var value = params[0]; console.log("updated",value, this.updatedEvt); }, this, true);
 	 */

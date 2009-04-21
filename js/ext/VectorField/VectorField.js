@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class A field limited to number inputs (floating)
+ * A field limited to number inputs (floating)
+ * @class inputEx.VectorField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -11,11 +12,7 @@
 inputEx.VectorField = function(options) {
    inputEx.VectorField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.VectorField, inputEx.CombineField, 
-/**
- * @scope inputEx.VectorField.prototype   
- */
-{  
+YAHOO.lang.extend(inputEx.VectorField, inputEx.CombineField, {  
    /**
     * Additional options for VectorField (dimension, size)
     */ 
@@ -32,9 +29,7 @@ YAHOO.lang.extend(inputEx.VectorField, inputEx.CombineField,
    }
 });
 
-/**
- * Register this class as "2Dvector" type
- */
+// Register this class as "2Dvector" type
 inputEx.registerType("vector", inputEx.VectorField);
 
 })();

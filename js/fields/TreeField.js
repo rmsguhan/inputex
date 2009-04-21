@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class Meta field to create trees
+ * Meta field to create trees
+ * @class inputEx.TreeField
  * @extends inputEx.ListField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -11,11 +12,7 @@
 inputEx.TreeField = function(options) {
    inputEx.TreeField.superclass.constructor.call(this, options);
 };
-YAHOO.lang.extend(inputEx.TreeField, inputEx.ListField, 
-/**
- * @scope inputEx.TreeField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.TreeField, inputEx.ListField, {
 	/**
 	 * Adds a new line to the List Field
 	 * @param {Any} value Value of the subelement
@@ -101,9 +98,7 @@ YAHOO.lang.extend(inputEx.TreeField, inputEx.ListField,
 	
 });
 	
-/**
- * Register this class as "tree" type
- */
+// Register this class as "tree" type
 inputEx.registerType("tree", inputEx.TreeField);
 	
 })();

@@ -2,7 +2,8 @@
      var inputEx = YAHOO.inputEx,lang=YAHOO.lang;
      
 /**
- * @class Create a slider using YUI widgets
+ * Create a slider using YUI widgets
+ * @class inputEx.SliderField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -11,11 +12,7 @@ inputEx.SliderField = function(options) {
    inputEx.SliderField.superclass.constructor.call(this,options);
 };
 
-YAHOO.lang.extend(inputEx.SliderField, inputEx.Field, 
-/**
- * @scope inputEx.SliderField.prototype   
- */  
-{
+YAHOO.lang.extend(inputEx.SliderField, inputEx.Field, {
    /**
     * Set the classname to 'inputEx-SliderField'
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -99,9 +96,7 @@ YAHOO.lang.extend(inputEx.SliderField, inputEx.Field,
     
 });
 
-/**
- * Register this class as "slider" type
- */
+// Register this class as "slider" type
 inputEx.registerType("slider", inputEx.SliderField);
 
 })();

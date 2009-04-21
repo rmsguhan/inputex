@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx,Event=YAHOO.util.Event,lang=YAHOO.lang;
 	
 /**
- * @class Create a password field.
+ * Create a password field.
+ * @class inputEx.PasswordField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -16,11 +17,7 @@
 inputEx.PasswordField = function(options) {
 	inputEx.PasswordField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.PasswordField, inputEx.StringField, 
-/**
- * @scope inputEx.PasswordField.prototype   
- */  
-{
+lang.extend(inputEx.PasswordField, inputEx.StringField, {
    
 	/**
 	 * Add the password regexp, strengthIndicator, capsLockWarning
@@ -245,9 +242,7 @@ inputEx.messages.invalidPasswordConfirmation = "Passwords are different !";
 inputEx.messages.capslockWarning = "Warning: CapsLock is on";
 inputEx.messages.passwordStrength = "Password Strength";
 
-/**
- * Register this class as "password" type
- */
+// Register this class as "password" type
 inputEx.registerType("password", inputEx.PasswordField);
 	
 })();

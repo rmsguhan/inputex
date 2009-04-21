@@ -3,7 +3,8 @@
    var lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event, inputEx = YAHOO.inputEx;
 
 /**
- * @class Create an table where all cells are opened data editor
+ * Create an table where all cells are opened data editor
+ * @class inputEx.widget.FastTable
  * @constructor
  * @param {Object} options Options:
  * <ul>

@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Create a multi autocomplete field
+ * Create a multi autocomplete field
+ * @class inputEx.MultiAutoComplete
  * @extends inputEx.AutoComplete
  * @constructor
  * @param {Object} options Added options:
@@ -13,11 +14,7 @@
 inputEx.MultiAutoComplete = function(options) {
 	inputEx.MultiAutoComplete.superclass.constructor.call(this,options);
  };
-YAHOO.lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete, 
-/**
- * @scope inputEx.MultiAutoComplete.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete, {
    
    /**
     * Build the DDList
@@ -97,9 +94,7 @@ YAHOO.lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete,
    
 });
 
-/**
- * Register this class as "multiautocomplete" type
- */
+// Register this class as "multiautocomplete" type
 inputEx.registerType("multiautocomplete", inputEx.MultiAutoComplete);
 
 })();

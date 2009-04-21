@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
 	
 /**
- * @class Wrapper for the Rich Text Editor from YUI
+ * Wrapper for the Rich Text Editor from YUI
+ * @class inputEx.RTEField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -15,11 +16,7 @@
 inputEx.RTEField = function(options) {
    inputEx.RTEField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.RTEField, inputEx.Field, 
-/**
- * @scope inputEx.RTEField.prototype   
- */  
-{   
+lang.extend(inputEx.RTEField, inputEx.Field, {   
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -111,9 +108,7 @@ lang.extend(inputEx.RTEField, inputEx.Field,
 	
 });
 	
-/**
- * Register this class as "html" type
- */
+// Register this class as "html" type
 inputEx.registerType("html", inputEx.RTEField);
 	
 })();

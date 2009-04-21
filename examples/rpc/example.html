@@ -70,7 +70,7 @@ YAHOO.util.Event.onDOMReady(function() {
 	 * generate a form from the service.questionSearch method
 	 */
 	var onServiceReady = function() {
-		inputEx.generateServiceForm(service.questionSearch, { parentEl: 'formContainer' },{
+		inputEx.RPC.generateServiceForm(service.questionSearch, { parentEl: 'formContainer' },{
 				success: function(results) {
 					var treeContainer = YAHOO.util.Dom.get('treeContainer');
 					treeContainer.innerHTML = "";

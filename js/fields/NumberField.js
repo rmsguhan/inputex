@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
- * @class A field limited to number inputs (floating)
+ * A field limited to number inputs (floating)
+ * @class inputEx.NumberField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -11,11 +12,7 @@
 inputEx.NumberField = function(options) {
    inputEx.NumberField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField, 
-/**
- * @scope inputEx.NumberField.prototype   
- */
-{
+YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField, {
    /**
     * Return a parsed float (javascript type number)
     * @return {Number} The parsed float
@@ -46,9 +43,7 @@ YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField,
 
 });
 
-/**
- * Register this class as "number" type
- */
+// Register this class as "number" type
 inputEx.registerType("number", inputEx.NumberField);
 
 })();

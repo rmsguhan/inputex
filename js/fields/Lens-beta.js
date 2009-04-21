@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
 
 /**
- * @class Display a group with inplace edit and custom template
+ * Display a group with inplace edit and custom template
+ * @class inputEx.Lens
  * @extends inputEx.Group
  * @constructor
  * @param {Object} options Added options:
@@ -16,13 +17,10 @@ inputEx.Lens = function(options) {
    inputEx.Lens.superclass.constructor.call(this, options);
 };
 
-lang.extend(inputEx.Lens, inputEx.Group,
-/**
- * @scope inputEx.Lens.prototype   
- */  
-{
+lang.extend(inputEx.Lens, inputEx.Group, {
+   
    /**
-    * @method setOptions
+    * Set additional options
     */
 	setOptions: function(options) {
 		inputEx.Lens.superclass.setOptions.call(this, options);	
@@ -39,7 +37,7 @@ lang.extend(inputEx.Lens, inputEx.Group,
 	},
 	
 	/**
-	 * @method renderFields
+	 * Render each the fields in each div which class attribute is "field-"+fieldName
 	 */
 	renderFields: function(parentEl) {
       

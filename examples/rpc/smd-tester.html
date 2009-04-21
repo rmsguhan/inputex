@@ -171,7 +171,7 @@ inputEx.SMDTester = {
 		
 		// generate the form for the given method
 		YAHOO.util.Dom.get('formContainer').innerHTML = "";
-		inputEx.generateServiceForm(this.service[methodName], { parentEl: 'formContainer' }, {
+		inputEx.RPC.generateServiceForm(this.service[methodName], { parentEl: 'formContainer' }, {
 			success: function(results) {
 					var treeContainer = YAHOO.util.Dom.get('treeContainer');
 					treeContainer.innerHTML = "";

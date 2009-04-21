@@ -1,5 +1,6 @@
-/** 
- * @fileoverview Main inputEx file. Define inputEx namespace in YAHOO.inputEx
+/**
+ * The inputEx Library
+ * @module inputEx
  */
 (function() {
  
@@ -9,13 +10,12 @@
  * Build a field from an object like: { type: 'color' or fieldClass: inputEx.ColorField, inputParams: {} }<br />
  * The inputParams property is the object that will be passed as the <code>options</code> parameter to the field class constructor.<br />
  * If the neither type or fieldClass are found, it uses inputEx.StringField
- * @name inputEx
- * @namespace The inputEx global namespace object.
+ * @class inputEx
  * @static
  * @param {Object} fieldOptions
  * @return {inputEx.Field} Created field instance
  */
-YAHOO.inputEx = function(fieldOptions) {
+inputEx = function(fieldOptions) {
    var fieldClass = null;
 	if(fieldOptions.type) {
 	   fieldClass = YAHOO.inputEx.getFieldClass(fieldOptions.type);
@@ -36,16 +36,7 @@ YAHOO.inputEx = function(fieldOptions) {
    return inputInstance;
 };
 
-/**
- * Test de documentation inputEx
- */
-var inputEx = YAHOO.inputEx;
-
-lang.augmentObject(inputEx, 
-/**
- * @scope inputEx
- */   
-{
+lang.augmentObject(inputEx, {
    
    VERSION: "0.2.3a",
    
@@ -91,7 +82,8 @@ lang.augmentObject(inputEx,
    },
    
    /**
-    * @namespace inputEx widget namespace
+    * inputEx widget namespace
+    * @static 
     */
    widget: {},
    
@@ -279,4 +271,5 @@ lang.augmentObject(inputEx,
 
 
 // The main inputEx namespace shortcut
-var inputEx = YAHOO.inputEx;
+//var inputEx = YAHOO.inputEx;
+YAHOO.inputEx = inputEx;

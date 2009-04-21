@@ -19,9 +19,8 @@
  *    - no tuple typing for arrays
  *    - no "Union type definition"
  *
- * @class JsonSchema
+ * @class inputEx.JsonSchema
  * @static
- * @namespace inputEx
  */
 inputEx.JsonSchema = {
    
@@ -153,9 +152,7 @@ inputEx.JsonSchema = {
 
 
 /**
- * 
- * @class Builder
- * @namespace inputEx.JsonSchema
+ * @class inputEx.JsonSchema.Builder
  */
 inputEx.JsonSchema.Builder = function(options) {
 	
@@ -192,9 +189,7 @@ inputEx.JsonSchema.Builder = function(options) {
 inputEx.JsonSchema.Builder.prototype = {
    
    /** 
- 	 * return a schema based on the reference value
- 	 * default is to look up in map
- 	 * @method defaultReferenceResolver
+ 	 * return a schema based on the reference value default is to look up in map
     */
 	defaultReferenceResolver:function(reference) {
 		return this.schemaIdentifierMap[reference] || null;
@@ -202,7 +197,6 @@ inputEx.JsonSchema.Builder.prototype = {
 	
 	/**
 	 * Convert a JSON schema to inputEx JSON
-	 * @method schemaToInputEx
 	 * @param {JSONSchema} p
 	 */
 	schemaToInputEx:function(p, propertyName) {
@@ -384,7 +378,6 @@ inputEx.JsonSchema.Builder.prototype = {
    /**
     * Create an inputEx Json form definition from a json schema instance object
     * Respect the "Self-Defined Schema Convention"
-    * @method formFromInstance
     */
    formFromInstance: function(instanceObject) {
       if(!instanceObject || !instanceObject["$schema"]) {

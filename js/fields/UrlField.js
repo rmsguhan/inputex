@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
 
 /**
- * @class Adds an url regexp, and display the favicon at this url
+ * Adds an url regexp, and display the favicon at this url
+ * @class inputEx.UrlField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -15,11 +16,7 @@ inputEx.UrlField = function(options) {
    inputEx.UrlField.superclass.constructor.call(this,options);
 };
 
-lang.extend(inputEx.UrlField, inputEx.StringField,
-/**
- * @scope inputEx.UrlField.prototype
- */
-{
+lang.extend(inputEx.UrlField, inputEx.StringField, {
 
    /**
     * Adds the invalid Url message
@@ -98,9 +95,7 @@ lang.extend(inputEx.UrlField, inputEx.StringField,
 inputEx.messages.invalidUrl = "Invalid URL, ex: http://www.test.com";
 
 
-/**
- * Register this class as "url" type
- */
+// Register this class as "url" type
 inputEx.registerType("url", inputEx.UrlField);
 
 })();

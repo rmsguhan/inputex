@@ -2,12 +2,13 @@
 	var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class Create a radio button. Here are the added options :
+ * Create a radio button. Here are the added options :
  * <ul>
  *    <li>choices: list of choices (array of string)</li>
  *    <li>values: list of returned values (array )</li>
  *    <li>allowAny: add an option with a string field</li>
  * </ul>
+ * @class inputEx.RadioField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -16,11 +17,7 @@ inputEx.RadioField = function(options) {
 	inputEx.RadioField.superclass.constructor.call(this,options);
 };
 	
-lang.extend(inputEx.RadioField, inputEx.Field, 
-/**
- * @scope inputEx.RadioField.prototype   
- */
-{
+lang.extend(inputEx.RadioField, inputEx.Field, {
 	   
 	/**
 	 * Adds the Radio button specific options
@@ -219,9 +216,7 @@ lang.extend(inputEx.RadioField, inputEx.Field,
 	
 });   
 	
-/**
- * Register this class as "radio" type
- */
+// Register this class as "radio" type
 inputEx.registerType("radio", inputEx.RadioField);
 	
 })();

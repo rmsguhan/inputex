@@ -3,6 +3,7 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event;
 
 /**
+ * inputEx.DateSplitField
  * @class inputEx.DateSplitField
  * @extends inputEx.CombineField
  */
@@ -144,9 +145,7 @@ inputEx.messages.monthTypeInvite = "Month";
 inputEx.messages.dayTypeInvite = "Day";
 inputEx.messages.yearTypeInvite = "Year";
 
-/**
-* Register this class as "birthdate" type
-*/
+// Register this class as "datesplit" type
 inputEx.registerType("datesplit", inputEx.DateSplitField);
 
 })();

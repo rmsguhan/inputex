@@ -2,7 +2,8 @@
    var util = YAHOO.util, lang = YAHOO.lang, Event = YAHOO.util.Event, inputEx = YAHOO.inputEx, Dom = util.Dom;
 
 /**
- * @class Create a group of fields within a FORM tag and adds buttons
+ * Create a group of fields within a FORM tag and adds buttons
+ * @class inputEx.Form
  * @extends inputEx.Group
  * @constructor
  * @param {Object} options The following options are added for Forms:
@@ -16,11 +17,7 @@ inputEx.Form = function(options) {
    inputEx.Form.superclass.constructor.call(this, options);
 };
 
-lang.extend(inputEx.Form, inputEx.Group,
-/**
- * @scope inputEx.Form.prototype
- */
-{
+lang.extend(inputEx.Form, inputEx.Group, {
 
    /**
     * Adds buttons and set ajax default parameters
@@ -249,9 +246,7 @@ lang.extend(inputEx.Form, inputEx.Group,
 // Specific waiting message in ajax submit
 inputEx.messages.ajaxWait = "Please wait...";;
 
-/**
-* Register this class as "form" type
-*/
+// Register this class as "form" type
 inputEx.registerType("form", inputEx.Form);
 
 

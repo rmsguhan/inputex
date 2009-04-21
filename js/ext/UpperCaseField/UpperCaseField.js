@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class A field where the value is always uppercase
+ * A field where the value is always uppercase
+ * @class inputEx.UpperCaseField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -11,11 +12,7 @@
 inputEx.UpperCaseField = function(options) {
    inputEx.UpperCaseField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.UpperCaseField, inputEx.StringField, 
-/**
- * @scope inputEx.UpperCaseField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.UpperCaseField, inputEx.StringField, {
 
    /**
     * Set the value and call toUpperCase
@@ -43,9 +40,7 @@ YAHOO.lang.extend(inputEx.UpperCaseField, inputEx.StringField,
 
 });
 
-/**
-* Register this class as "uppercase" type
-*/
+// Register this class as "uppercase" type
 inputEx.registerType("uppercase", inputEx.UpperCaseField);
 
 })();

@@ -1,11 +1,10 @@
 (function() {
 
    var inputEx = YAHOO.inputEx, DD = YAHOO.util.DragDropMgr, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
-
-
-
+   
 /**
- * @class DDProxy for DDList items (used by DDList)
+ * DDProxy for DDList items (used by DDList)
+ * @class inputEx.widget.DDListItem
  * @extends YAHOO.util.DDProxy
  * @constructor
  * @param {String} id
@@ -23,7 +22,10 @@ inputEx.widget.DDListItem = function(id) {
 
 YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
 
-    startDrag: function(x, y) {
+   /**
+    * Create the proxy element
+    */
+   startDrag: function(x, y) {
         // make the proxy look like the source element
         var dragEl = this.getDragEl();
         var clickEl = this.getEl();
@@ -33,6 +35,9 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
         dragEl.innerHTML = clickEl.innerHTML;
     },
 
+    /**
+     * Handle the endDrag and eventually fire the listReordered event
+     */
     endDrag: function(e) {
         Dom.setStyle(this.id, "visibility", "");
         
@@ -44,6 +49,9 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
         }
     },
 
+    /**
+     * @method onDragDrop
+     */
     onDragDrop: function(e, id) {
 
         // If there is one drop interaction, the li was dropped either on the list,
@@ -72,9 +80,10 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
         }
     },
 
+    /**
+     * Keep track of the direction of the drag for use during onDragOver
+     */
     onDrag: function(e) {
-
-        // Keep track of the direction of the drag for use during onDragOver
         var y = Event.getPageY(e);
 
         if (y < this.lastY) {
@@ -86,6 +95,9 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
         this.lastY = y;
     },
 
+    /**
+     * @method onDragOver
+     */
     onDragOver: function(e, id) {
     
         var srcEl = this.getEl();
@@ -110,8 +122,8 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
 
 
 /**
- * @class Create a sortable list 
- * @extends inputEx.widget.DDList
+ * Create a sortable list 
+ * @class inputEx.widget.DDList
  * @constructor
  * @param {Object} options Options:
  * <ul>
@@ -132,15 +144,13 @@ inputEx.widget.DDList = function(options) {
    }
    
    /**
-	 * @event
+	 * @event YAHOO custom event fired when an item is removed
 	 * @param {Any} itemValue value of the removed item
-	 * @desc YAHOO custom event fired when an item is removed
 	 */
 	this.itemRemovedEvt = new YAHOO.util.CustomEvent('itemRemoved', this);
 	
 	/**
-	 * @event
-	 * @desc YAHOO custom event fired when the list is reordered
+	 * @event YAHOO custom event fired when the list is reordered
 	 */
    this.listReorderedEvt = new YAHOO.util.CustomEvent('listReordered', this);
    
@@ -157,6 +167,9 @@ inputEx.widget.DDList = function(options) {
 
 inputEx.widget.DDList.prototype = {
    
+   /**
+    * Add an item to the list
+    */
    addItem: function(value) {
       var li = inputEx.cn('li', {className: 'inputEx-DDList-item'});
       li.appendChild( inputEx.cn('span', null, null, value) );
@@ -172,9 +185,10 @@ inputEx.widget.DDList.prototype = {
       this.ul.appendChild(li);
    },
    
-   /*
-   * private method to remove an item
-   */
+   /**
+    * private method to remove an item
+    * @private
+    */
    _removeItem: function(i) {
       
       var itemValue = this.ul.childNodes[i].childNodes[0].innerHTML;
@@ -184,17 +198,21 @@ inputEx.widget.DDList.prototype = {
       return itemValue;
    },
    
-   /*
-   *  public metnod to remove an item
-   *    _removeItem function + event firing
-   */
-   removeItem: function(i) {
-      var itemValue = this._removeItem(i);
+   /**
+    *  Method to remove an item (_removeItem function + event firing)
+    * @param {Integer} index Item index
+    */
+   removeItem: function(index) {
+      var itemValue = this._removeItem(index);
       
       // Fire the itemRemoved Event
       this.itemRemovedEvt.fire(itemValue);
    },
    
+   /**
+    * Return the current value of the field
+    * @return {Array} array of values
+    */
    getValue: function() {
       var value = [];
       for(var i = 0 ; i < this.ul.childNodes.length ; i++) {
@@ -203,10 +221,19 @@ inputEx.widget.DDList.prototype = {
       return value;
    },
    
-   updateItem: function(i,value) {
-      this.ul.childNodes[i].childNodes[0].innerHTML = value;
+   /**
+    * Update the value of a given item
+    * @param {Integer} index Item index
+    * @param {Any} value New value
+    */
+   updateItem: function(index,value) {
+      this.ul.childNodes[index].childNodes[0].innerHTML = value;
    },
    
+   /**
+    * Set the value of the list
+    * @param {Array} value list of values
+    */
    setValue: function(value) {
       // if trying to set wrong value (or ""), reset
       if (!YAHOO.lang.isArray(value)) {

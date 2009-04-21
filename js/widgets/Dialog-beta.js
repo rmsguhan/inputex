@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
    
 /**
- * @class Create a Dialog from an inputEx field definition
+ * Create a Dialog from an inputEx field definition
+ * @class inputEx.widget.Dialog
  * @constructor
  * @param {Object} options Config object, options are :
  * <ul>
@@ -44,11 +45,8 @@ inputEx.widget.Dialog = function(options) {
 	this.render(this._inputExOptions.parentEl);
 };
 
-YAHOO.lang.extend(inputEx.widget.Dialog, YAHOO.widget.Panel, 
-/**
- * @scope inputEx.widget.Dialog
- */
-{
+YAHOO.lang.extend(inputEx.widget.Dialog, YAHOO.widget.Panel, {
+   
    /**
     * render the inputExDef as a inputEx field
     */

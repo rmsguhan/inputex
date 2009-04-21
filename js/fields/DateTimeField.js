@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
- * @class A field limited to number inputs (floating)
+ * A field limited to number inputs (floating)
+ * @class inputEx.DateTimeField
  * @extends inputEx.CombineField
  * @constructor
  * @param {Object} options Added options
@@ -22,11 +23,7 @@ inputEx.DateTimeField = function(options) {
    options.separators = options.separators || [false, "&nbsp;&nbsp;", false];
    inputEx.DateTimeField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.DateTimeField, inputEx.CombineField, 
-/**
- * @scope inputEx.DateTimeField.prototype   
- */
-{   
+lang.extend(inputEx.DateTimeField, inputEx.CombineField, {   
    /**
     * Concat the values to return a date
     * @return {Date} The javascript Date object
@@ -61,9 +58,7 @@ lang.extend(inputEx.DateTimeField, inputEx.CombineField,
 
 
 
-/**
- * Register this class as "time" type
- */
+// Register this class as "time" type
 inputEx.registerType("datetime", inputEx.DateTimeField);
 
 })();

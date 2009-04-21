@@ -18,7 +18,7 @@ not released yet
 		* Lens (beta)
 	
 	- Added Widget 
-		* FastTable for fast editing
+		* FastTable for fast editing (beta)
 		
 	- JSON-Schema
 		* Started implementing inputEx.JsonSchema.inputExToSchema (beta)
@@ -32,6 +32,9 @@ not released yet
 	- Various
 		* freebase SMD example
 		* InPlaceEdit ok button is now a skinnable link
+		* Providing a dependency-configurator based on yui-dependency-configurator
+		* Moved inputEx RPC methods to inputEx.RPC namespace (generateServiceForm and formForMethod)
+		* Switching to yuidoc for documentation
 
 version 0.2.2:
 --------------

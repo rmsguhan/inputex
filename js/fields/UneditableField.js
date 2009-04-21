@@ -3,11 +3,12 @@
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Create a uneditable field where you can stick the html you want
+ * Create a uneditable field where you can stick the html you want
  * Added Options:
  * <ul>
  *    <li>visu: inputEx visu type</li>
  * </ul>
+ * @class inputEx.UneditableField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -15,11 +16,7 @@
 inputEx.UneditableField = function(options) {
 	inputEx.UneditableField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, 
-/**
- * @scope inputEx.UneditableField.prototype   
- */
-{
+YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, {
    
    /**
     * Set the default values of the options
@@ -53,9 +50,7 @@ YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field,
    
 });
 
-/**
- * Register this class as "url" type
- */
+// Register this class as "url" type
 inputEx.registerType("uneditable", inputEx.UneditableField);
 
 })();

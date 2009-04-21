@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Dom = YAHOO.util.Dom;
 	
 /**
- * @class A meta field to put N fields on the same line, separated by separators
+ * A meta field to put N fields on the same line, separated by separators
+ * @class inputEx.CombineField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -16,11 +17,7 @@ inputEx.CombineField = function(options) {
    inputEx.CombineField.superclass.constructor.call(this, options);
 };
 	
-lang.extend( inputEx.CombineField, inputEx.Field, 
-/**
- * @scope inputEx.CombineField.prototype   
- */   
-{
+lang.extend( inputEx.CombineField, inputEx.Field, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -200,9 +197,7 @@ lang.extend( inputEx.CombineField, inputEx.Field,
 	
 });
 	
-/**
- * Register this class as "combine" type
- */
+// Register this class as "combine" type
 inputEx.registerType("combine", inputEx.CombineField);
 	
 })();

@@ -3,6 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
 /**
  * Contains the various visualization methods
+ * @class inputEx.visus
+ * @static
  */
 inputEx.visus = {
   
@@ -21,6 +23,7 @@ inputEx.visus = {
   /**
    * Use a rendering function
    * options = {visuType: 'func', func: function(data) { ...code here...} }
+   * @method func
    */
   "func": function(options, data) {
      return options.func(data);
@@ -39,7 +42,7 @@ inputEx.visus = {
 /**
  * Render 'data' using a visualization function described by 'visuOptions'
  * @static
- * @param {Object} visuOptions The visu parameters {visuType: 'myType', ...args...}
+ * @param {Object} visuOptions The visu parameters object with: visuType: 'myType', ...args...
  * @param {Object} data The input data to send to the template
  * @param {HTMLElement || String} parentEl optional Set the result as content of parentEl
  * @return {HTMLElement || String} Either the inserted HTMLElement or the String set to parentEl.innerHTML

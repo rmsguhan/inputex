@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class Create a Color picker input field
+ * Create a Color picker input field
+ * @class inputEx.ColorField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options for ColorField :
@@ -21,11 +22,7 @@
 inputEx.ColorField = function(options) {
 	inputEx.ColorField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.ColorField, inputEx.Field, 
-/**
- * @scope inputEx.ColorField.prototype   
- */
-{
+lang.extend(inputEx.ColorField, inputEx.Field, {
    
 	/**
 	 * Adds the 'inputEx-ColorField' default className
@@ -274,9 +271,7 @@ inputEx.ColorField.ensureHexa = function (color) {
    return hexaColor;
 };
 
-/**
- * Register this class as "color" type
- */
+// Register this class as "color" type
 inputEx.registerType("color", inputEx.ColorField);
 	
 })();

@@ -3,7 +3,8 @@
    var lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event, inputEx = YAHOO.inputEx;
 
 /**
- * @class Create an editable datatable
+ * Create an editable datatable
+ * @class inputEx.widget.DataTable
  * @constructor
  * @param {Object} options Options:
  * <ul>
@@ -41,21 +42,21 @@ inputEx.widget.DataTable = function(options) {
    Event.onAvailable(this.options.id, this.renderDatatable, this, true);
    
    /**
-	 * @event
+	 * @event Event fired when an item is removed
 	 * @param {YAHOO.widget.Record} Removed record
 	 * @desc YAHOO custom event fired when an item is removed
 	 */
  	this.itemRemovedEvt = new YAHOO.util.CustomEvent('itemRemoved', this);
 
    /**
-	 * @event
+	 * @event Event fired when an item is added
  	 * @param {YAHOO.widget.Record} Added record
 	 * @desc YAHOO custom event fired when an item is added
 	 */
  	this.itemAddedEvt = new YAHOO.util.CustomEvent('itemAdded', this);
 
    /**
-	 * @event
+	 * @event Event fired when an item is modified
  	 * @param {YAHOO.widget.Record} Modified record
 	 * @desc YAHOO custom event fired when an item is modified
 	 */
@@ -407,11 +408,7 @@ inputEx.widget.InputExCellEditor = function(inputExFieldDef) {
 };
 
 // InputExCellEditor extends BaseCellEditor
-lang.extend(inputEx.widget.InputExCellEditor, YAHOO.widget.BaseCellEditor,
-/**
- * @scope inputEx.widget.InputExCellEditor.prototype
- */
-{
+lang.extend(inputEx.widget.InputExCellEditor, YAHOO.widget.BaseCellEditor,{
 
    /**
     * Render the inputEx field editor

@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event;
 
 /**
- * @class Create a file input
+ * Create a file input
+ * @class inputEx.FileField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -13,11 +14,7 @@
 inputEx.FileField = function(options) {
 	inputEx.FileField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.FileField, inputEx.Field, 
-/**
- * @scope inputEx.FileField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.FileField, inputEx.Field, {
    /**
     * Render an 'INPUT' DOM node
     */
@@ -38,9 +35,7 @@ YAHOO.lang.extend(inputEx.FileField, inputEx.Field,
 
 });
 
-/**
- * Register this class as "file" type
- */
+// Register this class as "file" type
 inputEx.registerType("file", inputEx.FileField);
 
 })();

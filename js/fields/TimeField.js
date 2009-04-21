@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
- * @class A field limited to number inputs (floating)
+ * A field limited to number inputs (floating)
+ * @class inputEx.TimeField
  * @extends inputEx.CombineField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -24,11 +25,7 @@ inputEx.TimeField = function(options) {
    options.separators = options.separators || [false,":",":",false];
    inputEx.TimeField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.TimeField, inputEx.CombineField, 
-/**
- * @scope inputEx.TimeField.prototype   
- */
-{   
+lang.extend(inputEx.TimeField, inputEx.CombineField, {   
    /**
     * Returns a string like HH:MM:SS
     * @return {String} Hour string
@@ -49,9 +46,7 @@ lang.extend(inputEx.TimeField, inputEx.CombineField,
 
 });
 
-/**
- * Register this class as "time" type
- */
+// Register this class as "time" type
 inputEx.registerType("time", inputEx.TimeField);
 
 })();

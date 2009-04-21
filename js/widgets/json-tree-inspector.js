@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
 
 /**
- * @class Create a treeview to inspect a javascript object
+ * Create a treeview to inspect a javascript object
+ * @class inputEx.widget.JsonTreeInspector
  * @constructor
  * @param {String|HTMLElement} parentEl where to append the tree
  * @param {Object} object the object to inspect
@@ -20,11 +21,11 @@ inputEx.widget.JsonTreeInspector = function(parentEl, object) {
 inputEx.widget.JsonTreeInspector.prototype = {
    
    /**
-    * TODO: Expand branches with a maximum depth
-    *
-   expand: function() {
-      
-   },*/
+    * TODO
+    */
+   expand: function(maxDepth) {
+      // TODO: Expand branches with a maximum depth
+   },
    
    /**
     * Build the sub-branch for obj

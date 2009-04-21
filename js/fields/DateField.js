@@ -3,7 +3,8 @@
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class A Date Field. 
+ * A Date Field. 
+ * @class inputEx.DateField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options Add the folowing options: 
@@ -15,11 +16,7 @@ inputEx.DateField = function(options) {
 	inputEx.DateField.superclass.constructor.call(this,options);
 };
 	
-lang.extend(inputEx.DateField, inputEx.StringField, 
-/**
- * @scope inputEx.DateField.prototype   
- */   
-{
+lang.extend(inputEx.DateField, inputEx.StringField, {
 	/**
 	 * Adds the 'inputEx-DateField' default className
 	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -109,9 +106,7 @@ lang.extend(inputEx.DateField, inputEx.StringField,
 // Specific message for the container
 inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
 	
-/**
- * Register this class as "date" type
- */
+// Register this class as "date" type
 inputEx.registerType("date", inputEx.DateField);
 	
 })();
