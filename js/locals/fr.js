@@ -1,6 +1,4 @@
-/**
- * InputEx French localization
- */
+// InputEx French localization
 (function() {
    
    var msgs = YAHOO.inputEx.messages;
@@ -8,6 +6,7 @@
    msgs.required = "Ce champ est obligatoire";
    msgs.invalid = "Ce champ n'est pas valide";
    msgs.valid = "Ce champ est valide";
+   
    msgs.invalidEmail = "Email non valide; ex: michel.dupont@fai.fr";
    msgs.selectColor = "S&eacute;lectionnez une couleur :";
    msgs.invalidPassword = ["Le mot de passe doit contenir au moins "," caract&egrave;res (lettres ou chiffres)"];

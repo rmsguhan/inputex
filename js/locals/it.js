@@ -1,6 +1,4 @@
-/**
- * InputEx Italian localization (Big Thanks to alexodus !)
- */
+// InputEx Italian localization (Big Thanks to alexodus !)
 (function() {
 
    var msgs = YAHOO.inputEx.messages;
@@ -44,6 +42,6 @@
    msgs.modifyText = "Modifica";
    msgs.deleteText = "Elimina";
    msgs.insertItemText = "Aggiungi";
-   msgs.confirmDeletion = "Sei sicuro?"
+   msgs.confirmDeletion = "Sei sicuro?";
 
 })();
