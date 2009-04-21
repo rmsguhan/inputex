@@ -23,3 +23,19 @@ lang.extend(inputEx.RadioButton, inputEx.RadioField);
 inputEx.registerType("radiobutton", inputEx.RadioButton);
 
 })();
+
+/*
+var oButtonGroup3 = new YAHOO.widget.ButtonGroup({ 
+                                id:  "buttongroup3", 
+                                name:  "radiofield3", 
+                                container:  "radiobuttonsfromjavascript" });
+
+oButtonGroup3.addButtons([
+
+    { label: "Radio 9", value: "Radio 9", checked: true },
+    { label: "Radio 10", value: "Radio 10" }, 
+    { label: "Radio 11", value: "Radio 11" }, 
+    { label: "Radio 12", value: "Radio 12" }
+
+]);
+*/

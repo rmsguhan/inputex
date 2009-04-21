@@ -298,28 +298,28 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
  		{
   			name: 'inputex-birthdatefield',
   			type: 'js',
-  	  	   fullpath: pathToInputEx+'js/ext/BirthdateField/BirthdateField.js',
+  	  	   fullpath: pathToInputEx+'js/fields/BirthdateField.js',
   	  	   varName: 'inputEx.BirthdateField',
   			requires: ['inputex-combinefield', 'inputex-stringfield', 'inputex-selectfield']
   		},
   		{
   			name: 'inputex-ipv4field',
   			type: 'js',
-  	  	   fullpath: pathToInputEx+'js/ext/IPv4Field/IPv4Field.js',
+  	  	   fullpath: pathToInputEx+'js/fields/IPv4Field.js',
   	  	   varName: 'inputEx.IPv4Field',
   			requires: ['inputex-stringfield']
   		},
   		{
   			name: 'inputex-vectorfield',
   			type: 'js',
-  	  	   fullpath: pathToInputEx+'js/ext/VectorField/VectorField.js',
+  	  	   fullpath: pathToInputEx+'js/fields/VectorField.js',
   	  	   varName: 'inputEx.VectorField',
   			requires: ['inputex-combinefield']
   		},
   		{
   			name: 'inputex-mapfield',
   			type: 'js',
-  	  	   fullpath: pathToInputEx+'js/ext/MapField/MapField.js',
+  	  	   fullpath: pathToInputEx+'js/fields/MapField.js',
   	  	   varName: 'inputEx.MapField',
   			requires: ['inputex-field']
   		},
