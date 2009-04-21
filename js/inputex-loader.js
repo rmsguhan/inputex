@@ -293,13 +293,11 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 	  	   varName: 'inputEx.UrlField',
 			requires: ['inputex-stringfield']
 		},
- 		
- 		// Ext fields
  		{
-  			name: 'inputex-birthdatefield',
+  			name: 'inputex-dateselectmonthfield',
   			type: 'js',
-  	  	   fullpath: pathToInputEx+'js/fields/BirthdateField.js',
-  	  	   varName: 'inputEx.BirthdateField',
+  	  	   fullpath: pathToInputEx+'js/fields/DateSelectMonthField.js',
+  	  	   varName: 'inputEx.DateSelectMonthField',
   			requires: ['inputex-combinefield', 'inputex-stringfield', 'inputex-selectfield']
   		},
   		{
