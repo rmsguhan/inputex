@@ -16,6 +16,7 @@ not released yet
 
 	- Added Fields
 		* Lens (beta)
+		* TimeInterval field to enter a duration
 	
 	- Added Widget 
 		* FastTable for fast editing (beta)

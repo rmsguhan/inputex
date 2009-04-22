@@ -196,6 +196,13 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 			requires: ['inputex-combinefield', 'inputex-datepickerfield', 'inputex-timefield']
 		},
 		{
+		   name: 'inputex-timeinterval',
+			type: 'js',
+	  	   fullpath: pathToInputEx+'js/fields/TimeIntervalField.js',
+	  	   varName: 'inputEx.TimeIntervalField',
+			requires: ['inputex-combinefield', 'inputex-selectfield']
+		},
+		{
 		   name: 'inputex-dsselectfield',
 			type: 'js',
 	  	   fullpath: pathToInputEx+'js/fields/DSSelectField.js',
