@@ -111,11 +111,11 @@ YAHOO.yui.configurator = function(container) {
 
             if (out.length) {
                 if (out.length < len) {
-                    out.push('<!-- Individual YUI JS files -->');
+                    out.push('<!-- Individual YUI and inputEx JS files -->');
                 }
-                out.unshift('<!-- Individual YUI CSS files -->');
+                out.unshift('<!-- Individual YUI and inputEx CSS files -->');
             } else {
-                out.push('<!-- Individual YUI JS files -->');
+                out.push('<!-- Individual YUI and inputEx JS files -->');
             }
 
             for (i=0; i<len; i=i+1)  {
@@ -178,6 +178,7 @@ YAHOO.yui.configurator = function(container) {
 			
 			//build the template for Loader syntax:
 			var t = '<!--Include YUI Loader: -->\n<script type="text/javascript" src="{yuiloadersrc}"></scr' + 'ipt>\n\n';
+			t += '<!--Include inputEx Loader: -->\n<script type="text/javascript" src="/path/to/inputex/js/inputex-loader.js"></scr' + 'ipt>\n\n';
 			t += '<!--Use YUI Loader to bring in your other dependencies: -->\n<script type="text/javascript">\n';
 			t += '// Instantiate and configure YUI Loader:\n(function() {\n	var loader = new YAHOO.util.YUILoader({\n';
 			t += '		base: "{base}",\n';
@@ -190,10 +191,25 @@ YAHOO.yui.configurator = function(container) {
 			t += '			//you can make use of all requested YUI modules\n';
 			t += '			//here.\n';
 			t += '		}\n	});\n\n';
-			t += '// Load the files using the insert() method.\n';
-			t += 'loader.insert();\n';
+			t += '      // Add the inputEx module references to the loader.\n';
+			t += '      YAHOO.addInputExModules(loader, \'/path/to/inputex/\');\n\n';
+			t += '      // Load the files using the insert() method.\n';
+			t += '      loader.insert();\n';
 			t += '})();\n';
 			t += '</scr' + 'ipt>\n\n';
+			
+			/*
+			var loader = new YAHOO.util.YUILoader({
+         				    require: ["inputex-emailfield", "inputex-urlfield", "inputex-selectfield", "inputex-form"],
+         				    loadOptional: true,
+         						//base: "../lib/yui/", // remove the comment if you want to load YUI locally
+         				    onSuccess: init
+         				});
+
+         				YAHOO.addInputExModules(loader, '../');
+         				loader.insert();
+         
+         */
 			
 			//output for dynamically loading everything with YUI Loader:
 			D.get('loaderOutputDynamic').value = YAHOO.lang.substitute(t, o);
