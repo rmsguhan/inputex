@@ -15,6 +15,8 @@
  *   <li>unique: require values to be unique (default false)</li>
  *   <li>listAddLabel: if useButtons is false, text to add an item</li>
  *   <li>listRemoveLabel: if useButtons is false, text to remove an item</li>
+ *   <li>maxItems: maximum number of items (leave undefined if no maximum, default)</li>
+ *   <li>minItems: minimum number of items to validate (leave undefined if no minimum, default)</li>
  * </ul>
  */
 inputEx.ListField = function(options) {
@@ -44,6 +46,9 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	   
 	   this.options.listAddLabel = options.listAddLabel || inputEx.messages.listAddLink;
 	   this.options.listRemoveLabel = options.listRemoveLabel || inputEx.messages.listRemoveLink;
+	   
+	   this.options.maxItems = options.maxItems;
+	   this.options.minItems = options.minItems;
 	},
 	   
 	/**
@@ -83,11 +88,22 @@ lang.extend(inputEx.ListField,inputEx.Field, {
     * @returns {Boolean} true if all fields validate, required fields are not empty and unique constraint (if specified) is not violated
     */
    validate: function() {
+
       var response = true;
-      var uniques = {};
+      
+      var uniques = {}; // Hash for unique values option
+      var l = this.subFields.length;
+
+      // Validate maxItems / minItems
+      if( lang.isNumber(this.options.minItems) && l < this.options.minItems  ) {
+         response = false;
+      }
+      if( lang.isNumber(this.options.maxItems) && l > this.options.maxItems  ) {
+         response = false;
+      }
 
       // Validate all the sub fields
-      for (var i = 0 ; i < this.subFields.length && response; i++) {
+      for (var i = 0 ; i < l && response; i++) {
          var input = this.subFields[i];
          input.setClassFromState(); // update field classes (mark invalid fields...)
          var state = input.getState();
@@ -96,7 +112,6 @@ lang.extend(inputEx.ListField,inputEx.Field, {
          }
          if(this.options.unique) {
             var hash = lang.dump(input.getValue());
-            //logDebug('listfied index ',i, 'hash', hash);
             if(uniques[hash]) {
                response = false;    // not unique
             } else {
@@ -115,8 +130,7 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	setValue: function(value, sendUpdatedEvt) {
 	   
 	   if(!lang.isArray(value) ) {
-	      // TODO: throw exceptions ?
-	      return;
+	      throw new Error("inputEx.ListField.setValue expected an array, got "+(typeof value));
 	   }
 	      
 	   // Set the values (and add the lines if necessary)
@@ -174,6 +188,11 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	 */
 	onAddButton: function(e) {
 	   Event.stopEvent(e);
+	   
+	   // Prevent adding a new field if already at maxItems
+	   if( lang.isNumber(this.options.maxItems) && this.subFields.length >= this.options.maxItems ) {
+	      return;
+	   }
 	   
 	   // Add a field with no value: 
 	   var subFieldEl = this.addElement();
@@ -336,6 +355,11 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	onDelete: function(e) {
 	      
 	   Event.stopEvent(e);
+	   
+	   // Prevent removing a field if already at minItems
+	   if( lang.isNumber(this.options.minItems) && this.subFields.length <= this.options.minItems ) {
+	      return;
+	   }
 	      
 	   // Get the wrapping div element
 	   var elementDiv = Event.getTarget(e).parentNode;

@@ -17,15 +17,18 @@ not released yet
 	- Added Fields
 		* Lens (beta)
 		* TimeInterval field to enter a duration
+		
+	- Field enhancements:
+		* added minItems/maxItems options on ListField
 	
 	- Added Widget 
 		* FastTable for fast editing (beta)
 		
 	- JSON-Schema
-		* Started implementing inputEx.JsonSchema.inputExToSchema (beta)
+		* implementation of inputEx.JsonSchema.inputExToSchema (beta)
 
 	- Bug fixes
-		* fixing examples (YUI element is not beta anymore)
+		* fixing broken examples (YUI element is not beta anymore)
 		* fix on CombineField to contain Group or Form fields
 		* fix on Datatable widget (broken since switch to YUI 2.7.0)
 		* fix on DSSelectField (broken since switch to YUI 2.7.0)
