@@ -53,7 +53,12 @@ YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,{
       if(this.el.selectedIndex != 0) {
          
          // Add the value to the ddlist
-         this.ddlist.addItem(this.options.selectValues[this.el.selectedIndex]);
+         if(this.options.selectOptions) {
+            this.ddlist.addItem({value: this.options.selectValues[this.el.selectedIndex], label: this.options.selectOptions[this.el.selectedIndex]});
+         }
+         else {
+            this.ddlist.addItem(this.options.selectValues[this.el.selectedIndex]);
+         }
          
          // mark option disabled
          this.el.childNodes[this.el.selectedIndex].disabled = true;

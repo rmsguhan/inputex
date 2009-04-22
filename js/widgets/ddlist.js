@@ -45,7 +45,7 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
         var clickEl = this.getEl();
         var newIndex = inputEx.indexOf(clickEl ,clickEl.parentNode.childNodes);
         if(this._originalIndex != newIndex) {
-           this._list.listReorderedEvt.fire();
+           this._list.onReordered(this._originalIndex, newIndex);
         }
     },
 
@@ -135,6 +135,8 @@ inputEx.widget.DDList = function(options) {
    
    this.ul = inputEx.cn('ul');
    
+   this.items = [];
+   
    if(options.id) {
       this.ul.id = options.id;
    }
@@ -169,10 +171,11 @@ inputEx.widget.DDList.prototype = {
    
    /**
     * Add an item to the list
+    * @param {String|Object} item Either a string with the given value or an object with "label" and "value" attributes
     */
-   addItem: function(value) {
+   addItem: function(item) {
       var li = inputEx.cn('li', {className: 'inputEx-DDList-item'});
-      li.appendChild( inputEx.cn('span', null, null, value) );
+      li.appendChild( inputEx.cn('span', null, null, (typeof item == "object") ? item.label : item) );
       var removeLink = inputEx.cn('a', null, null, "remove"); 
       li.appendChild( removeLink );
       Event.addListener(removeLink, 'click', function(e) {
@@ -180,26 +183,34 @@ inputEx.widget.DDList.prototype = {
          var li = a.parentNode;
          this.removeItem( inputEx.indexOf(li,this.ul.childNodes) );
       }, this, true);
-      var item = new inputEx.widget.DDListItem(li);
-      item._list = this;
+      
+      var dditem = new inputEx.widget.DDListItem(li);
+      dditem._list = this;
+      
+      this.items.push( (typeof item == "object") ? item.value : item );
+      
       this.ul.appendChild(li);
    },
    
    /**
     * private method to remove an item
+    * @param {Integer} index index of item to be removed
     * @private
     */
    _removeItem: function(i) {
       
-      var itemValue = this.ul.childNodes[i].childNodes[0].innerHTML;
-      
+      var itemValue = this.items[i];
+   
       this.ul.removeChild(this.ul.childNodes[i]);
+      
+      this.items[i] = null;
+      this.items = inputEx.compactArray(this.items);
       
       return itemValue;
    },
    
    /**
-    *  Method to remove an item (_removeItem function + event firing)
+    * Method to remove an item (_removeItem function + event firing)
     * @param {Integer} index Item index
     */
    removeItem: function(index) {
@@ -210,15 +221,28 @@ inputEx.widget.DDList.prototype = {
    },
    
    /**
+    * Called by the DDListItem when an item as been moved
+    */
+   onReordered: function(originalIndex, newIndex) {
+      if(originalIndex < newIndex) {
+         this.items.splice(newIndex+1,0, this.items[originalIndex]);
+         this.items[originalIndex] = null;
+      }
+      else {
+         this.items.splice(newIndex,0, this.items[originalIndex]);
+         this.items[originalIndex+1] = null;
+      }      
+      this.items = inputEx.compactArray(this.items);
+      
+      this.listReorderedEvt.fire();
+   },
+   
+   /**
     * Return the current value of the field
     * @return {Array} array of values
     */
    getValue: function() {
-      var value = [];
-      for(var i = 0 ; i < this.ul.childNodes.length ; i++) {
-         value.push(this.ul.childNodes[i].childNodes[0].innerHTML);
-      }
-      return value;
+      return this.items;
    },
    
    /**
@@ -227,6 +251,7 @@ inputEx.widget.DDList.prototype = {
     * @param {Any} value New value
     */
    updateItem: function(index,value) {
+      this.items[index] = value;
       this.ul.childNodes[index].childNodes[0].innerHTML = value;
    },
    

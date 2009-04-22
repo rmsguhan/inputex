@@ -20,6 +20,9 @@ not released yet
 		
 	- Field enhancements:
 		* added minItems/maxItems options on ListField
+		* DDList items now have separate value & labels
+		* added returnLabel option to MultiAutocomplete (method to format list label)
+		* fix on MultiSelectField
 	
 	- Added Widget 
 		* FastTable for fast editing (beta)
@@ -41,6 +44,7 @@ not released yet
 		* Switching to yuidoc for documentation
 		* Moved VectorField, MapField, IPv4Field, UpperCaseField from ext/ to fields/ (watch you references !)
 		* BirthdateField renamed to DateSelectMonthField
+		* Added an example using inputEx SMD support and the Flickr API
 		
 	- Fields removed
 		* FrenchDate (use the french locale)

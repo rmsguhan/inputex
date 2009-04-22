@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx;
+   var lang = YAHOO.lang;
 
 /**
  * Create a multi autocomplete field
@@ -14,7 +14,7 @@
 inputEx.MultiAutoComplete = function(options) {
 	inputEx.MultiAutoComplete.superclass.constructor.call(this,options);
  };
-YAHOO.lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete, {
+lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete, {
    
    /**
     * Build the DDList
@@ -30,9 +30,24 @@ YAHOO.lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete, {
       this.ddlist.listReorderedEvt.subscribe(this.fireUpdatedEvt, this, true);
    },  
    
+   /**
+    * Additional options
+    */
+   setOptions: function(options) {
+      inputEx.MultiAutoComplete.superclass.setOptions.call(this, options);
+      
+      // Method to format the ddlist item labels
+      this.options.returnLabel = options.returnLabel;
+   },
+   
+   /**
+    * Handle item selection in the autocompleter to add it to the list
+    */
    itemSelectHandler: function(sType, aArgs) {
    	var aData = aArgs[2];
-   	this.ddlist.addItem( this.options.returnValue ? this.options.returnValue(aData) : aData[0] );
+   	var value = lang.isFunction(this.options.returnValue) ? this.options.returnValue(aData) : aData[0];
+   	var label = lang.isFunction(this.options.returnLabel) ? this.options.returnLabel(aData) : value;   	
+   	this.ddlist.addItem({label: label, value: value});
    	this.el.value = "";
    	this.fireUpdatedEvt();
    },

@@ -54,6 +54,16 @@
    msgs.insertItemText = "Ajouter";
    msgs.confirmDeletion = "Êtes-vous sûr ?";
    
+   // TimeInterval
+   msgs.timeUnits = {
+      SECOND: "secondes",
+      MINUTE: "minutes",
+      HOUR: "heures",
+      DAY: "jours",
+      MONTH: "mois",
+      YEAR: "ans"
+   };
+   
    // for YUI loader 
    YAHOO.inputEx.lang_fr = true;
    
