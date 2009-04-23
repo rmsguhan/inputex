@@ -1,6 +1,6 @@
 (function() {
 
-   var lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event, inputEx = YAHOO.inputEx;
+   var lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
 
 /**
  * Create an table where all cells are opened data editor
@@ -8,9 +8,9 @@
  * @constructor
  * @param {Object} options Options:
  * <ul>
- *    <li>parentEl</li>
- *    <li>fields</li>
- *    <li>datasource</li>
+ *    <li>parentEl: the container element</li>
+ *    <li>fields: array of inputEx Json field description</li>
+ *    <li>datasource: a YUI datasource</li>
  * </ul>
  */ 
 inputEx.widget.FastTable = function(options) {
@@ -19,9 +19,25 @@ inputEx.widget.FastTable = function(options) {
    
    this.setOptions(options);
    
+   /**
+    * @event Event fired when an item is updated
+    */
    this.itemUpdatedEvt = new YAHOO.util.CustomEvent('itemUpdated', this);
+   
+   /**
+    * @event Event fired when an item is created
+    */
    this.itemCreatedEvt = new YAHOO.util.CustomEvent('itemCreated', this);
+   
+   /**
+    * @event Event fired when an item is deleted
+    */
    this.itemDeletedEvt = new YAHOO.util.CustomEvent('itemDeleted', this);
+   
+   /**
+    * Keep references to the fields in the last row (Add row)
+    */
+   this.addRowFields = [];
    
    this.render();
    
@@ -120,22 +136,34 @@ inputEx.widget.FastTable.prototype = {
       
       for(var i = 0 ; i < this.options.fields.length ; i++) {
          var f = this.options.fields[i];
+         
+         var inputExField = {
+            type: f.type,
+            inputParams: {}
+         };
+         
+         for(var key in f.inputParams) {
+            if( f.inputParams.hasOwnProperty(key) && key != "label") {
+               inputExField.inputParams[key] = f.inputParams[key];
+            }
+         }
+         
          var colName = f.inputParams.name;
          
          var td = inputEx.cn('td', {className: 'inputEx-FastTable-field'});
-         f.inputParams.parentEl = td;
+         inputExField.inputParams.parentEl = td;
          if(item) {
-            f.inputParams.value = item[colName];
+            inputExField.inputParams.value = item[colName];
          }
-         else {
-            f.inputParams.value = "";
-         }
-         f.inputParams.label = null;
-         var field = inputEx.buildField(f);
+         
+         var field = inputEx.buildField(inputExField);
          field._item = item;
          field.updatedEvt.subscribe( function(e,p) { 
             this.onFieldUpdated(e,p,item);
          }, this, true);
+         
+         // Add the reference to the created field for the addRow
+         if(!item) { this.addRowFields.push(field); }
          
          tr.appendChild(td);
       }
@@ -144,10 +172,11 @@ inputEx.widget.FastTable.prototype = {
       
       if(item) {
          var deleteLink = inputEx.cn('a', {href: ""}, null, "delete");
-         Event.addListener(deleteLink, 'click', function(e) { Event.stopEvent(e); this.onDeleteItem(item); }, this, true);
+         Event.addListener(deleteLink, 'click', function(e) { Event.stopEvent(e); this.onDeleteItem(item, tr); }, this, true);
          td.appendChild(deleteLink);
       }
       else {
+         this.addTr = tr;
          var addLink = inputEx.cn('a', {href: ""}, null, "add");
          Event.addListener(addLink, 'click', function(e) { Event.stopEvent(e); this.onAddItem(); }, this, true);
          td.appendChild(addLink);
@@ -156,7 +185,26 @@ inputEx.widget.FastTable.prototype = {
       tr.appendChild(td);
       
       this.nRows += 1;
-      this.tbodyEl.appendChild(tr);
+      
+      if(this.addTr && tr != this.addTr) {
+         this.tbodyEl.insertBefore(tr, this.addTr);
+         
+         // Clean the addRow:
+         for(var i = 0 ; i < this.options.fields.length ; i++) {
+            this.addRowFields[i].clear();
+         }
+      }
+      else {
+         this.tbodyEl.appendChild(tr);
+      }
+   },
+   
+   /**
+    * Method to remove the row
+    */
+   removeRow: function(tr) {
+      this.tbodyEl.removeChild(tr);
+      this.nRows -= 1;
    },
    
    /**
@@ -164,18 +212,40 @@ inputEx.widget.FastTable.prototype = {
     */
    onAddItem: function() {
       
+      // Don't do anything if the row is not valid
+      if(!this.validateAddRow()) { return; }
+      
       var item = {};
       
-      // TODO: get the fields in the row and fill a new item
+      for(var i = 0 ; i < this.options.fields.length ; i++) {
+         var f = this.options.fields[i];
+         var name = f.inputParams.name;
+         var value = this.addRowFields[i].getValue();
+         if(typeof value != "undefined") {
+            item[name] = value;
+         }
+      }
       
       this.itemCreatedEvt.fire(item);
    },
    
    /**
+    * Validate all fields in addRow
+    */
+   validateAddRow: function() {
+      for(var i = 0 ; i < this.addRowFields.length ; i++) {
+         if(!this.addRowFields[i].validate()) {
+            return false;
+         }
+      }
+      return true;
+   },
+   
+   /**
     * Handle clicks on the delete Button
     */
-   onDeleteItem: function(item) {
-      this.itemDeletedEvt.fire(item);
+   onDeleteItem: function(item, tr) {
+      this.itemDeletedEvt.fire(item, tr);
    },
    
    /**

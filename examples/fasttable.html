@@ -22,26 +22,7 @@
 
 <body class=" yui-skin-sam">
 
-
-
-	<p class='demoTitle'>inputEx - FastTable Usage</p>
-
-
-	<!-- Example 1 -->
-	<div class='exampleDiv'>
-
-		<p class="title">Basic FastTable creation</p>
-
-		<p>Use the following code to create a basic inputEx FastTable.</p>
-
-		<div class='demoContainer' id='container1'></div>
-
-		<div class='codeContainer'>
-			<textarea name="code" class="JScript">
-			</textarea>
-		</div>
-
-	</div>
+<p class='demoTitle'>inputEx - FastTable Usage</p>
 
 
 
@@ -74,11 +55,20 @@
 <script src="../js/fields/ColorField.js"  type='text/javascript'></script>
 <script src="../js/widgets/FastTable-beta.js"  type='text/javascript'></script>
 
+
+<script src="js/dpSyntaxHighlighter.js"></script>
+<script src="inputex-examples.js"></script>
+
 <script>
 
-YAHOO.util.Event.addListener(window, 'load', function() {
-	
-	// Example 1
+
+inputEx.examples = [
+
+	{
+		title: "Basic FastTable creation",
+		description: "Use the following code to create a basic inputEx FastTable",
+		code: function(exampleContainer) {
+
 	var myDataSource = new YAHOO.util.DataSource([
         {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing", category: "SF", color: "#993300"},
         {id:"po-0783", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"The Meaning of Life", category: "Novel", color: "#333300"},
@@ -95,18 +85,16 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 		{type: 'number', inputParams: {label: 'Amount', name: 'amount', size:4} },
 		{type: 'string', inputParams: {label: 'Title', name: 'title', typeInvite: 'title'} },
 		{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}},
-		{type: 'color', inputParams: {label: 'Couleur', name: 'color'} }
+		{type: 'color', inputParams: {label: 'Couleur', name: 'color', value: '#FFFF66'} }
 	];
 	
-	var fasttable1 = new YAHOO.inputEx.widget.FastTable({
-		parentEl: 'container1',
+	var fasttable1 = new inputEx.widget.FastTable({
+		parentEl: exampleContainer,
 		fields: myFields,
 		datasource: myDataSource
 	});
 	
 	fasttable1.itemUpdatedEvt.subscribe(function(e,params) {
-		
-		console.log(e,params);
 		
 		var item = params[0],
 		    key = params[1],
@@ -120,21 +108,30 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	
 	fasttable1.itemCreatedEvt.subscribe(function(e,params) {
-		console.log(e,params);
+		
+		var item = params[0];
+		
+		// Do your processing, eventually asynchronously...
+		// We'll simulate an addition to id
+		item.id="po-2438";
+		
+		fasttable1.addRow(item);
+		
 	});
 	
 	
 	fasttable1.itemDeletedEvt.subscribe(function(e,params) {
-		console.log(e,params);
+		var item = params[0];
+		var tr = params[1];
+		
+		// Do your processing, eventually asynchronously...
+		
+		fasttable1.removeRow(tr);
 	});
 	
-});
+	}
+}];
 
-</script>
-
-<script src="js/dpSyntaxHighlighter.js"></script>
-<script language="javascript"> 
-dp.SyntaxHighlighter.HighlightAll('code');
 </script>
 
 </body>
