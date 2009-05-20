@@ -1,6 +1,6 @@
 (function() {
 
-   var lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event, inputEx = YAHOO.inputEx;
+   var util = YAHOO.util, lang = YAHOO.lang, Dom = util.Dom, Event = util.Event;
 
 /**
  * Create an editable datatable
@@ -10,61 +10,128 @@
  * <ul>
  *    <li>id</li>
  *    <li>parentEl</li>
- *    <li>editing 'formeditor' (default) or 'celleditor'</li>
  *    <li>tableColumns: (optional) list of visible columns in the datatable</li>
  *    <li>sortable: (optional) are the columns sortable, default true</li>
  *    <li>resizeable: (optional) are the columns resizeable, default true</li>
  *    <li>allowInsert: default true</li>
  *    <li>allowModify: default true</li>
  *    <li>allowDelete: default true</li>
+ *    <li>showHideColumnsDlg: add a link to a dialog to show/hide columns</li>
+ *    <li>dragdropReordering: allow the user to drag drop rows to order them (note: this is incompatible with sorting !)</li>
  * </ul>
  */
 inputEx.widget.DataTable = function(options) {
    
-   // Options
-   // TODO: in setOptions method
-   this.options = options || {};
-   this.options.id = this.options.id ||  Dom.generateId();
-   this.options.parentEl = lang.isString(options.parentEl) ? Dom.get(options.parentEl) : options.parentEl;
-   this.options.editing =  this.options.editing || 'formeditor';
-   // + this.options.tableColumns
-   this.options.sortable = lang.isUndefined(this.options.sortable) ? true : this.options.sortable;
-   this.options.resizeable = lang.isUndefined(this.options.resizeable) ? true : this.options.resizeable;
-   this.options.allowInsert = lang.isUndefined(this.options.allowInsert) ? true : this.options.allowInsert;
-   this.options.allowModify = lang.isUndefined(this.options.allowModify) ? true : this.options.allowModify;
-   this.options.allowDelete = lang.isUndefined(this.options.allowDelete) ? true : this.options.allowDelete;
+   this.setOptions(options);
    
-   // Create main container and append it immediatly to the parent DOM element
-   this.element = inputEx.cn('div', {id: this.options.id });
-   this.options.parentEl.appendChild(this.element);
+   this.render();
    
-   // Call the rendering method when the container is available
-   Event.onAvailable(this.options.id, this.renderDatatable, this, true);
-   
-   /**
-	 * @event Event fired when an item is removed
-	 * @param {YAHOO.widget.Record} Removed record
-	 * @desc YAHOO custom event fired when an item is removed
-	 */
- 	this.itemRemovedEvt = new YAHOO.util.CustomEvent('itemRemoved', this);
-
-   /**
-	 * @event Event fired when an item is added
- 	 * @param {YAHOO.widget.Record} Added record
-	 * @desc YAHOO custom event fired when an item is added
-	 */
- 	this.itemAddedEvt = new YAHOO.util.CustomEvent('itemAdded', this);
-
-   /**
-	 * @event Event fired when an item is modified
- 	 * @param {YAHOO.widget.Record} Modified record
-	 * @desc YAHOO custom event fired when an item is modified
-	 */
- 	this.itemModifiedEvt = new YAHOO.util.CustomEvent('itemModified', this);
-
+   this.initEvents();
 };
 
 inputEx.widget.DataTable.prototype = {
+   
+   /**
+    * Set the options
+    */
+   setOptions: function(options) {
+      
+      this.options = {};
+      this.options.id = options.id || Dom.generateId();
+      this.options.parentEl = lang.isString(options.parentEl) ? Dom.get(options.parentEl) : options.parentEl;
+      
+      this.options.tableColumns = options.tableColumns;
+      this.options.sortable = lang.isUndefined(options.sortable) ? true : options.sortable;
+      this.options.resizeable = lang.isUndefined(options.resizeable) ? true : options.resizeable;
+      this.options.allowInsert = lang.isUndefined(options.allowInsert) ? true : options.allowInsert;
+      this.options.allowModify = lang.isUndefined(options.allowModify) ? true : options.allowModify;
+      this.options.allowDelete = lang.isUndefined(options.allowDelete) ? true : options.allowDelete; 
+      
+      this.options.showHideColumnsDlg = lang.isUndefined(options.showHideColumnsDlg) ? false : options.showHideColumnsDlg; 
+      
+      this.options.datasource = options.datasource;
+      this.options.datatableOpts = options.datatableOpts;
+      this.options.fields = options.fields;
+      
+      this.options.dragdropReordering = lang.isUndefined(options.dragdropReordering) ? false : options.dragdropReordering; 
+      if(this.options.dragdropReordering) {
+         
+         // Prevent sort on all columns
+         this.options.sortable = false;
+         
+         if(this.options.datatableOpts) {
+            this.options.datatableOpts.rowSingleSelect = true;
+         }
+         else {
+            this.options.datatableOpts = { rowSingleSelect: true};
+         }
+      }
+   },
+   
+   
+   /**
+    * Init the events
+    */
+   initEvents: function() {
+      
+      // Call the rendering method when the container is available
+      Event.onAvailable(this.options.id, this.renderDatatable, this, true);
+      
+      // Table options
+      if(this.options.showHideColumnsDlg) {
+         Event.addListener(this.tableOptions, 'click', this.showTableOptions, this, true);
+      }
+
+      /**
+   	 * @event Event fired when an item is removed
+   	 * @param {YAHOO.widget.Record} Removed record
+   	 * @desc YAHOO custom event fired when an item is removed
+   	 */
+    	this.itemRemovedEvt = new util.CustomEvent('itemRemoved', this);
+
+      /**
+   	 * @event Event fired when an item is added
+    	 * @param {YAHOO.widget.Record} Added record
+   	 * @desc YAHOO custom event fired when an item is added
+   	 */
+    	this.itemAddedEvt = new util.CustomEvent('itemAdded', this);
+
+      /**
+   	 * @event Event fired when an item is modified
+    	 * @param {YAHOO.widget.Record} Modified record
+   	 * @desc YAHOO custom event fired when an item is modified
+   	 */
+    	this.itemModifiedEvt = new util.CustomEvent('itemModified', this);
+    	
+    	/**
+   	 * @event Event fired when a row is reordered
+    	 * @param {YAHOO.widget.Record} Modified record
+   	 * @desc YAHOO custom event fired when a row is reoredered
+   	 */
+    	this.rowReorderedEvt = new util.CustomEvent('rowReordered', this);
+    	
+   },
+   
+   
+   /**
+    * Render the main container only (not the datatable)
+    */
+   render: function() {
+      
+      /**
+       * Main container 
+       */
+      this.element = inputEx.cn('div', {id: this.options.id });
+      
+      if(this.options.showHideColumnsDlg) {
+         this.renderShowHideColumnsDlg();
+      }
+
+      // append it immediatly to the parent DOM element
+      this.options.parentEl.appendChild(this.element);
+      
+   },
+   
    
    /**
     * Render the datatable
@@ -75,15 +142,14 @@ inputEx.widget.DataTable.prototype = {
       
       this.datatable = new YAHOO.widget.DataTable(this.element,this.columndefs, this.options.datasource, this.options.datatableOpts);
       
-      this.datatable.subscribe('cellClickEvent', this.onCellClick, this, true);
+      this.datatable.subscribe('cellClickEvent', this._onCellClick, this, true);
       
-      // Select the editing method
-      if(this.options.editing == "formeditor") {
-         this.initFormEditor();
+      if(this.options.dragdropReordering) {
+         this.initDragdropReordering();
       }
-      else if(this.options.editing == "celleditor") {
-         this.initCellEditor();
-      }
+      
+      // init the Editor
+      this.initEditor();
       
       // Insert button
       if ( this.options.allowInsert ){
@@ -94,76 +160,9 @@ inputEx.widget.DataTable.prototype = {
    },
    
    /**
-    * Create an inputEx form next to the datatable.
-    * If this.options.editing == "formeditor"
-    */
-   initFormEditor: function() {
-      
-      // Subscribe to events for row selection 
-      this.datatable.subscribe("rowMouseoverEvent", this.datatable.onEventHighlightRow); 
-      this.datatable.subscribe("rowMouseoutEvent", this.datatable.onEventUnhighlightRow); 
-      this.datatable.subscribe("rowClickEvent", this.datatable.onEventSelectRow); 
-   
-      // Listener for row selection
-      this.datatable.subscribe("rowSelectEvent", this.onEventSelectRow, this, true); 
-   
-      // Form container
-      this.formContainer = inputEx.cn('div', {className: "inputEx-DataTable-formContainer"}, null, "&nbsp;");
-      this.options.parentEl.appendChild(this.formContainer);
-   
-      // Build the form
-      var that = this;
-      this.subForm = new inputEx.Form({
-         parentEl: this.formContainer,
-         fields: this.options.fields,
-         legend: this.options.legend,
-         buttons: [ 
-            { type: 'submit', onClick: function(e) {that.onSaveForm(e); }, value: inputEx.messages.saveText},
-            { type: 'button', onClick: function(e) {that.onCancelForm(e);}, value: inputEx.messages.cancelText}
-         ]
-      });
-   
-      // Programmatically select the first row 
-      this.datatable.selectRow(this.datatable.getTrEl(0));
-   
-      // Programmatically bring focus to the instance so arrow selection works immediately 
-      this.datatable.focus(); 
-   
-      // Positionning
-      var dt = this.datatable.get('element');
-      Dom.setStyle(dt, "float", "left");
-      
-      // Hiding subform
-      this.hideSubform();
-      
-      // Add class to style the popup
-      Dom.addClass(this.subForm.divEl, "inputEx-DataTable-formWrapper");
-      
-      this.options.parentEl.appendChild(inputEx.cn('div', null, {"clear":"both"}));
-   },
-   
-   
-   /**
-    * Make the datatable inplace editable with inputEx fields
-    * If this.options.editing == "celleditor"
-    */
-   initCellEditor: function() {
-      
-      // Set up editing flow
-      var highlightEditableCell = function(oArgs) {
-          var elCell = oArgs.target;
-          if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {
-              this.highlightCell(elCell);
-          }
-      };
-      this.datatable.subscribe("cellMouseoverEvent", highlightEditableCell);
-      this.datatable.subscribe("cellMouseoutEvent", this.datatable.onEventUnhighlightCell);
-   },
-   
-   /**
     * Handling cell click events
     */
-   onCellClick: function(ev,args) {
+   _onCellClick: function(ev,args) {
       var target = Event.getTarget(ev);
       var column = this.datatable.getColumn(target);      
       var rowIndex = this.datatable.getTrIndex(target);
@@ -181,14 +180,25 @@ inputEx.widget.DataTable.prototype = {
          }
       }
       else if(column.key == 'modify') {
-         // make the form appear
-         this.showSubform(rowIndex);
-         
+         this.onClickModify(rowIndex);
       } 
-      else {      
-         this.datatable.onEventShowCellEditor(ev);
-         this.deplaceSubForm(rowIndex);
+      else {  
+         this.onCellClick(ev,rowIndex);
       }
+   },
+
+   /**
+    * Public cell click handler
+    */
+   onCellClick: function(ev, rowIndex) {
+
+   },
+   
+   /**
+    * Called when the user clicked on modify button
+    */
+   onClickModify: function(rowIndex) {
+      
    },
    
    /**
@@ -196,71 +206,19 @@ inputEx.widget.DataTable.prototype = {
     */
    onInsertButton: function(e) {
       
+      var tbl = this.datatable;
+      
       // Insert a new row
-      this.datatable.addRow({});
+      tbl.addRow({});
       
       // Select the new row
-      this.datatable.unselectRow(this.selectedRecord);
-      var rs = this.datatable.getRecordSet();
-      var row = this.datatable.getTrEl(rs.getLength()-1);
-      this.datatable.selectRow(row);
-      
-      if(this.options.editing == "formeditor") {
-         this.editingNewRecord = true;
-         this.showSubform(rs.getLength()-1);
-      }
+      tbl.unselectRow(this.selectedRecord);
+      var rs = tbl.getRecordSet();
+      var row = tbl.getTrEl(rs.getLength()-1);
+      tbl.selectRow(row);
       
    },
    
-   /**
-    * Set the subForm value when a row is selected
-    */
-   onEventSelectRow: function(args) {
-      
-      if(this.editingNewRecord && this.selectedRecord != args.record) {
-         this.removeUnsavedRecord();
-         this.editingNewRecord = false;
-      }
-      
-      this.selectedRecord = args.record;
-      this.subForm.setValue(this.selectedRecord.getData());
-   },
-   
-   /**
-    * Save the form value in the dataset
-    */
-   onSaveForm: function(e) {
-      // Prevent submitting the form
-      Event.stopEvent(e);
-      
-      // Update the record
-      var newvalues = this.subForm.getValue();       
-      this.datatable.updateRow( this.selectedRecord , newvalues ); 
-      
-      // Get reference to last updated record ( record._nCount is maximum, since record updated last !)
-      //  (this.selectedRecord no longer points to updated record !!!)
-      var records = this.datatable.getRecordSet().getRecords();
-      
-      for (var i=records.length-1; i>-1; i--) {
-         if (records[i].getCount() > this.selectedRecord.getCount()) {
-            this.selectedRecord = records[i];
-         }
-      }
-      
-      // Hide the subForm
-      this.hideSubform();
-      
-      if(this.editingNewRecord) {
-         // Fire the modify event
-         this.itemAddedEvt.fire(this.selectedRecord);
-         this.editingNewRecord = false;
-      }
-      else {
-         // Fire the modify event   
-         this.itemModifiedEvt.fire(this.selectedRecord);
-      }
-      
-   },
    
    /**
     * Remove the record that has not been saved
@@ -282,37 +240,7 @@ inputEx.widget.DataTable.prototype = {
       }
    },
    
-   /**
-    * Hide the form
-    */
-   hideSubform: function() {
-      Dom.setStyle(this.formContainer, "display", "none");
-   },
    
-   /**
-    * Show the form
-    */
-   showSubform: function(rowIndex) {
-       Dom.setStyle(this.formContainer, "display", "");
-       this.deplaceSubForm(rowIndex);
-       this.subForm.focus();
-   },
-   
-   /**
-    * Deplace the form
-    */  
-   deplaceSubForm: function(rowIndex) {
-       var columnSet = this.datatable.getColumnSet();
-       // Hack : it seems that the getTdEl function add a bug for rowIndex == 0
-       if ( rowIndex == 0 ) {
-           var tableFirstRow = this.datatable.getFirstTrEl();
-           Dom.setY(this.formContainer,Dom.getY(tableFirstRow) - 18);
-       } else {
-           var column = columnSet.keys[columnSet.keys.length-1];           
-           var cell = this.datatable.getTdEl({column: column, record: rowIndex});
-           Dom.setY(this.formContainer,Dom.getY(cell) - 18);
-       }
-   },
    /**
     * Convert an inputEx fields definition to a DataTable columns definition
     */
@@ -325,7 +253,7 @@ inputEx.widget.DataTable.prototype = {
     	}
     	
     	// Adding modify column if we use form editing and if allowModify is true
-      if(this.options.editing == "formeditor" && this.options.allowModify ) {
+      if(this.options.allowModify ) {
     	   columndefs.push({
     	      key:'modify',
     	      label:' ',
@@ -363,13 +291,6 @@ inputEx.widget.DataTable.prototype = {
          resizeable: this.options.resizeable
       };
 
-      // In cell editing if the field is listed in this.options.editableFields
-      if(this.options.editing && lang.isArray(this.options.editableFields) ) {
-         if(inputEx.indexOf(field.inputParams.name, this.options.editableFields) != -1) {
-             columnDef.editor = new inputEx.widget.InputExCellEditor(field);
-         }
-      }
-      
       // Field formatter
       if(field.formatter) {
          columnDef.formatter = field.formatter;
@@ -381,93 +302,168 @@ inputEx.widget.DataTable.prototype = {
       }
       // TODO: other formatters
       return columnDef;
+   },
+   
+   
+   
+   
+   /**
+    * Handle events for drag drop reordering
+    */
+   initDragdropReordering: function() {
+      this.datatable.subscribe("cellMousedownEvent",this.datatable.onEventSelectRow);
+      
+      var myDataTable = this.datatable;
+      var overLi = null;
+      var that = this;
+      
+      var onRowSelect = function(ev) {
+
+          	var par = myDataTable.getTrEl(Event.getTarget(ev)); //The tr element
+   	        selectedRow = myDataTable.getSelectedRows();
+   	        ddRow = new YAHOO.util.DDProxy(par.id);
+   	        //ddRow.handleMouseDown(ev.event);
+
+   	        ddRow.onDragOver = function(e, args) {
+   							Dom.addClass(arguments[1], 'over');
+   	            if (overLi && (overLi != arguments[1])) {
+   	                Dom.removeClass(overLi, 'over');
+   	            }
+   	            overLi = arguments[1];
+   	        };
+
+   	        ddRow.onDragOut = function() {
+   	            Dom.removeClass(overLi, 'over');
+   	        };
+
+   	        ddRow.onDragDrop = function(e,p) {
+
+   	            Dom.removeClass(overLi, 'over');
+   	            myDataTable.unselectAllRows();
+
+   					var movedIndex = myDataTable.getRecordIndex(selectedRow[0]);
+   					var afterIndex = myDataTable.getRecordIndex(overLi);
+
+   					// Re-create a new row (TODO: can do better...)
+   					var rec = myDataTable.getRecord(movedIndex);
+   					myDataTable.deleteRow(movedIndex);
+   					myDataTable.addRow( rec.getData() , afterIndex+1 );
+   					new YAHOO.util.DDTarget( myDataTable.getTrEl( afterIndex+1 ) );
+
+   					myDataTable.selectRow( afterIndex+1 );
+
+   	            //YAHOO.util.DragDropMgr.stopDrag(ev,true);
+   	            
+   	            that.rowReorderedEvt.fire(movedIndex, afterIndex);
+   	        };
+      };
+      myDataTable.subscribe('cellMousedownEvent', onRowSelect);
+
+   		// Make all rows drop targets (TODO: can do better...)
+   		var el = myDataTable.getFirstTrEl();
+   		new YAHOO.util.DDTarget(el);
+   		while( el = myDataTable.getNextTrEl(el) ) {
+   			new YAHOO.util.DDTarget(el);
+   		}
+      
+   },
+   
+   /**
+    * Render the dialog (+link) to show/hide columns
+    */
+   renderShowHideColumnsDlg: function() {
+      this.tableOptions = inputEx.cn('a', {href: ''}, null, "Table options");
+      this.options.parentEl.appendChild(this.tableOptions);
+      
+      // Create the SimpleDialog
+      Dom.removeClass("dt-dlg", "inprogress");
+      this.tableOptionsDlg = new YAHOO.widget.SimpleDialog("dt-dlg", {
+              width: "30em",
+		        visible: false,
+		        modal: true,
+		        buttons: [ 
+				      { text:"Close",  handler: function(e) { this.hide(); } }
+              ],
+              fixedcenter: true,
+              constrainToViewport: true
+	   });
+	   this.tableOptionsDlg.bodyId = Dom.generateId();
+	   this.tableOptionsDlg.setHeader("Choose which columns you would like to see");
+	   this.tableOptionsDlg.setBody("<div id='"+this.tableOptionsDlg.bodyId+"'></div>");
+	   this.tableOptionsDlg.render(document.body);
+   },
+   
+   /**
+    * Display the dialog to show/hide fields
+    */
+   showTableOptions: function(e) {
+      
+      Event.stopEvent(e);
+      
+      if(!this.noNewCols) {
+          
+          var that = this;
+          var handleButtonClick = function(e, oSelf) {
+              var sKey = this.get("name");
+              if(this.get("value") === "Hide") {
+                  // Hides a Column
+                  that.datatable.hideColumn(sKey);
+              }
+              else {
+                  // Shows a Column
+                  that.datatable.showColumn(sKey);
+              }
+          };
+          
+           // Populate Dialog
+           // Using a template to create elements for the SimpleDialog
+           var allColumns = this.datatable.getColumnSet().keys;
+           var elPicker = Dom.get(this.tableOptionsDlg.bodyId);
+           
+           var elTemplateCol = document.createElement("div");
+           Dom.addClass(elTemplateCol, "dt-dlg-pickercol");
+           var elTemplateKey = elTemplateCol.appendChild(document.createElement("span"));
+           Dom.addClass(elTemplateKey, "dt-dlg-pickerkey");
+           var elTemplateBtns = elTemplateCol.appendChild(document.createElement("span"));
+           Dom.addClass(elTemplateBtns, "dt-dlg-pickerbtns");
+           var onclickObj = {fn:handleButtonClick, obj:this, scope:false };
+           
+           // Create one section in the SimpleDialog for each Column
+           var elColumn, elKey, elButton, oButtonGrp;
+           for(var i=0,l=allColumns.length;i<l;i++) {
+               var oColumn = allColumns[i];
+               
+               // Use the template
+               elColumn = elTemplateCol.cloneNode(true);
+               
+               // Write the Column key
+               elKey = elColumn.firstChild;
+               elKey.innerHTML = oColumn.getKey();
+               
+               if(elKey.innerHTML != "delete" && elKey.innerHTML != "modify") {
+               
+                  // Create a ButtonGroup
+                  oButtonGrp = new YAHOO.widget.ButtonGroup({ 
+                                  id: "buttongrp"+i, 
+                                  name: oColumn.getKey(), 
+                                  container: elKey.nextSibling
+                  });
+                  oButtonGrp.addButtons([
+                      { label: "Show", value: "Show", checked: ((!oColumn.hidden)), onclick: onclickObj},
+                      { label: "Hide", value: "Hide", checked: ((oColumn.hidden)), onclick: onclickObj}
+                  ]);
+                    
+                  elPicker.appendChild(elColumn);
+               
+               }
+           }
+           this.noNewCols = true;
+   	}
+       this.tableOptionsDlg.show();
+      
    }
    
 };
-
-
-
-
-
-
-
-/**
- * The InputExCellEditor class provides functionality for inline editing
- * using the inputEx field definition.
- *
- * @class InputExCellEditor
- * @extends YAHOO.widget.BaseCellEditor 
- * @constructor
- * @param {Object} inputExFieldDef InputEx field definition object
- */
-inputEx.widget.InputExCellEditor = function(inputExFieldDef) {
-    this._inputExFieldDef = inputExFieldDef;
-   
-    this._sId = "yui-textboxceditor" + YAHOO.widget.BaseCellEditor._nCount++;
-    inputEx.widget.InputExCellEditor.superclass.constructor.call(this, "inputEx", {disableBtns:true});
-};
-
-// InputExCellEditor extends BaseCellEditor
-lang.extend(inputEx.widget.InputExCellEditor, YAHOO.widget.BaseCellEditor,{
-
-   /**
-    * Render the inputEx field editor
-    */
-   renderForm : function() {
-   
-      // Build the inputEx field
-      this._inputExField = inputEx(this._inputExFieldDef);
-      this.getContainerEl().appendChild(this._inputExField.getEl());
-   
-      // Save the cell value at updatedEvt
-      this._inputExField.updatedEvt.subscribe(function(e, args) {
-         // Hack to NOT close the field at the first updatedEvt (fired when we set the value)
-         if(this._updatedEvtForSetValue) {
-            this._updatedEvtForSetValue = false;
-            return;
-         }
-         this.save();
-      }, this, true);
-   
-      if(this.disableBtns) {
-         // By default this is no-op since enter saves by default
-         this.handleDisabledBtns();
-      }
-   },
-
-   /**
-    * Hack to NOT close the field at the first updatedEvt (fired when we set the value)
-    */
-   show: function() {
-      inputEx.widget.InputExCellEditor.superclass.show.call(this); 
-      this._updatedEvtForSetValue = true;
-   },
-
-   /**
-    * Resets InputExCellEditor UI to initial state.
-    */
-   resetForm : function() {
-       this._inputExField.setValue(lang.isValue(this.value) ? this.value.toString() : "");
-   },
-
-   /**
-    * Sets focus in InputExCellEditor.
-    */
-   focus : function() {
-      this._inputExField.focus();
-   },
-
-   /**
-    * Returns new value for InputExCellEditor.
-    */
-   getInputValue : function() {
-      return this._inputExField.getValue();
-   }
-
-});
-
-// Copy static members to InputExCellEditor class
-lang.augmentObject(inputEx.widget.InputExCellEditor, YAHOO.widget.BaseCellEditor);
 
 
 inputEx.messages.saveText = "Save";
