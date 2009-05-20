@@ -19,10 +19,9 @@
 inputEx.Group = function(options) {
    inputEx.Group.superclass.constructor.call(this,options);
    
-   if(this.hasInteractions) {
-      for(var i = 0 ; i < this.inputs.length ; i++) {
-         this.runInteractions(this.inputs[i],this.inputs[i].getValue());
-      }
+   // Run default field interactions (if setValue has not been called before)
+   if(!this.options.value) {
+      this.runFieldsInteractions();
    }
 };
 lang.extend(inputEx.Group, inputEx.Field, {
@@ -229,6 +228,8 @@ lang.extend(inputEx.Group, inputEx.Field, {
 	      }
       }
       
+      this.runFieldsInteractions();
+      
 	   if(sendUpdatedEvt !== false) {
 	      // fire update event
          this.fireUpdatedEvt();
@@ -342,6 +343,17 @@ lang.extend(inputEx.Group, inputEx.Field, {
          }
       }
       
+   },
+   
+   /**
+    * Run the interactions for all fields
+    */
+   runFieldsInteractions: function() {
+      if(this.hasInteractions) {
+         for(var i = 0 ; i < this.inputs.length ; i++) {
+            this.runInteractions(this.inputs[i],this.inputs[i].getValue());
+         }
+      }
    },
    
 	/**
