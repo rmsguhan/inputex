@@ -1,7 +1,7 @@
 /**
  * Utility to run inputEx examples
  */
-YAHOO.util.Event.addListener(window, 'load', function() {
+YAHOO.util.Event.onDOMReady( function() {
    
    try {
    

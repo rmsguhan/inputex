@@ -27,6 +27,9 @@ not released yet
 	- Added Widget 
 		* FastTable for fast editing (beta)
 		
+	- Widget enhancements
+		* JsonTreeInspector: expand methods and JSONPath filter
+		
 	- JSON-Schema
 		* implementation of inputEx.JsonSchema.inputExToSchema (beta)
 

@@ -46,7 +46,9 @@
 YAHOO.util.Event.addListener(window, "load", function() {
 	
 	var schemaIdentifierMap = {
-		
+		"Machin": {
+			 "truc": "bidule"
+		},
 	 "Person": {
 		"id": "Person",
 		"description":"A person",
@@ -85,7 +87,10 @@ YAHOO.util.Event.addListener(window, "load", function() {
 	 }
 	};
 	
-	new YAHOO.inputEx.widget.JsonTreeInspector('formContainer', schemaIdentifierMap);
+	var data={results: [{label: "one"}, {label: "two"},{ label:"tree"}]};
+	
+	var tree = new YAHOO.inputEx.widget.JsonTreeInspector('formContainer', data,"$.results.*.label");
+	tree.expandAll();
 	
 });
 
