@@ -51,6 +51,7 @@ not released yet
 		* Switching to yuidoc for documentation
 		* Moved VectorField, MapField, IPv4Field, UpperCaseField from ext/ to fields/ (watch you references !)
 		* BirthdateField renamed to DateSelectMonthField
+	  	* including JSMin
 		
 	- Fields removed
 		* FrenchDate (use the french locale)

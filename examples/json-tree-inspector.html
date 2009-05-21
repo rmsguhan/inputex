@@ -45,52 +45,12 @@
 
 YAHOO.util.Event.addListener(window, "load", function() {
 	
-	var schemaIdentifierMap = {
-		"Machin": {
-			 "truc": "bidule"
-		},
-	 "Person": {
-		"id": "Person",
-		"description":"A person",
-	 	"type":"object",
-	 	"properties": {
-	  	"name": {
-				"type":"string"
-			},
-	    "born" : {
-				"type":"string",
-	      "format":"date",
-	      "optional":true
-			},
-	    "gender" : {
-				"type":"string",
-	      "options": [
-	       	{"value":"male","label":"Guy"},
-	        {"value":"female","label":"Girl"}
-				]
-			},
-			"grownup": {
-				"type": "boolean"
-			},
-			"favoritecolors": {
-				"type": "array"
-			},
-	    "address": {
-				"type":"object",
-	      "properties":{
-	      	"street":{"type":"string"},
-	        "city":{"type":"string"},
-	        "state":{"type":"string"}
-	      }
-	    }
-	  }
-	 }
-	};
+	new YAHOO.inputEx.widget.JsonTreeInspector('formContainer', {inputEx: inputEx, YAHOO: YAHOO, Global: window});
 	
-	var data={results: [{label: "one"}, {label: "two"},{ label:"tree"}]};
 	
+	/*var data={results: [{label: "one"}, {label: "two"},{ label:"tree"}]};
 	var tree = new YAHOO.inputEx.widget.JsonTreeInspector('formContainer', data,"$.results.*.label");
-	tree.expandAll();
+	tree.expandAll();*/
 	
 });
 
