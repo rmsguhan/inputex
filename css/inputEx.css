@@ -563,6 +563,7 @@ div.inputEx-MenuField div.inputEx-DownArrow {background-image:url(../images/menu
  */
 ul.inputEx-JsonTreeInspector li {
    padding-left: 20px;
+   list-style-type: none;
 }
  
 ul.inputEx-JsonTreeInspector li.collapsed {
