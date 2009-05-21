@@ -33,6 +33,12 @@ not released yet
 	- JSON-Schema
 		* implementation of inputEx.JsonSchema.inputExToSchema (beta)
 
+	- RPC	
+		* integrate yui-rpc as part of inputEx
+		* Moved inputEx RPC methods to inputEx.RPC namespace (generateServiceForm and formForMethod)
+		* freebase SMD example
+		* Added an example using inputEx SMD support and the Flickr API
+
 	- Bug fixes
 		* fixing broken examples (YUI element is not beta anymore)
 		* fix on CombineField to contain Group or Form fields
@@ -40,14 +46,11 @@ not released yet
 		* fix on DSSelectField (broken since switch to YUI 2.7.0)
 		
 	- Various
-		* freebase SMD example
 		* InPlaceEdit ok button is now a skinnable link
 		* Providing a dependency-configurator based on yui-dependency-configurator
-		* Moved inputEx RPC methods to inputEx.RPC namespace (generateServiceForm and formForMethod)
 		* Switching to yuidoc for documentation
 		* Moved VectorField, MapField, IPv4Field, UpperCaseField from ext/ to fields/ (watch you references !)
 		* BirthdateField renamed to DateSelectMonthField
-		* Added an example using inputEx SMD support and the Flickr API
 		
 	- Fields removed
 		* FrenchDate (use the french locale)
