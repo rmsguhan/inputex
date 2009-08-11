@@ -40,6 +40,8 @@ lang.extend(inputEx.Form, inputEx.Group, {
          this.options.ajax.callback = options.ajax.callback || {};
          this.options.ajax.callback.scope = options.ajax.callback.scope || this;
          this.options.ajax.showMask = lang.isUndefined(options.ajax.showMask) ? false : options.ajax.showMask;
+
+			this.options.ajax.contentType = options.ajax.contentType || "application/json";
       }
       
       if (lang.isFunction(options.onSubmit)) {
@@ -133,8 +135,39 @@ lang.extend(inputEx.Form, inputEx.Group, {
    asyncRequest: function() {
 
       if(this.options.ajax.showMask) { this.showMask(); }
-	   var postData = "value="+lang.JSON.stringify(this.getValue());
-      util.Connect.asyncRequest(this.options.ajax.method, this.options.ajax.uri, {
+	
+		var formValue = this.getValue();
+	
+		// options.ajax.uri and options.ajax.method can also be functions that return a the uri/method depending of the value of the form
+		var uri = lang.isFunction(this.options.ajax.uri) ? this.options.ajax.uri(formValue) : this.options.ajax.uri;
+		var method = lang.isFunction(this.options.ajax.method) ? this.options.ajax.method(formValue) : this.options.ajax.method;
+	
+		var postData = null;
+		
+		// method PUT don't send as x-www-form-urlencoded but in JSON
+		if(method == "PUT") {
+			YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
+			postData = lang.JSON.stringify(this.getValue());
+		}
+		else {
+			
+			if(this.options.ajax.contentType == "application/x-www-form-urlencoded") {
+				var params = [];
+				for(var key in formValue) {
+					if(formValue.hasOwnProperty(key)) {
+						params.push(window.encodeURIComponent(key)+"="+window.encodeURIComponent(formValue[key]));
+					}
+				}
+				postData = params.join('&');
+			}
+			else {
+				YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
+				postData = "value="+lang.JSON.stringify(this.getValue());
+			}
+			
+		}		
+		
+      util.Connect.asyncRequest( method, uri, {
          success: function(o) {
             if(this.options.ajax.showMask) { this.hideMask(); }
             if( lang.isFunction(this.options.ajax.callback.success) ) {
