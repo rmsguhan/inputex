@@ -342,7 +342,21 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
         	fullpath: pathToInputEx+'js/locals/it.js',
         	varName: 'inputEx.lang_it',
          requires: ['inputex']
-      }
+      },
+		{
+		   name: 'inputex-lang-nl',
+		   type: 'js',
+		   fullpath: pathToInputEx+'js/locals/nl.js',
+		   varName: 'inputEx.lang_nl',
+		   requires: ['inputex']
+		},
+		{
+		   name: 'inputex-lang-es',
+		   type: 'js',
+		   fullpath: pathToInputEx+'js/locals/es.js',
+		   varName: 'inputEx.lang_es',
+		   requires: ['inputex']
+		}
 	];
 	for(var i = 0 ; i < modules.length ; i++) {
 		yuiLoader.addModule(modules[i]);
