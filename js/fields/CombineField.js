@@ -5,85 +5,96 @@
 /**
  * A meta field to put N fields on the same line, separated by separators
  * @class inputEx.CombineField
- * @extends inputEx.Field
+ * @extends inputEx.Group
  * @constructor
  * @param {Object} options Added options:
  * <ul>
  *    <li>separators: array of string inserted</li>
- *    <li>fields: list of fields in inputEx-typed-JSON</li>
  * </ul>
  */
 inputEx.CombineField = function(options) {
    inputEx.CombineField.superclass.constructor.call(this, options);
 };
-	
-lang.extend( inputEx.CombineField, inputEx.Field, {
+
+lang.extend( inputEx.CombineField, inputEx.Group, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.CombineField.superclass.setOptions.call(this, options);
-      
+
+      this.options.label = options.label;
+
       // Overwrite options
-      this.options.className = options.className ? options.className : 'inputEx-Field inputEx-CombineField';
+      this.options.className = options.className ? options.className : 'inputEx-CombineField';
       
       // Added options
       this.options.separators = options.separators;
-      this.options.fields = options.fields;
    },
 	   
-	/**
-	 * Render the two subfields
-	 */
-	renderComponent: function() {
-	    
-	   this.inputs = [];
+	
+	render: function() {
+
+      // Create the div wrapper for this group
+	   this.divEl = inputEx.cn('div', {className: this.options.className});
+	   if(this.options.id) {
+   	   this.divEl.id = this.options.id;
+   	}
+
+	   // Label element
+	   if(this.options.label) {
+	      this.labelDiv = inputEx.cn('div', {id: this.divEl.id+'-label', className: 'inputEx-label', 'for': this.divEl.id+'-field'});
+	      this.labelEl = inputEx.cn('label');
+	      this.labelEl.appendChild( document.createTextNode(this.options.label) );
+	      this.labelDiv.appendChild(this.labelEl);
+	      this.divEl.appendChild(this.labelDiv);
+      }
+	
+  	   this.renderFields(this.divEl);  	  
+
+  	   if(this.options.disabled) {
+  	      this.disable();
+  	   }
+		
+	   // Insert a float breaker
+	   this.divEl.appendChild( inputEx.cn('div', {className: "inputEx-clear-div"}, null, " ") );
+	},
 	   
+	/**
+	 * Render the subfields
+	 */
+	renderFields: function(parentEl) {
+	    
 	   this.appendSeparator(0);
 	   
-	   if(!this.options.fields) {
-	      return;
-	   }
-	   var i, n=this.options.fields.length, f;
+	   if(!this.options.fields) {return;}
+	   
+	   var i, n=this.options.fields.length, f, field, fieldEl,t;
 	   
 	   for(i = 0 ; i < n ; i++) {
-	      
 	      f = this.options.fields[i];
-	      
-	      if (this.options.required) {
-            f.required = true;
-         }
-         
-	      var field = this.renderField(f);
-	      var fieldEl = field.getEl();
-	      
-	      var t = f.type;
+	      if (this.options.required) {f.required = true;}
+	      field = this.renderField(f);
+	      fieldEl = field.getEl();
+	      t = f.type;
 	      if(t != "group" && t != "form") {
 	         // remove the line breaker (<div style='clear: both;'>)
 	         field.divEl.removeChild(fieldEl.childNodes[fieldEl.childNodes.length-1]);
          }
       	// make the field float left
       	Dom.setStyle(fieldEl, 'float', 'left');
-   	   
-      	
-      	this.fieldContainer.appendChild(fieldEl);
+   	
+      	this.divEl.appendChild(fieldEl);
       	
       	this.appendSeparator(i+1);
 	   }
 	      
 	},
 	
-	appendSeparator: function(i) {
-	   if(this.options.separators && this.options.separators[i]) {
-	      var sep = inputEx.cn('div', {className: 'inputEx-CombineField-separator'}, null, this.options.separators[i]);
-	      this.fieldContainer.appendChild(sep);
-      }
-	},
-	
 	/**
-    * Instanciate one field given its parameters, type or fieldClass
-    * @param {Object} fieldOptions The field properties as required bu inputEx.buildField
+    * Override to force required option on each subfield
+    * @param {Object} fieldOptions The field properties as required by inputEx()
     */
    renderField: function(fieldOptions) {
       
@@ -93,36 +104,17 @@ lang.extend( inputEx.CombineField, inputEx.Field, {
          fieldOptions.inputParams.required = true;
       }
       
-      // Instanciate the field
-      var fieldInstance = inputEx(fieldOptions);
-      
-	   this.inputs.push(fieldInstance);
-      
-	   // Subscribe to the field "updated" event to send the group "updated" event
-      fieldInstance.updatedEvt.subscribe(this.onChange, this, true);
-      // Subscribe sub-field "blur" event to trigger class setting at combineField level !
-      YAHOO.util.Event.addBlurListener(fieldInstance.getEl(),this.onBlur, this, true);
-   	  
-      return fieldInstance;
+      return inputEx.CombineField.superclass.renderField.call(this, fieldOptions);
    },
-
 	
-	/**
-    * Validate each field
-    * @returns {Boolean} true if all fields validate and required fields are not empty
-    */
-   validate: function() {
-      // Validate all the sub fields
-      var i, n=this.inputs.length;
-      for (i = 0 ; i < n; i++) {
-   	   var input = this.inputs[i];
-   	   var state = input.getState();
-   	   if( state == inputEx.stateRequired || state == inputEx.stateInvalid ) {
-   		   return false;
-   	   }
+	appendSeparator: function(i) {
+	   if(this.options.separators && this.options.separators[i]) {
+	      var sep = inputEx.cn('div', {className: 'inputEx-CombineField-separator'}, null, this.options.separators[i]);
+	      this.divEl.appendChild(sep);
       }
-      return true;
-   },
+	},
+	
+
 	   
 	/**
 	 * Set the value
@@ -130,70 +122,33 @@ lang.extend( inputEx.CombineField, inputEx.Field, {
 	 * @param {boolean} [sendUpdatedEvt] (optional) Wether this setValue should fire the updatedEvt or not (default is true, pass false to NOT send the event)
 	 */
 	setValue: function(values, sendUpdatedEvt) {
+		if(!values) {
+         return;
+      }
       var i, n=this.inputs.length;
-	   for(i = 0 ; i < n ; i++) {
+	   for (i = 0 ; i < n ; i++) {
 	      this.inputs[i].setValue(values[i], false);
-	   }
-	   
-	   // Call Field.setValue to set class and fire updated event
-		inputEx.CombineField.superclass.setValue.call(this,values, sendUpdatedEvt);
+      }
+      
+      this.runFieldsInteractions();
+      
+	   if(sendUpdatedEvt !== false) {
+	      // fire update event
+         this.fireUpdatedEvt();
+      }
 	},
 	
 	/**
 	 * Specific getValue 
 	 * @return {Array} An array of values [value1, value2, ...]
-	 */   
+	 */
 	getValue: function() {
 	   var values = [], i, n=this.inputs.length;
 	   for(i = 0 ; i < n; i++) {
 	      values.push(this.inputs[i].getValue());
 	   }
 	   return values;
-	},
-	
-	/**
-	 * Call setClassFromState on all children
-	 */
-	setClassFromState: function() {
-      var i, n=this.inputs.length;
-      
-	   inputEx.CombineField.superclass.setClassFromState.call(this);
-	   
-	   for(i = 0 ; i < n ; i++) {
-	      this.inputs[i].setClassFromState();
-	   }
-	},
-	
-	/**
-	 * Clear all subfields
-	 * @param {boolean} [sendUpdatedEvt] (optional) Wether this clear should fire the updatedEvt or not (default is true, pass false to NOT send the event)
-	 */
-	clear: function(sendUpdatedEvt) {
-      var i, n=this.inputs.length;
-	   for(i = 0 ; i < n ; i++) {
-	      this.inputs[i].clear(false);
-	   }
-	   
-	   // must reset field style explicitly
-	   //  -> case different from Field.prototype.clear (which calls setValue, which calls setClassFromState)
-	   this.setClassFromState();
-	   
-	   if(sendUpdatedEvt !== false) {
-	      // fire update event
-         this.fireUpdatedEvt();
-      }
-	},
-   
-   /**
-    * Useful for getState to return correct state (required, empty, etc...)
-    */
-   isEmpty: function() {
-      var i, n=this.inputs.length;
-      for(i = 0 ; i < n ; i++) {
-	      if (!this.inputs[i].isEmpty()) return false;
-	   }
-	   return true;
-   }
+	}
 	
 });
 	

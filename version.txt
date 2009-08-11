@@ -19,10 +19,11 @@ not released yet
 		* TimeInterval field to enter a duration
 		
 	- Field enhancements:
+		* CombineField now inherits Group instead of Field
 		* added minItems/maxItems options on ListField
 		* DDList items now have separate value & labels
 		* added returnLabel option to MultiAutocomplete (method to format list label)
-		* fix on MultiSelectField
+		* Adding an "insert" method to Textarea
 	
 	- Added Widget 
 		* FastTable for fast editing (beta)
@@ -44,6 +45,7 @@ not released yet
 		* fix on CombineField to contain Group or Form fields
 		* fix on Datatable widget (broken since switch to YUI 2.7.0)
 		* fix on DSSelectField (broken since switch to YUI 2.7.0)
+		* fix on MultiSelectField
 		
 	- Various
 		* InPlaceEdit ok button is now a skinnable link
@@ -56,6 +58,7 @@ not released yet
 	- Fields removed
 		* FrenchDate (use the french locale)
 		* FrenchPhone (pass the regular expression to StringField)
+		* PairField (deprecated for a long time)
 
 version 0.2.2:
 --------------

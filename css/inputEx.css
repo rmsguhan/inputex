@@ -36,6 +36,10 @@ div.inputEx-message {
    font-size: 85%;
 }
 
+div.inputEx-clear-div {
+	clear: both;
+}
+
 
 /**
  * VALID, INVALID, EMPTY states (and focused)

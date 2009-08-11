@@ -107,7 +107,7 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 			type: 'js',
 	  	   fullpath: pathToInputEx+'js/fields/CombineField.js',
 	  	   varName: 'inputEx.CombineField',
-			requires: ['inputex-field']
+			requires: ['inputex-group']
 		},
 		{
 			name: 'inputex-inplaceedit',
