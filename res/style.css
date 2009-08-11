@@ -7,10 +7,15 @@ img { border: 0;}
 
 #headbar { background-image: url(logo-inputex.jpg); height: 160px; margin: 0; padding: 0; }
 
-#navigation { position: absolute; margin: 6px 0 0 380px; }
+/*#navigation { position: absolute; margin: 6px 0 0 380px; }
 #navigation li { margin: 0; display: inline;	margin-right: 30px; }
 #navigation li a { color: white;	text-decoration: none;	font-size: 14px; }
-#navigation li a:hover { color: #cccc33; text-decoration: underline; }
+#navigation li a:hover { color: #cccc33; text-decoration: underline; }*/
+
+.navigation li { margin: 0; display: inline; margin-right: 30px;}
+.navigation li a { color: #999999; text-decoration: none;	font-size: 14px; }
+.navigation li a:hover { color: #cccc33; text-decoration: underline; }
+
 
 .layout { width: 70%; text-align: left; }
 .layout td.left { width: 55%;}
