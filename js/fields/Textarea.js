@@ -80,6 +80,32 @@ YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField, {
          return inputEx.messages.stringTooLong[0]+this.options.maxLength+inputEx.messages.stringTooLong[1];
       }
 	   return inputEx.Textarea.superclass.getStateString.call(this, state);
+	},
+	
+	
+	/**
+	 * Insert text at the current cursor position
+	 * @param {String} text Text to insert
+	 */
+	insert: function(text) {
+		
+		var sel, startPos, endPos;
+		
+		//IE support
+		if (document.selection) {
+			this.el.focus();
+			sel = document.selection.createRange();
+			sel.text = text;
+		}
+		//Mozilla/Firefox/Netscape 7+ support
+		else if (this.el.selectionStart || this.el.selectionStart == '0') {
+			startPos = this.el.selectionStart;
+			endPos = this.el.selectionEnd;
+			this.el.value = this.el.value.substring(0, startPos)+ text+ this.el.value.substring(endPos, this.el.value.length);
+		} 
+		else {
+			this.el.value += text;
+		}	
 	}
 
 });
