@@ -17,13 +17,15 @@ inputEx.IntegerField = function(options) {
 };
 YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
    /**
-    * Adds the negative option
+    * Adds the negative, min, and max options
     * @param {Object} options
     */
    setOptions: function(options) {
       inputEx.IntegerField.superclass.setOptions.call(this, options);
       
       this.options.negative = lang.isUndefined(options.negative) ? false : options.negative;
+      this.options.min = lang.isUndefined(options.min) ? (this.options.negative ? -Infinity : 0) : parseInt(options.min,10);
+      this.options.max = lang.isUndefined(options.max) ? Infinity : parseInt(options.max,10);
    },
    
    /**
@@ -49,7 +51,7 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
       if (v == "") return true;
       
       if(isNaN(v)) return false;
-      return !!this.el.value.match(new RegExp(this.options.negative ? "^[+-]?[0-9]*$" : "^\\+?[0-9]*$") );
+      return !!this.el.value.match(new RegExp(this.options.negative ? "^[+-]?[0-9]*$" : "^\\+?[0-9]*$") ) && v >= this.options.min && v <= this.options.max;
    }
    
 });

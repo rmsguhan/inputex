@@ -74,6 +74,18 @@
 </div>
 
 
+<!-- Example 4 -->
+<div class='exampleDiv'>
+	<p class="title">Min &amp; Max</p>
+	<p>Check values are within a range</p>
+	<div class='demoContainer' id='container4'></div>
+	<div class='codeContainer'>
+		<textarea name="code" class="JScript">
+			new YAHOO.inputEx.IntegerField({parentEl: 'container4', showMsg: true, min:3, max:10, typeInvite:"Integers between 3 and 10 only", size:30});
+		</textarea>
+	</div>
+</div>
+
 <!-- YUI Library -->
 <script type="text/javascript" src="../lib/yui/yahoo/yahoo-min.js"></script> 
 <script type="text/javascript" src="../lib/yui/dom/dom-min.js"></script> 
@@ -106,6 +118,9 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	// Example 3
   new YAHOO.inputEx.IntegerField({parentEl: 'container3', showMsg: true, required:true, negative:true});
+
+  // Example 4
+  new YAHOO.inputEx.IntegerField({parentEl: 'container4', showMsg: true, min:3, max:10, typeInvite:"Integers between 3 and 10 only", size:30});
 	
 });
 
