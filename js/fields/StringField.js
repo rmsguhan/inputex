@@ -116,7 +116,7 @@ lang.extend(inputEx.StringField, inputEx.Field, {
       var val = this.getValue();
 
       // empty field
-      if (val == '') {
+      if (val === '') {
          // validate only if not required
          return !this.options.required;
       }

@@ -14,7 +14,7 @@ inputEx.NumberField = function(options) {
 };
 YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField, {
    /**
-    * Adds the negative, min, and max options
+    * Adds the min, and max options
     * @param {Object} options
     */
    setOptions: function(options) {
@@ -42,8 +42,11 @@ YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField, {
    validate: function() { 
       var v = this.getValue();
       
-      // empty field is OK
-      if (v == "") return true;
+      // empty field
+      if (val === '') {
+         // validate only if not required
+         return !this.options.required;
+      }
       
       if(isNaN(v)) return false;
 	   

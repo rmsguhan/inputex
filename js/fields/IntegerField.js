@@ -47,8 +47,11 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
    validate: function() {
       var v = this.getValue();
       
-      // empty field is OK
-      if (v == "") return true;
+      // empty field
+      if (val === '') {
+         // validate only if not required
+         return !this.options.required;
+      }
       
       if(isNaN(v)) return false;
       return !!this.el.value.match(new RegExp(this.options.negative ? "^[+-]?[0-9]*$" : "^\\+?[0-9]*$") ) && v >= this.options.min && v <= this.options.max;
