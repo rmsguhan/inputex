@@ -217,6 +217,9 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 });   
 	
 // Register this class as "radio" type
-inputEx.registerType("radio", inputEx.RadioField);
+inputEx.registerType("radio", inputEx.RadioField, [
+   {type: 'list', inputParams: {label: 'Options', name: 'choices', elementType: {type: 'string'} } },
+   {type: 'boolean', inputParams: {label: 'Allow custom value', name: 'allowAny'}, value: false  }
+]);
 	
 })();

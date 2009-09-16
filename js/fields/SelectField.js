@@ -218,6 +218,9 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
 });
 
 // Register this class as "select" type
-inputEx.registerType("select", inputEx.SelectField);
+inputEx.registerType("select", inputEx.SelectField, [
+   {  type: 'list', inputParams: {name: 'selectValues', label: 'Values', elementType: {type: 'string'}, required: true } },
+   {  type: 'list', inputParams: {name: 'selectOptions', label: 'Options', elementType: {type: 'string'} } }
+]);
 
 })();

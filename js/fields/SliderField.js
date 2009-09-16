@@ -97,6 +97,9 @@ YAHOO.lang.extend(inputEx.SliderField, inputEx.Field, {
 });
 
 // Register this class as "slider" type
-inputEx.registerType("slider", inputEx.SliderField);
+inputEx.registerType("slider", inputEx.SliderField, [
+   { type: 'integer', inputParams: {label: 'Min. value',  name: 'minValue', value: 0} },
+   { type: 'integer', inputParams: {label: 'Max. value', name: 'maxValue', value: 100} }
+]);
 
 })();

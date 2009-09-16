@@ -113,6 +113,9 @@ YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField, {
 inputEx.messages.stringTooLong = ["This field should contain at most "," numbers or characters"];
 
 // Register this class as "text" type
-inputEx.registerType("text", inputEx.Textarea);
+inputEx.registerType("text", inputEx.Textarea, [
+   { type: 'integer', inputParams: {label: 'Rows',  name: 'rows', value: 6} },
+   { type: 'integer', inputParams: {label: 'Cols', name: 'cols', value: 23} }
+]);
 
 })();

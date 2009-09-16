@@ -401,7 +401,10 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 });
 	
 // Register this class as "list" type
-inputEx.registerType("list", inputEx.ListField);
+inputEx.registerType("list", inputEx.ListField, [
+   { type: 'string', inputParams: {label: 'List label', name: 'listLabel', value: ''}},
+   { type: 'type', inputParams: {label: 'List element type', required: true, name: 'elementType'} }
+]);
 
 
 inputEx.messages.listAddLink = "Add";

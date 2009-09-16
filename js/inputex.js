@@ -106,15 +106,27 @@ lang.augmentObject(inputEx, {
     * When you create a new inputEx Field Class, you can register it to give it a simple type.
     * ex:   inputEx.registerType("color", inputEx.ColorField);
     * @static
+    * @param {String} type String used as the inputEx field type
+    * @param {Class} fieldClass Field Class to register as this type
+	 * @param {Array} groupOptions List of inputEx field description for each option
+	 * @param {Boolean} dontInherit Won't inherhit the parent field properties if set to true
     */
-   registerType: function(type, field) {
+   registerType: function(type, fieldClass, groupOptions, dontInherit) {
       if(!lang.isString(type)) {
          throw new Error("inputEx.registerType: first argument must be a string");
       }
-      if(!lang.isFunction(field)) {
+      if(!lang.isFunction(fieldClass)) {
          throw new Error("inputEx.registerType: second argument must be a function");
       }
-      this.typeClasses[type] = field;
+      this.typeClasses[type] = fieldClass;
+      
+      // Setup the groupOptions property on the class
+      var opts = [];
+      if(lang.isArray(groupOptions)) { opts = groupOptions; }
+      if(fieldClass.superclass && !dontInherit && lang.isArray(fieldClass.superclass.constructor.groupOptions) ) {
+         opts = opts.concat(fieldClass.superclass.constructor.groupOptions);
+      }
+      fieldClass.groupOptions = opts;
    },
    
    /**

@@ -57,6 +57,6 @@ YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField, {
 });
 
 // Register this class as "number" type
-inputEx.registerType("number", inputEx.NumberField);
+inputEx.registerType("number", inputEx.NumberField, []);
 
 })();

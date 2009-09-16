@@ -258,6 +258,8 @@ inputEx.messages.cancelEditor = "cancel";
 inputEx.messages.okEditor = "Ok";
 
 // Register this class as "inplaceedit" type
-inputEx.registerType("inplaceedit", inputEx.InPlaceEdit);
+inputEx.registerType("inplaceedit", inputEx.InPlaceEdit, [
+   { type:'type', inputParams: {label: 'Editor', name: 'editorField'} }
+]);
 
 })();

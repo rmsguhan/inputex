@@ -272,6 +272,6 @@ inputEx.ColorField.ensureHexa = function (color) {
 };
 
 // Register this class as "color" type
-inputEx.registerType("color", inputEx.ColorField);
+inputEx.registerType("color", inputEx.ColorField, []);
 	
 })();

@@ -243,6 +243,9 @@ inputEx.messages.capslockWarning = "Warning: CapsLock is on";
 inputEx.messages.passwordStrength = "Password Strength";
 
 // Register this class as "password" type
-inputEx.registerType("password", inputEx.PasswordField);
+inputEx.registerType("password", inputEx.PasswordField, [
+   {type: 'boolean', inputParams: {label: 'Strength indicator', name: 'strengthIndicator', value: false} },
+   {type: 'boolean', inputParams: {label: 'CapsLock warning', name: 'capsLockWarning', value: false} }
+]);
 	
 })();

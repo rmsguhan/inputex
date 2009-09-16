@@ -153,6 +153,9 @@ lang.extend( inputEx.CombineField, inputEx.Group, {
 });
 	
 // Register this class as "combine" type
-inputEx.registerType("combine", inputEx.CombineField);
+inputEx.registerType("combine", inputEx.CombineField, [
+   { type: 'list', inputParams: {name: 'fields', label: 'Elements', required: true, elementType: {type: 'type'} } },
+   { type: 'list', inputParams: {name: 'separators', label: 'Separators', required: true } }
+]);
 	
 })();

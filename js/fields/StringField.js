@@ -240,6 +240,10 @@ lang.extend(inputEx.StringField, inputEx.Field, {
 inputEx.messages.stringTooShort = ["This field should contain at least "," numbers or characters"];
 
 // Register this class as "string" type
-inputEx.registerType("string", inputEx.StringField);
+inputEx.registerType("string", inputEx.StringField, [
+    { type: 'string',  inputParams: { label: 'Type invite', name: 'typeInvite', value: ''}},
+    { type: 'integer', inputParams: { label: 'Size', name: 'size', value: 20}},
+    { type: 'integer', inputParams: { label: 'Min. length', name: 'minLength', value: 0}}
+]);
 
 })();

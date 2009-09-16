@@ -301,7 +301,22 @@ lang.extend(inputEx.Form, inputEx.Group, {
 inputEx.messages.ajaxWait = "Please wait...";;
 
 // Register this class as "form" type
-inputEx.registerType("form", inputEx.Form);
+inputEx.registerType("form", inputEx.Form, [
+   {type: 'list', inputParams:{ 
+      label: 'Buttons', 
+      name: 'buttons', 
+         elementType: {
+            type: 'group', 
+            inputParams: { 
+               fields: [
+                  { inputParams: {label: 'Label', name: 'value'}},
+                  { type: 'select', inputParams: {label: 'Type', name: 'type', selectValues:["button", "submit"]} }
+               ] 
+            } 
+         } 
+      } 
+   }
+]);
 
 
 })();

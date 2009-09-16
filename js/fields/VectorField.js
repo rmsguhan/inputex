@@ -30,6 +30,10 @@ YAHOO.lang.extend(inputEx.VectorField, inputEx.CombineField, {
 });
 
 // Register this class as "2Dvector" type
-inputEx.registerType("vector", inputEx.VectorField);
+inputEx.registerType("vector", inputEx.VectorField, [
+   { type: 'integer', inputParams: { label: 'Dimension', name:'dimension', value: 2}},
+   { type: 'integer', inputParams: { label: 'Size', name:'size', value: 3}},
+   { type: 'list', inputParams: {name: 'separators', label: 'Separators', required: true } }
+]);
 
 })();

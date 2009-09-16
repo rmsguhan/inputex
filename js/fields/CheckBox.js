@@ -135,6 +135,8 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 });   
 	
 // Register this class as "boolean" type
-inputEx.registerType("boolean", inputEx.CheckBox);
+inputEx.registerType("boolean", inputEx.CheckBox, [ 
+   {type: 'string', inputParams: {label: 'Right Label', name: 'rightLabel'} } 
+]);
 	
 })();

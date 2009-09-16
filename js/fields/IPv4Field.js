@@ -30,6 +30,6 @@ YAHOO.lang.extend(inputEx.IPv4Field, inputEx.StringField, {
 inputEx.messages.invalidIPv4 = "Invalid IPv4 address, ex: 192.168.0.1";
 
 // Register this class as "IPv4" type
-inputEx.registerType("IPv4", inputEx.IPv4Field);
+inputEx.registerType("IPv4", inputEx.IPv4Field, []);
 
 })();

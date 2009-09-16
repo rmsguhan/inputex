@@ -39,6 +39,6 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
 inputEx.messages.invalidEmail = "Invalid email, ex: sample@test.com";
 
 // Register this class as "email" type
-inputEx.registerType("email", inputEx.EmailField);
+inputEx.registerType("email", inputEx.EmailField, []);
 
 })();

@@ -375,7 +375,13 @@ lang.extend(inputEx.Group, inputEx.Field, {
 
    
 // Register this class as "group" type
-inputEx.registerType("group", inputEx.Group);
+inputEx.registerType("group", inputEx.Group, [
+   { type: "string", inputParams:{label: "Name", name: "name", value: ''} },
+   { type: 'string', inputParams: { label: 'Legend', name:'legend'}},
+   { type: 'boolean', inputParams: {label: 'Collapsible', name:'collapsible', value: false}},
+   { type: 'boolean', inputParams: {label: 'Collapsed', name:'collapsed', value: false}},
+   { type: 'list', inputParams:{ label: 'Fields', name: 'fields', elementType: {type: 'type' } } }
+], true);
 
 
 })();

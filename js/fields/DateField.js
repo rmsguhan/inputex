@@ -107,6 +107,8 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
 	
 // Register this class as "date" type
-inputEx.registerType("date", inputEx.DateField);
+inputEx.registerType("date", inputEx.DateField, [
+   {type: 'select', inputParams: {label: 'Date format', name: 'dateFormat', selectOptions: ["m/d/Y", "d/m/Y"], selectValues: ["m/d/Y", "d/m/Y"] } }
+]);
 	
 })();

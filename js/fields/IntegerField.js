@@ -60,6 +60,9 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
 });
 
 // Register this class as "integer" type
-inputEx.registerType("integer", inputEx.IntegerField);
+inputEx.registerType("integer", inputEx.IntegerField, [
+   //{ type: 'integer', inputParams: {label: 'Radix', name: 'radix', value: 10}},
+   {type: 'boolean', inputParams: {label: 'Accept negative', name: 'negative', value: false} }
+]);
 
 })();

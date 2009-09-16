@@ -109,6 +109,6 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 });
 	
 // Register this class as "html" type
-inputEx.registerType("html", inputEx.RTEField);
+inputEx.registerType("html", inputEx.RTEField, []);
 	
 })();
