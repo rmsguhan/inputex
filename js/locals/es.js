@@ -1,7 +1,7 @@
 // InputEx Spanish localization
 (function() {
 
-   var msgs = YAHOO.inputEx.messages;
+   var msgs = inputEx.messages;
 
    msgs.required = "Este campo es obligatorio";
    msgs.invalid = "Este campo no es válido";
@@ -67,5 +67,5 @@
    };
    
    // for YUI loader 
-   YAHOO.inputEx.lang_es = true;
+   inputEx.lang_es = true;
 })();

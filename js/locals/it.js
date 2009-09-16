@@ -1,7 +1,7 @@
 // InputEx Italian localization (Big Thanks to alexodus !)
 (function() {
 
-   var msgs = YAHOO.inputEx.messages;
+   var msgs = inputEx.messages;
 
    msgs.required = "Questo campo è obbligatorio";
    msgs.invalid = "Questo campo non è stato validato";
@@ -43,5 +43,8 @@
    msgs.deleteText = "Elimina";
    msgs.insertItemText = "Aggiungi";
    msgs.confirmDeletion = "Sei sicuro?";
+
+	// for YUI loader 
+   inputEx.lang_it = true;
 
 })();
