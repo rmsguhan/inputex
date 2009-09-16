@@ -87,14 +87,14 @@ div#container3 { width:400px }
 <!-- Example 3 -->
 <div class='exampleDiv'>
 
-	<p class="title">Send with ajax</p>
+	<p class="title">Send in json with ajax</p>
 	
 	<p>How to send the form data using Ajax</p>
 
 	<div class='demoContainer' id='container3'></div>
 
 	<div class='codeContainer'>
-				<textarea name="code" class="JScript">
+		<textarea name="code" class="JScript">
 			new YAHOO.inputEx.Form( { 
 				fields: [ 
 					{ type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
@@ -114,9 +114,85 @@ div#container3 { width:400px }
 				}
 			});
 		</textarea>
-			</div>
+	</div>
 
 </div>
+
+
+
+<!-- Example 4 -->
+<div class='exampleDiv'>
+
+	<p class="title">Send with ajax using url encoded parameters</p>
+	
+	<p>How to send the form data using Ajax</p>
+
+	<div class='demoContainer' id='container4'></div>
+
+	<div class='codeContainer'>
+		<textarea name="code" class="JScript">
+			new YAHOO.inputEx.Form( {
+				fields: [ 
+					{ type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
+					{ inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
+					{ inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }
+				], 
+				buttons: [{type: 'submit', value: 'Change'}], 	
+				parentEl: 'container4',
+				ajax: {
+					method: 'POST',
+					uri: 'default.php',
+					contentType: "application/x-www-form-urlencoded",
+					callback: {
+						success: function(o) { alert("success", o); },
+						failure: function(o) { alert("failure", o); }
+					},
+					showMask:true
+				}
+			});
+		</textarea>
+	</div>
+
+</div>
+
+
+
+<!-- Example 5 -->
+<div class='exampleDiv'>
+
+	<p class="title">Send with ajax using url encoded parameters wrapped in an object</p>
+	
+	<p>Use wrapObject</p>
+
+	<div class='demoContainer' id='container5'></div>
+
+	<div class='codeContainer'>
+		<textarea name="code" class="JScript">
+			new YAHOO.inputEx.Form( {
+				fields: [ 
+					{ type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
+					{ inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
+					{ inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }
+				], 
+				buttons: [{type: 'submit', value: 'Change'}], 	
+				parentEl: 'container5',
+				ajax: {
+					method: 'POST',
+					uri: 'default.php',
+					contentType: "application/x-www-form-urlencoded",
+					wrapObject: "person",
+					callback: {
+						success: function(o) { alert("success", o); },
+						failure: function(o) { alert("failure", o); }
+					},
+					showMask:true
+				}
+			});
+		</textarea>
+	</div>
+
+</div>
+
 
 
 <!-- YUI Library -->
@@ -186,6 +262,53 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 		ajax: {
 			method: 'POST',
 			uri: 'default.php',
+			callback: {
+				success: function(o) { alert("success", o); },
+				failure: function(o) { alert("failure", o); }
+			},
+			showMask:true
+		}
+	});
+	
+	
+
+	// Example 4
+	new YAHOO.inputEx.Form( {
+		fields: [ 
+			{ type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
+			{ inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
+			{ inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }
+		], 
+		buttons: [{type: 'submit', value: 'Change'}], 	
+		parentEl: 'container4',
+		ajax: {
+			method: 'POST',
+			uri: 'default.php',
+			contentType: "application/x-www-form-urlencoded",
+			callback: {
+				success: function(o) { alert("success", o); },
+				failure: function(o) { alert("failure", o); }
+			},
+			showMask:true
+		}
+	});
+	
+	
+	
+	// Example 5
+	new YAHOO.inputEx.Form( {
+		fields: [ 
+			{ type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
+			{ inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
+			{ inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }
+		], 
+		buttons: [{type: 'submit', value: 'Change'}], 	
+		parentEl: 'container5',
+		ajax: {
+			method: 'POST',
+			uri: 'default.php',
+			contentType: "application/x-www-form-urlencoded",
+			wrapObject: "person",
 			callback: {
 				success: function(o) { alert("success", o); },
 				failure: function(o) { alert("failure", o); }

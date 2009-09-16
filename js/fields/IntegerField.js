@@ -48,7 +48,7 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
       var v = this.getValue();
       
       // empty field
-      if (val === '') {
+      if (v === '') {
          // validate only if not required
          return !this.options.required;
       }
