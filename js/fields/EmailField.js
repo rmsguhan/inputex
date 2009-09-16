@@ -30,7 +30,7 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
     * @return {String} The email string
     */
    getValue: function() {
-      return this.el.value.toLowerCase();
+      return inputEx.removeAccents(this.el.value.toLowerCase());
    }
 
 });

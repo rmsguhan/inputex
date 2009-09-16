@@ -263,7 +263,26 @@ lang.augmentObject(inputEx, {
          }
       }
       return n;
-   }
+   },
+
+	/**
+	 * Return a string without accent (only on lowercase)
+	 * @static
+	 * @param {String} str The string
+	 * @return {String} String without accent
+	 */
+	removeAccents: function (str) {
+	   return str.replace(/[àáâãäå]/g,"a").
+					  replace(/[èéêë]/g,"e").
+					  replace(/[ìíîï]/g,"i").
+					  replace(/[òóôõö]/g,"o").
+					  replace(/[ùúûü]/g,"u").
+					  replace(/[ýÿ]/g,"y").
+					  replace(/[ñ]/g,"n").
+					  replace(/[ç]/g,"c").
+					  replace(/[œ]/g,"oe").
+					  replace(/[æ]/g,"ae");
+	}
    
 });
 
