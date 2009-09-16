@@ -1,7 +1,7 @@
 InputEx
 =======
 
-[http://javascript.neyric.com/inputex](inputEx) is an open-source javascript framework to build fields and forms for web applications using the YUI library.
+[inputEx](http://javascript.neyric.com/inputex) is an open-source javascript framework to build fields and forms for web applications using the YUI library.
 
 All the fields and forms are configured using JSON or created in Javascript. It provides a very efficient abstraction for building interactive web applications.
 
@@ -9,7 +9,7 @@ Disclaimer: It doesn't use existing html yet. (it is not an unobtrusive library 
 
 For detailed informations, have a look at our complete documentation.
 
-It is built on top of the [http://developer.yahoo.com/yui/](YUI library) (2.7.0) and supports all major browsers. Please report your specific browser issues in the forum.
+It is built on top of the [YUI library](http://developer.yahoo.com/yui/) (2.7.0) and supports all major browsers. Please report your specific browser issues in the forum.
 
 Resources
 =========

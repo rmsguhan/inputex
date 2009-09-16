@@ -33,8 +33,8 @@ lang.extend(inputEx.Form, inputEx.Group, {
       this.options.action = options.action;
    	this.options.method = options.method;
 
-		 this.options.className =  options.className || 'inputEx-Group';
-		
+		this.options.className =  options.className || 'inputEx-Group';
+		this.options.autocomplete = lang.isUndefined(options.autocomplete) ? true : options.autocomplete;
 		
 
       if(options.ajax) {
@@ -70,7 +70,9 @@ lang.extend(inputEx.Form, inputEx.Group, {
       this.divEl.appendChild(this.form);
 
 	   // Set the autocomplete attribute to off to disable firefox autocompletion
-	   //this.form.setAttribute('autocomplete','off');
+		if(!this.options.autocomplete) {
+	   	this.form.setAttribute('autocomplete','off');
+		}
    	
       // Set the name of the form
       if(this.options.formName) { this.form.name = this.options.formName; }
