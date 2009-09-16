@@ -33,6 +33,10 @@ lang.extend(inputEx.Form, inputEx.Group, {
       this.options.action = options.action;
    	this.options.method = options.method;
 
+		 this.options.className =  options.className || 'inputEx-Group';
+		
+		
+
       if(options.ajax) {
          this.options.ajax = {};
          this.options.ajax.method = options.ajax.method || 'POST';
@@ -42,6 +46,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
          this.options.ajax.showMask = lang.isUndefined(options.ajax.showMask) ? false : options.ajax.showMask;
 
 			this.options.ajax.contentType = options.ajax.contentType || "application/json";
+			this.options.ajax.wrapObject = options.ajax.wrapObject;
       }
       
       if (lang.isFunction(options.onSubmit)) {
@@ -65,7 +70,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
       this.divEl.appendChild(this.form);
 
 	   // Set the autocomplete attribute to off to disable firefox autocompletion
-	   this.form.setAttribute('autocomplete','off');
+	   //this.form.setAttribute('autocomplete','off');
    	
       // Set the name of the form
       if(this.options.formName) { this.form.name = this.options.formName; }
@@ -145,27 +150,43 @@ lang.extend(inputEx.Form, inputEx.Group, {
 		var postData = null;
 		
 		// method PUT don't send as x-www-form-urlencoded but in JSON
-		if(method == "PUT") {
+		/*if(method == "PUT") {
 			YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
 			postData = lang.JSON.stringify(this.getValue());
 		}
-		else {
+		else {*/
 			
 			if(this.options.ajax.contentType == "application/x-www-form-urlencoded") {
 				var params = [];
 				for(var key in formValue) {
 					if(formValue.hasOwnProperty(key)) {
-						params.push(window.encodeURIComponent(key)+"="+window.encodeURIComponent(formValue[key]));
+						var pName = (this.options.ajax.wrapObject ? this.options.ajax.wrapObject+'[' : '')+key+(this.options.ajax.wrapObject ? ']' : '');
+						params.push( pName+"="+window.encodeURIComponent(formValue[key]));
 					}
 				}
 				postData = params.join('&');
 			}
 			else {
 				YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
-				postData = "value="+lang.JSON.stringify(this.getValue());
+				
+				if(method == "PUT") {// TODO: this is a very shitty hack
+					var formVal = this.getValue();
+					var p;
+					if(this.options.ajax.wrapObject) {
+						p = {};
+						p[this.options.ajax.wrapObject] = formVal;
+					}
+					else {
+						p = formVal;
+					}
+					postData = lang.JSON.stringify(p);
+				}
+				else {
+					postData = "value="+lang.JSON.stringify(this.getValue());
+				}
 			}
 			
-		}		
+	//	}		
 		
       util.Connect.asyncRequest( method, uri, {
          success: function(o) {

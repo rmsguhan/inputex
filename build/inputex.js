@@ -2,7 +2,7 @@
 Distributed under the MIT License :
 Visit http://javascript.neyric.com/inputex for more informations
 
-Copyright (c) 2007-2008, Eric Abouaf <neyric at via.ecp.fr>
+Copyright (c) 2007-2009, Eric Abouaf <eric.abouaf at gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,8 +22,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-/** 
- * @fileoverview Main inputEx file. Define inputEx namespace in YAHOO.inputEx
+/**
+ * The inputEx Library
+ * @module inputEx
  */
 (function() {
  
@@ -33,13 +34,12 @@ THE SOFTWARE.
  * Build a field from an object like: { type: 'color' or fieldClass: inputEx.ColorField, inputParams: {} }<br />
  * The inputParams property is the object that will be passed as the <code>options</code> parameter to the field class constructor.<br />
  * If the neither type or fieldClass are found, it uses inputEx.StringField
- * @name inputEx
- * @namespace The inputEx global namespace object.
+ * @class inputEx
  * @static
  * @param {Object} fieldOptions
  * @return {inputEx.Field} Created field instance
  */
-YAHOO.inputEx = function(fieldOptions) {
+inputEx = function(fieldOptions) {
    var fieldClass = null;
 	if(fieldOptions.type) {
 	   fieldClass = YAHOO.inputEx.getFieldClass(fieldOptions.type);
@@ -60,18 +60,9 @@ YAHOO.inputEx = function(fieldOptions) {
    return inputInstance;
 };
 
-/**
- * Test de documentation inputEx
- */
-var inputEx = YAHOO.inputEx;
-
-lang.augmentObject(inputEx, 
-/**
- * @scope inputEx
- */   
-{
+lang.augmentObject(inputEx, {
    
-   VERSION: "0.2.1",
+   VERSION: "0.2.3a",
    
    /**
     * Url to the spacer image. This url schould be changed according to your project directories
@@ -115,7 +106,8 @@ lang.augmentObject(inputEx,
    },
    
    /**
-    * @namespace inputEx widget namespace
+    * inputEx widget namespace
+    * @static 
     */
    widget: {},
    
@@ -303,12 +295,15 @@ lang.augmentObject(inputEx,
 
 
 // The main inputEx namespace shortcut
-var inputEx = YAHOO.inputEx;
+//var inputEx = YAHOO.inputEx;
+YAHOO.inputEx = inputEx;
 (function() {
    
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
 /**
  * Contains the various visualization methods
+ * @class inputEx.visus
+ * @static
  */
 inputEx.visus = {
   
@@ -327,6 +322,7 @@ inputEx.visus = {
   /**
    * Use a rendering function
    * options = {visuType: 'func', func: function(data) { ...code here...} }
+   * @method func
    */
   "func": function(options, data) {
      return options.func(data);
@@ -345,7 +341,7 @@ inputEx.visus = {
 /**
  * Render 'data' using a visualization function described by 'visuOptions'
  * @static
- * @param {Object} visuOptions The visu parameters {visuType: 'myType', ...args...}
+ * @param {Object} visuOptions The visu parameters object with: visuType: 'myType', ...args...
  * @param {Object} data The input data to send to the template
  * @param {HTMLElement || String} parentEl optional Set the result as content of parentEl
  * @return {HTMLElement || String} Either the inserted HTMLElement or the String set to parentEl.innerHTML
@@ -419,9 +415,8 @@ inputEx.renderVisu = function(visuOptions,data, parentEl) {
  *    - no tuple typing for arrays
  *    - no "Union type definition"
  *
- * @class JsonSchema
+ * @class inputEx.JsonSchema
  * @static
- * @namespace inputEx
  */
 inputEx.JsonSchema = {
    
@@ -429,16 +424,131 @@ inputEx.JsonSchema = {
     * Convert the inputEx JSON fields to a JSON schema
     */
    inputExToSchema: function(inputExJson) {
-      // TODO :P
+      
+      var t = inputExJson.type || "string",
+          ip = inputExJson.inputParams || {};
+      
+      if(t == "group") {
+         var ret = {
+            type:'object',
+            title: ip.legend,
+            properties:{
+            }
+         };
+         
+         for(var i = 0 ; i < ip.fields.length ; i++) {
+            var field = ip.fields[i];
+            var fieldName = field.inputParams.name;
+            ret.properties[fieldName] = inputEx.JsonSchema.inputExToSchema(field);
+         }
+         
+         return ret;
+      }
+      else if(t == "number") {
+         return {
+    			'type':'number',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label
+    		};
+      }
+      else if(t == "string") {
+         return {
+    			'type':'string',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label
+    		};
+      }
+      else if(t == "text") {
+         return {
+ 			   'type':'string',
+			   'format':'text',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label,
+				'_inputex':{
+					'rows':5,
+					'cols':50
+				}
+    		};
+      }
+      else if(t == "html") {
+         return {
+ 			   'type':'string',
+			   'format':'html',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label,
+				'_inputex':{
+					
+				}
+    		};
+      }
+      else if(t == "list") {
+         return {
+ 			   'type':'array',
+    			'title': ip.label,
+    			'items': inputEx.JsonSchema.inputExToSchema(ip.elementType),
+				'_inputex':{
+				}
+    		};
+      }
+      else if(t == "email") {
+         return {
+    			'type':'string',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label,
+    			'format':'email'
+    		};
+      }
+      else if(t == "url") {
+         return {
+    			'type':'string',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label,
+    			'format':'url'
+    		};
+      }
+      else if(t == "time") {
+         return {
+    			'type':'string',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label,
+    			'format':'time'
+    		};
+      }
+      else if(t == "IPv4") {
+         return {
+    			'type':'string',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label,
+    			'format':'ip-address'
+    		};
+      }
+      else if(t == "color") {
+         return {
+    			'type':'string',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label,
+    			'format':'color'
+    		};
+      }
+      else if(t == "date") {
+         return {
+    			'type':'string',
+    			'optional': typeof ip.required == "undefined" ? true : !ip.required,
+    			'title': ip.label,
+    			'format':'date'
+    		};
+      }
+      else {
+         throw new Error("inputEx type '"+t+"' not handled in inputExToSchema.");
+      }
+      
    }
 
 };
 
 
 /**
- * 
- * @class Builder
- * @namespace inputEx.JsonSchema
+ * @class inputEx.JsonSchema.Builder
  */
 inputEx.JsonSchema.Builder = function(options) {
 	
@@ -475,9 +585,7 @@ inputEx.JsonSchema.Builder = function(options) {
 inputEx.JsonSchema.Builder.prototype = {
    
    /** 
- 	 * return a schema based on the reference value
- 	 * default is to look up in map
- 	 * @method defaultReferenceResolver
+ 	 * return a schema based on the reference value default is to look up in map
     */
 	defaultReferenceResolver:function(reference) {
 		return this.schemaIdentifierMap[reference] || null;
@@ -485,7 +593,6 @@ inputEx.JsonSchema.Builder.prototype = {
 	
 	/**
 	 * Convert a JSON schema to inputEx JSON
-	 * @method schemaToInputEx
 	 * @param {JSONSchema} p
 	 */
 	schemaToInputEx:function(p, propertyName) {
@@ -494,7 +601,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	   var schemaMap = this.schemaToParamMap;
     	var referencedSchema = p["$ref"]; 
 	    
-	    if(referencedSchema){
+	   if(referencedSchema){
 	    	var new_schema = null;
 	    	if(this.referenceResolver) {
 		       new_schema = this.referenceResolver(referencedSchema);
@@ -503,7 +610,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	    		new_schema = this.defaultReferenceResolver(referencedSchema);
 	    	}
 	    	if(new_schema === null) {
-	    		throw "Schema for property :"+propertyName+" $references "+referencedSchema+', not found';
+	    		throw new Error('Schema for property : "'+propertyName+'" $references "'+referencedSchema+'", not found');
 	    	}
 	    	// copy options into new schema, for example we can overide presentation
 	    	// of a defined schema depending on where it is used
@@ -515,11 +622,11 @@ inputEx.JsonSchema.Builder.prototype = {
 	    		}
 	    	}
 	    	p = new_schema;
-	    }
+	   }
 
-	    if(!p.optional) {
-	    	fieldDef.inputParams.required = true;
-	    }
+	   if(!p.optional) {
+	      fieldDef.inputParams.required = true;
+	   }
 
 	    for(var key in schemaMap) {
 	        if(schemaMap.hasOwnProperty(key)) {
@@ -542,7 +649,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	      	  }
 	        }
 	    }
-	    if(p.type) {	       
+	    if(!p.type) p.type = 'object';
 	       var type = p.type;
 	       
 	       // If type is a "Union type definition", we'll use the first type for the field
@@ -653,7 +760,6 @@ inputEx.JsonSchema.Builder.prototype = {
     	          }
 	          }
 	       }
-	    }
 	    
 	    // Add the defaultOptions
 	    for(var kk in this.defaultOptions) {
@@ -667,7 +773,6 @@ inputEx.JsonSchema.Builder.prototype = {
    /**
     * Create an inputEx Json form definition from a json schema instance object
     * Respect the "Self-Defined Schema Convention"
-    * @method formFromInstance
     */
    formFromInstance: function(instanceObject) {
       if(!instanceObject || !instanceObject["$schema"]) {
@@ -694,7 +799,8 @@ inputEx.JsonSchema.Builder.prototype = {
    var inputEx = YAHOO.inputEx, Dom = YAHOO.util.Dom, lang = YAHOO.lang, util = YAHOO.util;
 
 /** 
- * @class An abstract class that contains the shared features for all fields
+ * An abstract class (never instantiated) that contains the shared features for all fields.
+ * @class inputEx.Field
  * @constructor
  * @param {Object} options Configuration object
  * <ul>
@@ -716,7 +822,8 @@ inputEx.Field = function(options) {
 	this.render();
 	
 	/**
-	 * @event
+	 * Event fired after the user changed the value of the field.
+	 * @event updatedEvt
 	 * @param {Any} value The new value of the field
 	 * @desc YAHOO custom event fired when the field is "updated"<br /> subscribe with: this.updatedEvt.subscribe(function(e, params) { var value = params[0]; console.log("updated",value, this.updatedEvt); }, this, true);
 	 */
@@ -1059,7 +1166,8 @@ inputEx.Field.prototype = {
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
    
 /**
- * @class Handle a group of fields
+ * Handle a group of fields
+ * @class inputEx.Group
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options The following options are added for Groups and subclasses:
@@ -1074,17 +1182,12 @@ inputEx.Field.prototype = {
 inputEx.Group = function(options) {
    inputEx.Group.superclass.constructor.call(this,options);
    
-   if(this.hasInteractions) {
-      for(var i = 0 ; i < this.inputs.length ; i++) {
-         this.runInteractions(this.inputs[i],this.inputs[i].getValue());
-      }
+   // Run default field interactions (if setValue has not been called before)
+   if(!this.options.value) {
+      this.runFieldsInteractions();
    }
 };
-lang.extend(inputEx.Group, inputEx.Field, 
-/**
- * @scope inputEx.Group.prototype   
- */   
-{
+lang.extend(inputEx.Group, inputEx.Field, {
    
    /**
     * Adds some options: legend, collapsible, fields...
@@ -1151,7 +1254,6 @@ lang.extend(inputEx.Group, inputEx.Field,
       this.legend = inputEx.cn('legend', {className: 'inputEx-Group-legend'});
    
       // Option Collapsible
-      //TODO: <MF> should it be renamed to 'collapsed'?
       if(this.options.collapsible) {
          var collapseImg = inputEx.cn('div', {className: 'inputEx-Group-collapseImg'}, null, ' ');
          this.legend.appendChild(collapseImg);
@@ -1289,6 +1391,8 @@ lang.extend(inputEx.Group, inputEx.Field,
 	      }
       }
       
+      this.runFieldsInteractions();
+      
 	   if(sendUpdatedEvt !== false) {
 	      // fire update event
          this.fireUpdatedEvt();
@@ -1404,6 +1508,17 @@ lang.extend(inputEx.Group, inputEx.Field,
       
    },
    
+   /**
+    * Run the interactions for all fields
+    */
+   runFieldsInteractions: function() {
+      if(this.hasInteractions) {
+         for(var i = 0 ; i < this.inputs.length ; i++) {
+            this.runInteractions(this.inputs[i],this.inputs[i].getValue());
+         }
+      }
+   },
+   
 	/**
 	 * Clear all subfields
 	 * @param {boolean} [sendUpdatedEvt] (optional) Wether this clear should fire the updatedEvt or not (default is true, pass false to NOT send the event)
@@ -1422,9 +1537,7 @@ lang.extend(inputEx.Group, inputEx.Field,
 });
 
    
-/**
- * Register this class as "group" type
- */
+// Register this class as "group" type
 inputEx.registerType("group", inputEx.Group);
 
 
@@ -1432,7 +1545,8 @@ inputEx.registerType("group", inputEx.Group);
    var util = YAHOO.util, lang = YAHOO.lang, Event = YAHOO.util.Event, inputEx = YAHOO.inputEx, Dom = util.Dom;
 
 /**
- * @class Create a group of fields within a FORM tag and adds buttons
+ * Create a group of fields within a FORM tag and adds buttons
+ * @class inputEx.Form
  * @extends inputEx.Group
  * @constructor
  * @param {Object} options The following options are added for Forms:
@@ -1446,11 +1560,7 @@ inputEx.Form = function(options) {
    inputEx.Form.superclass.constructor.call(this, options);
 };
 
-lang.extend(inputEx.Form, inputEx.Group,
-/**
- * @scope inputEx.Form.prototype
- */
-{
+lang.extend(inputEx.Form, inputEx.Group, {
 
    /**
     * Adds buttons and set ajax default parameters
@@ -1466,6 +1576,10 @@ lang.extend(inputEx.Form, inputEx.Group,
       this.options.action = options.action;
    	this.options.method = options.method;
 
+		 this.options.className =  options.className || 'inputEx-Group';
+		
+		
+
       if(options.ajax) {
          this.options.ajax = {};
          this.options.ajax.method = options.ajax.method || 'POST';
@@ -1473,6 +1587,9 @@ lang.extend(inputEx.Form, inputEx.Group,
          this.options.ajax.callback = options.ajax.callback || {};
          this.options.ajax.callback.scope = options.ajax.callback.scope || this;
          this.options.ajax.showMask = lang.isUndefined(options.ajax.showMask) ? false : options.ajax.showMask;
+
+			this.options.ajax.contentType = options.ajax.contentType || "application/json";
+			this.options.ajax.wrapObject = options.ajax.wrapObject;
       }
       
       if (lang.isFunction(options.onSubmit)) {
@@ -1496,7 +1613,7 @@ lang.extend(inputEx.Form, inputEx.Group,
       this.divEl.appendChild(this.form);
 
 	   // Set the autocomplete attribute to off to disable firefox autocompletion
-	   this.form.setAttribute('autocomplete','off');
+	   //this.form.setAttribute('autocomplete','off');
    	
       // Set the name of the form
       if(this.options.formName) { this.form.name = this.options.formName; }
@@ -1566,8 +1683,55 @@ lang.extend(inputEx.Form, inputEx.Group,
    asyncRequest: function() {
 
       if(this.options.ajax.showMask) { this.showMask(); }
-	   var postData = "value="+lang.JSON.stringify(this.getValue());
-      util.Connect.asyncRequest(this.options.ajax.method, this.options.ajax.uri, {
+	
+		var formValue = this.getValue();
+	
+		// options.ajax.uri and options.ajax.method can also be functions that return a the uri/method depending of the value of the form
+		var uri = lang.isFunction(this.options.ajax.uri) ? this.options.ajax.uri(formValue) : this.options.ajax.uri;
+		var method = lang.isFunction(this.options.ajax.method) ? this.options.ajax.method(formValue) : this.options.ajax.method;
+	
+		var postData = null;
+		
+		// method PUT don't send as x-www-form-urlencoded but in JSON
+		/*if(method == "PUT") {
+			YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
+			postData = lang.JSON.stringify(this.getValue());
+		}
+		else {*/
+			
+			if(this.options.ajax.contentType == "application/x-www-form-urlencoded") {
+				var params = [];
+				for(var key in formValue) {
+					if(formValue.hasOwnProperty(key)) {
+						var pName = (this.options.ajax.wrapObject ? this.options.ajax.wrapObject+'[' : '')+key+(this.options.ajax.wrapObject ? ']' : '');
+						params.push( pName+"="+window.encodeURIComponent(formValue[key]));
+					}
+				}
+				postData = params.join('&');
+			}
+			else {
+				YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
+				
+				if(method == "PUT") {// TODO: this is a very shitty hack
+					var formVal = this.getValue();
+					var p;
+					if(this.options.ajax.wrapObject) {
+						p = {};
+						p[this.options.ajax.wrapObject] = formVal;
+					}
+					else {
+						p = formVal;
+					}
+					postData = lang.JSON.stringify(p);
+				}
+				else {
+					postData = "value="+lang.JSON.stringify(this.getValue());
+				}
+			}
+			
+	//	}		
+		
+      util.Connect.asyncRequest( method, uri, {
          success: function(o) {
             if(this.options.ajax.showMask) { this.hideMask(); }
             if( lang.isFunction(this.options.ajax.callback.success) ) {
@@ -1679,9 +1843,7 @@ lang.extend(inputEx.Form, inputEx.Group,
 // Specific waiting message in ajax submit
 inputEx.messages.ajaxWait = "Please wait...";;
 
-/**
-* Register this class as "form" type
-*/
+// Register this class as "form" type
 inputEx.registerType("form", inputEx.Form);
 
 
@@ -1691,80 +1853,98 @@ inputEx.registerType("form", inputEx.Form);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Dom = YAHOO.util.Dom;
 	
 /**
- * @class A meta field to put N fields on the same line, separated by separators
- * @extends inputEx.Field
+ * A meta field to put N fields on the same line, separated by separators
+ * @class inputEx.CombineField
+ * @extends inputEx.Group
  * @constructor
  * @param {Object} options Added options:
  * <ul>
  *    <li>separators: array of string inserted</li>
- *    <li>fields: list of fields in inputEx-typed-JSON</li>
  * </ul>
  */
 inputEx.CombineField = function(options) {
    inputEx.CombineField.superclass.constructor.call(this, options);
 };
-	
-lang.extend( inputEx.CombineField, inputEx.Field, 
-/**
- * @scope inputEx.CombineField.prototype   
- */   
-{
+
+lang.extend( inputEx.CombineField, inputEx.Group, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.CombineField.superclass.setOptions.call(this, options);
-      
+
+      this.options.label = options.label;
+
       // Overwrite options
-      this.options.className = options.className ? options.className : 'inputEx-Field inputEx-CombineField';
+      this.options.className = options.className ? options.className : 'inputEx-CombineField';
       
       // Added options
       this.options.separators = options.separators;
-      this.options.fields = options.fields;
    },
 	   
-	/**
-	 * Render the two subfields
-	 */
-	renderComponent: function() {
-	    
-	   this.inputs = [];
+	
+	render: function() {
+
+      // Create the div wrapper for this group
+	   this.divEl = inputEx.cn('div', {className: this.options.className});
+	   if(this.options.id) {
+   	   this.divEl.id = this.options.id;
+   	}
+
+	   // Label element
+	   if(this.options.label) {
+	      this.labelDiv = inputEx.cn('div', {id: this.divEl.id+'-label', className: 'inputEx-label', 'for': this.divEl.id+'-field'});
+	      this.labelEl = inputEx.cn('label');
+	      this.labelEl.appendChild( document.createTextNode(this.options.label) );
+	      this.labelDiv.appendChild(this.labelEl);
+	      this.divEl.appendChild(this.labelDiv);
+      }
+	
+  	   this.renderFields(this.divEl);  	  
+
+  	   if(this.options.disabled) {
+  	      this.disable();
+  	   }
+		
+	   // Insert a float breaker
+	   this.divEl.appendChild( inputEx.cn('div', {className: "inputEx-clear-div"}, null, " ") );
+	},
 	   
+	/**
+	 * Render the subfields
+	 */
+	renderFields: function(parentEl) {
+	    
 	   this.appendSeparator(0);
 	   
-	   if(!this.options.fields) {
-	      return;
-	   }
+	   if(!this.options.fields) {return;}
 	   
-	   for(var i = 0 ; i < this.options.fields.length ; i++) {
-	      
-	      if (this.options.required) {
-            this.options.fields[i].required = true;
+	   var i, n=this.options.fields.length, f, field, fieldEl,t;
+	   
+	   for(i = 0 ; i < n ; i++) {
+	      f = this.options.fields[i];
+	      if (this.options.required) {f.required = true;}
+	      field = this.renderField(f);
+	      fieldEl = field.getEl();
+	      t = f.type;
+	      if(t != "group" && t != "form") {
+	         // remove the line breaker (<div style='clear: both;'>)
+	         field.divEl.removeChild(fieldEl.childNodes[fieldEl.childNodes.length-1]);
          }
-         
-	      var field = this.renderField(this.options.fields[i]);
-	      // remove the line breaker (<div style='clear: both;'>)
-	      field.divEl.removeChild(field.divEl.childNodes[field.divEl.childNodes.length-1]);
       	// make the field float left
-      	YAHOO.util.Dom.setStyle(field.getEl(), 'float', 'left');
-      	this.fieldContainer.appendChild(field.getEl());
+      	Dom.setStyle(fieldEl, 'float', 'left');
+   	
+      	this.divEl.appendChild(fieldEl);
       	
       	this.appendSeparator(i+1);
 	   }
 	      
 	},
 	
-	appendSeparator: function(i) {
-	   if(this.options.separators && this.options.separators[i]) {
-	      var sep = inputEx.cn('div', {className: 'inputEx-CombineField-separator'}, null, this.options.separators[i]);
-	      this.fieldContainer.appendChild(sep);
-      }
-	},
-	
 	/**
-    * Instanciate one field given its parameters, type or fieldClass
-    * @param {Object} fieldOptions The field properties as required bu inputEx.buildField
+    * Override to force required option on each subfield
+    * @param {Object} fieldOptions The field properties as required by inputEx()
     */
    renderField: function(fieldOptions) {
       
@@ -1774,35 +1954,17 @@ lang.extend( inputEx.CombineField, inputEx.Field,
          fieldOptions.inputParams.required = true;
       }
       
-      // Instanciate the field
-      var fieldInstance = inputEx(fieldOptions);
-      
-	   this.inputs.push(fieldInstance);
-      
-	   // Subscribe to the field "updated" event to send the group "updated" event
-      fieldInstance.updatedEvt.subscribe(this.onChange, this, true);
-      // Subscribe sub-field "blur" event to trigger class setting at combineField level !
-      YAHOO.util.Event.addBlurListener(fieldInstance.getEl(),this.onBlur, this, true);
-   	  
-      return fieldInstance;
+      return inputEx.CombineField.superclass.renderField.call(this, fieldOptions);
    },
-
 	
-	/**
-    * Validate each field
-    * @returns {Boolean} true if all fields validate and required fields are not empty
-    */
-   validate: function() {
-      // Validate all the sub fields
-      for (var i = 0 ; i < this.inputs.length ; i++) {
-   	   var input = this.inputs[i];
-   	   var state = input.getState();
-   	   if( state == inputEx.stateRequired || state == inputEx.stateInvalid ) {
-   		   return false;
-   	   }
+	appendSeparator: function(i) {
+	   if(this.options.separators && this.options.separators[i]) {
+	      var sep = inputEx.cn('div', {className: 'inputEx-CombineField-separator'}, null, this.options.separators[i]);
+	      this.divEl.appendChild(sep);
       }
-      return true;
-   },
+	},
+	
+
 	   
 	/**
 	 * Set the value
@@ -1810,71 +1972,37 @@ lang.extend( inputEx.CombineField, inputEx.Field,
 	 * @param {boolean} [sendUpdatedEvt] (optional) Wether this setValue should fire the updatedEvt or not (default is true, pass false to NOT send the event)
 	 */
 	setValue: function(values, sendUpdatedEvt) {
-	   for(var i = 0 ; i < this.inputs.length ; i++) {
+		if(!values) {
+         return;
+      }
+      var i, n=this.inputs.length;
+	   for (i = 0 ; i < n ; i++) {
 	      this.inputs[i].setValue(values[i], false);
-	   }
-	   
-	   // Call Field.setValue to set class and fire updated event
-		inputEx.CombineField.superclass.setValue.call(this,values, sendUpdatedEvt);
-	},
-	
-	/**
-	 * Specific getValue 
-	 * @return {Array} An array of values [value1, value2, ...]
-	 */   
-	getValue: function() {
-	   var values = [];
-	   for(var i = 0 ; i < this.inputs.length ; i++) {
-	      values.push(this.inputs[i].getValue());
-	   }
-	   return values;
-	},
-	
-	/**
-	 * Call setClassFromState on all children
-	 */
-	setClassFromState: function() {
-	   inputEx.CombineField.superclass.setClassFromState.call(this);
-	   
-	   for(var i = 0 ; i < this.inputs.length ; i++) {
-	      this.inputs[i].setClassFromState();
-	   }
-	},
-	
-	/**
-	 * Clear all subfields
-	 * @param {boolean} [sendUpdatedEvt] (optional) Wether this clear should fire the updatedEvt or not (default is true, pass false to NOT send the event)
-	 */
-	clear: function(sendUpdatedEvt) {
-	   for(var i = 0 ; i < this.inputs.length ; i++) {
-	      this.inputs[i].clear(false);
-	   }
-	   
-	   // must reset field style explicitly
-	   //  -> case different from Field.prototype.clear (which calls setValue, which calls setClassFromState)
-	   this.setClassFromState();
-	   
+      }
+      
+      this.runFieldsInteractions();
+      
 	   if(sendUpdatedEvt !== false) {
 	      // fire update event
          this.fireUpdatedEvt();
       }
 	},
-   
-   /**
-    * Useful for getState to return correct state (required, empty, etc...)
-    */
-   isEmpty: function() {
-      for(var i = 0 ; i < this.inputs.length ; i++) {
-	      if (!this.inputs[i].isEmpty()) return false;
+	
+	/**
+	 * Specific getValue 
+	 * @return {Array} An array of values [value1, value2, ...]
+	 */
+	getValue: function() {
+	   var values = [], i, n=this.inputs.length;
+	   for(i = 0 ; i < n; i++) {
+	      values.push(this.inputs[i].getValue());
 	   }
-	   return true;
-   }
+	   return values;
+	}
 	
 });
 	
-/**
- * Register this class as "combine" type
- */
+// Register this class as "combine" type
 inputEx.registerType("combine", inputEx.CombineField);
 	
 })();(function() {
@@ -1882,7 +2010,8 @@ inputEx.registerType("combine", inputEx.CombineField);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
- * @class Basic string field (equivalent to the input type "text")
+ * Basic string field (equivalent to the input type "text")
+ * @class inputEx.StringField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -1903,11 +2032,7 @@ inputEx.StringField = function(options) {
 	  }
 };
 
-lang.extend(inputEx.StringField, inputEx.Field,
-/**
- * @scope inputEx.StringField.prototype
- */
-{
+lang.extend(inputEx.StringField, inputEx.Field, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -1998,7 +2123,7 @@ lang.extend(inputEx.StringField, inputEx.Field,
       var val = this.getValue();
 
       // empty field
-      if (val == '') {
+      if (val === '') {
          // validate only if not required
          return !this.options.required;
       }
@@ -2121,9 +2246,7 @@ lang.extend(inputEx.StringField, inputEx.Field,
 
 inputEx.messages.stringTooShort = ["This field should contain at least "," numbers or characters"];
 
-/**
- * Register this class as "string" type
- */
+// Register this class as "string" type
 inputEx.registerType("string", inputEx.StringField);
 
 })();
@@ -2132,7 +2255,8 @@ inputEx.registerType("string", inputEx.StringField);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
- * @class An autocomplete field that wraps the YUI autocompleter
+ * An autocomplete field that wraps the YUI autocompleter
+ * @class inputEx.AutoComplete
  * @constructor
  * @extends inputEx.StringField
  * @param {Object} options Added options for Autocompleter
@@ -2146,11 +2270,7 @@ inputEx.AutoComplete = function(options) {
    inputEx.AutoComplete.superclass.constructor.call(this, options);
 };
 
-lang.extend(inputEx.AutoComplete, inputEx.StringField, 
-/**
- * @scope inputEx.AutoComplete.prototype   
- */   
-{
+lang.extend(inputEx.AutoComplete, inputEx.StringField, {
 
    /**
     * Adds autocomplete options
@@ -2301,9 +2421,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField,
 });
 
 
-/**
-* Register this class as "autocomplete" type
-*/
+// Register this class as "autocomplete" type
 inputEx.registerType("autocomplete", inputEx.AutoComplete);
 
 })();
@@ -2312,7 +2430,8 @@ inputEx.registerType("autocomplete", inputEx.AutoComplete);
 	var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class Create a checkbox.
+ * Create a checkbox.
+ * @class inputEx.CheckBox
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options for CheckBoxes:
@@ -2324,11 +2443,7 @@ inputEx.CheckBox = function(options) {
 	inputEx.CheckBox.superclass.constructor.call(this,options);
 };
 	
-lang.extend(inputEx.CheckBox, inputEx.Field, 
-/**
- * @scope inputEx.CheckBox.prototype   
- */
-{
+lang.extend(inputEx.CheckBox, inputEx.Field, {
 	   
 	/**
 	 * Adds the CheckBox specific options
@@ -2446,9 +2561,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field,
 	
 });   
 	
-/**
- * Register this class as "boolean" type
- */
+// Register this class as "boolean" type
 inputEx.registerType("boolean", inputEx.CheckBox);
 	
 })();(function() {
@@ -2456,7 +2569,8 @@ inputEx.registerType("boolean", inputEx.CheckBox);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class Create a Color picker input field
+ * Create a Color picker input field
+ * @class inputEx.ColorField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options for ColorField :
@@ -2474,11 +2588,7 @@ inputEx.registerType("boolean", inputEx.CheckBox);
 inputEx.ColorField = function(options) {
 	inputEx.ColorField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.ColorField, inputEx.Field, 
-/**
- * @scope inputEx.ColorField.prototype   
- */
-{
+lang.extend(inputEx.ColorField, inputEx.Field, {
    
 	/**
 	 * Adds the 'inputEx-ColorField' default className
@@ -2727,9 +2837,7 @@ inputEx.ColorField.ensureHexa = function (color) {
    return hexaColor;
 };
 
-/**
- * Register this class as "color" type
- */
+// Register this class as "color" type
 inputEx.registerType("color", inputEx.ColorField);
 	
 })();(function() {
@@ -2737,7 +2845,8 @@ inputEx.registerType("color", inputEx.ColorField);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class A Date Field. 
+ * A Date Field. 
+ * @class inputEx.DateField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options Add the folowing options: 
@@ -2749,11 +2858,7 @@ inputEx.DateField = function(options) {
 	inputEx.DateField.superclass.constructor.call(this,options);
 };
 	
-lang.extend(inputEx.DateField, inputEx.StringField, 
-/**
- * @scope inputEx.DateField.prototype   
- */   
-{
+lang.extend(inputEx.DateField, inputEx.StringField, {
 	/**
 	 * Adds the 'inputEx-DateField' default className
 	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -2843,9 +2948,7 @@ lang.extend(inputEx.DateField, inputEx.StringField,
 // Specific message for the container
 inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
 	
-/**
- * Register this class as "date" type
- */
+// Register this class as "date" type
 inputEx.registerType("date", inputEx.DateField);
 	
 })();(function() {
@@ -2853,6 +2956,7 @@ inputEx.registerType("date", inputEx.DateField);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event;
 
 /**
+ * inputEx.DateSplitField
  * @class inputEx.DateSplitField
  * @extends inputEx.CombineField
  */
@@ -2994,9 +3098,7 @@ inputEx.messages.monthTypeInvite = "Month";
 inputEx.messages.dayTypeInvite = "Day";
 inputEx.messages.yearTypeInvite = "Year";
 
-/**
-* Register this class as "birthdate" type
-*/
+// Register this class as "datesplit" type
 inputEx.registerType("datesplit", inputEx.DateSplitField);
 
 })();(function() {
@@ -3004,7 +3106,8 @@ inputEx.registerType("datesplit", inputEx.DateSplitField);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
- * @class A DatePicker Field.
+ * A DatePicker Field.
+ * @class inputEx.DatePickerField
  * @extends inputEx.DateField
  * @constructor
  * @param {Object} options No added option for this field (same as DateField)
@@ -3016,11 +3119,7 @@ inputEx.DatePickerField = function(options) {
    inputEx.DatePickerField.superclass.constructor.call(this,options);
 };
 
-lang.extend(inputEx.DatePickerField, inputEx.DateField, 
-/**
- * @scope inputEx.DatePickerField.prototype   
- */   
-{
+lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    /**
     * Set the default date picker CSS classes
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -3193,9 +3292,7 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField,
 
 inputEx.messages.defautCalendarOpts = { navigator: true };
 
-/**
- * Register this class as "datepicker" type
- */
+// Register this class as "datepicker" type
 inputEx.registerType("datepicker", inputEx.DatePickerField);
 
 })();(function() {
@@ -3203,7 +3300,8 @@ inputEx.registerType("datepicker", inputEx.DatePickerField);
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Field that adds the email regexp for validation. Result is always lower case.
+ * Field that adds the email regexp for validation. Result is always lower case.
+ * @class inputEx.EmailField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -3211,11 +3309,7 @@ inputEx.registerType("datepicker", inputEx.DatePickerField);
 inputEx.EmailField = function(options) {
    inputEx.EmailField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, 
-/**
- * @scope inputEx.EmailField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
    
    /**
     * Set the email regexp and invalid message
@@ -3241,9 +3335,7 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField,
 // Specific message for the email field
 inputEx.messages.invalidEmail = "Invalid email, ex: sample@test.com";
 
-/**
- * Register this class as "email" type
- */
+// Register this class as "email" type
 inputEx.registerType("email", inputEx.EmailField);
 
 })();(function() {
@@ -3251,7 +3343,8 @@ inputEx.registerType("email", inputEx.EmailField);
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Create a hidden input, inherits from inputEx.Field
+ * Create a hidden input, inherits from inputEx.Field
+ * @class inputEx.HiddenField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -3260,11 +3353,7 @@ inputEx.HiddenField = function(options) {
 	inputEx.HiddenField.superclass.constructor.call(this,options);
 };
 
-YAHOO.lang.extend(inputEx.HiddenField, inputEx.Field, 
-/**
- * @scope inputEx.HiddenField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.HiddenField, inputEx.Field, {
    
    /**
     * Doesn't render much...
@@ -3300,17 +3389,16 @@ YAHOO.lang.extend(inputEx.HiddenField, inputEx.Field,
 
 });
    
-/**
- * Register this class as "hidden" type
- */
+// Register this class as "hidden" type
 inputEx.registerType("hidden", inputEx.HiddenField);
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom, CSS_PREFIX = 'inputEx-InPlaceEdit-';
 
 /**
- * @class Meta field providing in place editing (the editor appears when you click on the formatted value). 
+ * Meta field providing in place editing (the editor appears when you click on the formatted value). 
+ * @class inputEx.InPlaceEdit
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -3324,11 +3412,7 @@ inputEx.InPlaceEdit = function(options) {
    inputEx.InPlaceEdit.superclass.constructor.call(this, options);
 };
 
-lang.extend(inputEx.InPlaceEdit, inputEx.Field, 
-/**
- * @scope inputEx.InPlaceEdit.prototype   
- */   
-{
+lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -3337,8 +3421,6 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field,
       inputEx.InPlaceEdit.superclass.setOptions.call(this, options);
       
       this.options.animColors = options.animColors || {from: '#ffff99' , to: '#ffffff'};
-      /*this.options.formatDom = options.formatDom;
-      this.options.formatValue = options.formatValue;*/
       this.options.visu = options.visu;
       this.options.editorField = options.editorField;
    },
@@ -3356,24 +3438,24 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field,
     */
    renderEditor: function() {
       
-      this.editorContainer = inputEx.cn('div', {className: 'inputEx-InPlaceEdit-editor'}, {display: 'none'});
+      this.editorContainer = inputEx.cn('div', {className: CSS_PREFIX+'editor'}, {display: 'none'});
       
       // Render the editor field
       this.editorField = inputEx.buildField(this.options.editorField);
-   
-      this.editorContainer.appendChild( this.editorField.getEl() );
-      Dom.setStyle(this.editorField.getEl(), 'float', 'left');
+      var editorFieldEl = this.editorField.getEl();
       
-      this.okButton = inputEx.cn('input', {type: 'button', value: inputEx.messages.okEditor, className: 'inputEx-InPlaceEdit-OkButton'});
-      Dom.setStyle(this.okButton, 'float', 'left');
+      this.editorContainer.appendChild( editorFieldEl );
+      Dom.addClass( editorFieldEl , CSS_PREFIX+'editorDiv');
+      
+      this.okButton = inputEx.cn('a', {className: CSS_PREFIX+'OkButton'}, null, inputEx.messages.okEditor);
+      this.okButton.href = ""; // IE required (here, not in the cn fct)
       this.editorContainer.appendChild(this.okButton);
       
-      this.cancelLink = inputEx.cn('a', {className: 'inputEx-InPlaceEdit-CancelLink'}, null, inputEx.messages.cancelEditor);
+      this.cancelLink = inputEx.cn('a', {className: CSS_PREFIX+'CancelLink'}, null, inputEx.messages.cancelEditor);
       this.cancelLink.href = ""; // IE required (here, not in the cn fct)
-      Dom.setStyle(this.cancelLink, 'float', 'left');
       this.editorContainer.appendChild(this.cancelLink);
       
-      // Line breaker
+      // Line breaker ()
       this.editorContainer.appendChild( inputEx.cn('div',null, {clear: 'both'}) );
       
       //this.divEl.appendChild(this.editorContainer);
@@ -3454,7 +3536,7 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field,
    onKeyUp: function(e) {
       // Enter
       if( e.keyCode == 13) {
-         this.onOkEditor();
+         this.onOkEditor(e);
       }
       // Escape
       if( e.keyCode == 27) {
@@ -3469,14 +3551,16 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field,
    onKeyDown: function(e) {
       // Tab
       if(e.keyCode == 9) {
-         this.onOkEditor();
+         this.onOkEditor(e);
       }
    },
    
    /**
     * Validate the editor (ok button, enter key or tabulation key)
     */
-   onOkEditor: function() {
+   onOkEditor: function(e) {
+      Event.stopEvent(e);
+      
       var newValue = this.editorField.getValue();
       this.setValue(newValue);
       
@@ -3567,9 +3651,7 @@ inputEx.messages.emptyInPlaceEdit = "(click to edit)";
 inputEx.messages.cancelEditor = "cancel";
 inputEx.messages.okEditor = "Ok";
 
-/**
- * Register this class as "inplaceedit" type
- */
+// Register this class as "inplaceedit" type
 inputEx.registerType("inplaceedit", inputEx.InPlaceEdit);
 
 })();(function() {
@@ -3577,7 +3659,8 @@ inputEx.registerType("inplaceedit", inputEx.InPlaceEdit);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event;
 
 /**
- * @class A field limited to number inputs
+ * A field limited to number inputs
+ * @class inputEx.IntegerField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options Added options:
@@ -3588,20 +3671,17 @@ inputEx.registerType("inplaceedit", inputEx.InPlaceEdit);
 inputEx.IntegerField = function(options) {
    inputEx.IntegerField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, 
-/**
- * @scope inputEx.IntegerField.prototype   
- */
-{
+YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
    /**
-    * Adds the negative option
-    * @method setOptions
+    * Adds the negative, min, and max options
     * @param {Object} options
     */
    setOptions: function(options) {
       inputEx.IntegerField.superclass.setOptions.call(this, options);
       
       this.options.negative = lang.isUndefined(options.negative) ? false : options.negative;
+      this.options.min = lang.isUndefined(options.min) ? (this.options.negative ? -Infinity : 0) : parseInt(options.min,10);
+      this.options.max = lang.isUndefined(options.max) ? Infinity : parseInt(options.max,10);
    },
    
    /**
@@ -3619,23 +3699,23 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField,
    
    /**
     * Validate  if is a number
-    * @method validate
     */
    validate: function() {
       var v = this.getValue();
       
-      // empty field is OK
-      if (v == "") return true;
+      // empty field
+      if (val === '') {
+         // validate only if not required
+         return !this.options.required;
+      }
       
       if(isNaN(v)) return false;
-      return !!this.el.value.match(new RegExp(this.options.negative ? "^[+-]?[0-9]*$" : "^\\+?[0-9]*$") );
+      return !!this.el.value.match(new RegExp(this.options.negative ? "^[+-]?[0-9]*$" : "^\\+?[0-9]*$") ) && v >= this.options.min && v <= this.options.max;
    }
    
 });
 
-/**
- * Register this class as "integer" type
- */
+// Register this class as "integer" type
 inputEx.registerType("integer", inputEx.IntegerField);
 
 })();(function() {
@@ -3643,10 +3723,11 @@ inputEx.registerType("integer", inputEx.IntegerField);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class   Meta field to create a list of other fields
+ * Meta field to create a list of other fields
+ * @class inputEx.ListField
  * @extends inputEx.Field
  * @constructor
- * @param {Object} options Added options:
+ * @param options Added options:
  * <ul>
  *   <li>sortable: Add arrows to sort the items if true (default false)</li>
  *   <li>elementType: an element type definition (default is {type: 'string'})</li>
@@ -3654,6 +3735,8 @@ inputEx.registerType("integer", inputEx.IntegerField);
  *   <li>unique: require values to be unique (default false)</li>
  *   <li>listAddLabel: if useButtons is false, text to add an item</li>
  *   <li>listRemoveLabel: if useButtons is false, text to remove an item</li>
+ *   <li>maxItems: maximum number of items (leave undefined if no maximum, default)</li>
+ *   <li>minItems: minimum number of items to validate (leave undefined if no minimum, default)</li>
  * </ul>
  */
 inputEx.ListField = function(options) {
@@ -3665,11 +3748,7 @@ inputEx.ListField = function(options) {
 	   
    inputEx.ListField.superclass.constructor.call(this, options);
 };
-lang.extend(inputEx.ListField,inputEx.Field, 
-/**
- * @scope inputEx.ListField.prototype   
- */   
-{
+lang.extend(inputEx.ListField,inputEx.Field, {
 	   
 	/**
 	 * Set the ListField classname
@@ -3687,6 +3766,9 @@ lang.extend(inputEx.ListField,inputEx.Field,
 	   
 	   this.options.listAddLabel = options.listAddLabel || inputEx.messages.listAddLink;
 	   this.options.listRemoveLabel = options.listRemoveLabel || inputEx.messages.listRemoveLink;
+	   
+	   this.options.maxItems = options.maxItems;
+	   this.options.minItems = options.minItems;
 	},
 	   
 	/**
@@ -3726,11 +3808,22 @@ lang.extend(inputEx.ListField,inputEx.Field,
     * @returns {Boolean} true if all fields validate, required fields are not empty and unique constraint (if specified) is not violated
     */
    validate: function() {
+
       var response = true;
-      var uniques = {};
+      
+      var uniques = {}; // Hash for unique values option
+      var l = this.subFields.length;
+
+      // Validate maxItems / minItems
+      if( lang.isNumber(this.options.minItems) && l < this.options.minItems  ) {
+         response = false;
+      }
+      if( lang.isNumber(this.options.maxItems) && l > this.options.maxItems  ) {
+         response = false;
+      }
 
       // Validate all the sub fields
-      for (var i = 0 ; i < this.subFields.length && response; i++) {
+      for (var i = 0 ; i < l && response; i++) {
          var input = this.subFields[i];
          input.setClassFromState(); // update field classes (mark invalid fields...)
          var state = input.getState();
@@ -3739,7 +3832,6 @@ lang.extend(inputEx.ListField,inputEx.Field,
          }
          if(this.options.unique) {
             var hash = lang.dump(input.getValue());
-            //logDebug('listfied index ',i, 'hash', hash);
             if(uniques[hash]) {
                response = false;    // not unique
             } else {
@@ -3758,8 +3850,7 @@ lang.extend(inputEx.ListField,inputEx.Field,
 	setValue: function(value, sendUpdatedEvt) {
 	   
 	   if(!lang.isArray(value) ) {
-	      // TODO: throw exceptions ?
-	      return;
+	      throw new Error("inputEx.ListField.setValue expected an array, got "+(typeof value));
 	   }
 	      
 	   // Set the values (and add the lines if necessary)
@@ -3818,6 +3909,11 @@ lang.extend(inputEx.ListField,inputEx.Field,
 	onAddButton: function(e) {
 	   Event.stopEvent(e);
 	   
+	   // Prevent adding a new field if already at maxItems
+	   if( lang.isNumber(this.options.maxItems) && this.subFields.length >= this.options.maxItems ) {
+	      return;
+	   }
+	   
 	   // Add a field with no value: 
 	   var subFieldEl = this.addElement();
 	   
@@ -3845,7 +3941,7 @@ lang.extend(inputEx.ListField,inputEx.Field,
 	      newDiv.appendChild( delButton );
       }
 	      
-	   // Instanciate the new subField
+	   // Instantiate the new subField
 	   var opts = lang.merge({}, this.options.elementType);
 	   if(!opts.inputParams) opts.inputParams = {};
 	   if(!lang.isUndefined(value)) opts.inputParams.value = value;
@@ -3979,6 +4075,11 @@ lang.extend(inputEx.ListField,inputEx.Field,
 	onDelete: function(e) {
 	      
 	   Event.stopEvent(e);
+	   
+	   // Prevent removing a field if already at minItems
+	   if( lang.isNumber(this.options.minItems) && this.subFields.length <= this.options.minItems ) {
+	      return;
+	   }
 	      
 	   // Get the wrapping div element
 	   var elementDiv = Event.getTarget(e).parentNode;
@@ -4019,9 +4120,7 @@ lang.extend(inputEx.ListField,inputEx.Field,
 	
 });
 	
-/**
- * Register this class as "list" type
- */
+// Register this class as "list" type
 inputEx.registerType("list", inputEx.ListField);
 
 
@@ -4033,7 +4132,8 @@ inputEx.messages.listRemoveLink = "remove";
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
- * @class A field limited to number inputs (floating)
+ * A field limited to number inputs (floating)
+ * @class inputEx.NumberField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -4041,11 +4141,17 @@ inputEx.messages.listRemoveLink = "remove";
 inputEx.NumberField = function(options) {
    inputEx.NumberField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField, 
-/**
- * @scope inputEx.NumberField.prototype   
- */
-{
+YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField, {
+   /**
+    * Adds the min, and max options
+    * @param {Object} options
+    */
+   setOptions: function(options) {
+      inputEx.NumberField.superclass.setOptions.call(this, options);
+      
+      this.options.min = lang.isUndefined(options.min) ? -Infinity : parseFloat(options.min);
+      this.options.max = lang.isUndefined(options.max) ? Infinity : parseFloat(options.max);
+   },
    /**
     * Return a parsed float (javascript type number)
     * @return {Number} The parsed float
@@ -4065,55 +4171,30 @@ YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField,
    validate: function() { 
       var v = this.getValue();
       
-      // empty field is OK
-      if (v == "") return true;
+      // empty field
+      if (val === '') {
+         // validate only if not required
+         return !this.options.required;
+      }
       
       if(isNaN(v)) return false;
 	   
 	   // We have to check the number with a regexp, otherwise "0.03a" is parsed to a valid number 0.03
-	   return !!this.el.value.match(/^([\+\-]?((([0-9]+(\.)?)|([0-9]*\.[0-9]+))([eE][+-]?[0-9]+)?))$/);
+	   return !!this.el.value.match(/^([\+\-]?((([0-9]+(\.)?)|([0-9]*\.[0-9]+))([eE][+-]?[0-9]+)?))$/) && v >= this.options.min && v <= this.options.max;
    }
 
 });
 
-/**
- * Register this class as "number" type
- */
+// Register this class as "number" type
 inputEx.registerType("number", inputEx.NumberField);
 
-})();(function() {
-	
-   var inputEx = YAHOO.inputEx;
-	
-/**
- * @class A meta field to put 2 fields on the same line
- * @extends inputEx.Field
- * @constructor
- * @param {Object} options Added options:
- * <ul>
- *    <li>leftFieldOptions: the left field type definition object (same as groups)</li>
- *    <li>rightFieldOptions: the right field type definition object (same as groups)</li>
- * </ul>
- */
-inputEx.PairField = function(options) {
-   options.fields = [options.leftFieldOptions || {}, options.rightFieldOptions || {}];
-   options.separators = [false, " : ", false];
-   inputEx.PairField.superclass.constructor.call(this, options);
-};
-	
-YAHOO.lang.extend( inputEx.PairField, inputEx.CombineField);
-	
-/**
- * Register this class as "pair" type
- */
-inputEx.registerType("pair", inputEx.PairField);
-	
 })();(function() {
 	
    var inputEx = YAHOO.inputEx,Event=YAHOO.util.Event,lang=YAHOO.lang;
 	
 /**
- * @class Create a password field.
+ * Create a password field.
+ * @class inputEx.PasswordField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -4126,11 +4207,7 @@ inputEx.registerType("pair", inputEx.PairField);
 inputEx.PasswordField = function(options) {
 	inputEx.PasswordField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.PasswordField, inputEx.StringField, 
-/**
- * @scope inputEx.PasswordField.prototype   
- */  
-{
+lang.extend(inputEx.PasswordField, inputEx.StringField, {
    
 	/**
 	 * Add the password regexp, strengthIndicator, capsLockWarning
@@ -4355,21 +4432,20 @@ inputEx.messages.invalidPasswordConfirmation = "Passwords are different !";
 inputEx.messages.capslockWarning = "Warning: CapsLock is on";
 inputEx.messages.passwordStrength = "Password Strength";
 
-/**
- * Register this class as "password" type
- */
+// Register this class as "password" type
 inputEx.registerType("password", inputEx.PasswordField);
 	
 })();(function() {	
 	var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
- * @class Create a radio button. Here are the added options :
+ * Create a radio button. Here are the added options :
  * <ul>
  *    <li>choices: list of choices (array of string)</li>
  *    <li>values: list of returned values (array )</li>
  *    <li>allowAny: add an option with a string field</li>
  * </ul>
+ * @class inputEx.RadioField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -4378,11 +4454,7 @@ inputEx.RadioField = function(options) {
 	inputEx.RadioField.superclass.constructor.call(this,options);
 };
 	
-lang.extend(inputEx.RadioField, inputEx.Field, 
-/**
- * @scope inputEx.RadioField.prototype   
- */
-{
+lang.extend(inputEx.RadioField, inputEx.Field, {
 	   
 	/**
 	 * Adds the Radio button specific options
@@ -4581,9 +4653,7 @@ lang.extend(inputEx.RadioField, inputEx.Field,
 	
 });   
 	
-/**
- * Register this class as "radio" type
- */
+// Register this class as "radio" type
 inputEx.registerType("radio", inputEx.RadioField);
 	
 })();(function() {
@@ -4591,7 +4661,8 @@ inputEx.registerType("radio", inputEx.RadioField);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
 	
 /**
- * @class Wrapper for the Rich Text Editor from YUI
+ * Wrapper for the Rich Text Editor from YUI
+ * @class inputEx.RTEField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -4603,11 +4674,7 @@ inputEx.registerType("radio", inputEx.RadioField);
 inputEx.RTEField = function(options) {
    inputEx.RTEField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.RTEField, inputEx.Field, 
-/**
- * @scope inputEx.RTEField.prototype   
- */  
-{   
+lang.extend(inputEx.RTEField, inputEx.Field, {   
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -4699,9 +4766,7 @@ lang.extend(inputEx.RTEField, inputEx.Field,
 	
 });
 	
-/**
- * Register this class as "html" type
- */
+// Register this class as "html" type
 inputEx.registerType("html", inputEx.RTEField);
 	
 })();(function() {
@@ -4709,7 +4774,8 @@ inputEx.registerType("html", inputEx.RTEField);
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
- * @class Create a select field
+ * Create a select field
+ * @class inputEx.SelectField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -4722,11 +4788,7 @@ inputEx.registerType("html", inputEx.RTEField);
 inputEx.SelectField = function(options) {
 	inputEx.SelectField.superclass.constructor.call(this,options);
  };
-lang.extend(inputEx.SelectField, inputEx.Field, 
-/**
- * @scope inputEx.SelectField.prototype
- */   
-{
+lang.extend(inputEx.SelectField, inputEx.Field, {
    /**
     * Set the default values of the options
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -4926,9 +4988,7 @@ lang.extend(inputEx.SelectField, inputEx.Field,
    
 });
 
-/**
- * Register this class as "select" type
- */
+// Register this class as "select" type
 inputEx.registerType("select", inputEx.SelectField);
 
 })();(function() {
@@ -4936,7 +4996,8 @@ inputEx.registerType("select", inputEx.SelectField);
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event;
 
 /**
- * @class Create a textarea input
+ * Create a textarea input
+ * @class inputEx.Textarea
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options Added options:
@@ -4948,11 +5009,7 @@ inputEx.registerType("select", inputEx.SelectField);
 inputEx.Textarea = function(options) {
 	inputEx.Textarea.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField, 
-/**
- * @scope inputEx.Textarea.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField, {
 
    /**
     * Set the specific options (rows and cols)
@@ -5016,15 +5073,39 @@ YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField,
          return inputEx.messages.stringTooLong[0]+this.options.maxLength+inputEx.messages.stringTooLong[1];
       }
 	   return inputEx.Textarea.superclass.getStateString.call(this, state);
+	},
+	
+	
+	/**
+	 * Insert text at the current cursor position
+	 * @param {String} text Text to insert
+	 */
+	insert: function(text) {
+		
+		var sel, startPos, endPos;
+		
+		//IE support
+		if (document.selection) {
+			this.el.focus();
+			sel = document.selection.createRange();
+			sel.text = text;
+		}
+		//Mozilla/Firefox/Netscape 7+ support
+		else if (this.el.selectionStart || this.el.selectionStart == '0') {
+			startPos = this.el.selectionStart;
+			endPos = this.el.selectionEnd;
+			this.el.value = this.el.value.substring(0, startPos)+ text+ this.el.value.substring(endPos, this.el.value.length);
+		} 
+		else {
+			this.el.value += text;
+		}	
 	}
 
 });
 
 inputEx.messages.stringTooLong = ["This field should contain at most "," numbers or characters"];
 
-/**
- * Register this class as "text" type
- */
+// Register this class as "text" type
 inputEx.registerType("text", inputEx.Textarea);
 
 })();(function() {
@@ -5032,7 +5113,8 @@ inputEx.registerType("text", inputEx.Textarea);
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
- * @class A field limited to number inputs (floating)
+ * A field limited to number inputs (floating)
+ * @class inputEx.TimeField
  * @extends inputEx.CombineField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -5053,11 +5135,7 @@ inputEx.TimeField = function(options) {
    options.separators = options.separators || [false,":",":",false];
    inputEx.TimeField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.TimeField, inputEx.CombineField, 
-/**
- * @scope inputEx.TimeField.prototype   
- */
-{   
+lang.extend(inputEx.TimeField, inputEx.CombineField, {   
    /**
     * Returns a string like HH:MM:SS
     * @return {String} Hour string
@@ -5078,9 +5156,7 @@ lang.extend(inputEx.TimeField, inputEx.CombineField,
 
 });
 
-/**
- * Register this class as "time" type
- */
+// Register this class as "time" type
 inputEx.registerType("time", inputEx.TimeField);
 
 })();(function() {
@@ -5088,7 +5164,8 @@ inputEx.registerType("time", inputEx.TimeField);
    var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
- * @class A field limited to number inputs (floating)
+ * A field limited to number inputs (floating)
+ * @class inputEx.DateTimeField
  * @extends inputEx.CombineField
  * @constructor
  * @param {Object} options Added options
@@ -5107,11 +5184,7 @@ inputEx.DateTimeField = function(options) {
    options.separators = options.separators || [false, "&nbsp;&nbsp;", false];
    inputEx.DateTimeField.superclass.constructor.call(this,options);
 };
-lang.extend(inputEx.DateTimeField, inputEx.CombineField, 
-/**
- * @scope inputEx.DateTimeField.prototype   
- */
-{   
+lang.extend(inputEx.DateTimeField, inputEx.CombineField, {   
    /**
     * Concat the values to return a date
     * @return {Date} The javascript Date object
@@ -5146,9 +5219,7 @@ lang.extend(inputEx.DateTimeField, inputEx.CombineField,
 
 
 
-/**
- * Register this class as "time" type
- */
+// Register this class as "time" type
 inputEx.registerType("datetime", inputEx.DateTimeField);
 
 })();(function() {
@@ -5156,11 +5227,12 @@ inputEx.registerType("datetime", inputEx.DateTimeField);
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Create a uneditable field where you can stick the html you want
+ * Create a uneditable field where you can stick the html you want
  * Added Options:
  * <ul>
  *    <li>visu: inputEx visu type</li>
  * </ul>
+ * @class inputEx.UneditableField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -5168,11 +5240,7 @@ inputEx.registerType("datetime", inputEx.DateTimeField);
 inputEx.UneditableField = function(options) {
 	inputEx.UneditableField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, 
-/**
- * @scope inputEx.UneditableField.prototype   
- */
-{
+YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, {
    
    /**
     * Set the default values of the options
@@ -5206,9 +5274,7 @@ YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field,
    
 });
 
-/**
- * Register this class as "url" type
- */
+// Register this class as "url" type
 inputEx.registerType("uneditable", inputEx.UneditableField);
 
 })();(function() {
@@ -5216,7 +5282,8 @@ inputEx.registerType("uneditable", inputEx.UneditableField);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
 
 /**
- * @class Adds an url regexp, and display the favicon at this url
+ * Adds an url regexp, and display the favicon at this url
+ * @class inputEx.UrlField
  * @extends inputEx.StringField
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -5228,11 +5295,7 @@ inputEx.UrlField = function(options) {
    inputEx.UrlField.superclass.constructor.call(this,options);
 };
 
-lang.extend(inputEx.UrlField, inputEx.StringField,
-/**
- * @scope inputEx.UrlField.prototype
- */
-{
+lang.extend(inputEx.UrlField, inputEx.StringField, {
 
    /**
     * Adds the invalid Url message
@@ -5311,19 +5374,16 @@ lang.extend(inputEx.UrlField, inputEx.StringField,
 inputEx.messages.invalidUrl = "Invalid URL, ex: http://www.test.com";
 
 
-/**
- * Register this class as "url" type
- */
+// Register this class as "url" type
 inputEx.registerType("url", inputEx.UrlField);
 
 })();(function() {
 
    var inputEx = YAHOO.inputEx, DD = YAHOO.util.DragDropMgr, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
-
-
-
+   
 /**
- * @class DDProxy for DDList items (used by DDList)
+ * DDProxy for DDList items (used by DDList)
+ * @class inputEx.widget.DDListItem
  * @extends YAHOO.util.DDProxy
  * @constructor
  * @param {String} id
@@ -5341,7 +5401,10 @@ inputEx.widget.DDListItem = function(id) {
 
 YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
 
-    startDrag: function(x, y) {
+   /**
+    * Create the proxy element
+    */
+   startDrag: function(x, y) {
         // make the proxy look like the source element
         var dragEl = this.getDragEl();
         var clickEl = this.getEl();
@@ -5351,6 +5414,9 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
         dragEl.innerHTML = clickEl.innerHTML;
     },
 
+    /**
+     * Handle the endDrag and eventually fire the listReordered event
+     */
     endDrag: function(e) {
         Dom.setStyle(this.id, "visibility", "");
         
@@ -5358,10 +5424,13 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
         var clickEl = this.getEl();
         var newIndex = inputEx.indexOf(clickEl ,clickEl.parentNode.childNodes);
         if(this._originalIndex != newIndex) {
-           this._list.listReorderedEvt.fire();
+           this._list.onReordered(this._originalIndex, newIndex);
         }
     },
 
+    /**
+     * @method onDragDrop
+     */
     onDragDrop: function(e, id) {
 
         // If there is one drop interaction, the li was dropped either on the list,
@@ -5390,9 +5459,10 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
         }
     },
 
+    /**
+     * Keep track of the direction of the drag for use during onDragOver
+     */
     onDrag: function(e) {
-
-        // Keep track of the direction of the drag for use during onDragOver
         var y = Event.getPageY(e);
 
         if (y < this.lastY) {
@@ -5404,6 +5474,9 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
         this.lastY = y;
     },
 
+    /**
+     * @method onDragOver
+     */
     onDragOver: function(e, id) {
     
         var srcEl = this.getEl();
@@ -5428,8 +5501,8 @@ YAHOO.extend(inputEx.widget.DDListItem, YAHOO.util.DDProxy, {
 
 
 /**
- * @class Create a sortable list 
- * @extends inputEx.widget.DDList
+ * Create a sortable list 
+ * @class inputEx.widget.DDList
  * @constructor
  * @param {Object} options Options:
  * <ul>
@@ -5441,6 +5514,8 @@ inputEx.widget.DDList = function(options) {
    
    this.ul = inputEx.cn('ul');
    
+   this.items = [];
+   
    if(options.id) {
       this.ul.id = options.id;
    }
@@ -5450,15 +5525,13 @@ inputEx.widget.DDList = function(options) {
    }
    
    /**
-	 * @event
+	 * @event YAHOO custom event fired when an item is removed
 	 * @param {Any} itemValue value of the removed item
-	 * @desc YAHOO custom event fired when an item is removed
 	 */
 	this.itemRemovedEvt = new YAHOO.util.CustomEvent('itemRemoved', this);
 	
 	/**
-	 * @event
-	 * @desc YAHOO custom event fired when the list is reordered
+	 * @event YAHOO custom event fired when the list is reordered
 	 */
    this.listReorderedEvt = new YAHOO.util.CustomEvent('listReordered', this);
    
@@ -5475,9 +5548,13 @@ inputEx.widget.DDList = function(options) {
 
 inputEx.widget.DDList.prototype = {
    
-   addItem: function(value) {
+   /**
+    * Add an item to the list
+    * @param {String|Object} item Either a string with the given value or an object with "label" and "value" attributes
+    */
+   addItem: function(item) {
       var li = inputEx.cn('li', {className: 'inputEx-DDList-item'});
-      li.appendChild( inputEx.cn('span', null, null, value) );
+      li.appendChild( inputEx.cn('span', null, null, (typeof item == "object") ? item.label : item) );
       var removeLink = inputEx.cn('a', null, null, "remove"); 
       li.appendChild( removeLink );
       Event.addListener(removeLink, 'click', function(e) {
@@ -5485,46 +5562,82 @@ inputEx.widget.DDList.prototype = {
          var li = a.parentNode;
          this.removeItem( inputEx.indexOf(li,this.ul.childNodes) );
       }, this, true);
-      var item = new inputEx.widget.DDListItem(li);
-      item._list = this;
+      
+      var dditem = new inputEx.widget.DDListItem(li);
+      dditem._list = this;
+      
+      this.items.push( (typeof item == "object") ? item.value : item );
+      
       this.ul.appendChild(li);
    },
    
-   /*
-   * private method to remove an item
-   */
+   /**
+    * private method to remove an item
+    * @param {Integer} index index of item to be removed
+    * @private
+    */
    _removeItem: function(i) {
       
-      var itemValue = this.ul.childNodes[i].childNodes[0].innerHTML;
-      
+      var itemValue = this.items[i];
+   
       this.ul.removeChild(this.ul.childNodes[i]);
+      
+      this.items[i] = null;
+      this.items = inputEx.compactArray(this.items);
       
       return itemValue;
    },
    
-   /*
-   *  public metnod to remove an item
-   *    _removeItem function + event firing
-   */
-   removeItem: function(i) {
-      var itemValue = this._removeItem(i);
+   /**
+    * Method to remove an item (_removeItem function + event firing)
+    * @param {Integer} index Item index
+    */
+   removeItem: function(index) {
+      var itemValue = this._removeItem(index);
       
       // Fire the itemRemoved Event
       this.itemRemovedEvt.fire(itemValue);
    },
    
-   getValue: function() {
-      var value = [];
-      for(var i = 0 ; i < this.ul.childNodes.length ; i++) {
-         value.push(this.ul.childNodes[i].childNodes[0].innerHTML);
+   /**
+    * Called by the DDListItem when an item as been moved
+    */
+   onReordered: function(originalIndex, newIndex) {
+      if(originalIndex < newIndex) {
+         this.items.splice(newIndex+1,0, this.items[originalIndex]);
+         this.items[originalIndex] = null;
       }
-      return value;
+      else {
+         this.items.splice(newIndex,0, this.items[originalIndex]);
+         this.items[originalIndex+1] = null;
+      }      
+      this.items = inputEx.compactArray(this.items);
+      
+      this.listReorderedEvt.fire();
    },
    
-   updateItem: function(i,value) {
-      this.ul.childNodes[i].childNodes[0].innerHTML = value;
+   /**
+    * Return the current value of the field
+    * @return {Array} array of values
+    */
+   getValue: function() {
+      return this.items;
    },
    
+   /**
+    * Update the value of a given item
+    * @param {Integer} index Item index
+    * @param {Any} value New value
+    */
+   updateItem: function(index,value) {
+      this.items[index] = value;
+      this.ul.childNodes[index].childNodes[0].innerHTML = value;
+   },
+   
+   /**
+    * Set the value of the list
+    * @param {Array} value list of values
+    */
    setValue: function(value) {
       // if trying to set wrong value (or ""), reset
       if (!YAHOO.lang.isArray(value)) {
@@ -5557,7 +5670,8 @@ inputEx.widget.DDList.prototype = {
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Create a multi select field
+ * Create a multi select field
+ * @class inputEx.MultiSelectField
  * @extends inputEx.SelectField
  * @constructor
  * @param {Object} options Added options:
@@ -5569,11 +5683,7 @@ inputEx.widget.DDList.prototype = {
 inputEx.MultiSelectField = function(options) {
 	inputEx.MultiSelectField.superclass.constructor.call(this,options);
  };
-YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField, 
-/**
- * @scope inputEx.MultiSelectField.prototype   
- */   
-{
+YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,{
    
    /**
     * Build the DDList
@@ -5610,7 +5720,12 @@ YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,
       if(this.el.selectedIndex != 0) {
          
          // Add the value to the ddlist
-         this.ddlist.addItem(this.options.selectValues[this.el.selectedIndex]);
+         if(this.options.selectOptions) {
+            this.ddlist.addItem({value: this.options.selectValues[this.el.selectedIndex], label: this.options.selectOptions[this.el.selectedIndex]});
+         }
+         else {
+            this.ddlist.addItem(this.options.selectValues[this.el.selectedIndex]);
+         }
          
          // mark option disabled
          this.el.childNodes[this.el.selectedIndex].disabled = true;
@@ -5657,9 +5772,7 @@ YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,
    
 });
 
-/**
- * Register this class as "multiselect" type
- */
+// Register this class as "multiselect" type
 inputEx.registerType("multiselect", inputEx.MultiSelectField);
 
 })();(function() {
@@ -5667,7 +5780,8 @@ inputEx.registerType("multiselect", inputEx.MultiSelectField);
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
- * @class An autocomplete field that wraps the YUI autocompleter
+ * An autocomplete field that wraps the YUI autocompleter
+ * @class inputEx.AutoComplete
  * @constructor
  * @extends inputEx.StringField
  * @param {Object} options Added options for Autocompleter
@@ -5681,11 +5795,7 @@ inputEx.AutoComplete = function(options) {
    inputEx.AutoComplete.superclass.constructor.call(this, options);
 };
 
-lang.extend(inputEx.AutoComplete, inputEx.StringField, 
-/**
- * @scope inputEx.AutoComplete.prototype   
- */   
-{
+lang.extend(inputEx.AutoComplete, inputEx.StringField, {
 
    /**
     * Adds autocomplete options
@@ -5836,18 +5946,17 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField,
 });
 
 
-/**
-* Register this class as "autocomplete" type
-*/
+// Register this class as "autocomplete" type
 inputEx.registerType("autocomplete", inputEx.AutoComplete);
 
 })();
 (function() {
 
-   var inputEx = YAHOO.inputEx;
+   var lang = YAHOO.lang;
 
 /**
- * @class Create a multi autocomplete field
+ * Create a multi autocomplete field
+ * @class inputEx.MultiAutoComplete
  * @extends inputEx.AutoComplete
  * @constructor
  * @param {Object} options Added options:
@@ -5857,11 +5966,7 @@ inputEx.registerType("autocomplete", inputEx.AutoComplete);
 inputEx.MultiAutoComplete = function(options) {
 	inputEx.MultiAutoComplete.superclass.constructor.call(this,options);
  };
-YAHOO.lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete, 
-/**
- * @scope inputEx.MultiAutoComplete.prototype   
- */   
-{
+lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete, {
    
    /**
     * Build the DDList
@@ -5877,9 +5982,24 @@ YAHOO.lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete,
       this.ddlist.listReorderedEvt.subscribe(this.fireUpdatedEvt, this, true);
    },  
    
+   /**
+    * Additional options
+    */
+   setOptions: function(options) {
+      inputEx.MultiAutoComplete.superclass.setOptions.call(this, options);
+      
+      // Method to format the ddlist item labels
+      this.options.returnLabel = options.returnLabel;
+   },
+   
+   /**
+    * Handle item selection in the autocompleter to add it to the list
+    */
    itemSelectHandler: function(sType, aArgs) {
    	var aData = aArgs[2];
-   	this.ddlist.addItem( this.options.returnValue ? this.options.returnValue(aData) : aData[0] );
+   	var value = lang.isFunction(this.options.returnValue) ? this.options.returnValue(aData) : aData[0];
+   	var label = lang.isFunction(this.options.returnLabel) ? this.options.returnLabel(aData) : value;   	
+   	this.ddlist.addItem({label: label, value: value});
    	this.el.value = "";
    	this.fireUpdatedEvt();
    },
@@ -5941,9 +6061,7 @@ YAHOO.lang.extend(inputEx.MultiAutoComplete, inputEx.AutoComplete,
    
 });
 
-/**
- * Register this class as "multiautocomplete" type
- */
+// Register this class as "multiautocomplete" type
 inputEx.registerType("multiautocomplete", inputEx.MultiAutoComplete);
 
 })();(function() {
@@ -5951,11 +6069,12 @@ inputEx.registerType("multiautocomplete", inputEx.MultiAutoComplete);
    var inputEx = YAHOO.inputEx;
 
 /**
- * @class Create a uneditable field where you can stick the html you want
+ * Create a uneditable field where you can stick the html you want
  * Added Options:
  * <ul>
  *    <li>visu: inputEx visu type</li>
  * </ul>
+ * @class inputEx.UneditableField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -5963,11 +6082,7 @@ inputEx.registerType("multiautocomplete", inputEx.MultiAutoComplete);
 inputEx.UneditableField = function(options) {
 	inputEx.UneditableField.superclass.constructor.call(this,options);
 };
-YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, 
-/**
- * @scope inputEx.UneditableField.prototype   
- */
-{
+YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, {
    
    /**
     * Set the default values of the options
@@ -6001,16 +6116,15 @@ YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field,
    
 });
 
-/**
- * Register this class as "url" type
- */
+// Register this class as "url" type
 inputEx.registerType("uneditable", inputEx.UneditableField);
 
 })();(function () {
      var inputEx = YAHOO.inputEx,lang=YAHOO.lang;
      
 /**
- * @class Create a slider using YUI widgets
+ * Create a slider using YUI widgets
+ * @class inputEx.SliderField
  * @extends inputEx.Field
  * @constructor
  * @param {Object} options inputEx.Field options object
@@ -6019,11 +6133,7 @@ inputEx.SliderField = function(options) {
    inputEx.SliderField.superclass.constructor.call(this,options);
 };
 
-YAHOO.lang.extend(inputEx.SliderField, inputEx.Field, 
-/**
- * @scope inputEx.SliderField.prototype   
- */  
-{
+YAHOO.lang.extend(inputEx.SliderField, inputEx.Field, {
    /**
     * Set the classname to 'inputEx-SliderField'
     * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
@@ -6107,9 +6217,7 @@ YAHOO.lang.extend(inputEx.SliderField, inputEx.Field,
     
 });
 
-/**
- * Register this class as "slider" type
- */
+// Register this class as "slider" type
 inputEx.registerType("slider", inputEx.SliderField);
 
 })();

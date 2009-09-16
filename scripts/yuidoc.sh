@@ -10,14 +10,14 @@ parser_in="$HOME/Projets/inputex/master/js"
 
 # The location to output the parser data.  This output is a file containing a 
 # json string, and copies of the parsed files.
-parser_out=~/Projets/inputex/master/build/doc-parser
+parser_out=~/Projets/inputex/master/scripts/doc-parser
 
 # The directory to put the html file outputted by the generator
 generator_out=~/Projets/inputex/master/doc/
 
 # The location of the template files.  Any subdirectories here will be copied
 # verbatim to the destination directory.
-template=~/Projets/inputex/master/build/doc-template
+template=~/Projets/inputex/master/scripts/doc-template
 
 # The version of your project to display within the documentation.
 version=0.2.3a
