@@ -130,15 +130,27 @@ lang.augmentObject(inputEx, {
     * When you create a new inputEx Field Class, you can register it to give it a simple type.
     * ex:   inputEx.registerType("color", inputEx.ColorField);
     * @static
+    * @param {String} type String used as the inputEx field type
+    * @param {Class} fieldClass Field Class to register as this type
+	 * @param {Array} groupOptions List of inputEx field description for each option
+	 * @param {Boolean} dontInherit Won't inherhit the parent field properties if set to true
     */
-   registerType: function(type, field) {
+   registerType: function(type, fieldClass, groupOptions, dontInherit) {
       if(!lang.isString(type)) {
          throw new Error("inputEx.registerType: first argument must be a string");
       }
-      if(!lang.isFunction(field)) {
+      if(!lang.isFunction(fieldClass)) {
          throw new Error("inputEx.registerType: second argument must be a function");
       }
-      this.typeClasses[type] = field;
+      this.typeClasses[type] = fieldClass;
+      
+      // Setup the groupOptions property on the class
+      var opts = [];
+      if(lang.isArray(groupOptions)) { opts = groupOptions; }
+      if(fieldClass.superclass && !dontInherit && lang.isArray(fieldClass.superclass.constructor.groupOptions) ) {
+         opts = opts.concat(fieldClass.superclass.constructor.groupOptions);
+      }
+      fieldClass.groupOptions = opts;
    },
    
    /**
@@ -287,7 +299,26 @@ lang.augmentObject(inputEx, {
          }
       }
       return n;
-   }
+   },
+
+	/**
+	 * Return a string without accent (only on lowercase)
+	 * @static
+	 * @param {String} str The string
+	 * @return {String} String without accent
+	 */
+	removeAccents: function (str) {
+	   return str.replace(/[àáâãäå]/g,"a").
+					  replace(/[èéêë]/g,"e").
+					  replace(/[ìíîï]/g,"i").
+					  replace(/[òóôõö]/g,"o").
+					  replace(/[ùúûü]/g,"u").
+					  replace(/[ýÿ]/g,"y").
+					  replace(/[ñ]/g,"n").
+					  replace(/[ç]/g,"c").
+					  replace(/[œ]/g,"oe").
+					  replace(/[æ]/g,"ae");
+	}
    
 });
 
@@ -1161,6 +1192,14 @@ inputEx.Field.prototype = {
    
 };
 
+inputEx.Field.groupOptions = [
+   { type: "string", inputParams:{label: "Label", name: "label", value: ''} },
+   { type: "string", inputParams:{label: "Name", name: "name", value: ''} },
+   { type: "string", inputParams: {label: "Description",name: "description", value: ''} },
+   { type: "boolean", inputParams: {label: "Required?",name: "required", value: false} },
+   { type: "boolean", inputParams: {label: "Show messages",name: "showMsg", value: false} }
+];
+
 })();(function() {
    
    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
@@ -1538,7 +1577,13 @@ lang.extend(inputEx.Group, inputEx.Field, {
 
    
 // Register this class as "group" type
-inputEx.registerType("group", inputEx.Group);
+inputEx.registerType("group", inputEx.Group, [
+   { type: "string", inputParams:{label: "Name", name: "name", value: ''} },
+   { type: 'string', inputParams: { label: 'Legend', name:'legend'}},
+   { type: 'boolean', inputParams: {label: 'Collapsible', name:'collapsible', value: false}},
+   { type: 'boolean', inputParams: {label: 'Collapsed', name:'collapsed', value: false}},
+   { type: 'list', inputParams:{ label: 'Fields', name: 'fields', elementType: {type: 'type' } } }
+], true);
 
 
 })();(function () {
@@ -1576,8 +1621,8 @@ lang.extend(inputEx.Form, inputEx.Group, {
       this.options.action = options.action;
    	this.options.method = options.method;
 
-		 this.options.className =  options.className || 'inputEx-Group';
-		
+		this.options.className =  options.className || 'inputEx-Group';
+		this.options.autocomplete = lang.isUndefined(options.autocomplete) ? true : options.autocomplete;
 		
 
       if(options.ajax) {
@@ -1613,7 +1658,9 @@ lang.extend(inputEx.Form, inputEx.Group, {
       this.divEl.appendChild(this.form);
 
 	   // Set the autocomplete attribute to off to disable firefox autocompletion
-	   //this.form.setAttribute('autocomplete','off');
+		if(!this.options.autocomplete) {
+	   	this.form.setAttribute('autocomplete','off');
+		}
    	
       // Set the name of the form
       if(this.options.formName) { this.form.name = this.options.formName; }
@@ -1692,44 +1739,40 @@ lang.extend(inputEx.Form, inputEx.Group, {
 	
 		var postData = null;
 		
-		// method PUT don't send as x-www-form-urlencoded but in JSON
-		/*if(method == "PUT") {
-			YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
-			postData = lang.JSON.stringify(this.getValue());
-		}
-		else {*/
-			
-			if(this.options.ajax.contentType == "application/x-www-form-urlencoded") {
-				var params = [];
-				for(var key in formValue) {
-					if(formValue.hasOwnProperty(key)) {
-						var pName = (this.options.ajax.wrapObject ? this.options.ajax.wrapObject+'[' : '')+key+(this.options.ajax.wrapObject ? ']' : '');
-						params.push( pName+"="+window.encodeURIComponent(formValue[key]));
-					}
+		// Classic application/x-www-form-urlencoded (like html forms)
+		if(this.options.ajax.contentType == "application/x-www-form-urlencoded" && method != "PUT") {
+			var params = [];
+			for(var key in formValue) {
+				if(formValue.hasOwnProperty(key)) {
+					var pName = (this.options.ajax.wrapObject ? this.options.ajax.wrapObject+'[' : '')+key+(this.options.ajax.wrapObject ? ']' : '');
+					params.push( pName+"="+window.encodeURIComponent(formValue[key]));
 				}
-				postData = params.join('&');
 			}
-			else {
-				YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
-				
-				if(method == "PUT") {// TODO: this is a very shitty hack
-					var formVal = this.getValue();
-					var p;
-					if(this.options.ajax.wrapObject) {
-						p = {};
-						p[this.options.ajax.wrapObject] = formVal;
-					}
-					else {
-						p = formVal;
-					}
-					postData = lang.JSON.stringify(p);
+			postData = params.join('&');
+		}
+		// The only other contentType available is "application/json"
+		else {
+			YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
+			
+			// method PUT don't send as x-www-form-urlencoded but in JSON
+			if(method == "PUT") {
+				var formVal = this.getValue();
+				var p;
+				if(this.options.ajax.wrapObject) {
+					p = {};
+					p[this.options.ajax.wrapObject] = formVal;
 				}
 				else {
-					postData = "value="+lang.JSON.stringify(this.getValue());
+					p = formVal;
 				}
+				postData = lang.JSON.stringify(p);
 			}
-			
-	//	}		
+			else {
+				// We keep this case for backward compatibility, but should not be used
+				// Used when we send in JSON in POST or GET
+				postData = "value="+lang.JSON.stringify(this.getValue());
+			}
+		}
 		
       util.Connect.asyncRequest( method, uri, {
          success: function(o) {
@@ -1844,7 +1887,22 @@ lang.extend(inputEx.Form, inputEx.Group, {
 inputEx.messages.ajaxWait = "Please wait...";;
 
 // Register this class as "form" type
-inputEx.registerType("form", inputEx.Form);
+inputEx.registerType("form", inputEx.Form, [
+   {type: 'list', inputParams:{ 
+      label: 'Buttons', 
+      name: 'buttons', 
+         elementType: {
+            type: 'group', 
+            inputParams: { 
+               fields: [
+                  { inputParams: {label: 'Label', name: 'value'}},
+                  { type: 'select', inputParams: {label: 'Type', name: 'type', selectValues:["button", "submit"]} }
+               ] 
+            } 
+         } 
+      } 
+   }
+]);
 
 
 })();
@@ -2003,7 +2061,10 @@ lang.extend( inputEx.CombineField, inputEx.Group, {
 });
 	
 // Register this class as "combine" type
-inputEx.registerType("combine", inputEx.CombineField);
+inputEx.registerType("combine", inputEx.CombineField, [
+   { type: 'list', inputParams: {name: 'fields', label: 'Elements', required: true, elementType: {type: 'type'} } },
+   { type: 'list', inputParams: {name: 'separators', label: 'Separators', required: true } }
+]);
 	
 })();(function() {
 
@@ -2247,7 +2308,11 @@ lang.extend(inputEx.StringField, inputEx.Field, {
 inputEx.messages.stringTooShort = ["This field should contain at least "," numbers or characters"];
 
 // Register this class as "string" type
-inputEx.registerType("string", inputEx.StringField);
+inputEx.registerType("string", inputEx.StringField, [
+    { type: 'string',  inputParams: { label: 'Type invite', name: 'typeInvite', value: ''}},
+    { type: 'integer', inputParams: { label: 'Size', name: 'size', value: 20}},
+    { type: 'integer', inputParams: { label: 'Min. length', name: 'minLength', value: 0}}
+]);
 
 })();
 (function() {
@@ -2562,7 +2627,9 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 });   
 	
 // Register this class as "boolean" type
-inputEx.registerType("boolean", inputEx.CheckBox);
+inputEx.registerType("boolean", inputEx.CheckBox, [ 
+   {type: 'string', inputParams: {label: 'Right Label', name: 'rightLabel'} } 
+]);
 	
 })();(function() {
 	
@@ -2838,7 +2905,7 @@ inputEx.ColorField.ensureHexa = function (color) {
 };
 
 // Register this class as "color" type
-inputEx.registerType("color", inputEx.ColorField);
+inputEx.registerType("color", inputEx.ColorField, []);
 	
 })();(function() {
 	
@@ -2949,7 +3016,9 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
 	
 // Register this class as "date" type
-inputEx.registerType("date", inputEx.DateField);
+inputEx.registerType("date", inputEx.DateField, [
+   {type: 'select', inputParams: {label: 'Date format', name: 'dateFormat', selectOptions: ["m/d/Y", "d/m/Y"], selectValues: ["m/d/Y", "d/m/Y"] } }
+]);
 	
 })();(function() {
 
@@ -3327,7 +3396,7 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
     * @return {String} The email string
     */
    getValue: function() {
-      return this.el.value.toLowerCase();
+      return inputEx.removeAccents(this.el.value.toLowerCase());
    }
 
 });
@@ -3336,7 +3405,7 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
 inputEx.messages.invalidEmail = "Invalid email, ex: sample@test.com";
 
 // Register this class as "email" type
-inputEx.registerType("email", inputEx.EmailField);
+inputEx.registerType("email", inputEx.EmailField, []);
 
 })();(function() {
 
@@ -3652,7 +3721,9 @@ inputEx.messages.cancelEditor = "cancel";
 inputEx.messages.okEditor = "Ok";
 
 // Register this class as "inplaceedit" type
-inputEx.registerType("inplaceedit", inputEx.InPlaceEdit);
+inputEx.registerType("inplaceedit", inputEx.InPlaceEdit, [
+   { type:'type', inputParams: {label: 'Editor', name: 'editorField'} }
+]);
 
 })();(function() {
 
@@ -3704,7 +3775,7 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
       var v = this.getValue();
       
       // empty field
-      if (val === '') {
+      if (v === '') {
          // validate only if not required
          return !this.options.required;
       }
@@ -3716,7 +3787,10 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
 });
 
 // Register this class as "integer" type
-inputEx.registerType("integer", inputEx.IntegerField);
+inputEx.registerType("integer", inputEx.IntegerField, [
+   //{ type: 'integer', inputParams: {label: 'Radix', name: 'radix', value: 10}},
+   {type: 'boolean', inputParams: {label: 'Accept negative', name: 'negative', value: false} }
+]);
 
 })();(function() {
 	
@@ -4121,7 +4195,10 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 });
 	
 // Register this class as "list" type
-inputEx.registerType("list", inputEx.ListField);
+inputEx.registerType("list", inputEx.ListField, [
+   { type: 'string', inputParams: {label: 'List label', name: 'listLabel', value: ''}},
+   { type: 'type', inputParams: {label: 'List element type', required: true, name: 'elementType'} }
+]);
 
 
 inputEx.messages.listAddLink = "Add";
@@ -4172,7 +4249,7 @@ YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField, {
       var v = this.getValue();
       
       // empty field
-      if (val === '') {
+      if (v === '') {
          // validate only if not required
          return !this.options.required;
       }
@@ -4186,7 +4263,7 @@ YAHOO.lang.extend(inputEx.NumberField, inputEx.StringField, {
 });
 
 // Register this class as "number" type
-inputEx.registerType("number", inputEx.NumberField);
+inputEx.registerType("number", inputEx.NumberField, []);
 
 })();(function() {
 	
@@ -4433,7 +4510,10 @@ inputEx.messages.capslockWarning = "Warning: CapsLock is on";
 inputEx.messages.passwordStrength = "Password Strength";
 
 // Register this class as "password" type
-inputEx.registerType("password", inputEx.PasswordField);
+inputEx.registerType("password", inputEx.PasswordField, [
+   {type: 'boolean', inputParams: {label: 'Strength indicator', name: 'strengthIndicator', value: false} },
+   {type: 'boolean', inputParams: {label: 'CapsLock warning', name: 'capsLockWarning', value: false} }
+]);
 	
 })();(function() {	
 	var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
@@ -4654,7 +4734,10 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 });   
 	
 // Register this class as "radio" type
-inputEx.registerType("radio", inputEx.RadioField);
+inputEx.registerType("radio", inputEx.RadioField, [
+   {type: 'list', inputParams: {label: 'Options', name: 'choices', elementType: {type: 'string'} } },
+   {type: 'boolean', inputParams: {label: 'Allow custom value', name: 'allowAny'}, value: false  }
+]);
 	
 })();(function() {
 	
@@ -4767,7 +4850,7 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 });
 	
 // Register this class as "html" type
-inputEx.registerType("html", inputEx.RTEField);
+inputEx.registerType("html", inputEx.RTEField, []);
 	
 })();(function() {
 
@@ -4989,7 +5072,10 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
 });
 
 // Register this class as "select" type
-inputEx.registerType("select", inputEx.SelectField);
+inputEx.registerType("select", inputEx.SelectField, [
+   {  type: 'list', inputParams: {name: 'selectValues', label: 'Values', elementType: {type: 'string'}, required: true } },
+   {  type: 'list', inputParams: {name: 'selectOptions', label: 'Options', elementType: {type: 'string'} } }
+]);
 
 })();(function() {
 
@@ -5106,7 +5192,10 @@ YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField, {
 inputEx.messages.stringTooLong = ["This field should contain at most "," numbers or characters"];
 
 // Register this class as "text" type
-inputEx.registerType("text", inputEx.Textarea);
+inputEx.registerType("text", inputEx.Textarea, [
+   { type: 'integer', inputParams: {label: 'Rows',  name: 'rows', value: 6} },
+   { type: 'integer', inputParams: {label: 'Cols', name: 'cols', value: 23} }
+]);
 
 })();(function() {
 
@@ -5375,7 +5464,9 @@ inputEx.messages.invalidUrl = "Invalid URL, ex: http://www.test.com";
 
 
 // Register this class as "url" type
-inputEx.registerType("url", inputEx.UrlField);
+inputEx.registerType("url", inputEx.UrlField, [
+   {  type: 'boolean', inputParams: {label: 'Display favicon', name:'favicon', value: true}}
+]);
 
 })();(function() {
 
@@ -6218,6 +6309,9 @@ YAHOO.lang.extend(inputEx.SliderField, inputEx.Field, {
 });
 
 // Register this class as "slider" type
-inputEx.registerType("slider", inputEx.SliderField);
+inputEx.registerType("slider", inputEx.SliderField, [
+   { type: 'integer', inputParams: {label: 'Min. value',  name: 'minValue', value: 0} },
+   { type: 'integer', inputParams: {label: 'Max. value', name: 'maxValue', value: 100} }
+]);
 
 })();

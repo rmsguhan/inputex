@@ -42,51 +42,57 @@
 <script src="js/dpSyntaxHighlighter.js"></script>
 <script src="inputex-examples.js"></script>
 
-<script>
 
 
-inputEx.examples = [
 
-	{
-		title: "Basic MultiSelectField creation",
-		description: "Use the following code to create a basic inputEx MultiSelectField. The first value of \"selectValues\" is used as the invite text to select an option.",
-		code: function(exampleContainer) {
-			var ms = new YAHOO.inputEx.MultiSelectField({
-				label: 'Javascript libraries you use', 
-				name: 'country', 
-				selectValues: ['Choose a library', 'YUI','Dojo','Prototype','Scriptaculous', 'mootools'], 
-				parentEl: exampleContainer, 
-				description: 'Select and order your favorite libraries'
-			});
-			ms.updatedEvt.subscribe(function(e,params) {
-				var value = YAHOO.lang.JSON.stringify(params[0]);
-				exampleContainer.appendChild( YAHOO.inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value+"<br />") );
-			});
-		}
-	},
-	
-	{
-		title: "Change returned values",
-		description: "As SelectField, MultiSelect field use the selectOptions to set the labels for the options",
-		code: function(exampleContainer) {
-			var ms = new YAHOO.inputEx.MultiSelectField({
-				label: 'Javascript libraries you use', 
-				name: 'country', 
-				selectValues: [null, 'yui','dojo','prototype','scriptaculous', 'mootools'], 
-				selectOptions: ['Choose a library', 'YUI','Dojo','Prototype','Scriptaculous', 'mootools'], 
-				parentEl: exampleContainer, 
-				description: 'Select and order your favorite libraries'
-			});
-			ms.updatedEvt.subscribe(function(e,params) {
-				var value = YAHOO.lang.JSON.stringify(params[0]);
-				exampleContainer.appendChild( YAHOO.inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value+"<br />") );
-			});
-		}
-	}
-	
-];
+<!-- Example 1 -->
+<div class='exampleDiv'>
+ <p class="title">Basic MultiSelectField creation</p>
+ <p>Use the following code to create a basic inputEx MultiSelectField. The first value of "selectValues" is used as the invite text to select an option.</p>
+ <div class='demoContainer' id='container1'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		var ms = new YAHOO.inputEx.MultiSelectField({
+			label: 'Javascript libraries you use', 
+			name: 'country', 
+			selectValues: ['Choose a library', 'YUI','Dojo','Prototype','Scriptaculous', 'mootools'], 
+			parentEl: 'container1', 
+			description: 'Select and order your favorite libraries'
+		});
+		ms.updatedEvt.subscribe(function(e,params) {
+			var value = YAHOO.lang.JSON.stringify(params[0]);
+			YAHOO.util.Dom.get('container1').appendChild( YAHOO.inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value) );
+		});
+  </textarea>
+ </div>
+</div>
 
-</script>
+
+
+
+<!-- Example 2 -->
+<div class='exampleDiv'>
+ <p class="title">Change returned values</p>
+ <p>As SelectField, MultiSelect field use the selectOptions to set the labels for the options</p>
+ <div class='demoContainer' id='container2'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		var ms = new YAHOO.inputEx.MultiSelectField({
+			label: 'Javascript libraries you use', 
+			name: 'country', 
+			selectValues: [null, 'yui','dojo','prototype','scriptaculous', 'mootools'], 
+			selectOptions: ['Choose a library', 'YUI','Dojo','Prototype','Scriptaculous', 'mootools'], 
+			parentEl: 'container2', 
+			description: 'Select and order your favorite libraries'
+		});
+		ms.updatedEvt.subscribe(function(e,params) {
+			var value = YAHOO.lang.JSON.stringify(params[0]);
+			YAHOO.util.Dom.get('container2').appendChild( YAHOO.inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value+"<br />") );
+		});
+  </textarea>
+ </div>
+</div>
+
 
  </body>
 </html>

@@ -48,58 +48,54 @@
 <script src="js/dpSyntaxHighlighter.js"></script>
 <script src="inputex-examples.js"></script>
 
-<script>
 
-inputEx.examples = [
 
-	{
-		title: "Basic MultiAutoComplete creation",
-		description: "Use the following code to create a basic inputEx MultiAutoComplete. (note: this example doesn't work offline)",
-		code: function(exampleContainer) {
 
-			
-			var field = new YAHOO.inputEx.MultiAutoComplete({
-				parentEl: exampleContainer, 
-				label: 'Search US state',
+<!-- Example 1 -->
+<div class='exampleDiv'>
+ <p class="title">Basic MultiAutoComplete creation</p>
+ <p>Use the following code to create a basic inputEx MultiAutoComplete. (note: this example doesn't work offline)</p>
+ <div class='demoContainer' id='container1'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		var field = new YAHOO.inputEx.MultiAutoComplete({
+			parentEl: 'container1', 
+			label: 'Search US state',
 
-				// see http://developer.yahoo.com/yui/examples/autocomplete/assets/js/states_jsfunction.js for getState function
-				datasource: new YAHOO.widget.DS_JSFunction( getStates),
+			// see http://developer.yahoo.com/yui/examples/autocomplete/assets/js/states_jsfunction.js for getState function
+			datasource: new YAHOO.widget.DS_JSFunction( getStates),
 
-				// Format the hidden value (value returned by the form)
-				returnValue: function(oResultItem) {
-					return oResultItem[1];
-				},
+			// Format the hidden value (value returned by the form)
+			returnValue: function(oResultItem) {
+				return oResultItem[1];
+			},
 
-				returnLabel: function(oResultItem) {
-					return oResultItem[0];
-				},
+			returnLabel: function(oResultItem) {
+				return oResultItem[0];
+			},
 
-				// autocompleter options
-				autoComp: {
-					forceSelection: true,
-					minQueryLength: 2,
-					maxResultsDisplayed: 50,
-					formatResult: function(oResultItem, sQuery) {
-		       	   var sMarkup = oResultItem[0] + " (" + oResultItem[1] + ")";
-		       	   return sMarkup;
-		    	   }
-				}
-			});
+			// autocompleter options
+			autoComp: {
+				forceSelection: true,
+				minQueryLength: 2,
+				maxResultsDisplayed: 50,
+				formatResult: function(oResultItem, sQuery) {
+	       	   var sMarkup = oResultItem[0] + " (" + oResultItem[1] + ")";
+	       	   return sMarkup;
+	    	   }
+			}
+		});
 
-			var logDiv = YAHOO.inputEx.cn('div', null, null, "<br />");
-			exampleContainer.appendChild(logDiv);
+		var logDiv = YAHOO.inputEx.cn('div', null, null, "");
+		YAHOO.util.Dom.get('container1').appendChild(logDiv);
 
-			field.updatedEvt.subscribe(function(e,params) {
-				var value = YAHOO.lang.JSON.stringify(params[0]);
-				logDiv.appendChild( YAHOO.inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value+"<br />") );
-			});
-			
-		}
-	}
-	
-];
-
-</script>
+		field.updatedEvt.subscribe(function(e,params) {
+			var value = YAHOO.lang.JSON.stringify(params[0]);
+			logDiv.appendChild( YAHOO.inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value) );
+		});
+  </textarea>
+ </div>
+</div>
 
  </body>
 </html>

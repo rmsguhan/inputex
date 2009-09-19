@@ -96,32 +96,40 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 	elCell.innerHTML = "<pre class=\"address\">" + oData + "</pre>";
 };
 
+</script>
 
-inputEx.examples = [
 
-			
-			{
-				title: "InPlaceEditing",
-				description: "Use the following code to create a basic inputEx DataTable",
-				code: function(exampleContainer) {
-						new inputEx.widget.dtInPlaceEdit({
-						parentEl: exampleContainer, 
 
-						editableFields: ['title', 'amount', 'quantity', 'date', 'category'],
+<!-- Example 1 -->
+<div class='exampleDiv'>
+ <p class="title">InPlaceEditing</p>
+ <p>Use the following code to create a basic inputEx DataTable</p>
+ <div class='demoContainer' id='container1'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		new inputEx.widget.dtInPlaceEdit({
+		parentEl: 'container1', 
 
-						fields: myFields,
-						datasource: myDataSource,
-						datatableOpts: {caption:"DataTable Caption"}
-					});
-				}
-			},
-			
-			
-			{
-				title: "InPlaceEditing Advanced",
-				description: "",
-				code: function(exampleContainer) {
-	
+		editableFields: ['title', 'amount', 'quantity', 'date', 'category'],
+
+		fields: myFields,
+		datasource: myDataSource,
+		datatableOpts: {caption:"DataTable Caption"}
+	});
+  </textarea>
+ </div>
+</div>
+
+
+
+
+<!-- Example 2 -->
+<div class='exampleDiv'>
+ <p class="title">InPlaceEditing Advanced</p>
+ <p>Use the following code to create a basic inputEx DataTable</p>
+ <div class='demoContainer' id='container2'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
 	// Example 3 (test for color field)
 	var myDataSource = new YAHOO.util.DataSource([
         {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing", category: "SF", color: "#993300"},
@@ -142,27 +150,22 @@ inputEx.examples = [
 		{type: 'color', inputParams: {label: 'Couleur', name: 'color'}, formatter: 
 		function(elCell, record) {
 	      var color = record.getData().color;
-	      elCell.innerHTML = "<div style='background-color: "+color+";'>&nbsp;&nbsp;&nbsp;&nbsp;</div>";
+	      elCell.innerHTML = String.fromCharCode(60)+"div style='background-color: "+color+";'"+String.fromCharCode(62)+"&nbsp;&nbsp;&nbsp;&nbsp;"+String.fromCharCode(60)+"/div"+String.fromCharCode(62);
 	   } }
 	];
-	
+
 	new inputEx.widget.dtInPlaceEdit({
-		parentEl: exampleContainer, 
-		
+		parentEl: 'container2', 
+
 		editableFields: ['title', 'amount', 'quantity', 'date', 'category','color'],
-		
+
 		fields: myFields,
 		datasource: myDataSource,
 		datatableOpts: {caption:"DataTable Caption"}
 	});
-	
-	}
-}
-
-
-];
-	
-</script>
+  </textarea>
+ </div>
+</div>
 
 
 </body>

@@ -59,80 +59,80 @@
 <script src="js/dpSyntaxHighlighter.js"></script>
 <script src="inputex-examples.js"></script>
 
-<script>
 
 
-inputEx.examples = [
 
-	{
-		title: "Basic FastTable creation",
-		description: "Use the following code to create a basic inputEx FastTable",
-		code: function(exampleContainer) {
+<!-- Example 1 -->
+<div class='exampleDiv'>
+ <p class="title">Basic FastTable creation</p>
+ <p>Use the following code to create a basic inputEx FastTable</p>
+ <div class='demoContainer' id='container1'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		
+		var myDataSource = new YAHOO.util.DataSource([
+	        {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing", category: "SF", color: "#993300"},
+	        {id:"po-0783", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"The Meaning of Life", category: "Novel", color: "#333300"},
+	        {id:"po-0297", date:new Date(1978, 11, 12), quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud", category: "SF", color: "#003300"},
+	        {id:"po-1482", date:new Date("March 11, 1985"), quantity:6, amount:3.5, title:"Read Me Twice", category: "Philosophy", color: "#003366"}
+	  ]);
+	  myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+	  myDataSource.responseSchema = { fields: ["id","date","quantity","amount","title", "category","color"] };
 
-	var myDataSource = new YAHOO.util.DataSource([
-        {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing", category: "SF", color: "#993300"},
-        {id:"po-0783", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"The Meaning of Life", category: "Novel", color: "#333300"},
-        {id:"po-0297", date:new Date(1978, 11, 12), quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud", category: "SF", color: "#003300"},
-        {id:"po-1482", date:new Date("March 11, 1985"), quantity:6, amount:3.5, title:"Read Me Twice", category: "Philosophy", color: "#003366"}
-  ]);
-  myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-  myDataSource.responseSchema = { fields: ["id","date","quantity","amount","title", "category","color"] };
+		var myFields = [
+			{type: 'uneditable', inputParams: {label: 'Id', name: 'id'} },
+			{type: 'datepicker', inputParams: {label: 'Date', name: 'date', value: new Date()} },
+			{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity', size:4} },
+			{type: 'number', inputParams: {label: 'Amount', name: 'amount', size:4} },
+			{type: 'string', inputParams: {label: 'Title', name: 'title', typeInvite: 'title'} },
+			{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}},
+			{type: 'color', inputParams: {label: 'Couleur', name: 'color', value: '#FFFF66'} }
+		];
 
-	var myFields = [
-		{type: 'uneditable', inputParams: {label: 'Id', name: 'id'} },
-		{type: 'datepicker', inputParams: {label: 'Date', name: 'date', value: new Date()} },
-		{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity', size:4} },
-		{type: 'number', inputParams: {label: 'Amount', name: 'amount', size:4} },
-		{type: 'string', inputParams: {label: 'Title', name: 'title', typeInvite: 'title'} },
-		{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}},
-		{type: 'color', inputParams: {label: 'Couleur', name: 'color', value: '#FFFF66'} }
-	];
-	
-	var fasttable1 = new inputEx.widget.FastTable({
-		parentEl: exampleContainer,
-		fields: myFields,
-		datasource: myDataSource
-	});
-	
-	fasttable1.itemUpdatedEvt.subscribe(function(e,params) {
-		
-		var item = params[0],
-		    key = params[1],
-		    newValue = params[2],
-				cell = params[3];
-		
-		// Do your processing, eventually asynchronously...
-		
-		fasttable1.cleanDirtyCell(cell);
-	});
-	
-	
-	fasttable1.itemCreatedEvt.subscribe(function(e,params) {
-		
-		var item = params[0];
-		
-		// Do your processing, eventually asynchronously...
-		// We'll simulate an addition to id
-		item.id="po-2438";
-		
-		fasttable1.addRow(item);
-		
-	});
-	
-	
-	fasttable1.itemDeletedEvt.subscribe(function(e,params) {
-		var item = params[0];
-		var tr = params[1];
-		
-		// Do your processing, eventually asynchronously...
-		
-		fasttable1.removeRow(tr);
-	});
-	
-	}
-}];
+		var fasttable1 = new inputEx.widget.FastTable({
+			parentEl: 'container1',
+			fields: myFields,
+			datasource: myDataSource
+		});
 
-</script>
+		fasttable1.itemUpdatedEvt.subscribe(function(e,params) {
+
+			var item = params[0],
+			    key = params[1],
+			    newValue = params[2],
+					cell = params[3];
+
+			// Do your processing, eventually asynchronously...
+
+			fasttable1.cleanDirtyCell(cell);
+		});
+
+
+		fasttable1.itemCreatedEvt.subscribe(function(e,params) {
+
+			var item = params[0];
+
+			// Do your processing, eventually asynchronously...
+			// We'll simulate an addition to id
+			item.id="po-2438";
+
+			fasttable1.addRow(item);
+
+		});
+
+
+		fasttable1.itemDeletedEvt.subscribe(function(e,params) {
+			var item = params[0];
+			var tr = params[1];
+
+			// Do your processing, eventually asynchronously...
+
+			fasttable1.removeRow(tr);
+		});
+  </textarea>
+ </div>
+</div>
+
 
 </body>
 </html>

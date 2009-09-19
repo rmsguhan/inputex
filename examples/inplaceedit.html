@@ -35,7 +35,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new YAHOO.inputEx.InPlaceEdit({parentEl: 'container1', editorField:{type:'string', inputParams: {} },  animColors:{from:"#FFFF99" , to:"#DDDDFF"} });
+			new inputEx.InPlaceEdit({parentEl: 'container1', editorField:{type:'string', inputParams: {} },  animColors:{from:"#FFFF99" , to:"#DDDDFF"} });
 		</textarea>
 	</div>
 
@@ -53,7 +53,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new YAHOO.inputEx.InPlaceEdit({
+			new inputEx.InPlaceEdit({
 				parentEl: 'container2', 
 				editorField:{
 					type:'group', 
@@ -66,7 +66,7 @@
 					} 
 				},
 				visu: {visuType: 'func', func: function(val) {
-					if( YAHOO.lang.isUndefined(val) ) return YAHOO.inputEx.messages.emptyInPlaceEdit;
+					if( YAHOO.lang.isUndefined(val) ) return inputEx.messages.emptyInPlaceEdit;
 					return '<img src="'+val.picUrl+'" style="width: 128px; height: 128px;"><br /><b>'+val.firstname+' '+val.lastname+'</b>';
 				}},
 				value: {
@@ -93,7 +93,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			var field = new YAHOO.inputEx.InPlaceEdit({parentEl: 'container3', editorField:{type:'string', inputParams: {} } });
+			var field = new inputEx.InPlaceEdit({parentEl: 'container3', editorField:{type:'string', inputParams: {} } });
 			var button = inputEx.cn('button', null, null, "getValue");
 			YAHOO.util.Event.addListener(button, 'click', function() {
 				alert(field.getValue());
@@ -103,6 +103,47 @@
 	</div>
 
 </div>
+
+
+
+
+<!-- Example 4 -->
+<div class='exampleDiv'>
+
+	<p class="title">Image url from a dropdown menu</p>
+	
+	<p></p>
+
+	<div class='demoContainer' id='container4'></div>
+
+	<div class='codeContainer'>
+		<textarea name="code" class="JScript">
+			inputEx({
+				type: 'inplaceedit',
+				inputParams: {
+					parentEl: 'container4', 
+					label: "PageRank",
+					editorField:{
+						type:'select', 
+						inputParams: {
+							name: 'pagerank',
+							selectValues: ['0','1','2','3','4','5','6','7','8','9','10']
+						} 
+					},
+					visu: {
+						visuType: 'func', 
+						func: function(val) {
+							return inputEx.cn('img',{src: "http://www.page-rank-lookup.com/i/style1/pagerank"+val+".png"});
+						}
+					},
+					value: '5'
+				}
+			});
+		</textarea>
+	</div>
+
+</div>
+
 
 
 <!-- YUI Library -->
@@ -132,13 +173,13 @@
 
 YAHOO.util.Event.addListener(window, 'load', function() {
 	// Required for the UrlField and ListField
-	YAHOO.inputEx.spacerUrl = "../images/space.gif";
+	inputEx.spacerUrl = "../images/space.gif";
 
 	// Example 1
-	new YAHOO.inputEx.InPlaceEdit({parentEl: 'container1', editorField:{type:'string', inputParams: {} }, animColors:{from:"#FFFF99" , to:"#DDDDFF"} });
+	new inputEx.InPlaceEdit({parentEl: 'container1', editorField:{type:'string', inputParams: {} }, animColors:{from:"#FFFF99" , to:"#DDDDFF"} });
 	
 	// Example 2
-	new YAHOO.inputEx.InPlaceEdit({
+	new inputEx.InPlaceEdit({
 		parentEl: 'container2', 
 		editorField:{
 			type:'group', 
@@ -151,7 +192,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 			} 
 		},
 		visu: {visuType: 'func', func: function(val) {
-			if( YAHOO.lang.isUndefined(val) ) return YAHOO.inputEx.messages.emptyInPlaceEdit;
+			if( YAHOO.lang.isUndefined(val) ) return inputEx.messages.emptyInPlaceEdit;
 			return '<img src="'+val.picUrl+'" style="width: 128px; height: 128px;"><br /><b>'+val.firstname+' '+val.lastname+'</b>';
 		}},
 		value: {
@@ -163,12 +204,36 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	
 	// Example 3
-	var field = new YAHOO.inputEx.InPlaceEdit({parentEl: 'container3', editorField:{type:'string', inputParams: {} } });
+	var field = new inputEx.InPlaceEdit({parentEl: 'container3', editorField:{type:'string', inputParams: {} } });
 	var button = inputEx.cn('button', null, null, "getValue");
 	YAHOO.util.Event.addListener(button, 'click', function() {
 		alert(field.getValue());
 	});
 	YAHOO.util.Dom.get('container3').appendChild(button);
+	
+	
+	// Exemple 4
+	inputEx({
+		type: 'inplaceedit',
+		inputParams: {
+			parentEl: 'container4', 
+			label: "PageRank",
+			editorField:{
+				type:'select', 
+				inputParams: {
+					name: 'pagerank',
+					selectValues: ['0','1','2','3','4','5','6','7','8','9','10']
+				} 
+			},
+			visu: {
+				visuType: 'func', 
+				func: function(val) {
+					return inputEx.cn('img',{src: "http://www.page-rank-lookup.com/i/style1/pagerank"+val+".png"});
+				}
+			},
+			value: '5'
+		}
+	});
 	
 });
 

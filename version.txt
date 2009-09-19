@@ -24,6 +24,8 @@ not released yet
 		* DDList items now have separate value & labels
 		* added returnLabel option to MultiAutocomplete (method to format list label)
 		* Adding an "insert" method to Textarea
+		* Form can send data using x-www-form-urlencoded
+		* Form wrapObject option (ajax only)
 	
 	- Added Widget 
 		* FastTable for fast editing (beta)

@@ -101,57 +101,67 @@ var myFields = [
 var formatAddress = function(elCell, oRecord, oColumn, oData) {
 	elCell.innerHTML = "<pre class=\"address\">" + oData + "</pre>";
 };
-
-
-inputEx.examples = [
-
-			{
-				title: "Dialog Editor",
-				description: "",
-				code: function(exampleContainer) {
-					
-					new inputEx.widget.dtDialogEdit({
-						parentEl: exampleContainer, 
-						fields: myFields,
-						datasource: myDataSource,
-						datatableOpts: {caption:"DataTable Caption"}
-					});
-				}
-			},
-			
-			{
-				title: "Show/Hide columns",
-				description: "",
-				code: function(exampleContainer) {
-					
-					new inputEx.widget.dtDialogEdit({
-						parentEl: exampleContainer, 
-						fields: myFields,
-						datasource: myDataSource,
-						datatableOpts: {caption:"Click on table options to show/hide fields"},
-						showHideColumnsDlg: true
-					});
-				}
-			},
-			
-			{
-				title: "Drag/Drop reordering",
-				description: "",
-				code: function(exampleContainer) {
-					
-					new inputEx.widget.dtDialogEdit({
-						parentEl: exampleContainer, 
-						fields: myFields,
-						datasource: myDataSource,
-						datatableOpts: {caption:"Click on table options to show/hide fields"},
-						dragdropReordering: true
-					});
-				}
-			}
-			
-];
-	
 </script>
+
+
+
+
+
+<!-- Example 1 -->
+<div class='exampleDiv'>
+ <p class="title">Dialog Editor</p>
+ <p></p>
+ <div class='demoContainer' id='container1'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		new inputEx.widget.dtDialogEdit({
+			parentEl: 'container1', 
+			fields: myFields,
+			datasource: myDataSource,
+			datatableOpts: {caption:"DataTable Caption"}
+		});
+  </textarea>
+ </div>
+</div>
+
+
+
+<!-- Example 2 -->
+<div class='exampleDiv'>
+ <p class="title">Show/Hide columns</p>
+ <p></p>
+ <div class='demoContainer' id='container2'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		new inputEx.widget.dtDialogEdit({
+			parentEl: 'container2', 
+			fields: myFields,
+			datasource: myDataSource,
+			datatableOpts: {caption:"Click on table options to show/hide fields"},
+			showHideColumnsDlg: true
+		});
+  </textarea>
+ </div>
+</div>
+
+
+<!-- Example 3 -->
+<div class='exampleDiv'>
+ <p class="title">Drag/Drop reordering</p>
+ <p></p>
+ <div class='demoContainer' id='container3'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		new inputEx.widget.dtDialogEdit({
+			parentEl: 'container3', 
+			fields: myFields,
+			datasource: myDataSource,
+			datatableOpts: {caption:"Click on table options to show/hide fields"},
+			dragdropReordering: true
+		});
+  </textarea>
+ </div>
+</div>
 
 
 </body>

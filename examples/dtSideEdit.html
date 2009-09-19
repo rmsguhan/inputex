@@ -95,71 +95,72 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 	elCell.innerHTML = "<pre class=\"address\">" + oData + "</pre>";
 };
 
-
-inputEx.examples = [
-
-	{
-		title: "Basic DataTable creation",
-		description: "Use the following code to create a basic inputEx DataTable.",
-		code: function(exampleContainer) {
-			
-				  
-					var myDataTable = new inputEx.widget.dtSideEdit({
-						parentEl: exampleContainer, 
-						fields: myFields,
-						tableColumns: ["date","quantity","amount","title", "category"],
-						datasource: myDataSource,
-						datatableOpts: {caption: "DataTable Caption"}
-					});
-					myDataTable.itemRemovedEvt.subscribe(function(e, args) {
-						var record = args[0];
-						var data = record.getData();
-						console.log("itemRemovedEvt", data);
-		
-		
-						myDataSource.sendRequest(null, {
-							success: function(o,data) {
-								console.log("success",data.results);
-							}
-						});
-					});
-					myDataTable.itemAddedEvt.subscribe(function(e, args) {
-						var record = args[0];
-						var data = record.getData();
-						//console.log("itemAddedEvt", data);
-		
-						//console.log(myDataTable.datatable);
-						try {
-						var rs = myDataTable.datatable.getRecordSet();
-						//console.log(rs);
-						} catch(ex) {
-							console.log(ex);
-						}
-		
-						myDataSource.sendRequest(null, {
-							success: function(o,data) {
-								//console.log("success",data.results);
-							}
-						});
-					});
-					myDataTable.itemModifiedEvt.subscribe(function(e, args) {
-						var record = args[0];
-						var data = record.getData();
-						//console.log("itemModifiedEvt", data);
-		
-		
-						myDataSource.sendRequest(null, {
-							success: function(o,data) {
-								console.log("success",data.results);
-							}
-						});
-					});
-				}
-			}
-];
-	
 </script>
 
+
+
+
+<!-- Example 1 -->
+<div class='exampleDiv'>
+ <p class="title">Basic DataTable creation</p>
+ <p>Use the following code to create a basic inputEx DataTable.</p>
+ <div class='demoContainer' id='container1'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		
+			var myDataTable = new inputEx.widget.dtSideEdit({
+				parentEl: 'container1', 
+				fields: myFields,
+				tableColumns: ["date","quantity","amount","title", "category"],
+				datasource: myDataSource,
+				datatableOpts: {caption: "DataTable Caption"}
+			});
+			myDataTable.itemRemovedEvt.subscribe(function(e, args) {
+				var record = args[0];
+				var data = record.getData();
+				console.log("itemRemovedEvt", data);
+
+
+				myDataSource.sendRequest(null, {
+					success: function(o,data) {
+						console.log("success",data.results);
+					}
+				});
+			});
+			myDataTable.itemAddedEvt.subscribe(function(e, args) {
+				var record = args[0];
+				var data = record.getData();
+				//console.log("itemAddedEvt", data);
+
+				//console.log(myDataTable.datatable);
+				try {
+				var rs = myDataTable.datatable.getRecordSet();
+				//console.log(rs);
+				} catch(ex) {
+					console.log(ex);
+				}
+
+				myDataSource.sendRequest(null, {
+					success: function(o,data) {
+						//console.log("success",data.results);
+					}
+				});
+			});
+			myDataTable.itemModifiedEvt.subscribe(function(e, args) {
+				var record = args[0];
+				var data = record.getData();
+				//console.log("itemModifiedEvt", data);
+
+
+				myDataSource.sendRequest(null, {
+					success: function(o,data) {
+						console.log("success",data.results);
+					}
+				});
+			});
+  </textarea>
+ </div>
+</div>
 
 </body>
 </html>

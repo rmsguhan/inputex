@@ -151,44 +151,40 @@ lang.extend(inputEx.Form, inputEx.Group, {
 	
 		var postData = null;
 		
-		// method PUT don't send as x-www-form-urlencoded but in JSON
-		/*if(method == "PUT") {
-			YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
-			postData = lang.JSON.stringify(this.getValue());
-		}
-		else {*/
-			
-			if(this.options.ajax.contentType == "application/x-www-form-urlencoded") {
-				var params = [];
-				for(var key in formValue) {
-					if(formValue.hasOwnProperty(key)) {
-						var pName = (this.options.ajax.wrapObject ? this.options.ajax.wrapObject+'[' : '')+key+(this.options.ajax.wrapObject ? ']' : '');
-						params.push( pName+"="+window.encodeURIComponent(formValue[key]));
-					}
+		// Classic application/x-www-form-urlencoded (like html forms)
+		if(this.options.ajax.contentType == "application/x-www-form-urlencoded" && method != "PUT") {
+			var params = [];
+			for(var key in formValue) {
+				if(formValue.hasOwnProperty(key)) {
+					var pName = (this.options.ajax.wrapObject ? this.options.ajax.wrapObject+'[' : '')+key+(this.options.ajax.wrapObject ? ']' : '');
+					params.push( pName+"="+window.encodeURIComponent(formValue[key]));
 				}
-				postData = params.join('&');
 			}
-			else {
-				YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
-				
-				if(method == "PUT") {// TODO: this is a very shitty hack
-					var formVal = this.getValue();
-					var p;
-					if(this.options.ajax.wrapObject) {
-						p = {};
-						p[this.options.ajax.wrapObject] = formVal;
-					}
-					else {
-						p = formVal;
-					}
-					postData = lang.JSON.stringify(p);
+			postData = params.join('&');
+		}
+		// The only other contentType available is "application/json"
+		else {
+			YAHOO.util.Connect.initHeader("Content-Type" , "application/json" , false);
+			
+			// method PUT don't send as x-www-form-urlencoded but in JSON
+			if(method == "PUT") {
+				var formVal = this.getValue();
+				var p;
+				if(this.options.ajax.wrapObject) {
+					p = {};
+					p[this.options.ajax.wrapObject] = formVal;
 				}
 				else {
-					postData = "value="+lang.JSON.stringify(this.getValue());
+					p = formVal;
 				}
+				postData = lang.JSON.stringify(p);
 			}
-			
-	//	}		
+			else {
+				// We keep this case for backward compatibility, but should not be used
+				// Used when we send in JSON in POST or GET
+				postData = "value="+lang.JSON.stringify(this.getValue());
+			}
+		}
 		
       util.Connect.asyncRequest( method, uri, {
          success: function(o) {

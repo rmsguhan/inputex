@@ -43,126 +43,143 @@
 <script src="js/dpSyntaxHighlighter.js"></script>
 <script src="inputex-examples.js"></script>
 
-<script>
+
+<!-- Example 1 -->
+<div class='exampleDiv'>
+ <p class="title">Basic ListField creation</p>
+ <p>Use the following code to create a basic inputEx ListField.</p>
+ <div class='demoContainer' id='container1'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		var field = new YAHOO.inputEx.ListField({
+			name: 'websiteUrl', 
+			listLabel: 'Websites',
+			elementType: {type: 'url'},
+			value: ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com'], 
+			parentEl: 'container1'
+		});
+		var button = YAHOO.inputEx.cn('button', null, null, 'getValue()');
+		YAHOO.util.Dom.get('container1').appendChild(button); 
+		YAHOO.util.Event.addListener(button, 'click', function() { alert( YAHOO.lang.JSON.stringify(field.getValue())); });  
+		var button2 = YAHOO.inputEx.cn('button', null, null, 'setValue()');
+		YAHOO.util.Dom.get('container1').appendChild(button2); 
+		YAHOO.util.Event.addListener(button2, 'click', function() {
+			field.setValue(['http://www.sncf.com',
+											'http://www.clicrdv.com',
+											'http://www.neyric.com',
+											'http://javascript.neyric.com/wireit']);			
+		});
+		var button3 = YAHOO.inputEx.cn('button', null, null, 'Clear');
+		YAHOO.util.Dom.get('container1').appendChild(button3); 
+		YAHOO.util.Event.addListener(button3, 'click', function() {
+			field.setValue([]);
+		});
+	
+  </textarea>
+ </div>
+</div>
 
 
-// Required for the ListField
-YAHOO.inputEx.spacerUrl = "../images/space.gif";
 
-inputEx.examples = [
 
-	{
-		title: "Basic ListField creation",
-		description: "Use the following code to create a basic inputEx ListField.",
-		code: function(exampleContainer) {
-			var field = new YAHOO.inputEx.ListField({
-				name: 'websiteUrl', 
-				listLabel: 'Websites',
-				elementType: {type: 'url'},
-				value: ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com'], 
-				parentEl: exampleContainer
-			});
-			var button = YAHOO.inputEx.cn('button', null, null, 'getValue()');
-			exampleContainer.appendChild(button); 
-			YAHOO.util.Event.addListener(button, 'click', function() { alert( YAHOO.lang.JSON.stringify(field.getValue())); });  
-			var button2 = YAHOO.inputEx.cn('button', null, null, 'setValue()');
-			exampleContainer.appendChild(button2); 
-			YAHOO.util.Event.addListener(button2, 'click', function() {
-				field.setValue(['http://www.sncf.com',
-												'http://www.clicrdv.com',
-												'http://www.neyric.com',
-												'http://javascript.neyric.com/wireit']);			
-			});
-			var button3 = YAHOO.inputEx.cn('button', null, null, 'Clear');
-			exampleContainer.appendChild(button3); 
-			YAHOO.util.Event.addListener(button3, 'click', function() {
-				field.setValue([]);
-			});
-			
-		}
-	},
+<!-- Example 2 -->
+<div class='exampleDiv'>
+ <p class="title">Sortable list</p>
+ <p>Example for the sortable ListField</p>
+ <div class='demoContainer' id='container2'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		
+		var field2 = new inputEx.ListField({
+			listLabel: 'Reorder example',
+			elementType: {type: 'string'},
+			value: ['one', 'two', 'three', 'four'], 
+			parentEl: 'container2',
+			sortable: true
+		});
+		var buttonGetValue = inputEx.cn('button', null, null, 'getValue()');
+		YAHOO.util.Dom.get('container2').appendChild(buttonGetValue); 
+		YAHOO.util.Event.addListener(buttonGetValue, 'click', function() { 
+			alert( YAHOO.lang.JSON.stringify(field2.getValue())); 
+		});
 	
-	
-	
-	{
-		title: "Sortable list",
-		description: "Example for the sortable ListField",
-		code: function(exampleContainer) {
-			
-			var field2 = new YAHOO.inputEx.ListField({
-				listLabel: 'Reorder example',
-				elementType: {type: 'string'},
-				value: ['one', 'two', 'three', 'four'], 
-				parentEl: exampleContainer,
-				sortable: true
-			});
-			var buttonGetValue = YAHOO.inputEx.cn('button', null, null, 'getValue()');
-			exampleContainer.appendChild(buttonGetValue); 
-			YAHOO.util.Event.addListener(buttonGetValue, 'click', function() { 
-				alert( YAHOO.lang.JSON.stringify(field2.getValue())); 
-			});
-			
-		}
-	},
-	
-	
-	{
-		title: "Updated event",
-		description: "How to listen to the updated event :",
-		code: function(exampleContainer) {
-			var field3 = new YAHOO.inputEx.ListField({parentEl: exampleContainer, value: ["one", "two", "three", "four"], sortable: true });
-			var logDiv = YAHOO.inputEx.cn('div', null, null, "Log :<br />");
-			exampleContainer.appendChild(logDiv);
-			field3.updatedEvt.subscribe(function(e,params) {
-				var value = params[0];
-				logDiv.innerHTML += "Updated at "+(new Date())+" with value "+YAHOO.lang.JSON.stringify(value)+"<br />";
-			});
-		}
-	},
-	
-	
-	{
-		title: "Use buttons instead of links",
-		description: "Use buttons :",
-		code: function(exampleContainer) {
-			
-			new YAHOO.inputEx.ListField({
-				listLabel: 'Websites',
-				elementType: {type: 'select', inputParams:{ selectValues:  ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com', 'http://javascript.neyric.com/blog', 'http://javascript.neyric.com/wireit', 'http://javascript.neyric.com/inputex']} },
-				value: ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com'], 
-				parentEl: exampleContainer,
-				useButtons: true // set to true to display buttons instead of links
-			});
-			
-		}
-	},
-	
-	{
-		title: "Set maximum/minimum number of items",
-		description: "Use the maxItems and minItems options :",
-		code: function(exampleContainer) {
-			
-			new YAHOO.inputEx.ListField({
-				listLabel: 'Websites',
-				maxItems: 4,
-				minItems: 1,
-				elementType: {
-					type: 'select',
-					inputParams:{ 
-						selectValues:  ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com', 'http://javascript.neyric.com/blog', 'http://javascript.neyric.com/wireit', 'http://javascript.neyric.com/inputex']
-					} 
-				},
-				value: ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com'], 
-				parentEl: exampleContainer,
-				useButtons: true 
-			});
-			
-		}
-	}
-	
+  </textarea>
+ </div>
+</div>
 
-];
-</script>
+
+
+
+
+<!-- Example 3 -->
+<div class='exampleDiv'>
+ <p class="title">Updated event</p>
+ <p>How to listen to the updated event :</p>
+ <div class='demoContainer' id='container3'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		var field3 = new inputEx.ListField({parentEl: 'container3', value: ["one", "two", "three", "four"], sortable: true });
+		var logDiv = inputEx.cn('div', null, null, "Log :");
+		YAHOO.util.Dom.get('container3').appendChild(logDiv);
+		field3.updatedEvt.subscribe(function(e,params) {
+			var value = params[0];
+			logDiv.innerHTML += "Updated at "+(new Date())+" with value "+YAHOO.lang.JSON.stringify(value);
+		});
+  </textarea>
+ </div>
+</div>
+
+
+
+<!-- Example 4 -->
+<div class='exampleDiv'>
+ <p class="title">Use buttons instead of links</p>
+ <p>Use buttons :</p>
+ <div class='demoContainer' id='container4'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		new YAHOO.inputEx.ListField({
+			listLabel: 'Websites',
+			elementType: {
+				type: 'select', 
+				inputParams:{ 
+					selectValues:  ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com', 'http://javascript.neyric.com/blog', 'http://javascript.neyric.com/wireit', 'http://javascript.neyric.com/inputex']
+				} 
+			},
+			value: ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com'], 
+			parentEl: 'container4',
+			useButtons: true // set to true to display buttons instead of links
+		});
+  </textarea>
+ </div>
+</div>
+
+
+
+<!-- Example 5 -->
+<div class='exampleDiv'>
+ <p class="title">Set maximum/minimum number of items</p>
+ <p>Use the maxItems and minItems options :</p>
+ <div class='demoContainer' id='container5'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		new YAHOO.inputEx.ListField({
+			listLabel: 'Websites',
+			maxItems: 4,
+			minItems: 1,
+			elementType: {
+				type: 'select',
+				inputParams:{ 
+					selectValues:  ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com', 'http://javascript.neyric.com/blog', 'http://javascript.neyric.com/wireit', 'http://javascript.neyric.com/inputex']
+				} 
+			},
+			value: ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com'], 
+			parentEl: 'container5',
+			useButtons: true 
+		});
+  </textarea>
+ </div>
+</div>
 
  </body>
 </html>

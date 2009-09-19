@@ -70,7 +70,6 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			success: function(o) {
 				var xotree = new XML.ObjTree();
 			  var tree = xotree.parseXML( o.responseText );
-				console.log(tree);
 				rssForm.setValue(tree.rss);
 			}
 		});

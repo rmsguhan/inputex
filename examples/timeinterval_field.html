@@ -44,52 +44,57 @@
 <script src="js/dpSyntaxHighlighter.js"></script>
 <script src="inputex-examples.js"></script>
 
-<script>
-inputEx.examples = [
 
-	{
-		title: "Basic TimeIntervalField creation",
-		description: "Use the following code to create a basic inputEx TimeIntervalField.",
-		code: function(exampleContainer) {
-			var field = new YAHOO.inputEx.TimeIntervalField({parentEl: exampleContainer, label: 'Length'});
-			var button = YAHOO.inputEx.cn('button', null, null, 'getValue');
-			YAHOO.util.Event.addListener(button, "click",function() {
-				alert(field.getValue());
-			});
-			exampleContainer.appendChild(button);
-		}
-	},
 
-	{
-		title: "TimeIntervalField options",
-		description: "You can set the <i>fields</i> and <i>separators</i> options of the combine field to customize the field",
-		code: function(exampleContainer) {
-			var units = inputEx.TimeIntervalField.units;
-		  var unitsStr = inputEx.messages.timeUnits;
-			var n=[]; for(var i=1;i<=30;i++){ n.push(i); }
-		  var fields = [
-		       {type: 'select', inputParams: { selectValues: n }},
-		       {type: 'select', inputParams: { 
-		          selectOptions: [unitsStr.DAY, unitsStr.MONTH, unitsStr.YEAR], 
-		          selectValues: [units.DAY, units.MONTH, units.YEAR] 
-		       } }
-		    ];
 
-			new YAHOO.inputEx.TimeIntervalField({
-				parentEl: exampleContainer,
-				value: 60*24*2, // 2 days 
-				unit: inputEx.TimeIntervalField.units.MINUTE,
-				label: 'Continue',
-				fields: fields,
-				separators: ["for&nbsp;", "&nbsp;&nbsp;", false]
-			});
-		}
+<!-- Example 1 -->
+<div class='exampleDiv'>
+ <p class="title">Basic TimeIntervalField creation</p>
+ <p>Use the following code to create a basic inputEx TimeIntervalField.</p>
+ <div class='demoContainer' id='container1'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		var field = new YAHOO.inputEx.TimeIntervalField({parentEl: 'container1', label: 'Length'});
+		var button = YAHOO.inputEx.cn('button', null, null, 'getValue');
+		YAHOO.util.Event.addListener(button, "click",function() {
+			alert(field.getValue());
+		});
+		YAHOO.util.Dom.get('container1').appendChild(button);
+  </textarea>
+ </div>
+</div>
 
-	}
 
-];
-</script>
 
+<!-- Example 2 -->
+<div class='exampleDiv'>
+ <p class="title">TimeIntervalField options</p>
+ <p>You can set the <i>fields</i> and <i>separators</i> options of the combine field to customize the field</p>
+ <div class='demoContainer' id='container2'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		var units = inputEx.TimeIntervalField.units;
+	  var unitsStr = inputEx.messages.timeUnits;
+		var n=[]; for(var i=1;i !=30;i++){ n.push(i); }
+	  var fields = [
+	       {type: 'select', inputParams: { selectValues: n }},
+	       {type: 'select', inputParams: { 
+	          selectOptions: [unitsStr.DAY, unitsStr.MONTH, unitsStr.YEAR], 
+	          selectValues: [units.DAY, units.MONTH, units.YEAR] 
+	       } }
+	    ];
+
+		new YAHOO.inputEx.TimeIntervalField({
+			parentEl: 'container2',
+			value: 60*24*2, // 2 days 
+			unit: inputEx.TimeIntervalField.units.MINUTE,
+			label: 'Continue',
+			fields: fields,
+			separators: ["for&nbsp;", "&nbsp;&nbsp;", false]
+		});
+  </textarea>
+ </div>
+</div>
 
  </body>
 </html>
