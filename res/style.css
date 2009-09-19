@@ -7,11 +7,6 @@ img { border: 0;}
 
 #headbar { background-image: url(logo-inputex.jpg); height: 160px; margin: 0; padding: 0; }
 
-/*#navigation { position: absolute; margin: 6px 0 0 380px; }
-#navigation li { margin: 0; display: inline;	margin-right: 30px; }
-#navigation li a { color: white;	text-decoration: none;	font-size: 14px; }
-#navigation li a:hover { color: #cccc33; text-decoration: underline; }*/
-
 .navigation li { margin: 0; display: inline; margin-right: 30px;}
 .navigation li a { color: #999999; text-decoration: none;	font-size: 14px; }
 .navigation li a:hover { color: #cccc33; text-decoration: underline; }
@@ -31,7 +26,7 @@ div.appBox a {	text-decoration: none; }
 div.appBox p span { color: #aaa;	font-size: 12pt; }
 div.appBox p span.big {	color: #ffb73e; font-size: 20pt;	font-weight: bold; }
 
-div.exampleGroup { /*width: 900px;*/ border: 1px solid #ccc; margin: 20px; }
+div.exampleGroup { border: 1px solid #ccc; margin: 20px; -moz-border-radius: 15px; -webkit-border-radius: 15px; }
 div.exampleGroup h2 {	margin: 10px;	}
-div.exampleSection { float: left;	width: 30%;	/*margin: 10px;*/	padding: 10px; height: 160px;	}
+div.exampleSection { float: left;	width: 30%;	padding: 10px; }
 div.exampleSection h3 {	color: #888; margin: 5px;	font-size: 130%; }

@@ -24,7 +24,7 @@ version=0.2.3a
 
 # The version of YUI the project is using.  This effects the output for
 # YUI configuration attributes.  This should start with '2' or '3'.
-yuiversion=2.7.0
+yuiversion=2.8.0r4
 
 projectName="inputExLibrary"
 
