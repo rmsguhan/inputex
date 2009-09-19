@@ -17,6 +17,7 @@ not released yet
 	- Added Fields
 		* Lens (beta)
 		* TimeInterval field to enter a duration
+		* ColorPickerField - wrapper for YUI's ColorPicker widget
 		
 	- Field enhancements:
 		* CombineField now inherits Group instead of Field
@@ -26,6 +27,7 @@ not released yet
 		* Adding an "insert" method to Textarea
 		* Form can send data using x-www-form-urlencoded
 		* Form wrapObject option (ajax only)
+		* Password confirmation field defined in json
 	
 	- Added Widget 
 		* FastTable for fast editing (beta)

@@ -12,11 +12,18 @@
  *   <li>confirmPasswordField: the PasswordField instance to compare to when using 2 password fields for password creation (please use the setConfirmationField method)</li>
  *   <li>strengthIndicator: display a widget to indicate password strength (default false)</li>
  *   <li>capsLockWarning: display a warning if CapsLock is on (default false)</li>
+ *   <li>confirm: id of the field to compare to</li>
  * </ul>
  */
 inputEx.PasswordField = function(options) {
 	inputEx.PasswordField.superclass.constructor.call(this,options);
 };
+
+/**
+ * Keep track of all instances, indexed by ids, for the password confirmation field
+ */
+inputEx.PasswordField.byId = {}; 
+
 lang.extend(inputEx.PasswordField, inputEx.StringField, {
    
 	/**
@@ -28,8 +35,8 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
 	   
    	this.options.className = options.className ? options.className : "inputEx-Field inputEx-PasswordField";
 	   
-	   // Add the password regexp
-	   this.options.regexp = inputEx.regexps.password;
+	   // Add the password regexp (overridable)
+	   this.options.regexp = options.regexp || inputEx.regexps.password;
 	  
 		// display a strength indicator
 		this.options.strengthIndicator = YAHOO.lang.isUndefined(options.strengthIndicator) ? false : options.strengthIndicator;
@@ -37,6 +44,12 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
 		// capsLockWarning
 		this.options.capsLockWarning = YAHOO.lang.isUndefined(options.capsLockWarning) ? false : options.capsLockWarning;
 		
+		// confirm option, pass the id of the password field to confirm
+		inputEx.PasswordField.byId[options.id] = this;
+		var passwordField;
+		if(options.confirm && (passwordField = inputEx.PasswordField.byId[options.confirm]) ) {
+			this.setConfirmationField(passwordField);
+		}
 	},
 	
 	/**
@@ -45,7 +58,6 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
 	renderComponent: function() {
 	   // IE doesn't want to set the "type" property to 'password' if the node has a parent
 	   // even if the parent is not in the DOM yet !!
-	   
 	   
       // This element wraps the input node in a float: none div
       this.wrapEl = inputEx.cn('div', {className: 'inputEx-StringField-wrapper'});
@@ -58,6 +70,8 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
 	
 	   // Create the node
 		this.el = inputEx.cn('input', attributes);
+		
+		//inputEx.PasswordField.byId
 		
 		// Append it to the main element
 		this.wrapEl.appendChild(this.el);
