@@ -172,7 +172,7 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    
    // Select the right date and display the right page on calendar, when the field has a value
    beforeShowOverlay: function() {
-      var date = this.getValue();
+      var date = this.getValue(true);
       if (!!date && !!this.calendar) {
          
          // Horrible HACK (don't fire Field updatedEvt when selecting date)

@@ -9,7 +9,8 @@
  * @constructor
  * @param {Object} options Add the folowing options: 
  * <ul>
- *	   <li>dateFormat: default to 'm/d/Y'</li>
+ *	   <li>dateFormat: Editor format (the one which is presented to the user) default to 'm/d/Y'</li>
+ *		<li>valueFormat: if falsy, the field will return a javascript Date instance. Otherwise, this format will be used for input parsing/output formatting</li>
  * </ul>
  */
 inputEx.DateField = function(options) {
@@ -30,6 +31,7 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
    	
    	// Added options
    	this.options.dateFormat = options.dateFormat || inputEx.messages.defaultDateFormat;
+		this.options.valueFormat = options.valueFormat;
    },
 	   
 	/**
@@ -37,10 +39,12 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 	 */
 	validate: function() {
 	   var value = this.el.value;
-	   var ladate = value.split("/");
+	
+		var separator = this.options.dateFormat.match(/[^Ymd ]/g)[0];
+	   var ladate = value.split(separator);
 	   if( ladate.length != 3) { return false; }
 	   if ( isNaN(parseInt(ladate[0],10)) || isNaN(parseInt(ladate[1],10)) || isNaN(parseInt(ladate[2],10))) { return false; }
-	   var formatSplit = this.options.dateFormat.split("/");
+	   var formatSplit = this.options.dateFormat.split(separator);
 	   var yearIndex = inputEx.indexOf('Y',formatSplit);
 	   if (ladate[yearIndex].length!=4) { return false; } // Avoid 3-digits years...
 	   var d = parseInt(ladate[ inputEx.indexOf('d',formatSplit) ],10);
@@ -65,14 +69,13 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 	      return;
 	   }
 	   var str = "";
-	   // DATETIME
 	   if (val instanceof Date) {
-	      str = this.options.dateFormat.replace('Y',val.getFullYear());
-	      var m = val.getMonth()+1;
-	      str = str.replace('m', ((m < 10)? '0':'')+m);
-	      var d = val.getDate();
-	      str = str.replace('d', ((d < 10)? '0':'')+d);
+			str = inputEx.DateField.formatDate(val, this.options.dateFormat);
 	   } 
+		else if(this.options.valueFormat){
+			var dateVal = inputEx.DateField.parseWithFormat(val, this.options.valueFormat);
+			str = inputEx.DateField.formatDate(dateVal, this.options.dateFormat);
+		}
 	   // else date must match this.options.dateFormat
 	   else {
 	     str = val;
@@ -82,26 +85,48 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 	},
 	   
 	/**
-	 * Return value in DATETIME format (use getFormattedValue() to have 04/10/2002-like format)
-	 * @return {Date} The javascript Date object
+	 * Return the date
+	 * @param {Boolean} forceDate Skip the valueFormat option if set to truthy
+	 * @return {String || Date} Formatted date using the valueFormat or a javascript Date instance
 	 */
-	getValue: function() {
+	getValue: function(forceDate) {
 	   // let parent class function check if typeInvite, etc...
 	   var value = inputEx.DateField.superclass.getValue.call(this);
 
 	   // Hack to validate if field not required and empty
 	   if (value === '') { return '';}
-	   
-	   //var ladate = this.el.value.split("/");
-	   var ladate = value.split("/");
-	   var formatSplit = this.options.dateFormat.split('/');
-	   var d = parseInt(ladate[ inputEx.indexOf('d',formatSplit) ],10);
-	   var Y = parseInt(ladate[ inputEx.indexOf('Y',formatSplit) ],10);
-	   var m = parseInt(ladate[ inputEx.indexOf('m',formatSplit) ],10)-1;
-	   return (new Date(Y,m,d));
+	
+		var finalDate = inputEx.DateField.parseWithFormat(value,this.options.dateFormat);
+	
+		// if valueFormat is specified, we format the string
+		if(!forceDate && this.options.valueFormat){	
+			return inputEx.DateField.formatDate(finalDate, this.options.valueFormat);
+		} 
+		
+		return finalDate;
 	}
 
 });
+
+// Those methods are limited but largely enough for our usage
+inputEx.DateField.parseWithFormat = function(sDate,format) {
+	var separator = format.match(/[^Ymd ]/g)[0];
+	var ladate = sDate.split(separator);
+   var formatSplit = format.split(separator);
+   var d = parseInt(ladate[ inputEx.indexOf('d',formatSplit) ],10);
+   var Y = parseInt(ladate[ inputEx.indexOf('Y',formatSplit) ],10);
+   var m = parseInt(ladate[ inputEx.indexOf('m',formatSplit) ],10)-1;
+   return (new Date(Y,m,d));
+};
+
+inputEx.DateField.formatDate = function(d,format) {
+	var str = format.replace('Y',d.getFullYear());
+   var m = d.getMonth()+1;
+   str = str.replace('m', ((m < 10)? '0':'')+m);
+   var d = d.getDate();
+   str = str.replace('d', ((d < 10)? '0':'')+d);
+	return str;
+};
 	
 // Specific message for the container
 inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";

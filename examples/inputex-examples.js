@@ -13,8 +13,10 @@ YAHOO.util.Event.onDOMReady(function() {
 			eval(textarea.innerHTML);
 		}
 		catch(ex) {
-			console.log("Error while executing example "+(i+1), ex);
+			if(console) {
+				console.log("Error while executing example "+(i+1), ex);
+			}
 		}
 	}
-    dp.SyntaxHighlighter.HighlightAll('code');
+   dp.SyntaxHighlighter.HighlightAll('code');
 });
