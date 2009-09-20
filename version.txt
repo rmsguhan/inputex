@@ -44,6 +44,8 @@ not released yet
 		* Moved inputEx RPC methods to inputEx.RPC namespace (generateServiceForm and formForMethod)
 		* new SMD examples: freebase, tinyurl
 		* Added an example using inputEx SMD support and the Flickr API
+		* added YQL utility to call yql queries using JSONP
+		* added yql-trimpath page utility to create pages using YQL queries and trimpath templates
 
 	- Bug fixes
 		* fixing broken examples (YUI element is not beta anymore)

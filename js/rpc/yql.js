@@ -7,11 +7,11 @@
  * ------------------
  *
  * YQL Execute is only available from a YQL request using a YQL Open Table XML file.
- * This script uses an appjet.com application (http://yot-xmlfromcode.appjet.net/) to generate
+ * This script uses an appjet.com application (http://javascript.neyric.com/yql/js.php) to generate
  * the wanted XML file from javascript code.
  * Examples:
- *    http://yot-xmlfromcode.appjet.net/?url=http://gist.github.com/106503.txt
- *    http://yot-xmlfromcode.appjet.net/?code=y.log(%22test%22)
+ *    http://javascript.neyric.com/yql/js.php?url=http://gist.github.com/106503.txt
+ *    http://javascript.neyric.com/yql/js.php?code=y.log(%22test%22)
  * Sources:
  *    http://appjet.com/app/324229066/source?plaintext=1
  *
@@ -50,7 +50,7 @@ inputEx.YQL = {
 	 * @param {Function} callback Callback function
 	 */
 	queryCode: function(codeStr, callback) {
-		var url = ("http://yot-xmlfromcode.appjet.net/?code="+window.encodeURIComponent(codeStr)).replace(/'/g,"\\'");
+		var url = ("http://javascript.neyric.com/yql/js.php?code="+window.encodeURIComponent(codeStr)).replace(/'/g,"\\'");
 		var yql = "use '"+url+"' as yqlexconsole; select * from yqlexconsole;";
 		inputEx.YQL.query(yql,callback);
 	},
@@ -61,7 +61,7 @@ inputEx.YQL = {
 	 * @param {Function} callback Callback function
 	 */
 	queryUrl: function(codeUrl, callback) {
-	   var url = ("http://yot-xmlfromcode.appjet.net/?url="+window.encodeURIComponent(codeUrl)).replace(/'/g,"\\'");
+	   var url = ("http://javascript.neyric.com/yql/js.php?url="+window.encodeURIComponent(codeUrl)).replace(/'/g,"\\'");
 		var yql = "use '"+url+"' as yqlexconsole; select * from yqlexconsole;";
 		inputEx.YQL.query(yql,callback);
 	},
