@@ -28,6 +28,7 @@ not released yet
 		* Form can send data using x-www-form-urlencoded
 		* Form wrapObject option (ajax only)
 		* Password confirmation field defined in json
+	 	* DateField and DatePicker support for string formatting
 	
 	- Added Widget 
 		* FastTable for fast editing (beta)
@@ -41,7 +42,7 @@ not released yet
 	- RPC	
 		* integrate yui-rpc as part of inputEx
 		* Moved inputEx RPC methods to inputEx.RPC namespace (generateServiceForm and formForMethod)
-		* freebase SMD example
+		* new SMD examples: freebase, tinyurl
 		* Added an example using inputEx SMD support and the Flickr API
 
 	- Bug fixes
@@ -60,10 +61,11 @@ not released yet
 		* BirthdateField renamed to DateSelectMonthField
 	  	* including JSMin
 		* Upgrading to YUI 2.8.0r4
+		* Tickets moved to GitHub
 		
 	- Fields removed
-		* FrenchDate (use the french locale)
-		* FrenchPhone (pass the regular expression to StringField)
+		* FrenchDate (use the french locale instead)
+		* FrenchPhone (pass the regular expression to StringField instead)
 		* PairField (deprecated for a long time)
 
 version 0.2.2:
