@@ -7,13 +7,11 @@
  * ------------------
  *
  * YQL Execute is only available from a YQL request using a YQL Open Table XML file.
- * This script uses an appjet.com application (http://javascript.neyric.com/yql/js.php) to generate
+ * This script uses a php (http://javascript.neyric.com/yql/js.php) to generate
  * the wanted XML file from javascript code.
  * Examples:
  *    http://javascript.neyric.com/yql/js.php?url=http://gist.github.com/106503.txt
  *    http://javascript.neyric.com/yql/js.php?code=y.log(%22test%22)
- * Sources:
- *    http://appjet.com/app/324229066/source?plaintext=1
  *
  * We use a classic JSONP hack to get the results via a callback method.
  *
