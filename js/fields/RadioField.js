@@ -15,6 +15,13 @@
  */
 inputEx.RadioField = function(options) {
 	inputEx.RadioField.superclass.constructor.call(this,options);
+	
+	// IE BUG: doesn't want to set the value if the node is not in the DOM
+	// Set the initial value
+	if(YAHOO.env.ua.ie && !lang.isUndefined(this.options.value) ) {
+			this.setValue(this.options.value, false);
+	}
+	
 };
 	
 lang.extend(inputEx.RadioField, inputEx.Field, {
