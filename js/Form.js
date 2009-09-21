@@ -97,6 +97,12 @@ lang.extend(inputEx.Form, inputEx.Group, {
 	   var button, buttonEl;
 	   for(var i = 0 ; i < this.options.buttons.length ; i++ ) {
 	      button = this.options.buttons[i];
+	
+			// Throw Error if button is undefined
+			if(!button) {
+				throw new Error("inputEx.Form: One of the provided button is undefined ! (check trailing comma)");
+			}
+			
 	      buttonEl = inputEx.cn('input', {type: button.type, value: button.value});
 	      if( button.onClick ) { buttonEl.onclick = button.onClick; }
 	      this.buttons.push(buttonEl);
