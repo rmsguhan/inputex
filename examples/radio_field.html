@@ -39,7 +39,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example1', choices: ['Ajaxian','YUI blog','other'], parentEl: 'container1'});
+			new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example1', choices: ['Ajaxian','YUI blog','other'], value:'Ajaxian', parentEl: 'container1'});
 		</textarea>
 	</div>
 
@@ -189,7 +189,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	try {
 
 	// Example 1
-	new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example1', choices: ['Ajaxian','YUI blog','other'], parentEl: 'container1'});
+	new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example1', choices: ['Ajaxian','YUI blog','other'], value:'Ajaxian', parentEl: 'container1'});
 	
 	// Example 2
 	var field2 = new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example2', choices: ['Ajaxian','YUI blog'], parentEl: 'container2', allowAny: true});
