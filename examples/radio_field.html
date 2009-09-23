@@ -201,7 +201,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example3', choices: ['Ajaxian','YUI blog','other'], parentEl: 'container3', id: 'verticalChoiceField'});
 	
 	// Example 4
-	var field4 = new YAHOO.inputEx.RadioField({label: "What's your favorite programming language ?", name: 'example4', choices: ['Ruby','C#',"PHP"], values: ['ruby','c_sharp','php'],  allowAny: true, parentEl: 'container4', showMsg:true, required:true});
+	var field4 = new YAHOO.inputEx.RadioField({label: "What's your favorite programming language ?", name: 'example4', choices: ['Ruby','C#',"PHP"], values: ['ruby','c_sharp','php'], value:'c_sharp', allowAny: true, parentEl: 'container4', showMsg:true, required:true});
 	field4.updatedEvt.subscribe(function(e, params) {
 			YAHOO.util.Dom.get('container4').appendChild( YAHOO.inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
 	});
