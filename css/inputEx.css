@@ -3,7 +3,6 @@
  * inputEx.Field
  */
 div.inputEx-fieldWrapper {
-   position: relative;
    margin-bottom:0.2em;
 }
 
@@ -20,7 +19,6 @@ div.inputEx-Group div.inputEx-label {
 
 div.inputEx-Field {
    float: left;
-   position: relative;
 }
 
 div.inputEx-description {
@@ -188,9 +186,11 @@ div.inputEx-Form-Mask span {
 /**
  * UrlField
  */
-div.inputEx-UrlField input {
-   padding-left: 20px;
-}
+ 
+/* position relative to position:absolute favicon inside */
+div.inputEx-UrlField {position:relative;}
+
+div.inputEx-UrlField input { padding-left: 20px; }
 
 div.inputEx-UrlField input.nofavicon {
    padding-left: 0px;
