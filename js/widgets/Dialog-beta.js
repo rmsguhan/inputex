@@ -43,6 +43,7 @@ inputEx.widget.Dialog = function(options) {
 	Event.onAvailable(this._inputExBodyId, this.buildForm, this, true);
 	
 	this.render(this._inputExOptions.parentEl);
+	
 };
 
 YAHOO.lang.extend(inputEx.widget.Dialog, YAHOO.widget.Panel, {
@@ -56,7 +57,7 @@ YAHOO.lang.extend(inputEx.widget.Dialog, YAHOO.widget.Panel, {
       this._inputExFieldInstance._inputExDialog = this;
       this.center();
    },
-   
+	
    /**
     * Return the inputEx field instance created
     * @return {inputEx.Field} the field instance

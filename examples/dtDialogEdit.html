@@ -74,8 +74,6 @@
 <script src="inputex-examples.js"></script>
 
 <script>
-
-		
 /**
  * Datasource and inputEx fields used for both examples
  */
@@ -93,8 +91,8 @@ var myFields = [
 	{type: 'date', inputParams: {label: 'Date', name: 'date'} }, // formatter is auto-generated
 	{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity'} },
 	{type: 'number', inputParams: {label: 'Amount', name: 'amount'} },
-	{type: 'string', inputParams: {label: 'Title', name: 'title'} },
-	{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}}
+	{type: 'string', inputParams: {label: 'Title', name: 'title', required: true, showMsg: true} },
+	{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']} }
 ];
 
 // Custom formatter for "address" column to preserve line breaks
@@ -158,6 +156,35 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 			datasource: myDataSource,
 			datatableOpts: {caption:"Click on table options to show/hide fields"},
 			dragdropReordering: true
+		});
+  </textarea>
+ </div>
+</div>
+
+<!-- Example 4 -->
+<div class='exampleDiv'>
+ <p class="title">Listening to the Custom Events</p>
+ <p></p>
+ <div class='demoContainer' id='container4'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		var myDialog = new inputEx.widget.dtDialogEdit({
+			parentEl: 'container4', 
+			fields: myFields,
+			datasource: myDataSource,
+			datatableOpts: {caption:"DataTable Caption"}
+		});
+		
+		myDialog.itemRemovedEvt.subscribe(function(){
+			alert('item deleted !');
+		});
+		
+		myDialog.itemModifiedEvt.subscribe(function(){
+			alert('item modified !');
+		});
+		
+		myDialog.itemAddedEvt.subscribe(function(){
+			alert('item added !');
 		});
   </textarea>
  </div>

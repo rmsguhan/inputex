@@ -102,7 +102,7 @@ inputEx.widget.DataTable.prototype = {
    	 * @desc YAHOO custom event fired when an item is modified
    	 */
     	this.itemModifiedEvt = new util.CustomEvent('itemModified', this);
-    	
+
     	/**
    	 * @event Event fired when a row is reordered
     	 * @param {YAHOO.widget.Record} Modified record
