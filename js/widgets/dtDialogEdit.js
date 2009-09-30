@@ -76,7 +76,10 @@ lang.extend(inputEx.widget.dtDialogEdit, inputEx.widget.DataTable , {
       if(!this.dialog) {
          this.renderDialog();
       }
-      
+
+      // NOT Inserting new record
+		this.insertNewRecord = false;
+		
 		// Set the selected Record
 		this.selectedRecord = rowIndex;
 		
@@ -125,30 +128,36 @@ lang.extend(inputEx.widget.dtDialogEdit, inputEx.widget.DataTable , {
 		// Update the record
 		if(!this.insertNewRecord){
 						
+			// Update the row
 			var newvalues = this.dialog.getValue();
 			this.datatable.updateRow( this.selectedRecord , newvalues );
+
+			// Get the new record
+			var record = this.datatable.getRecord(this.selectedRecord);
 			
 			// Fire the modify event
-         this.itemModifiedEvt.fire(this.selectedRecord);
+         this.itemModifiedEvt.fire(record);
 
 		}
 		// Adding new record
 		else{
-						
-			this.insertNewRecord = false;
-			
+									
 			// Insert a new row
 	      this.datatable.addRow({});
 
-			// Get the new record
-			var recordsLength = this.datatable.getRecordSet().getLength();
-			this.selectedRecord = this.datatable.getRecord(recordsLength - 1);
+			// Set the Selected Record
+			var rowIndex = this.datatable.getRecordSet().getLength() - 1;
+			this.selectedRecord = rowIndex;
 			
+			// Update the row
 			var newvalues = this.dialog.getValue();
 			this.datatable.updateRow( this.selectedRecord , newvalues );
 			
+			// Get the new record
+			var record = this.datatable.getRecord(this.selectedRecord);
+			
 			// Fire the add event
-         this.itemAddedEvt.fire(this.selectedRecord);
+         this.itemAddedEvt.fire(record);
 		}
       
       this.dialog.hide();

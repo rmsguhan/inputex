@@ -48,13 +48,20 @@ inputEx.widget.Dialog = function(options) {
 
 YAHOO.lang.extend(inputEx.widget.Dialog, YAHOO.widget.Panel, {
    
+	/**
+	 * Render the form
+	 */
+   renderForm: function() {
+		this._inputExOptions.inputExDef.inputParams.parentEl = this._inputExBodyId;
+      this._inputExFieldInstance = inputEx(this._inputExOptions.inputExDef);
+      this._inputExFieldInstance._inputExDialog = this;
+	},
+
    /**
     * render the inputExDef as a inputEx field
     */
    buildForm: function() {
-      this._inputExOptions.inputExDef.inputParams.parentEl = this._inputExBodyId;
-      this._inputExFieldInstance = inputEx(this._inputExOptions.inputExDef);
-      this._inputExFieldInstance._inputExDialog = this;
+      this.renderForm();
       this.center();
    },
 	
