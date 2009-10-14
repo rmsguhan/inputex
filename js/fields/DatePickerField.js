@@ -148,12 +148,8 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
       this.beforeShowOverlay();
       
       this.calendar.selectEvent.subscribe(function (type,args,obj) {
-         // Horrible HACK
-         // stop here if called from beforeShowOverlay
-         if (!!this.ignoreNextSelectEvent) {
-             this.ignoreNextSelectEvent = false;
-             return;
-         }
+         // HACK: stop here if called from beforeShowOverlay
+         if (!!this.ignoreBeforeShowOverlayCall) { return; }
          
          this.oOverlay.hide();
          var date = args[0][0];
@@ -175,10 +171,11 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
       var date = this.getValue(true);
       if (!!date && !!this.calendar) {
          
-         // Horrible HACK (don't fire Field updatedEvt when selecting date)
-         this.ignoreNextSelectEvent = true;
+         // HACK: don't fire Field updatedEvt when selecting date
+         this.ignoreBeforeShowOverlayCall = true;
          // select the previous date in calendar
          this.calendar.select(date);
+			this.ignoreBeforeShowOverlayCall = false;
          
          this.calendar.cfg.setProperty("pagedate",(date.getMonth()+1)+"/"+date.getFullYear());
          this.calendar.render(); // refresh calendar

@@ -54,6 +54,7 @@ not released yet
 		* fix on DSSelectField (broken since switch to YUI 2.7.0)
 		* fix on MultiSelectField
 		* fix empty test for Integer and Number Fields
+		* fix on DatePickerField: we had to click twice to select a date the first time
 		
 	- Various
 		* InPlaceEdit ok button is now a skinnable link

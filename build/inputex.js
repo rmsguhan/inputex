@@ -1311,6 +1311,11 @@ lang.extend(inputEx.Group, inputEx.Field, {
       for (var i = 0 ; i < this.options.fields.length ; i++) {
          var input = this.options.fields[i];
         
+			// Throw Error if input is undefined
+			if(!input) {
+				throw new Error("inputEx.Form: One of the provided fields is undefined ! (check trailing comma)");
+			}
+			
          // Render the field
          var field = this.renderField(input);
          this.fieldset.appendChild(field.getEl() );
@@ -1685,6 +1690,12 @@ lang.extend(inputEx.Form, inputEx.Group, {
 	   var button, buttonEl;
 	   for(var i = 0 ; i < this.options.buttons.length ; i++ ) {
 	      button = this.options.buttons[i];
+	
+			// Throw Error if button is undefined
+			if(!button) {
+				throw new Error("inputEx.Form: One of the provided button is undefined ! (check trailing comma)");
+			}
+			
 	      buttonEl = inputEx.cn('input', {type: button.type, value: button.value});
 	      if( button.onClick ) { buttonEl.onclick = button.onClick; }
 	      this.buttons.push(buttonEl);
@@ -1770,7 +1781,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 			else {
 				// We keep this case for backward compatibility, but should not be used
 				// Used when we send in JSON in POST or GET
-				postData = "value="+lang.JSON.stringify(this.getValue());
+				postData = "value="+window.encodeURIComponent(lang.JSON.stringify(this.getValue()));
 			}
 		}
 		
@@ -2171,7 +2182,8 @@ lang.extend(inputEx.StringField, inputEx.Field, {
     * @param {boolean} [sendUpdatedEvt] (optional) Wether this setValue should fire the updatedEvt or not (default is true, pass false to NOT send the event)
     */
    setValue: function(value, sendUpdatedEvt) {
-      this.el.value = value;
+		// + check : if Null or Undefined we put '' in the stringField
+		this.el.value = ( lang.isNull(value) || lang.isUndefined(value) ) ? '' : value;
 
       // call parent class method to set style and fire updatedEvt
       inputEx.StringField.superclass.setValue.call(this, value, sendUpdatedEvt);
@@ -2709,8 +2721,10 @@ lang.extend(inputEx.ColorField, inputEx.Field, {
             
       // Render the overlay
       this.oOverlay.render(this.wrapEl);
+      
+      // TODO : why ?
       // HACK: Set position absolute to the overlay
-      Dom.setStyle(this.oOverlay.body.parentNode, "position", "absolute");
+      // Dom.setStyle(this.oOverlay.body.parentNode, "position", "absolute");
       
       // toggle Menu when clicking on colorEl
       Event.addListener(this.colorEl,'mousedown',function(e){
@@ -2918,7 +2932,8 @@ inputEx.registerType("color", inputEx.ColorField, []);
  * @constructor
  * @param {Object} options Add the folowing options: 
  * <ul>
- *	   <li>dateFormat: default to 'm/d/Y'</li>
+ *	   <li>dateFormat: Editor format (the one which is presented to the user) default to 'm/d/Y'</li>
+ *		<li>valueFormat: if falsy, the field will return a javascript Date instance. Otherwise, this format will be used for input parsing/output formatting</li>
  * </ul>
  */
 inputEx.DateField = function(options) {
@@ -2939,6 +2954,7 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
    	
    	// Added options
    	this.options.dateFormat = options.dateFormat || inputEx.messages.defaultDateFormat;
+		this.options.valueFormat = options.valueFormat;
    },
 	   
 	/**
@@ -2946,10 +2962,12 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 	 */
 	validate: function() {
 	   var value = this.el.value;
-	   var ladate = value.split("/");
+	
+		var separator = this.options.dateFormat.match(/[^Ymd ]/g)[0];
+	   var ladate = value.split(separator);
 	   if( ladate.length != 3) { return false; }
 	   if ( isNaN(parseInt(ladate[0],10)) || isNaN(parseInt(ladate[1],10)) || isNaN(parseInt(ladate[2],10))) { return false; }
-	   var formatSplit = this.options.dateFormat.split("/");
+	   var formatSplit = this.options.dateFormat.split(separator);
 	   var yearIndex = inputEx.indexOf('Y',formatSplit);
 	   if (ladate[yearIndex].length!=4) { return false; } // Avoid 3-digits years...
 	   var d = parseInt(ladate[ inputEx.indexOf('d',formatSplit) ],10);
@@ -2974,14 +2992,13 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 	      return;
 	   }
 	   var str = "";
-	   // DATETIME
 	   if (val instanceof Date) {
-	      str = this.options.dateFormat.replace('Y',val.getFullYear());
-	      var m = val.getMonth()+1;
-	      str = str.replace('m', ((m < 10)? '0':'')+m);
-	      var d = val.getDate();
-	      str = str.replace('d', ((d < 10)? '0':'')+d);
+			str = inputEx.DateField.formatDate(val, this.options.dateFormat);
 	   } 
+		else if(this.options.valueFormat){
+			var dateVal = inputEx.DateField.parseWithFormat(val, this.options.valueFormat);
+			str = inputEx.DateField.formatDate(dateVal, this.options.dateFormat);
+		}
 	   // else date must match this.options.dateFormat
 	   else {
 	     str = val;
@@ -2991,26 +3008,48 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 	},
 	   
 	/**
-	 * Return value in DATETIME format (use getFormattedValue() to have 04/10/2002-like format)
-	 * @return {Date} The javascript Date object
+	 * Return the date
+	 * @param {Boolean} forceDate Skip the valueFormat option if set to truthy
+	 * @return {String || Date} Formatted date using the valueFormat or a javascript Date instance
 	 */
-	getValue: function() {
+	getValue: function(forceDate) {
 	   // let parent class function check if typeInvite, etc...
 	   var value = inputEx.DateField.superclass.getValue.call(this);
 
 	   // Hack to validate if field not required and empty
 	   if (value === '') { return '';}
-	   
-	   //var ladate = this.el.value.split("/");
-	   var ladate = value.split("/");
-	   var formatSplit = this.options.dateFormat.split('/');
-	   var d = parseInt(ladate[ inputEx.indexOf('d',formatSplit) ],10);
-	   var Y = parseInt(ladate[ inputEx.indexOf('Y',formatSplit) ],10);
-	   var m = parseInt(ladate[ inputEx.indexOf('m',formatSplit) ],10)-1;
-	   return (new Date(Y,m,d));
+	
+		var finalDate = inputEx.DateField.parseWithFormat(value,this.options.dateFormat);
+	
+		// if valueFormat is specified, we format the string
+		if(!forceDate && this.options.valueFormat){	
+			return inputEx.DateField.formatDate(finalDate, this.options.valueFormat);
+		} 
+		
+		return finalDate;
 	}
 
 });
+
+// Those methods are limited but largely enough for our usage
+inputEx.DateField.parseWithFormat = function(sDate,format) {
+	var separator = format.match(/[^Ymd ]/g)[0];
+	var ladate = sDate.split(separator);
+   var formatSplit = format.split(separator);
+   var d = parseInt(ladate[ inputEx.indexOf('d',formatSplit) ],10);
+   var Y = parseInt(ladate[ inputEx.indexOf('Y',formatSplit) ],10);
+   var m = parseInt(ladate[ inputEx.indexOf('m',formatSplit) ],10)-1;
+   return (new Date(Y,m,d));
+};
+
+inputEx.DateField.formatDate = function(d,format) {
+	var str = format.replace('Y',d.getFullYear());
+   var m = d.getMonth()+1;
+   str = str.replace('m', ((m < 10)? '0':'')+m);
+   var d = d.getDate();
+   str = str.replace('d', ((d < 10)? '0':'')+d);
+	return str;
+};
 	
 // Specific message for the container
 inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
@@ -3320,12 +3359,8 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
       this.beforeShowOverlay();
       
       this.calendar.selectEvent.subscribe(function (type,args,obj) {
-         // Horrible HACK
-         // stop here if called from beforeShowOverlay
-         if (!!this.ignoreNextSelectEvent) {
-             this.ignoreNextSelectEvent = false;
-             return;
-         }
+         // HACK: stop here if called from beforeShowOverlay
+         if (!!this.ignoreBeforeShowOverlayCall) { return; }
          
          this.oOverlay.hide();
          var date = args[0][0];
@@ -3344,13 +3379,14 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    
    // Select the right date and display the right page on calendar, when the field has a value
    beforeShowOverlay: function() {
-      var date = this.getValue();
+      var date = this.getValue(true);
       if (!!date && !!this.calendar) {
          
-         // Horrible HACK (don't fire Field updatedEvt when selecting date)
-         this.ignoreNextSelectEvent = true;
+         // HACK: don't fire Field updatedEvt when selecting date
+         this.ignoreBeforeShowOverlayCall = true;
          // select the previous date in calendar
          this.calendar.select(date);
+			this.ignoreBeforeShowOverlayCall = false;
          
          this.calendar.cfg.setProperty("pagedate",(date.getMonth()+1)+"/"+date.getFullYear());
          this.calendar.render(); // refresh calendar
@@ -4279,11 +4315,18 @@ inputEx.registerType("number", inputEx.NumberField, []);
  *   <li>confirmPasswordField: the PasswordField instance to compare to when using 2 password fields for password creation (please use the setConfirmationField method)</li>
  *   <li>strengthIndicator: display a widget to indicate password strength (default false)</li>
  *   <li>capsLockWarning: display a warning if CapsLock is on (default false)</li>
+ *   <li>confirm: id of the field to compare to</li>
  * </ul>
  */
 inputEx.PasswordField = function(options) {
 	inputEx.PasswordField.superclass.constructor.call(this,options);
 };
+
+/**
+ * Keep track of all instances, indexed by ids, for the password confirmation field
+ */
+inputEx.PasswordField.byId = {}; 
+
 lang.extend(inputEx.PasswordField, inputEx.StringField, {
    
 	/**
@@ -4295,8 +4338,8 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
 	   
    	this.options.className = options.className ? options.className : "inputEx-Field inputEx-PasswordField";
 	   
-	   // Add the password regexp
-	   this.options.regexp = inputEx.regexps.password;
+	   // Add the password regexp (overridable)
+	   this.options.regexp = options.regexp || inputEx.regexps.password;
 	  
 		// display a strength indicator
 		this.options.strengthIndicator = YAHOO.lang.isUndefined(options.strengthIndicator) ? false : options.strengthIndicator;
@@ -4304,6 +4347,12 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
 		// capsLockWarning
 		this.options.capsLockWarning = YAHOO.lang.isUndefined(options.capsLockWarning) ? false : options.capsLockWarning;
 		
+		// confirm option, pass the id of the password field to confirm
+		inputEx.PasswordField.byId[options.id] = this;
+		var passwordField;
+		if(options.confirm && (passwordField = inputEx.PasswordField.byId[options.confirm]) ) {
+			this.setConfirmationField(passwordField);
+		}
 	},
 	
 	/**
@@ -4312,7 +4361,6 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
 	renderComponent: function() {
 	   // IE doesn't want to set the "type" property to 'password' if the node has a parent
 	   // even if the parent is not in the DOM yet !!
-	   
 	   
       // This element wraps the input node in a float: none div
       this.wrapEl = inputEx.cn('div', {className: 'inputEx-StringField-wrapper'});
@@ -4325,6 +4373,8 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
 	
 	   // Create the node
 		this.el = inputEx.cn('input', attributes);
+		
+		//inputEx.PasswordField.byId
 		
 		// Append it to the main element
 		this.wrapEl.appendChild(this.el);
@@ -4532,6 +4582,16 @@ inputEx.registerType("password", inputEx.PasswordField, [
  */
 inputEx.RadioField = function(options) {
 	inputEx.RadioField.superclass.constructor.call(this,options);
+	
+	// IE BUG: doesn't want to set the value if the node is not in the DOM
+	if(YAHOO.env.ua.ie && !lang.isUndefined(this.options.value) ) {
+		// Set the initial value, use setTimeout to escape the stack (for nested usage in Group or Form)
+		var that = this;
+		setTimeout(function() {
+			that.setValue(that.options.value, false);
+		},0);
+	}
+	
 };
 	
 lang.extend(inputEx.RadioField, inputEx.Field, {
