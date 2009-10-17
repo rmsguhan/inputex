@@ -75,7 +75,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
    
    onCellClick: function(ev, rowIndex) {
       this.datatable.onEventShowCellEditor(ev);
-   },
+   }
    
 });
 
