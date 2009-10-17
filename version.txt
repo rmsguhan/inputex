@@ -18,6 +18,7 @@ not released yet
 		* Lens (beta)
 		* TimeInterval field to enter a duration
 		* ColorPickerField - wrapper for YUI's ColorPicker widget
+		* KeyValueField and KeyOpValueField - fields to build search forms from an inputEx definition
 		
 	- Field enhancements:
 		* CombineField now inherits Group instead of Field
