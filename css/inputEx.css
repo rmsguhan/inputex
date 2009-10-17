@@ -549,7 +549,7 @@ div.inputEx-RadioField-choice {
  * Datatable
  */
 
-div.inputEx-DataTable-formContainer {
+/*div.inputEx-DataTable-formContainer {
 	float: left;
 }
 div.inputEx-DataTable-formContainer div.inputEx-DataTable-formWrapper {
@@ -562,7 +562,7 @@ div.inputEx-DataTable-formContainer div.inputEx-DataTable-formWrapper {
 	-webkit-border-top-right-radius: 10px;
 	border: 1px solid #7F7F7F;
 	padding: 10px;
-}
+}*/
 
 
 /**

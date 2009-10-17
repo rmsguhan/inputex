@@ -65,6 +65,7 @@ not released yet
 	  	* including JSMin
 		* Upgrading to YUI 2.8.0r4
 		* Tickets moved to GitHub
+		* Dialog widget out of beta
 		
 	- Fields removed
 		* FrenchDate (use the french locale instead)
@@ -88,7 +89,7 @@ released on March, 6th 2009
 		* added "collapsed" option for Group/Form
 		* added "className" option for Group/Form
 		* added listAddLabel/listRemoveLabel options for List
-      * added addOption/removeOption methods on SelectField
+        * added addOption/removeOption methods on SelectField
       
  	- Widgets:
 		* Added JsonTreeInspector widget
@@ -96,10 +97,10 @@ released on March, 6th 2009
 	- Various	
 	   * moving to github (git repository)
 	   * moving tickets to Lighthouse
-		* new page for examples
-		* some fixes on inputex-loader
-		* updates on json-schema
-		* fixing first json-schema example
+	   * new page for examples
+	   * some fixes on inputex-loader
+	   * updates on json-schema
+	   * fixing first json-schema example
 
 
 version 0.2.1:

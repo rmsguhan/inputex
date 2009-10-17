@@ -17,7 +17,6 @@
  *    <li>allowModify: default true</li>
  *    <li>allowDelete: default true</li>
  *    <li>showHideColumnsDlg: add a link to a dialog to show/hide columns</li>
- *    <li>dragdropReordering: allow the user to drag drop rows to order them (note: this is incompatible with sorting !)</li>
  * </ul>
  */
 inputEx.widget.DataTable = function(options) {
@@ -52,20 +51,6 @@ inputEx.widget.DataTable.prototype = {
       this.options.datasource = options.datasource;
       this.options.datatableOpts = options.datatableOpts;
       this.options.fields = options.fields;
-      
-      this.options.dragdropReordering = lang.isUndefined(options.dragdropReordering) ? false : options.dragdropReordering; 
-      if(this.options.dragdropReordering) {
-         
-         // Prevent sort on all columns
-         this.options.sortable = false;
-         
-         if(this.options.datatableOpts) {
-            this.options.datatableOpts.rowSingleSelect = true;
-         }
-         else {
-            this.options.datatableOpts = { rowSingleSelect: true};
-         }
-      }
    },
    
    
@@ -143,10 +128,6 @@ inputEx.widget.DataTable.prototype = {
       this.datatable = new YAHOO.widget.DataTable(this.element,this.columndefs, this.options.datasource, this.options.datatableOpts);
       
       this.datatable.subscribe('cellClickEvent', this._onCellClick, this, true);
-      
-      if(this.options.dragdropReordering) {
-         this.initDragdropReordering();
-      }
       
       // init the Editor
       this.initEditor();
@@ -302,70 +283,6 @@ inputEx.widget.DataTable.prototype = {
       }
       // TODO: other formatters
       return columnDef;
-   },
-   
-   
-   
-   
-   /**
-    * Handle events for drag drop reordering
-    */
-   initDragdropReordering: function() {
-      this.datatable.subscribe("cellMousedownEvent",this.datatable.onEventSelectRow);
-      
-      var myDataTable = this.datatable;
-      var overLi = null;
-      var that = this;
-      
-      var onRowSelect = function(ev) {
-
-          	var par = myDataTable.getTrEl(Event.getTarget(ev)); //The tr element
-   	        selectedRow = myDataTable.getSelectedRows();
-   	        ddRow = new YAHOO.util.DDProxy(par.id);
-   	        //ddRow.handleMouseDown(ev.event);
-
-   	        ddRow.onDragOver = function(e, args) {
-   							Dom.addClass(arguments[1], 'over');
-   	            if (overLi && (overLi != arguments[1])) {
-   	                Dom.removeClass(overLi, 'over');
-   	            }
-   	            overLi = arguments[1];
-   	        };
-
-   	        ddRow.onDragOut = function() {
-   	            Dom.removeClass(overLi, 'over');
-   	        };
-
-   	        ddRow.onDragDrop = function(e,p) {
-
-   	            Dom.removeClass(overLi, 'over');
-   	            myDataTable.unselectAllRows();
-
-   					var movedIndex = myDataTable.getRecordIndex(selectedRow[0]);
-   					var afterIndex = myDataTable.getRecordIndex(overLi);
-
-   					// Re-create a new row (TODO: can do better...)
-   					var rec = myDataTable.getRecord(movedIndex);
-   					myDataTable.deleteRow(movedIndex);
-   					myDataTable.addRow( rec.getData() , afterIndex+1 );
-   					new YAHOO.util.DDTarget( myDataTable.getTrEl( afterIndex+1 ) );
-
-   					myDataTable.selectRow( afterIndex+1 );
-
-   	            //YAHOO.util.DragDropMgr.stopDrag(ev,true);
-   	            
-   	            that.rowReorderedEvt.fire(movedIndex, afterIndex);
-   	        };
-      };
-      myDataTable.subscribe('cellMousedownEvent', onRowSelect);
-
-   		// Make all rows drop targets (TODO: can do better...)
-   		var el = myDataTable.getFirstTrEl();
-   		new YAHOO.util.DDTarget(el);
-   		while( el = myDataTable.getNextTrEl(el) ) {
-   			new YAHOO.util.DDTarget(el);
-   		}
-      
    },
    
    /**

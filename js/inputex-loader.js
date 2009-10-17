@@ -68,7 +68,7 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
  		{
  			name: 'inputex-dialog',
  			type: 'js',
- 	  	   fullpath: pathToInputEx+'js/widgets/Dialog-beta.js',
+ 	  	   fullpath: pathToInputEx+'js/widgets/Dialog.js',
  	  	   varName: 'inputEx.widget.Dialog',
  			requires: ['inputex', 'dragdrop', 'container']
  		},
