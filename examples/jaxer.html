@@ -40,7 +40,7 @@
 
 function init() {
 	// Required for the UrlField and ListField
-	YAHOO.inputEx.spacerUrl = "../images/space.gif";
+	inputEx.spacerUrl = "../images/space.gif";
 
 	// Example 1
 	var contactFormFields = [ 
@@ -51,7 +51,7 @@ function init() {
 			{type:'boolean', inputParams: {label: 'Happy to be there ?', name: 'happy'}}, 
 			{type:'url', inputParams: {label: 'Website', name:'website'}} 
 	];
-	new YAHOO.inputEx.Group({parentEl: 'container1', fields: contactFormFields, legend: 'Tell us about yourself...'});
+	new inputEx.Group({parentEl: 'container1', fields: contactFormFields, legend: 'Tell us about yourself...'});
 	
 }
 

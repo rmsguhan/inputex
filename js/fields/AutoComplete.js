@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
  * An autocomplete field that wraps the YUI autocompleter

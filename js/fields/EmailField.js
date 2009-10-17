@@ -1,7 +1,5 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * Field that adds the email regexp for validation. Result is always lower case.
  * @class inputEx.EmailField

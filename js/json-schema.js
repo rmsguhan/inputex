@@ -1,5 +1,5 @@
 (function() {
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
  
 /**
  * Namespace containing utility functions for conversion between inputEx JSON format and JSON Schema
@@ -154,9 +154,9 @@ inputEx.JsonSchema = {
 /**
  * @class inputEx.JsonSchema.Builder
  */
-inputEx.JsonSchema.Builder = function(options) {
+inputEx.JsonSchema.Builder = function(opts) {
 	
-	var options = options || {};
+	var options = opts || {};
 	this.options  = options; 
 	
 	/**
@@ -204,6 +204,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	   var fieldDef = {inputParams: { label: propertyName, name: propertyName} };
 	   var schemaMap = this.schemaToParamMap;
     	var referencedSchema = p["$ref"]; 
+		var key;
 	    
 	   if(referencedSchema){
 	    	var new_schema = null;
@@ -232,7 +233,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	      fieldDef.inputParams.required = true;
 	   }
 
-	    for(var key in schemaMap) {
+	    for(key in schemaMap) {
 	        if(schemaMap.hasOwnProperty(key)) {
 	      	  var paramName = schemaMap[key]; 
 	      	  var v = p[key];
@@ -266,10 +267,10 @@ inputEx.JsonSchema.Builder.prototype = {
 	             type = type[0];
 	          }
 	       }
-	       else if(lang.isObject(type) ) {
+	       //else if(lang.isObject(type) ) {
 	          // What do we do ??
 	          //console.log("type is an object !!");
-	       }
+	       //}
 	       
 	       fieldDef.type = type;
 	       
@@ -297,7 +298,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	        	  fieldDef.inputParams.name = propertyName;
 	          }
 	
-	          for(var key in p.properties) {
+	          for(key in p.properties) {
 	             if(p.properties.hasOwnProperty(key)) {
 	                fields.push( this.schemaToInputEx(p.properties[key], key) );
 	             }

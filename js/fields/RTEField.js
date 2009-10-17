@@ -1,6 +1,6 @@
 (function() {
 	
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
 	
 /**
  * Wrapper for the Rich Text Editor from YUI
@@ -103,7 +103,7 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	      this.editor.saveHTML();
          return this.el.value;
 	   }
-	   catch(ex) {}
+	   catch(ex) { return null; }
 	}
 	
 });

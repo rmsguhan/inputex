@@ -82,7 +82,7 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	// Required for the UrlField
-	YAHOO.inputEx.spacerUrl = "../images/space.gif";
+	inputEx.spacerUrl = "../images/space.gif";
 	
 	// Example 1
 	var descriptedFields = [ 
@@ -93,7 +93,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 			{ type: 'radio', inputParams: {label: 'Radio', description: 'My favorite is YUI', name: 'example1', choices: ['Ajaxian','YUI blog','other']}},
 			{ type: 'text', inputParams: {label: 'Comments', description: 'Enter your comment'}}
 	];
-	new YAHOO.inputEx.Group({id:'sampleGroup', parentEl: 'container1', fields: descriptedFields, legend: 'User Informations'});
+	new inputEx.Group({id:'sampleGroup', parentEl: 'container1', fields: descriptedFields, legend: 'User Informations'});
 	
 	
 });	

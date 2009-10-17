@@ -33,7 +33,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			sliderField = new YAHOO.inputEx.SliderField({parentEl: 'container1'});
+			sliderField = new inputEx.SliderField({parentEl: 'container1'});
 		</textarea>
 			</div>
 
@@ -52,7 +52,7 @@
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
 			var el = YAHOO.util.Dom.get('container2');
-			var field = new YAHOO.inputEx.SliderField({parentEl: el, displayValue: false}); 
+			var field = new inputEx.SliderField({parentEl: el, displayValue: false}); 
 			var logDiv = inputEx.cn('div', null, null, "Log :<br />"); 
 			el.appendChild(logDiv); 
 			field.updatedEvt.subscribe(function(e,params) { 
@@ -77,7 +77,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.SliderField({parentEl: 'container3', minValue: 50, maxValue: 500});
+			new inputEx.SliderField({parentEl: 'container3', minValue: 50, maxValue: 500});
 		</textarea>
 			</div>
 
@@ -101,12 +101,12 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
-	var sliderField = new YAHOO.inputEx.SliderField({parentEl: 'container1'});
+	var sliderField = new inputEx.SliderField({parentEl: 'container1'});
 	
 	
 	// Example 2
 	var el = YAHOO.util.Dom.get('container2');
-	var field = new YAHOO.inputEx.SliderField({parentEl: el, displayValue: false}); 
+	var field = new inputEx.SliderField({parentEl: el, displayValue: false}); 
 	var logDiv = inputEx.cn('div', null, null, "Log :<br />"); 
 	el.appendChild(logDiv); 
 	field.updatedEvt.subscribe(function(e,params) { 
@@ -116,7 +116,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	
 	// Example 3
-	var field3 = new YAHOO.inputEx.SliderField({parentEl: 'container3', minValue: 50, maxValue: 500});
+	var field3 = new inputEx.SliderField({parentEl: 'container3', minValue: 50, maxValue: 500});
 	var button = inputEx.cn('button',null,null,"set value to 345");
 	YAHOO.util.Event.addListener(button,"click",function() {
 		field3.setValue(345);

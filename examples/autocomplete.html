@@ -65,7 +65,7 @@
 				alert( field.getValue() );
 			});
 
-			var logDiv = YAHOO.inputEx.cn('div', null, null, "");
+			var logDiv = inputEx.cn('div', null, null, "");
 			YAHOO.util.Dom.get('container1').appendChild(logDiv);
 			field.updatedEvt.subscribe(function(e,params) {
 				var value = params[0];
@@ -198,7 +198,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 		alert( field.getValue() );
 	});
 	
-	var logDiv = YAHOO.inputEx.cn('div', null, null, "");
+	var logDiv = inputEx.cn('div', null, null, "");
 	YAHOO.util.Dom.get('container1').appendChild(logDiv);
 	field.updatedEvt.subscribe(function(e,params) {
 		var value = params[0];

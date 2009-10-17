@@ -1,7 +1,5 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * Create a hidden input, inherits from inputEx.Field
  * @class inputEx.HiddenField

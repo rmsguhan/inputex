@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
+   var Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
  * A field limited to number inputs (floating)

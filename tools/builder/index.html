@@ -150,7 +150,7 @@ margin: 10px;
 <script>
 YAHOO.util.Event.onDOMReady(function() {
 	
-	YAHOO.inputEx.spacerUrl = "images/space.gif";
+	inputEx.spacerUrl = "images/space.gif";
 	
 	var g = new inputEx.Group({parentEl: 'container', fields: inputEx.Group.groupOptions});
 	
@@ -326,7 +326,7 @@ YAHOO.util.Event.onDOMReady(function() {
 								if(value.format == "JSON Schema") {
 									
 									try {
-									var builder = new YAHOO.inputEx.JsonSchema.Builder({
+									var builder = new inputEx.JsonSchema.Builder({
 										'schemaIdentifierMap': code,
 									  'defaultOptions':{
 									     'showMsg':true

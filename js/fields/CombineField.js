@@ -1,6 +1,6 @@
 (function() {
 	
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Dom = YAHOO.util.Dom;
 	
 /**
  * A meta field to put N fields on the same line, separated by separators

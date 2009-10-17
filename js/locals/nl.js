@@ -43,12 +43,12 @@
    msgs.modifyText = "Wijzigen";
    msgs.deleteText = "Verwijderen";
    msgs.insertItemText = "Toevoegen";
-   msgs.confirmDeletion = "Weet u het zeker?"
+   msgs.confirmDeletion = "Weet u het zeker?";
 
    msgs.stringTooShort = ["Dit veld moet tenminste "," nummers of karakters bevatten"];
    msgs.stringTooLong  = ["Dit veld mag maximaal "," nummers of karakters bevatten"];
 
-   msgs.invalidUrl = "Ongeldige URL, bv: http://www.test.com"
+   msgs.invalidUrl = "Ongeldige URL, bv: http://www.test.com";
 
 	// for YUI loader 
    inputEx.lang_nl = true;

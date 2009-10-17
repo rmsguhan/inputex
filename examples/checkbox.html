@@ -119,8 +119,8 @@
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript" cols="60" rows="1">
 			var el = YAHOO.util.Dom.get('container5');
-			var field = new YAHOO.inputEx.CheckBox({parentEl: el });
-			var logDiv = YAHOO.inputEx.cn('div', null, null, "Log :<br />");
+			var field = new inputEx.CheckBox({parentEl: el });
+			var logDiv = inputEx.cn('div', null, null, "Log :<br />");
 			el.appendChild(logDiv);
 			field.updatedEvt.subscribe(function() {
 				logDiv.innerHTML += "Updated at "+(new Date())+"<br />";
@@ -143,7 +143,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-					var dc = new YAHOO.inputEx.CheckBox({label: 'Disable', parentEl: 'container6'});
+					var dc = new inputEx.CheckBox({label: 'Disable', parentEl: 'container6'});
 					dc.disable();
 		</textarea>
 			</div>
@@ -166,7 +166,7 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
-	new YAHOO.inputEx.CheckBox({parentEl: 'container1'});
+	new inputEx.CheckBox({parentEl: 'container1'});
 	
 	
 	// Example 2
@@ -175,25 +175,25 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	// Example 3
 	var exampleDiv = YAHOO.util.Dom.get('container3');
-	var field1 = new YAHOO.inputEx.CheckBox({rightLabel: 'I return true/false', parentEl: exampleDiv});
-	var button = YAHOO.inputEx.cn('button', null, null, 'getValue()');
+	var field1 = new inputEx.CheckBox({rightLabel: 'I return true/false', parentEl: exampleDiv});
+	var button = inputEx.cn('button', null, null, 'getValue()');
 	exampleDiv.appendChild(button); 
 	YAHOO.util.Event.addListener(button, 'click', function() { alert(field1.getValue()); });
 	
 	
 	// Example 4
 	var exampleDiv = YAHOO.util.Dom.get('container4');
-	var field2 = new YAHOO.inputEx.CheckBox({sentValues: ['Yes', 'No'], rightLabel: 'Do you agree ?', parentEl: exampleDiv, value: 'No'});
-	var button = YAHOO.inputEx.cn('button', null, null, 'getValue()');
+	var field2 = new inputEx.CheckBox({sentValues: ['Yes', 'No'], rightLabel: 'Do you agree ?', parentEl: exampleDiv, value: 'No'});
+	var button = inputEx.cn('button', null, null, 'getValue()');
 	exampleDiv.appendChild(button); 
 	YAHOO.util.Event.addListener(button, 'click', function() { alert(field2.getValue()); });
 	
 	
 	// Example 5
 	var el = YAHOO.util.Dom.get('container5');
-	var field = new YAHOO.inputEx.CheckBox({parentEl: el });
+	var field = new inputEx.CheckBox({parentEl: el });
 	
-	var button1 = YAHOO.inputEx.cn('button', null, null, "SetValue with true");
+	var button1 = inputEx.cn('button', null, null, "SetValue with true");
 	var bool = true;
 	el.appendChild(button1);
 	YAHOO.util.Event.addListener(button1, "click" ,function() {
@@ -202,7 +202,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	   button1.innerHTML = "SetValue with "+bool;
 	});
 	
-	var logDiv = YAHOO.inputEx.cn('div', null, null, "Log :<br />");
+	var logDiv = inputEx.cn('div', null, null, "Log :<br />");
 	el.appendChild(logDiv);
 	field.updatedEvt.subscribe(function(e,params) {
 		var val = params[0];
@@ -212,7 +212,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	// Example 6
 	var el = YAHOO.util.Dom.get('container6');
-	var dc = new YAHOO.inputEx.CheckBox({label: 'Disable', parentEl: el});
+	var dc = new inputEx.CheckBox({label: 'Disable', parentEl: el});
 	dc.disable();
 	var enableBtn = inputEx.cn('button', null, null, "Enable");
 	var disableBtn = inputEx.cn('button', null, null, "Disable");

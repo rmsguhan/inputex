@@ -1,7 +1,5 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * Create a uneditable field where you can stick the html you want
  * Added Options:

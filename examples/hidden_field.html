@@ -34,14 +34,14 @@
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
 			var exampleDiv = YAHOO.util.Dom.get('container1');
-			var group = new YAHOO.inputEx.Group({
+			var group = new inputEx.Group({
 				 	fields: [ 
 						{type: 'hidden', inputParams: {name: 'id', value: 12 } }, 
 						{inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } } 
 					], 
 					parentEl: exampleDiv
 			});
-			var button=YAHOO.inputEx.cn('button',null,null, 'Get Value'); 
+			var button=inputEx.cn('button',null,null, 'Get Value'); 
 			exampleDiv.appendChild(button); 
 			YAHOO.util.Event.addListener(button, 'click', function(){ alert(YAHOO.lang.JSON.stringify(group.getValue()) ); });
 		</textarea>
@@ -69,14 +69,14 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
 	var exampleDiv = YAHOO.util.Dom.get('container1');
-	var group = new YAHOO.inputEx.Group({
+	var group = new inputEx.Group({
 		 	fields: [ 
 				{ type: 'hidden', inputParams: {name: 'id', value: 12 } }, 
 				{ inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } } 
 			], 
 			parentEl: exampleDiv
 	});
-	var button=YAHOO.inputEx.cn('button',null,null, 'Get Value'); 
+	var button=inputEx.cn('button',null,null, 'Get Value'); 
 	exampleDiv.appendChild(button); 
 	YAHOO.util.Event.addListener(button, 'click', function(){ alert(YAHOO.lang.JSON.stringify(group.getValue()) ); });
 	

@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
 
 /**
  * A field to enter a date with 2 strings and a select

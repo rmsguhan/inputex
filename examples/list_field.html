@@ -51,17 +51,17 @@
  <div class='demoContainer' id='container1'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-		var field = new YAHOO.inputEx.ListField({
+		var field = new inputEx.ListField({
 			name: 'websiteUrl', 
 			listLabel: 'Websites',
 			elementType: {type: 'url'},
 			value: ['http://www.neyric.com', 'http://www.ajaxian.com', 'http://www.google.com', 'http://www.yahoo.com'], 
 			parentEl: 'container1'
 		});
-		var button = YAHOO.inputEx.cn('button', null, null, 'getValue()');
+		var button = inputEx.cn('button', null, null, 'getValue()');
 		YAHOO.util.Dom.get('container1').appendChild(button); 
 		YAHOO.util.Event.addListener(button, 'click', function() { alert( YAHOO.lang.JSON.stringify(field.getValue())); });  
-		var button2 = YAHOO.inputEx.cn('button', null, null, 'setValue()');
+		var button2 = inputEx.cn('button', null, null, 'setValue()');
 		YAHOO.util.Dom.get('container1').appendChild(button2); 
 		YAHOO.util.Event.addListener(button2, 'click', function() {
 			field.setValue(['http://www.sncf.com',
@@ -69,7 +69,7 @@
 											'http://www.neyric.com',
 											'http://javascript.neyric.com/wireit']);			
 		});
-		var button3 = YAHOO.inputEx.cn('button', null, null, 'Clear');
+		var button3 = inputEx.cn('button', null, null, 'Clear');
 		YAHOO.util.Dom.get('container1').appendChild(button3); 
 		YAHOO.util.Event.addListener(button3, 'click', function() {
 			field.setValue([]);
@@ -138,7 +138,7 @@
  <div class='demoContainer' id='container4'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-		new YAHOO.inputEx.ListField({
+		new inputEx.ListField({
 			listLabel: 'Websites',
 			elementType: {
 				type: 'select', 
@@ -163,7 +163,7 @@
  <div class='demoContainer' id='container5'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-		new YAHOO.inputEx.ListField({
+		new inputEx.ListField({
 			listLabel: 'Websites',
 			maxItems: 4,
 			minItems: 1,

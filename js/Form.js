@@ -1,5 +1,5 @@
 (function () {
-   var util = YAHOO.util, lang = YAHOO.lang, Event = YAHOO.util.Event, inputEx = YAHOO.inputEx, Dom = util.Dom;
+   var util = YAHOO.util, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = util.Dom;
 
 /**
  * Create a group of fields within a FORM tag and adds buttons
@@ -302,7 +302,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 
 
 // Specific waiting message in ajax submit
-inputEx.messages.ajaxWait = "Please wait...";;
+inputEx.messages.ajaxWait = "Please wait...";
 
 // Register this class as "form" type
 inputEx.registerType("form", inputEx.Form, [

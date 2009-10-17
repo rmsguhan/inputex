@@ -73,10 +73,10 @@
 
 		YAHOO.util.Event.addListener(window, 'load', function() {
 			// Required for the UrlField
-			YAHOO.inputEx.spacerUrl = "../images/space.gif";
+			inputEx.spacerUrl = "../images/space.gif";
 
 			// Example 1
-			new YAHOO.inputEx.Form( { 
+			new inputEx.Form( { 
 				fields: [ 
 					{type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
 					{inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
@@ -89,7 +89,7 @@
 			});
 			
 			// Example 2
-			new YAHOO.inputEx.Form( { 
+			new inputEx.Form( { 
 				fields: [ 
 					{type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
 					{inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 

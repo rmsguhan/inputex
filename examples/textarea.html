@@ -39,7 +39,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.Textarea({parentEl: 'container1', value: 'Textarea can contain\nmultiline text !\n'});
+			new inputEx.Textarea({parentEl: 'container1', value: 'Textarea can contain\nmultiline text !\n'});
 		</textarea>
 			</div>
 
@@ -59,15 +59,15 @@
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
 			var div = YAHOO.util.Dom.get('container2');
-			var textField = new YAHOO.inputEx.Textarea({parentEl: div, showMsg:true, required:true});
+			var textField = new inputEx.Textarea({parentEl: div, showMsg:true, required:true});
 
-			var button1 = YAHOO.inputEx.cn('button', null, null, "SetValue");
+			var button1 = inputEx.cn('button', null, null, "SetValue");
 			div.appendChild(button1);
 			YAHOO.util.Event.addListener(button1, "click" ,function() { 
 				textField.setValue('Textarea can contain\nmultiline text !\n'); 
 			});
 
-			var button2 = YAHOO.inputEx.cn('button', null, null, "GetValue");
+			var button2 = inputEx.cn('button', null, null, "GetValue");
 			div.appendChild(button2);
 			YAHOO.util.Event.addListener(button2, "click" ,function() { 
 				alert(textField.getValue());
@@ -89,7 +89,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.Textarea({parentEl: 'container3', value: 'Set the size...\nusing "rows" and "cols" attributes !\n', rows: 8, cols: 40});
+			new inputEx.Textarea({parentEl: 'container3', value: 'Set the size...\nusing "rows" and "cols" attributes !\n', rows: 8, cols: 40});
 		</textarea>
 			</div>
 
@@ -107,7 +107,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.Textarea({parentEl: 'container4', showMsg:true, required:true, typeInvite:"Type text here", minLength:10, maxLength:20, name: "Test4"});
+			new inputEx.Textarea({parentEl: 'container4', showMsg:true, required:true, typeInvite:"Type text here", minLength:10, maxLength:20, name: "Test4"});
 		</textarea>
 			</div>
 
@@ -128,30 +128,30 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
-	new YAHOO.inputEx.Textarea({parentEl: 'container1', value: 'Textarea can contain\nmultiline text !\n'});
+	new inputEx.Textarea({parentEl: 'container1', value: 'Textarea can contain\nmultiline text !\n'});
 	
 	
 	// Example 2
 	var div = YAHOO.util.Dom.get('container2');
-	var textField = new YAHOO.inputEx.Textarea({parentEl: div, showMsg:true, required:true});
+	var textField = new inputEx.Textarea({parentEl: div, showMsg:true, required:true});
 	
-	var button1 = YAHOO.inputEx.cn('button', null, null, "SetValue");
+	var button1 = inputEx.cn('button', null, null, "SetValue");
 	div.appendChild(button1);
 	YAHOO.util.Event.addListener(button1, "click" ,function() { 
 		textField.setValue('Textarea can contain\nmultiline text !\n'); 
 	});
 	
-	var button2 = YAHOO.inputEx.cn('button', null, null, "GetValue");
+	var button2 = inputEx.cn('button', null, null, "GetValue");
 	div.appendChild(button2);
 	YAHOO.util.Event.addListener(button2, "click" ,function() { 
 		alert(textField.getValue());
 	});
 	
 	// Example 3
-	new YAHOO.inputEx.Textarea({parentEl: 'container3', value: 'Set the size...\nusing "rows" and "cols" attributes !\n', rows: 8, cols: 40});
+	new inputEx.Textarea({parentEl: 'container3', value: 'Set the size...\nusing "rows" and "cols" attributes !\n', rows: 8, cols: 40});
 	
 	// Example 4
-	new YAHOO.inputEx.Textarea({parentEl: 'container4', showMsg:true, required:true, typeInvite:"Type text here", minLength:10, maxLength:20, name: "Test4"});
+	new inputEx.Textarea({parentEl: 'container4', showMsg:true, required:true, typeInvite:"Type text here", minLength:10, maxLength:20, name: "Test4"});
 	
 });
 

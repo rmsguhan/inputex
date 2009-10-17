@@ -74,7 +74,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-            new YAHOO.inputEx.NumberField({parentEl: 'container3', showMsg: true, min:-15, max:'1e3', typeInvite:"Numbers between -15 and 1e3 (1000) only", size:40});
+            new inputEx.NumberField({parentEl: 'container3', showMsg: true, min:-15, max:'1e3', typeInvite:"Numbers between -15 and 1e3 (1000) only", size:40});
 		</textarea>
 	</div>
 
@@ -98,8 +98,8 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
-	field = new YAHOO.inputEx.NumberField({parentEl: 'container1', showMsg: true, value: 0.03});
-	var button = YAHOO.inputEx.cn('button', null, null, 'getValue');
+	field = new inputEx.NumberField({parentEl: 'container1', showMsg: true, value: 0.03});
+	var button = inputEx.cn('button', null, null, 'getValue');
 	YAHOO.util.Event.addListener(button, "click",function() {
 		alert(field.getValue());
 	});
@@ -107,16 +107,16 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	
    // Example 2
-   field2 = new YAHOO.inputEx.NumberField({parentEl: 'container2', showMsg: true, value: '03e-2', required:true, typeInvite:"Float numbers accepted"});
-   var button = YAHOO.inputEx.cn('button', null, null, 'getValue');
+   field2 = new inputEx.NumberField({parentEl: 'container2', showMsg: true, value: '03e-2', required:true, typeInvite:"Float numbers accepted"});
+   var button = inputEx.cn('button', null, null, 'getValue');
    YAHOO.util.Event.addListener(button, "click",function() {
       alert(field2.getValue());
    });
    YAHOO.util.Dom.get('container2').appendChild(button);
    
    // Example 3
-   field3 = new YAHOO.inputEx.NumberField({parentEl: 'container3', showMsg: true, min:-15, max:'1e3', typeInvite:"Numbers between -15 and 1e3 (1000) only", size:40});
-   var button = YAHOO.inputEx.cn('button', null, null, 'getValue');
+   field3 = new inputEx.NumberField({parentEl: 'container3', showMsg: true, min:-15, max:'1e3', typeInvite:"Numbers between -15 and 1e3 (1000) only", size:40});
+   var button = inputEx.cn('button', null, null, 'getValue');
    YAHOO.util.Event.addListener(button, "click",function() {
       alert(field3.getValue());
    });

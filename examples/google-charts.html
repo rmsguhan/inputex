@@ -93,7 +93,7 @@
 <script src="../build/inputex-min.js"  type='text/javascript'></script>
 <script>
 
-YAHOO.inputEx.spacerUrl = "../images/space.gif";
+inputEx.spacerUrl = "../images/space.gif";
 
 YAHOO.util.Event.addListener(window, "load", function() {
 	
@@ -134,7 +134,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 	
 	YAHOO.util.Event.addListener('updateButton', 'click', updateChart);
 	
-	form = new YAHOO.inputEx.Form({
+	form = new inputEx.Form({
 		parentEl: 'htmlFormContainer',
 		fields: [
 	      { inputParams: {label: 'Title', name: 'title', value: 'My Graph'} },

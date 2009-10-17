@@ -1,5 +1,5 @@
 (function() {
-   var inputEx = YAHOO.inputEx, Dom = YAHOO.util.Dom, lang = YAHOO.lang, util = YAHOO.util;
+   var Dom = YAHOO.util.Dom, lang = YAHOO.lang, util = YAHOO.util;
 
 /** 
  * An abstract class (never instantiated) that contains the shared features for all fields.
@@ -16,10 +16,8 @@
  */
 inputEx.Field = function(options) {
 	
-   if(!options) {var options = {}; }
-	
 	// Set the default values of the options
-	this.setOptions(options);
+	this.setOptions(options || {});
 	
 	// Call the render of the dom
 	this.render();
@@ -188,11 +186,11 @@ inputEx.Field.prototype = {
     * Set the styles for valid/invalide state
     */
 	setClassFromState: function() {
-	
+		var className;
 	   // remove previous class
 	   if( this.previousState ) {
 	      // remove invalid className for both required and invalid fields
-	      var className = 'inputEx-'+((this.previousState == inputEx.stateRequired) ? inputEx.stateInvalid : this.previousState);
+	      className = 'inputEx-'+((this.previousState == inputEx.stateRequired) ? inputEx.stateInvalid : this.previousState);
 		   Dom.removeClass(this.divEl, className);
 	   }
 	   
@@ -200,7 +198,7 @@ inputEx.Field.prototype = {
 	   var state = this.getState();
 	   if( !(state == inputEx.stateEmpty && Dom.hasClass(this.divEl, 'inputEx-focused') ) ) {
 	      // add invalid className for both required and invalid fields
-	      var className = 'inputEx-'+((state == inputEx.stateRequired) ? inputEx.stateInvalid : state);
+	      className = 'inputEx-'+((state == inputEx.stateRequired) ? inputEx.stateInvalid : state);
 	      Dom.addClass(this.divEl, className );
       }
 	

@@ -34,8 +34,8 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			field = new YAHOO.inputEx.DateTimeField({parentEl: 'container1', value: new Date()});
-			var button = YAHOO.inputEx.cn('button', null, null, 'getValue');
+			field = new inputEx.DateTimeField({parentEl: 'container1', value: new Date()});
+			var button = inputEx.cn('button', null, null, 'getValue');
 			YAHOO.util.Event.addListener(button, "click",function() {
 				alert(field.getValue());
 			});
@@ -58,7 +58,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.DateTimeField({parentEl: 'container2', value: new Date(), dateFormat: 'd/m/Y'});
+			new inputEx.DateTimeField({parentEl: 'container2', value: new Date(), dateFormat: 'd/m/Y'});
 		</textarea>
 			</div>
 
@@ -92,8 +92,8 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
-	field = new YAHOO.inputEx.DateTimeField({parentEl: 'container1', value: new Date()});
-	var button = YAHOO.inputEx.cn('button', null, null, 'getValue');
+	field = new inputEx.DateTimeField({parentEl: 'container1', value: new Date()});
+	var button = inputEx.cn('button', null, null, 'getValue');
 	YAHOO.util.Event.addListener(button, "click",function() {
 		alert(field.getValue());
 	});
@@ -101,7 +101,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	
 	// Example 2
-	new YAHOO.inputEx.DateTimeField({parentEl: 'container2', value: new Date(), dateFormat: 'd/m/Y'});
+	new inputEx.DateTimeField({parentEl: 'container2', value: new Date(), dateFormat: 'd/m/Y'});
 	
 });
 

@@ -1,6 +1,6 @@
 (function() {
 	
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
  * Meta field to create a list of other fields
@@ -146,10 +146,10 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	   // Remove additional subFields
 	   var additionalElements = this.subFields.length-value.length;
 	   if(additionalElements > 0) {
-	      for(var i = 0 ; i < additionalElements ; i++) { 
+	      for(i = 0 ; i < additionalElements ; i++) { 
 	         this.removeElement(value.length);
 	      }
-	   };
+	   }
 	   
 	   inputEx.ListField.superclass.setValue.call(this, value, sendUpdatedEvt);
 	},
@@ -212,11 +212,11 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	renderSubField: function(value) {
 	      
 	   // Div that wraps the deleteButton + the subField
-	   var newDiv = inputEx.cn('div');
+	   var newDiv = inputEx.cn('div'), delButton;
 	      
 	   // Delete button
 	   if(this.options.useButtons) {
-	      var delButton = inputEx.cn('img', {src: inputEx.spacerUrl, className: 'inputEx-ListField-delButton'});
+	      delButton = inputEx.cn('img', {src: inputEx.spacerUrl, className: 'inputEx-ListField-delButton'});
 	      Event.addListener( delButton, 'click', this.onDelete, this, true);
 	      newDiv.appendChild( delButton );
       }
@@ -248,7 +248,7 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	   
 	   // Delete link
 	   if(!this.options.useButtons) {
-	      var delButton = inputEx.cn('a', {className: 'inputEx-List-link'}, null, this.options.listRemoveLabel);
+	      delButton = inputEx.cn('a', {className: 'inputEx-List-link'}, null, this.options.listRemoveLabel);
 	      Event.addListener( delButton, 'click', this.onDelete, this, true);
 	      newDiv.appendChild( delButton );
       }

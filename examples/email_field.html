@@ -35,7 +35,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.EmailField({parentEl: 'container1', showMsg: true});
+			new inputEx.EmailField({parentEl: 'container1', showMsg: true});
 		</textarea>
 			</div>
 
@@ -59,7 +59,7 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
-	var field = new YAHOO.inputEx.EmailField({parentEl: 'container1', showMsg: true});
+	var field = new inputEx.EmailField({parentEl: 'container1', showMsg: true});
 	
 	var logDiv = inputEx.cn('div', null, null, "Log :<br />");
 	YAHOO.util.Dom.get('container1').appendChild(logDiv);

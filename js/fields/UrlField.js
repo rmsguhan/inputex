@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
 
 /**
  * Adds an url regexp, and display the favicon at this url

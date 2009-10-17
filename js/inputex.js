@@ -2,6 +2,7 @@
  * The inputEx Library
  * @module inputEx
  */
+/*global inputEx: false, YAHOO: false */
 (function() {
  
  var lang = YAHOO.lang;
@@ -18,8 +19,8 @@
 inputEx = function(fieldOptions) {
    var fieldClass = null;
 	if(fieldOptions.type) {
-	   fieldClass = YAHOO.inputEx.getFieldClass(fieldOptions.type);
-	   if(fieldClass === null) fieldClass = YAHOO.inputEx.StringField;
+	   fieldClass = inputEx.getFieldClass(fieldOptions.type);
+	   if(fieldClass === null) fieldClass = inputEx.StringField;
 	}
 	else {
 	   fieldClass = fieldOptions.fieldClass ? fieldOptions.fieldClass : inputEx.StringField;
@@ -175,9 +176,9 @@ lang.augmentObject(inputEx, {
     */
    sn: function(el,domAttributes,styleAttributes){
       if(!el) { return; }
-
+		var i;
       if(domAttributes){
-         for(var i in domAttributes){
+         for(i in domAttributes){
             var domAttribute = domAttributes[i];
             if( lang.isFunction(domAttribute) ){
                continue;
@@ -202,7 +203,7 @@ lang.augmentObject(inputEx, {
       }
 
       if(styleAttributes){
-         for(var i in styleAttributes){
+         for(i in styleAttributes){
             if( lang.isFunction(styleAttributes[i]) ){
                continue;
             }
@@ -302,5 +303,4 @@ lang.augmentObject(inputEx, {
 
 
 // The main inputEx namespace shortcut
-//var inputEx = YAHOO.inputEx;
 YAHOO.inputEx = inputEx;

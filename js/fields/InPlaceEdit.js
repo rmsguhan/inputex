@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom, CSS_PREFIX = 'inputEx-InPlaceEdit-';
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom, CSS_PREFIX = 'inputEx-InPlaceEdit-';
 
 /**
  * Meta field providing in place editing (the editor appears when you click on the formatted value). 

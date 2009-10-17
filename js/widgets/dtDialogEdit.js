@@ -122,6 +122,8 @@ lang.extend(inputEx.widget.dtDialogEdit, inputEx.widget.DataTable , {
     */
    onDialogSave: function() {
 		
+		var newvalues, record;
+		
 	  	//Validate the Form
 	  	if ( !this.dialog.getForm().validate() ) return ;
 	   
@@ -129,11 +131,11 @@ lang.extend(inputEx.widget.dtDialogEdit, inputEx.widget.DataTable , {
 		if(!this.insertNewRecord){
 						
 			// Update the row
-			var newvalues = this.dialog.getValue();
+			newvalues = this.dialog.getValue();
 			this.datatable.updateRow( this.selectedRecord , newvalues );
 
 			// Get the new record
-			var record = this.datatable.getRecord(this.selectedRecord);
+			record = this.datatable.getRecord(this.selectedRecord);
 			
 			// Fire the modify event
          this.itemModifiedEvt.fire(record);
@@ -150,11 +152,11 @@ lang.extend(inputEx.widget.dtDialogEdit, inputEx.widget.DataTable , {
 			this.selectedRecord = rowIndex;
 			
 			// Update the row
-			var newvalues = this.dialog.getValue();
+			newvalues = this.dialog.getValue();
 			this.datatable.updateRow( this.selectedRecord , newvalues );
 			
 			// Get the new record
-			var record = this.datatable.getRecord(this.selectedRecord);
+			record = this.datatable.getRecord(this.selectedRecord);
 			
 			// Fire the add event
          this.itemAddedEvt.fire(record);

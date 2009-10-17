@@ -1,5 +1,5 @@
 (function () {
-     var inputEx = YAHOO.inputEx,lang=YAHOO.lang;
+     var lang=YAHOO.lang;
      
 /**
  * Create a slider using YUI widgets

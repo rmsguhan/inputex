@@ -39,9 +39,9 @@
 		<textarea name="code" class="JScript" cols="60" rows="5">
 		var id = 'container1';
 		var api = 'virtualearth';
-		var elExample = new YAHOO.inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
+		var elExample = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
 
-		var elButton = YAHOO.inputEx.cn('button', null, null, "getValue");
+		var elButton = inputEx.cn('button', null, null, "getValue");
 		YAHOO.util.Event.addListener(elButton, 'click', function() {
 			alert( YAHOO.lang.JSON.stringify(elExample.getValue()) );
 		});
@@ -66,9 +66,9 @@
 		<textarea name="code" class="JScript" cols="60" rows="5">
 		var id = 'container2';
 		var api = 'yahoo';
-		var elExample = new YAHOO.inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
+		var elExample = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
 
-		var elButton = YAHOO.inputEx.cn('button', null, null, "getValue");
+		var elButton = inputEx.cn('button', null, null, "getValue");
 		YAHOO.util.Event.addListener(elButton, 'click', function() {
 			alert( YAHOO.lang.JSON.stringify(elExample.getValue()) );
 		});
@@ -93,9 +93,9 @@
 		<textarea name="code" class="JScript" cols="60" rows="5">
 		var id = 'container3';
 		var api = 'google';
-		var elExample = new YAHOO.inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
+		var elExample = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
 
-		var elButton = YAHOO.inputEx.cn('button', null, null, "getValue");
+		var elButton = inputEx.cn('button', null, null, "getValue");
 		YAHOO.util.Event.addListener(elButton, 'click', function() {
 			alert( YAHOO.lang.JSON.stringify(elExample.getValue()) );
 		});
@@ -123,9 +123,9 @@
 		<form>
 		<textarea name="code" class="JScript" cols="60" rows="5">
 		var id = 'container4';
-		var elExample = new YAHOO.inputEx.MapField({parentEl: id, name: 'mapField', width: '800px'});
+		var elExample = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px'});
 
-		var elButton = YAHOO.inputEx.cn('button', null, null, "getValue");
+		var elButton = inputEx.cn('button', null, null, "getValue");
 		YAHOO.util.Event.addListener(elButton, 'click', function() {
 			alert( YAHOO.lang.JSON.stringify(elExample.getValue()) );
 		});
@@ -163,13 +163,13 @@ YMAPPID = 'Nk0DZDzV34FM2CIAsdRAtUgQJRSsJO7x2l5tuDBduamC_gZWkzyTEqcUJxAWjtqxs9Wnx
 
 // how to set up Virtual Earth as the default API
 if (1) {
-	YAHOO.inputEx.MapFieldGlobals['api'] = 'virtualearth';
+	inputEx.MapFieldGlobals['api'] = 'virtualearth';
 }
 
 // how to set Google Maps as the default API; note the per-host API keys
 if (1) {
-	YAHOO.inputEx.MapFieldGlobals['api'] = 'google';
-	YAHOO.inputEx.MapFieldGlobals['api_key'] = {
+	inputEx.MapFieldGlobals['api'] = 'google';
+	inputEx.MapFieldGlobals['api_key'] = {
 		'localhost' : 'ABQIAAAADeqGsYygYHMVWXMDJEowhBRA0pJg_vyJNqxN8QciTwW1nvTY9xTHCJ6F7R04FjG06dKgcV5wpIxzZQ',
 		'code.davidjanes.com' : 'ABQIAAAADeqGsYygYHMVWXMDJEowhBRA0pJg_vyJNqxN8QciTwW1nvTY9xTHCJ6F7R04FjG06dKgcV5wpIxzZQ',
 		'javascript.neyric.com' : ''
@@ -178,17 +178,17 @@ if (1) {
 
 // how to set up Yahoo Maps as the default API
 if (1) {
-	YAHOO.inputEx.MapFieldGlobals['api'] = 'yahoo';
-	YAHOO.inputEx.MapFieldGlobals['Nk0DZDzV34FM2CIAsdRAtUgQJRSsJO7x2l5tuDBduamC_gZWkzyTEqcUJxAWjtqxs9Wnxb0-'] = 'yahoo';
+	inputEx.MapFieldGlobals['api'] = 'yahoo';
+	inputEx.MapFieldGlobals['Nk0DZDzV34FM2CIAsdRAtUgQJRSsJO7x2l5tuDBduamC_gZWkzyTEqcUJxAWjtqxs9Wnxb0-'] = 'yahoo';
 }
 
 YAHOO.util.Event.addListener(window, 'load', function() {
 	if (1) {
 		var id = 'container1';
 		var api = 'virtualearth';
-		var elExample1 = new YAHOO.inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
+		var elExample1 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
 
-		var elButton1 = YAHOO.inputEx.cn('button', null, null, "getValue");
+		var elButton1 = inputEx.cn('button', null, null, "getValue");
 		YAHOO.util.Event.addListener(elButton1, 'click', function() {
 			alert(YAHOO.lang.JSON.stringify(elExample1.getValue()) );
 		});
@@ -197,9 +197,9 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	if (1) {
 		var id = 'container2';
 		var api = 'yahoo';
-		var elExample2 = new YAHOO.inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
+		var elExample2 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
 
-		var elButton2 = YAHOO.inputEx.cn('button', null, null, "getValue");
+		var elButton2 = inputEx.cn('button', null, null, "getValue");
 		YAHOO.util.Event.addListener(elButton2, 'click', function() {
 			alert( YAHOO.lang.JSON.stringify(elExample2.getValue()) );
 		});
@@ -208,9 +208,9 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	if (1) {
 		var id = 'container3';
 		var api = 'google';
-		var elExample3 = new YAHOO.inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
+		var elExample3 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
 
-		var elButton3 = YAHOO.inputEx.cn('button', null, null, "getValue");
+		var elButton3 = inputEx.cn('button', null, null, "getValue");
 		YAHOO.util.Event.addListener(elButton3, 'click', function() {
 			alert( YAHOO.lang.JSON.stringify(elExample3.getValue()) );
 		});
@@ -218,9 +218,9 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	}
 	if (1) {
 		var id = 'container4';
-		var elExample4 = new YAHOO.inputEx.MapField({parentEl: id, name: 'mapField', width: '800px'});
+		var elExample4 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px'});
 
-		var elButton4 = YAHOO.inputEx.cn('button', null, null, "getValue");
+		var elButton4 = inputEx.cn('button', null, null, "getValue");
 		YAHOO.util.Event.addListener(elButton4, 'click', function() {
 			alert( YAHOO.lang.JSON.stringify(elExample4.getValue()) );
 		});

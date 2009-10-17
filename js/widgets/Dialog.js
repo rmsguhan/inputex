@@ -1,6 +1,6 @@
 (function() {
    
-   var inputEx = YAHOO.inputEx, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
+   var Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
    
 /**
  * Create a Dialog from an inputEx field definition

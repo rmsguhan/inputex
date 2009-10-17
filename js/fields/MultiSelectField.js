@@ -1,7 +1,5 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * Create a multi select field
  * @class inputEx.MultiSelectField

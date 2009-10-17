@@ -1,6 +1,6 @@
 (function() {
 	
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
  * A Date Field. 
@@ -123,8 +123,8 @@ inputEx.DateField.formatDate = function(d,format) {
 	var str = format.replace('Y',d.getFullYear());
    var m = d.getMonth()+1;
    str = str.replace('m', ((m < 10)? '0':'')+m);
-   var d = d.getDate();
-   str = str.replace('d', ((d < 10)? '0':'')+d);
+   var day = d.getDate();
+   str = str.replace('d', ((day < 10)? '0':'')+d);
 	return str;
 };
 	

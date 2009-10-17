@@ -39,7 +39,7 @@
 			myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 			myDataSource.responseSchema = { fields: ["id","quantity","amount","title", "category"], resultsList: "Results" };
 
-			new YAHOO.inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: 'container1'});
+			new inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: 'container1'});
 		</textarea>
 	</div>
 
@@ -59,8 +59,8 @@
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
 			var el = YAHOO.util.Dom.get('container2');
-			var field = new YAHOO.inputEx.SelectField({name: 'country', selectValues: ['United States of America','France'], parentEl: el});
-			var logDiv = YAHOO.inputEx.cn('div', null, null, "Log :<br />");
+			var field = new inputEx.SelectField({name: 'country', selectValues: ['United States of America','France'], parentEl: el});
+			var logDiv = inputEx.cn('div', null, null, "Log :<br />");
 			el.appendChild(logDiv);
 			field.updatedEvt.subscribe(function(e,params) {
 				var value = params[0];
@@ -85,9 +85,9 @@
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
 				var el = YAHOO.util.Dom.get('container3');
-				var field3 = new YAHOO.inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: el});
+				var field3 = new inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: el});
 
-				var setValueButton = YAHOO.inputEx.cn('button', null, null, "setValue to po-1482");
+				var setValueButton = inputEx.cn('button', null, null, "setValue to po-1482");
 				el.appendChild(setValueButton);
 				YAHOO.util.Event.addListener(setValueButton, 'click', function(e,params) {
 					field3.setValue("po-0297");
@@ -118,15 +118,15 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 	myDataSource.responseSchema = { fields: ["id","quantity","amount","title", "category"], resultsList: "Results" };
 
-	new YAHOO.inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: 'container1'});
+	new inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: 'container1'});
 
 
 	
 	// Example 2
 	var el = YAHOO.util.Dom.get('container2');
-	var field2 = new YAHOO.inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: el});
+	var field2 = new inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: el});
 
-	var logDiv = YAHOO.inputEx.cn('div', null, null, "Log :<br />");
+	var logDiv = inputEx.cn('div', null, null, "Log :<br />");
 	el.appendChild(logDiv);
 	field2.updatedEvt.subscribe(function(e,params) {
 		var value = params[0];
@@ -136,9 +136,9 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	// Example 3
 	var el = YAHOO.util.Dom.get('container3');
-	var field3 = new YAHOO.inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: el});
+	var field3 = new inputEx.DSSelectField({name: 'country', datasource: myDataSource, valueKey: "id", labelKey: "title", parentEl: el});
 
-	var setValueButton = YAHOO.inputEx.cn('button', null, null, "setValue to po-1482");
+	var setValueButton = inputEx.cn('button', null, null, "setValue to po-1482");
 	el.appendChild(setValueButton);
 	YAHOO.util.Event.addListener(setValueButton, 'click', function(e,params) {
 		field3.setValue("po-1482");

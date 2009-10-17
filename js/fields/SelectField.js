@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
+   var Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
  * Create a select field
@@ -117,19 +117,18 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
     */
    addOption: function(config) {
 
-      var value = config.value;
-      var option = ""+(!lang.isUndefined(config.option) ? config.option : config.value);
-      var nbOptions = this.options.selectOptions.length;
-      
-      // position of new option (default last)
-      var position = nbOptions;
+      var value = config.value,
+			 option = ""+(!lang.isUndefined(config.option) ? config.option : config.value),
+			 nbOptions = this.options.selectOptions.length,
+      	 position = nbOptions, // position of new option (default last)
+			 i;
       
       if (lang.isNumber(config.position) && config.position >= 0 && config.position <= position) {
          position = parseInt(config.position,10);
          
       } else if (lang.isString(config.before)) {
          
-            for (var i = 0 ; i < nbOptions ; i++) {
+            for (i = 0 ; i < nbOptions ; i++) {
                if (this.options.selectOptions[i] === config.before) {
                   position = i;
                   break;
@@ -138,7 +137,7 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
             
       } else if (lang.isString(config.after)) {
 
-            for (var i = 0 ; i < nbOptions ; i++) {
+            for (i = 0 ; i < nbOptions ; i++) {
                if (this.options.selectOptions[i] === config.after) {
                   position = i+1;
                   break;
@@ -170,9 +169,10 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
 
    removeOption: function(config) {
 
-      var position;
-      var nbOptions = this.options.selectOptions.length;
-      var selectedIndex = this.el.selectedIndex;
+      var position,
+		    nbOptions = this.options.selectOptions.length,
+			 selectedIndex = this.el.selectedIndex,
+			 i;
       
       if (lang.isNumber(config.position) && config.position >= 0 && config.position <= nbOptions) {
          
@@ -180,7 +180,7 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
          
       } else if (lang.isString(config.option)) {
          
-            for (var i = 0 ; i < nbOptions ; i++) {
+            for (i = 0 ; i < nbOptions ; i++) {
                if (this.options.selectOptions[i] === config.option) {
                   position = i;
                   break;
@@ -189,7 +189,7 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
             
       } else if (lang.isString(config.value)) {
 
-            for (var i = 0 ; i < nbOptions ; i++) {
+            for (i = 0 ; i < nbOptions ; i++) {
                if (this.options.selectValues[i] === config.value) {
                   position = i;
                   break;

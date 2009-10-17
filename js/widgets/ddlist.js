@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, DD = YAHOO.util.DragDropMgr, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
+   var DD = YAHOO.util.DragDropMgr, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
    
 /**
  * DDProxy for DDList items (used by DDList)

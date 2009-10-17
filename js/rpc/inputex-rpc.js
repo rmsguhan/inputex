@@ -47,7 +47,7 @@ inputEx.RPC = {
          ];
       }
    
-      var form = YAHOO.inputEx(options);
+      var form = inputEx(options);
    
       return form;
    },

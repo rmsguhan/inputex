@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
+   var Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
  * Create a menu field
@@ -73,7 +73,7 @@ lang.extend(inputEx.MenuField, inputEx.Field, {
 	   *   -> conf : an array of menuItems
 	   *   -> level : how deeply nested are these menuItems (4 is max)
 	   */
-	   function levelInit(conf,level) {
+	   var levelInit = function (conf,level) {
 	      if (level>4) throw new Error("MenuField : too much recursion, menuItems property should be 5 level deep at most.");
 	      
 	      var item;

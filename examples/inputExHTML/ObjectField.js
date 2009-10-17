@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx;
+   var inputEx = inputEx;
 
 /**
  * @class list of PairField where where the returned value is converted to an object

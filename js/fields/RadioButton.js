@@ -1,5 +1,5 @@
 (function() {
-    var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+    var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
  * Create a YUI Radio button. Here are the added options :

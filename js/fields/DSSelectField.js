@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event;
+   var Event = YAHOO.util.Event;
 
 /**
  * Create a select field from a datasource

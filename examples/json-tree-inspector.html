@@ -45,11 +45,11 @@
 
 YAHOO.util.Event.addListener(window, "load", function() {
 	
-	new YAHOO.inputEx.widget.JsonTreeInspector('formContainer', {inputEx: inputEx, YAHOO: YAHOO, Global: window});
+	new inputEx.widget.JsonTreeInspector('formContainer', {inputEx: inputEx, YAHOO: YAHOO, Global: window});
 	
 	
 	/*var data={results: [{label: "one"}, {label: "two"},{ label:"tree"}]};
-	var tree = new YAHOO.inputEx.widget.JsonTreeInspector('formContainer', data,"$.results.*.label");
+	var tree = new inputEx.widget.JsonTreeInspector('formContainer', data,"$.results.*.label");
 	tree.expandAll();*/
 	
 });

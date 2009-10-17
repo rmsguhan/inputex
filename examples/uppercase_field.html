@@ -35,7 +35,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new YAHOO.inputEx.UpperCaseField({parentEl: 'container1', value: 'i was lowercase'});
+			new inputEx.UpperCaseField({parentEl: 'container1', value: 'i was lowercase'});
 		</textarea>
 	</div>
 
@@ -59,11 +59,11 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
-	var field = new YAHOO.inputEx.UpperCaseField({parentEl: 'container1', value: 'i was lowercase'});
+	var field = new inputEx.UpperCaseField({parentEl: 'container1', value: 'i was lowercase'});
 	
 	var el = YAHOO.util.Dom.get('container1');
 
-	var button1 = YAHOO.inputEx.cn('button', null, null, "SetValue with 'InputEx'");
+	var button1 = inputEx.cn('button', null, null, "SetValue with 'InputEx'");
 	var val = 'InputEx';
 	el.appendChild(button1);
 	YAHOO.util.Event.addListener(button1, "click" ,function() {
@@ -72,7 +72,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	   button1.innerHTML = "SetValue with '"+val+"'";
 	});
 	
-	var logDiv = YAHOO.inputEx.cn('div', null, null, "Log :<br />");
+	var logDiv = inputEx.cn('div', null, null, "Log :<br />");
 	el.appendChild(logDiv);
 	field.updatedEvt.subscribe(function(e,params) {
 		var value = params[0];

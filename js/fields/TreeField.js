@@ -1,6 +1,6 @@
 (function() {
 	
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
  * Meta field to create trees

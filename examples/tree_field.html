@@ -35,7 +35,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.TreeField({parentEl: 'container1', 
+			new inputEx.TreeField({parentEl: 'container1', 
 				elementType: {
 						type: 'inplaceedit', 
 						formatValue: function(val) { return "<img src='"+val+"favicon.ico'>"+val; }, 
@@ -72,10 +72,10 @@
 
 YAHOO.util.Event.addListener(window, 'load', function() {
 	// Required for the ListField
-	YAHOO.inputEx.spacerUrl = "../images/space.gif";
+	inputEx.spacerUrl = "../images/space.gif";
 
 	// Example 1
-	new YAHOO.inputEx.TreeField({parentEl: 'container1', 
+	new inputEx.TreeField({parentEl: 'container1', 
 		elementType: {
 				type: 'inplaceedit', 
 				formatValue: function(val) { return "<img src='"+val+"favicon.ico'>"+val; }, 

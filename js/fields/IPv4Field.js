@@ -1,7 +1,5 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * Adds an IPv4 address regexp
  * @class inputEx.IPv4Field

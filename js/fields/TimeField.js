@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
+   var Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
  * A field limited to number inputs (floating)
@@ -12,11 +12,9 @@
 inputEx.TimeField = function(options) {
    
    
-   var h = [];
-   for(var i = 0 ; i < 24 ; i++) { var s="";if(i<10){s="0";} s+= i;h.push(s);}
-   var m = [];
-   var secs = [];
-   for(var i = 0 ; i < 60 ; i++) { var s="";if(i<10){s="0";} s+= i;m.push(s);secs.push(s);}
+   var h = [],i, m = [], secs = [], s;
+   for(i = 0 ; i < 24 ; i++) { s="";if(i<10){s="0";} s+= i;h.push(s);}
+   for(i = 0 ; i < 60 ; i++) { s="";if(i<10){s="0";} s+= i;m.push(s);secs.push(s);}
    options.fields = [
       {type: 'select', inputParams: {selectOptions: h, selectValues: h} },
       {type: 'select', inputParams: {selectOptions: m, selectValues: m} },

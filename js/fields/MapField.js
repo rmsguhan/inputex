@@ -1,5 +1,5 @@
 (function() {
-	var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+	var lang = YAHOO.lang;
 
 	inputEx.MapFieldGlobals = {
 		yahoo_preloader_error : 1,
@@ -214,11 +214,11 @@ lang.extend(inputEx.MapField, inputEx.Field, {
 		 *	the following JavaScript instead _after_ "yahoo-dom-event.js" (or similar)
 		 *	is included:
 		 *
-		 *	<script type="text/javascript">
+		 *	script type="text/javascript"
 		 *	YMAPPID = [yourapikey]
-		 *	</script>
-		 *	<script type="text/javascript" src="http://us.js2.yimg.com/us.js.yimg.com/lib/map/js/api/ymapapi_3_8_0_7.js">
-		 *	</script>
+		 *	/script
+		 *	script type="text/javascript" src="http://us.js2.yimg.com/us.js.yimg.com/lib/map/js/api/ymapapi_3_8_0_7.js"
+		 *	/script
 		 *
 		 *	Note the non-standard loading pattern! See:
 		 *	http://yuiblog.com/blog/2006/12/14/maps-plus-yui/

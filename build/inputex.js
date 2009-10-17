@@ -26,6 +26,7 @@ THE SOFTWARE.
  * The inputEx Library
  * @module inputEx
  */
+/*global inputEx: false, YAHOO: false */
 (function() {
  
  var lang = YAHOO.lang;
@@ -42,8 +43,8 @@ THE SOFTWARE.
 inputEx = function(fieldOptions) {
    var fieldClass = null;
 	if(fieldOptions.type) {
-	   fieldClass = YAHOO.inputEx.getFieldClass(fieldOptions.type);
-	   if(fieldClass === null) fieldClass = YAHOO.inputEx.StringField;
+	   fieldClass = inputEx.getFieldClass(fieldOptions.type);
+	   if(fieldClass === null) fieldClass = inputEx.StringField;
 	}
 	else {
 	   fieldClass = fieldOptions.fieldClass ? fieldOptions.fieldClass : inputEx.StringField;
@@ -199,9 +200,9 @@ lang.augmentObject(inputEx, {
     */
    sn: function(el,domAttributes,styleAttributes){
       if(!el) { return; }
-
+		var i;
       if(domAttributes){
-         for(var i in domAttributes){
+         for(i in domAttributes){
             var domAttribute = domAttributes[i];
             if( lang.isFunction(domAttribute) ){
                continue;
@@ -226,7 +227,7 @@ lang.augmentObject(inputEx, {
       }
 
       if(styleAttributes){
-         for(var i in styleAttributes){
+         for(i in styleAttributes){
             if( lang.isFunction(styleAttributes[i]) ){
                continue;
             }
@@ -326,11 +327,10 @@ lang.augmentObject(inputEx, {
 
 
 // The main inputEx namespace shortcut
-//var inputEx = YAHOO.inputEx;
 YAHOO.inputEx = inputEx;
 (function() {
    
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
 /**
  * Contains the various visualization methods
  * @class inputEx.visus
@@ -344,7 +344,7 @@ inputEx.visus = {
    * options = {visuType: 'trimpath', template: "String template"}
    */
   trimpath: function(options, data) {
-      if(!TrimPath) { alert('TrimPath is not on the page. Please load inputex/lib/trimpath-template.js'); return; }
+      if(!TrimPath) { alert('TrimPath is not on the page. Please load inputex/lib/trimpath-template.js'); return null; }
       var tpl = TrimPath.parseTemplate(options.template);
      	var ret = tpl.process(data);
      	return ret;
@@ -397,7 +397,6 @@ inputEx.renderVisu = function(visuOptions,data, parentEl) {
    }
    catch(ex) {
       throw new Error("inputEx: error while running visu "+visuType+" : "+ex.message);
-      return;
    }
    
    // Get the node
@@ -426,7 +425,7 @@ inputEx.renderVisu = function(visuOptions,data, parentEl) {
 };
 
 })();(function() {
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
  
 /**
  * Namespace containing utility functions for conversion between inputEx JSON format and JSON Schema
@@ -581,9 +580,9 @@ inputEx.JsonSchema = {
 /**
  * @class inputEx.JsonSchema.Builder
  */
-inputEx.JsonSchema.Builder = function(options) {
+inputEx.JsonSchema.Builder = function(opts) {
 	
-	var options = options || {};
+	var options = opts || {};
 	this.options  = options; 
 	
 	/**
@@ -631,6 +630,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	   var fieldDef = {inputParams: { label: propertyName, name: propertyName} };
 	   var schemaMap = this.schemaToParamMap;
     	var referencedSchema = p["$ref"]; 
+		var key;
 	    
 	   if(referencedSchema){
 	    	var new_schema = null;
@@ -659,7 +659,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	      fieldDef.inputParams.required = true;
 	   }
 
-	    for(var key in schemaMap) {
+	    for(key in schemaMap) {
 	        if(schemaMap.hasOwnProperty(key)) {
 	      	  var paramName = schemaMap[key]; 
 	      	  var v = p[key];
@@ -693,10 +693,10 @@ inputEx.JsonSchema.Builder.prototype = {
 	             type = type[0];
 	          }
 	       }
-	       else if(lang.isObject(type) ) {
+	       //else if(lang.isObject(type) ) {
 	          // What do we do ??
 	          //console.log("type is an object !!");
-	       }
+	       //}
 	       
 	       fieldDef.type = type;
 	       
@@ -724,7 +724,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	        	  fieldDef.inputParams.name = propertyName;
 	          }
 	
-	          for(var key in p.properties) {
+	          for(key in p.properties) {
 	             if(p.properties.hasOwnProperty(key)) {
 	                fields.push( this.schemaToInputEx(p.properties[key], key) );
 	             }
@@ -827,7 +827,7 @@ inputEx.JsonSchema.Builder.prototype = {
 
 
 })();(function() {
-   var inputEx = YAHOO.inputEx, Dom = YAHOO.util.Dom, lang = YAHOO.lang, util = YAHOO.util;
+   var Dom = YAHOO.util.Dom, lang = YAHOO.lang, util = YAHOO.util;
 
 /** 
  * An abstract class (never instantiated) that contains the shared features for all fields.
@@ -844,10 +844,8 @@ inputEx.JsonSchema.Builder.prototype = {
  */
 inputEx.Field = function(options) {
 	
-   if(!options) {var options = {}; }
-	
 	// Set the default values of the options
-	this.setOptions(options);
+	this.setOptions(options || {});
 	
 	// Call the render of the dom
 	this.render();
@@ -1016,11 +1014,11 @@ inputEx.Field.prototype = {
     * Set the styles for valid/invalide state
     */
 	setClassFromState: function() {
-	
+		var className;
 	   // remove previous class
 	   if( this.previousState ) {
 	      // remove invalid className for both required and invalid fields
-	      var className = 'inputEx-'+((this.previousState == inputEx.stateRequired) ? inputEx.stateInvalid : this.previousState);
+	      className = 'inputEx-'+((this.previousState == inputEx.stateRequired) ? inputEx.stateInvalid : this.previousState);
 		   Dom.removeClass(this.divEl, className);
 	   }
 	   
@@ -1028,7 +1026,7 @@ inputEx.Field.prototype = {
 	   var state = this.getState();
 	   if( !(state == inputEx.stateEmpty && Dom.hasClass(this.divEl, 'inputEx-focused') ) ) {
 	      // add invalid className for both required and invalid fields
-	      var className = 'inputEx-'+((state == inputEx.stateRequired) ? inputEx.stateInvalid : state);
+	      className = 'inputEx-'+((state == inputEx.stateRequired) ? inputEx.stateInvalid : state);
 	      Dom.addClass(this.divEl, className );
       }
 	
@@ -1202,7 +1200,7 @@ inputEx.Field.groupOptions = [
 
 })();(function() {
    
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
+   var lang = YAHOO.lang, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
    
 /**
  * Handle a group of fields
@@ -1592,7 +1590,7 @@ inputEx.registerType("group", inputEx.Group, [
 
 
 })();(function () {
-   var util = YAHOO.util, lang = YAHOO.lang, Event = YAHOO.util.Event, inputEx = YAHOO.inputEx, Dom = util.Dom;
+   var util = YAHOO.util, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = util.Dom;
 
 /**
  * Create a group of fields within a FORM tag and adds buttons
@@ -1895,7 +1893,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 
 
 // Specific waiting message in ajax submit
-inputEx.messages.ajaxWait = "Please wait...";;
+inputEx.messages.ajaxWait = "Please wait...";
 
 // Register this class as "form" type
 inputEx.registerType("form", inputEx.Form, [
@@ -1919,7 +1917,7 @@ inputEx.registerType("form", inputEx.Form, [
 })();
 (function() {
 	
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Dom = YAHOO.util.Dom;
 	
 /**
  * A meta field to put N fields on the same line, separated by separators
@@ -2079,7 +2077,7 @@ inputEx.registerType("combine", inputEx.CombineField, [
 	
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
  * Basic string field (equivalent to the input type "text")
@@ -2329,7 +2327,7 @@ inputEx.registerType("string", inputEx.StringField, [
 })();
 (function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
  * An autocomplete field that wraps the YUI autocompleter
@@ -2504,7 +2502,7 @@ inputEx.registerType("autocomplete", inputEx.AutoComplete);
 })();
 (function() {
 	
-	var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+	var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
  * Create a checkbox.
@@ -2645,7 +2643,7 @@ inputEx.registerType("boolean", inputEx.CheckBox, [
 	
 })();(function() {
 	
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
  * Create a Color picker input field
@@ -2923,7 +2921,7 @@ inputEx.registerType("color", inputEx.ColorField, []);
 	
 })();(function() {
 	
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
  * A Date Field. 
@@ -3046,8 +3044,8 @@ inputEx.DateField.formatDate = function(d,format) {
 	var str = format.replace('Y',d.getFullYear());
    var m = d.getMonth()+1;
    str = str.replace('m', ((m < 10)? '0':'')+m);
-   var d = d.getDate();
-   str = str.replace('d', ((d < 10)? '0':'')+d);
+   var day = d.getDate();
+   str = str.replace('d', ((day < 10)? '0':'')+d);
 	return str;
 };
 	
@@ -3061,7 +3059,7 @@ inputEx.registerType("date", inputEx.DateField, [
 	
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event;
 
 /**
  * inputEx.DateSplitField
@@ -3211,7 +3209,7 @@ inputEx.registerType("datesplit", inputEx.DateSplitField);
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
  * A DatePicker Field.
@@ -3402,8 +3400,6 @@ inputEx.registerType("datepicker", inputEx.DatePickerField);
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * Field that adds the email regexp for validation. Result is always lower case.
  * @class inputEx.EmailField
@@ -3444,8 +3440,6 @@ inputEx.messages.invalidEmail = "Invalid email, ex: sample@test.com";
 inputEx.registerType("email", inputEx.EmailField, []);
 
 })();(function() {
-
-   var inputEx = YAHOO.inputEx;
 
 /**
  * Create a hidden input, inherits from inputEx.Field
@@ -3499,7 +3493,7 @@ inputEx.registerType("hidden", inputEx.HiddenField);
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom, CSS_PREFIX = 'inputEx-InPlaceEdit-';
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom, CSS_PREFIX = 'inputEx-InPlaceEdit-';
 
 /**
  * Meta field providing in place editing (the editor appears when you click on the formatted value). 
@@ -3763,7 +3757,7 @@ inputEx.registerType("inplaceedit", inputEx.InPlaceEdit, [
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event;
 
 /**
  * A field limited to number inputs
@@ -3830,7 +3824,7 @@ inputEx.registerType("integer", inputEx.IntegerField, [
 
 })();(function() {
 	
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
  * Meta field to create a list of other fields
@@ -3976,10 +3970,10 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	   // Remove additional subFields
 	   var additionalElements = this.subFields.length-value.length;
 	   if(additionalElements > 0) {
-	      for(var i = 0 ; i < additionalElements ; i++) { 
+	      for(i = 0 ; i < additionalElements ; i++) { 
 	         this.removeElement(value.length);
 	      }
-	   };
+	   }
 	   
 	   inputEx.ListField.superclass.setValue.call(this, value, sendUpdatedEvt);
 	},
@@ -4042,11 +4036,11 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	renderSubField: function(value) {
 	      
 	   // Div that wraps the deleteButton + the subField
-	   var newDiv = inputEx.cn('div');
+	   var newDiv = inputEx.cn('div'), delButton;
 	      
 	   // Delete button
 	   if(this.options.useButtons) {
-	      var delButton = inputEx.cn('img', {src: inputEx.spacerUrl, className: 'inputEx-ListField-delButton'});
+	      delButton = inputEx.cn('img', {src: inputEx.spacerUrl, className: 'inputEx-ListField-delButton'});
 	      Event.addListener( delButton, 'click', this.onDelete, this, true);
 	      newDiv.appendChild( delButton );
       }
@@ -4078,7 +4072,7 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	   
 	   // Delete link
 	   if(!this.options.useButtons) {
-	      var delButton = inputEx.cn('a', {className: 'inputEx-List-link'}, null, this.options.listRemoveLabel);
+	      delButton = inputEx.cn('a', {className: 'inputEx-List-link'}, null, this.options.listRemoveLabel);
 	      Event.addListener( delButton, 'click', this.onDelete, this, true);
 	      newDiv.appendChild( delButton );
       }
@@ -4242,7 +4236,7 @@ inputEx.messages.listRemoveLink = "remove";
 	
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
+   var Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
  * A field limited to number inputs (floating)
@@ -4303,7 +4297,7 @@ inputEx.registerType("number", inputEx.NumberField, []);
 
 })();(function() {
 	
-   var inputEx = YAHOO.inputEx,Event=YAHOO.util.Event,lang=YAHOO.lang;
+   var Event=YAHOO.util.Event,lang=YAHOO.lang;
 	
 /**
  * Create a password field.
@@ -4566,7 +4560,7 @@ inputEx.registerType("password", inputEx.PasswordField, [
 ]);
 	
 })();(function() {	
-	var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+	var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
  * Create a radio button. Here are the added options :
@@ -4608,7 +4602,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
         this.options.allowAny = false;
       } else {
         this.options.allowAny = {};
-        if (lang.isArray(options.allowAny.separators)) { this.options.allowAny.separators = options.allowAny.separators;};
+        if (lang.isArray(options.allowAny.separators)) { this.options.allowAny.separators = options.allowAny.separators;}
         this.options.allowAny.validator = (lang.isFunction(options.allowAny.validator)) ? options.allowAny.validator : function(val) {return true;};
         this.options.allowAny.value = (!lang.isUndefined(options.allowAny.value)) ? options.allowAny.value : "";
       }
@@ -4623,11 +4617,12 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 	 */
 	renderComponent: function() {
 	
+		var div,sep;
 	   this.optionEls = [];
 	
 	   for(var i = 0 ; i < this.options.choices.length ; i++) {
 	
-	      var div = inputEx.cn('div', {className: 'inputEx-RadioField-choice'});
+	      div = inputEx.cn('div', {className: 'inputEx-RadioField-choice'});
 	      
 	      // radioId MUST be different for each option,
 	      // so add "-opt"+i (where i = option's position) to generated id
@@ -4647,7 +4642,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
      
      // Build a "any" radio combined with a StringField
      if(this.options.allowAny) {
-        var div = inputEx.cn('div', {className: 'inputEx-RadioField-choice'});
+        div = inputEx.cn('div', {className: 'inputEx-RadioField-choice'});
         
         if(YAHOO.env.ua.ie) {
            this.radioAny = document.createElement("<input type='radio' name='"+this.options.name+"'>");
@@ -4663,7 +4658,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
         this.anyField.disable();
         
         if (this.options.allowAny.separators) {
-     	     var sep = inputEx.cn("div",null,{margin:"3px"},this.options.allowAny.separators[0] || '');
+     	     sep = inputEx.cn("div",null,{margin:"3px"},this.options.allowAny.separators[0] || '');
      	     Dom.setStyle(sep, "float","left");
      	     div.appendChild(sep);
   	     }
@@ -4671,7 +4666,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
      	  div.appendChild(this.anyField.getEl());
      	  
         if (this.options.allowAny.separators) {
-     	     var sep = inputEx.cn("div",null,{margin:"3px"},this.options.allowAny.separators[1] || '');
+     	     sep = inputEx.cn("div",null,{margin:"3px"},this.options.allowAny.separators[1] || '');
      	     Dom.setStyle(sep, "float","left");
      	     div.appendChild(sep);
   	     }
@@ -4801,7 +4796,7 @@ inputEx.registerType("radio", inputEx.RadioField, [
 	
 })();(function() {
 	
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
 	
 /**
  * Wrapper for the Rich Text Editor from YUI
@@ -4904,7 +4899,7 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	      this.editor.saveHTML();
          return this.el.value;
 	   }
-	   catch(ex) {}
+	   catch(ex) { return null; }
 	}
 	
 });
@@ -4914,7 +4909,7 @@ inputEx.registerType("html", inputEx.RTEField, []);
 	
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
+   var Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
  * Create a select field
@@ -5031,19 +5026,18 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
     */
    addOption: function(config) {
 
-      var value = config.value;
-      var option = ""+(!lang.isUndefined(config.option) ? config.option : config.value);
-      var nbOptions = this.options.selectOptions.length;
-      
-      // position of new option (default last)
-      var position = nbOptions;
+      var value = config.value,
+			 option = ""+(!lang.isUndefined(config.option) ? config.option : config.value),
+			 nbOptions = this.options.selectOptions.length,
+      	 position = nbOptions, // position of new option (default last)
+			 i;
       
       if (lang.isNumber(config.position) && config.position >= 0 && config.position <= position) {
          position = parseInt(config.position,10);
          
       } else if (lang.isString(config.before)) {
          
-            for (var i = 0 ; i < nbOptions ; i++) {
+            for (i = 0 ; i < nbOptions ; i++) {
                if (this.options.selectOptions[i] === config.before) {
                   position = i;
                   break;
@@ -5052,7 +5046,7 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
             
       } else if (lang.isString(config.after)) {
 
-            for (var i = 0 ; i < nbOptions ; i++) {
+            for (i = 0 ; i < nbOptions ; i++) {
                if (this.options.selectOptions[i] === config.after) {
                   position = i+1;
                   break;
@@ -5084,9 +5078,10 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
 
    removeOption: function(config) {
 
-      var position;
-      var nbOptions = this.options.selectOptions.length;
-      var selectedIndex = this.el.selectedIndex;
+      var position,
+		    nbOptions = this.options.selectOptions.length,
+			 selectedIndex = this.el.selectedIndex,
+			 i;
       
       if (lang.isNumber(config.position) && config.position >= 0 && config.position <= nbOptions) {
          
@@ -5094,7 +5089,7 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
          
       } else if (lang.isString(config.option)) {
          
-            for (var i = 0 ; i < nbOptions ; i++) {
+            for (i = 0 ; i < nbOptions ; i++) {
                if (this.options.selectOptions[i] === config.option) {
                   position = i;
                   break;
@@ -5103,7 +5098,7 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
             
       } else if (lang.isString(config.value)) {
 
-            for (var i = 0 ; i < nbOptions ; i++) {
+            for (i = 0 ; i < nbOptions ; i++) {
                if (this.options.selectValues[i] === config.value) {
                   position = i;
                   break;
@@ -5139,7 +5134,7 @@ inputEx.registerType("select", inputEx.SelectField, [
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event;
+   var Event = YAHOO.util.Event;
 
 /**
  * Create a textarea input
@@ -5259,7 +5254,7 @@ inputEx.registerType("text", inputEx.Textarea, [
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
+   var Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
  * A field limited to number inputs (floating)
@@ -5271,11 +5266,9 @@ inputEx.registerType("text", inputEx.Textarea, [
 inputEx.TimeField = function(options) {
    
    
-   var h = [];
-   for(var i = 0 ; i < 24 ; i++) { var s="";if(i<10){s="0";} s+= i;h.push(s);}
-   var m = [];
-   var secs = [];
-   for(var i = 0 ; i < 60 ; i++) { var s="";if(i<10){s="0";} s+= i;m.push(s);secs.push(s);}
+   var h = [],i, m = [], secs = [], s;
+   for(i = 0 ; i < 24 ; i++) { s="";if(i<10){s="0";} s+= i;h.push(s);}
+   for(i = 0 ; i < 60 ; i++) { s="";if(i<10){s="0";} s+= i;m.push(s);secs.push(s);}
    options.fields = [
       {type: 'select', inputParams: {selectOptions: h, selectValues: h} },
       {type: 'select', inputParams: {selectOptions: m, selectValues: m} },
@@ -5310,7 +5303,7 @@ inputEx.registerType("time", inputEx.TimeField);
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, lang = YAHOO.lang;
+   var Event = YAHOO.util.Event, lang = YAHOO.lang;
 
 /**
  * A field limited to number inputs (floating)
@@ -5373,8 +5366,6 @@ inputEx.registerType("datetime", inputEx.DateTimeField);
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * Create a uneditable field where you can stick the html you want
  * Added Options:
@@ -5428,7 +5419,7 @@ inputEx.registerType("uneditable", inputEx.UneditableField);
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
 
 /**
  * Adds an url regexp, and display the favicon at this url
@@ -5530,7 +5521,7 @@ inputEx.registerType("url", inputEx.UrlField, [
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, DD = YAHOO.util.DragDropMgr, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
+   var DD = YAHOO.util.DragDropMgr, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
    
 /**
  * DDProxy for DDList items (used by DDList)
@@ -5818,8 +5809,6 @@ inputEx.widget.DDList.prototype = {
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * Create a multi select field
  * @class inputEx.MultiSelectField
@@ -5928,7 +5917,7 @@ inputEx.registerType("multiselect", inputEx.MultiSelectField);
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+   var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 
 /**
  * An autocomplete field that wraps the YUI autocompleter
@@ -6217,8 +6206,6 @@ inputEx.registerType("multiautocomplete", inputEx.MultiAutoComplete);
 
 })();(function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * Create a uneditable field where you can stick the html you want
  * Added Options:
@@ -6271,7 +6258,7 @@ YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, {
 inputEx.registerType("uneditable", inputEx.UneditableField);
 
 })();(function () {
-     var inputEx = YAHOO.inputEx,lang=YAHOO.lang;
+     var lang=YAHOO.lang;
      
 /**
  * Create a slider using YUI widgets

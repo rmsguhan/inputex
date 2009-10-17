@@ -38,7 +38,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.CombineField({
+			new inputEx.CombineField({
 				parentEl: 'container1', 
 				label: 'Your name',
 				description: 'Please enter your name',
@@ -66,7 +66,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.CombineField({
+			new inputEx.CombineField({
 				parentEl: 'container2', 
 				label:'Select Datetime :',
 				fields: [
@@ -103,7 +103,7 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	// Example 1
-	var field = new YAHOO.inputEx.CombineField({
+	var field = new inputEx.CombineField({
 		parentEl: 'container1', 
 		label: 'Your name',
 		description: 'Please enter your name',
@@ -117,7 +117,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 
    var el = YAHOO.util.Dom.get('container1');
 
-	var button1 = YAHOO.inputEx.cn('button', null, null, "SetValue with ['Jimi','Hendrix']");
+	var button1 = inputEx.cn('button', null, null, "SetValue with ['Jimi','Hendrix']");
 	var val = ['Jimi','Hendrix'];
 	el.appendChild(button1);
 	YAHOO.util.Event.addListener(button1, "click" ,function() {
@@ -126,7 +126,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	   button1.innerHTML = "SetValue with "+((val[0] == 'Jimi') ? "['Jimi','Hendrix']" : "['','']");
 	});
 	
-	var logDiv = YAHOO.inputEx.cn('div', null, null, "Log :<br />");
+	var logDiv = inputEx.cn('div', null, null, "Log :<br />");
 	el.appendChild(logDiv);
 	field.updatedEvt.subscribe(function(e,params) {
 		var value = params[0];
@@ -135,7 +135,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 
 
 	// Example 2
-	new YAHOO.inputEx.CombineField({
+	new inputEx.CombineField({
 		parentEl: 'container2', 
 		label:'Select Datetime :',
 		fields: [

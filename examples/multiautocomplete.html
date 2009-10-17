@@ -58,7 +58,7 @@
  <div class='demoContainer' id='container1'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-		var field = new YAHOO.inputEx.MultiAutoComplete({
+		var field = new inputEx.MultiAutoComplete({
 			parentEl: 'container1', 
 			label: 'Search US state',
 
@@ -86,12 +86,12 @@
 			}
 		});
 
-		var logDiv = YAHOO.inputEx.cn('div', null, null, "");
+		var logDiv = inputEx.cn('div', null, null, "");
 		YAHOO.util.Dom.get('container1').appendChild(logDiv);
 
 		field.updatedEvt.subscribe(function(e,params) {
 			var value = YAHOO.lang.JSON.stringify(params[0]);
-			logDiv.appendChild( YAHOO.inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value) );
+			logDiv.appendChild( inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value) );
 		});
   </textarea>
  </div>

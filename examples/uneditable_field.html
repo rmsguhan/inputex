@@ -35,7 +35,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.UneditableField({
+			new inputEx.UneditableField({
 				name: 'date', 
 				value: new Date(), 
 				parentEl: 'container1'});
@@ -56,7 +56,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.UneditableField({
+			new inputEx.UneditableField({
 				name: 'date', 
 				value: 'http://neyric.com/images/diabolo.png', 
 				visu: {visuType: 'func', func: function(value){ return inputEx.cn('img',{src:value},{border: '2px solid black'}); } },
@@ -114,16 +114,16 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
-	new YAHOO.inputEx.UneditableField({
+	new inputEx.UneditableField({
 		name: 'date', 
 		value: new Date(), 
 		parentEl: 'container1'});
 		
 	// Example 2
-	new YAHOO.inputEx.UneditableField({
+	new inputEx.UneditableField({
 		name: 'date', 
 		value: 'http://neyric.com/images/diabolo.png', 
-		visu: {visuType: 'func', func: function(value){ return YAHOO.inputEx.cn('img',{src:value},{border: '2px solid black'}); } },
+		visu: {visuType: 'func', func: function(value){ return inputEx.cn('img',{src:value},{border: '2px solid black'}); } },
 		parentEl: 'container2' 
 	});
 	

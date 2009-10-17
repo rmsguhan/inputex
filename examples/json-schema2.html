@@ -67,11 +67,11 @@
 
 <script>
 
-YAHOO.inputEx.spacerUrl = "../images/space.gif";
+inputEx.spacerUrl = "../images/space.gif";
 
 YAHOO.util.Event.addListener(window, "load", function() {
 	
-	var builder = new YAHOO.inputEx.JsonSchema.Builder({
+	var builder = new inputEx.JsonSchema.Builder({
 		'schemaIdentifierMap':base_schema_map,
 	  'defaultOptions':{
 	     'showMsg':true
@@ -79,7 +79,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
   });
 	var m = builder.schemaToInputEx(base_schema_map.community);
 	m.inputParams.parentEl = 'formContainer';
-	var f = YAHOO.inputEx(m);
+	var f = inputEx(m);
 	
 });
 

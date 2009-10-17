@@ -1,6 +1,6 @@
 (function() {
    
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
 
 /**
  * Display a group with inplace edit and custom template

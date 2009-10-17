@@ -79,17 +79,17 @@ inputEx.widget.FastTable.prototype = {
     * render the thead element
     */
    renderThead: function() {
-      var tr = document.createElement('tr');
+      var tr = document.createElement('tr'), th;
       
       for(var i = 0 ; i < this.options.fields.length ; i++) {
          var f = this.options.fields[i];
          var colName = f.inputParams.label || f.inputParams.name;
          
-         var th = inputEx.cn('th', {className: 'inputEx-FastTable-Header'}, null, colName);
+         th = inputEx.cn('th', {className: 'inputEx-FastTable-Header'}, null, colName);
          tr.appendChild(th);
       }
       
-      var th = inputEx.cn('th', {className: 'inputEx-FastTable-Header'}, null, "&nbsp;");
+      th = inputEx.cn('th', {className: 'inputEx-FastTable-Header'}, null, "&nbsp;");
       tr.appendChild(th);
       
       this.theadEl.appendChild(tr);
@@ -132,7 +132,8 @@ inputEx.widget.FastTable.prototype = {
     * Add a row
     */
    addRow: function(item) {
-      var tr = inputEx.cn('tr', {className: (this.nRows % 2 == 0) ? 'inputEx-FastTable-even' : 'inputEx-FastTable-odd'});
+      var tr = inputEx.cn('tr', {className: (this.nRows % 2 == 0) ? 'inputEx-FastTable-even' : 'inputEx-FastTable-odd'}),
+			 td;
       
       for(var i = 0 ; i < this.options.fields.length ; i++) {
          var f = this.options.fields[i];
@@ -150,7 +151,7 @@ inputEx.widget.FastTable.prototype = {
          
          var colName = f.inputParams.name;
          
-         var td = inputEx.cn('td', {className: 'inputEx-FastTable-field'});
+         td = inputEx.cn('td', {className: 'inputEx-FastTable-field'});
          inputExField.inputParams.parentEl = td;
          if(item) {
             inputExField.inputParams.value = item[colName];
@@ -168,7 +169,7 @@ inputEx.widget.FastTable.prototype = {
          tr.appendChild(td);
       }
       
-      var td = inputEx.cn('td', {className: 'inputEx-FastTable-action'});
+      td = inputEx.cn('td', {className: 'inputEx-FastTable-action'});
       
       if(item) {
          var deleteLink = inputEx.cn('a', {href: ""}, null, "delete");
@@ -190,7 +191,7 @@ inputEx.widget.FastTable.prototype = {
          this.tbodyEl.insertBefore(tr, this.addTr);
          
          // Clean the addRow:
-         for(var i = 0 ; i < this.options.fields.length ; i++) {
+         for(i = 0 ; i < this.options.fields.length ; i++) {
             this.addRowFields[i].clear();
          }
       }
@@ -253,16 +254,15 @@ inputEx.widget.FastTable.prototype = {
     */
    onFieldUpdated: function(e,p,item) {
       
-      var field = p[1];
-      var cell = field.divEl.parentNode;
-      
-      var key = field.options.name;
-      var item = field._item;
-      var newValue = p[0];
+      var field = p[1],
+			 cell = field.divEl.parentNode,
+			 key = field.options.name,
+			 _item = field._item,
+			 newValue = p[0];
       
       if(item) { 
          Dom.addClass(cell, "inputEx-FastTable-dirty-cell");
-         this.itemUpdatedEvt.fire(item,key,newValue,cell);
+         this.itemUpdatedEvt.fire(_item,key,newValue,cell);
       }
    },
    

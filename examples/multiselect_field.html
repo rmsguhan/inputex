@@ -52,7 +52,7 @@
  <div class='demoContainer' id='container1'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-		var ms = new YAHOO.inputEx.MultiSelectField({
+		var ms = new inputEx.MultiSelectField({
 			label: 'Javascript libraries you use', 
 			name: 'country', 
 			selectValues: ['Choose a library', 'YUI','Dojo','Prototype','Scriptaculous', 'mootools'], 
@@ -61,7 +61,7 @@
 		});
 		ms.updatedEvt.subscribe(function(e,params) {
 			var value = YAHOO.lang.JSON.stringify(params[0]);
-			YAHOO.util.Dom.get('container1').appendChild( YAHOO.inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value) );
+			YAHOO.util.Dom.get('container1').appendChild( inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value) );
 		});
   </textarea>
  </div>
@@ -77,7 +77,7 @@
  <div class='demoContainer' id='container2'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-		var ms = new YAHOO.inputEx.MultiSelectField({
+		var ms = new inputEx.MultiSelectField({
 			label: 'Javascript libraries you use', 
 			name: 'country', 
 			selectValues: [null, 'yui','dojo','prototype','scriptaculous', 'mootools'], 
@@ -87,7 +87,7 @@
 		});
 		ms.updatedEvt.subscribe(function(e,params) {
 			var value = YAHOO.lang.JSON.stringify(params[0]);
-			YAHOO.util.Dom.get('container2').appendChild( YAHOO.inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value+"<br />") );
+			YAHOO.util.Dom.get('container2').appendChild( inputEx.cn('div',null,null,"Updated at "+(new Date())+" "+value+"<br />") );
 		});
   </textarea>
  </div>

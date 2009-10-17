@@ -34,8 +34,8 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			field = new YAHOO.inputEx.TimeField({parentEl: 'container1', showMsg: true, value:'15:17:34'});
-			var button = YAHOO.inputEx.cn('button', null, null, 'getValue');
+			field = new inputEx.TimeField({parentEl: 'container1', showMsg: true, value:'15:17:34'});
+			var button = inputEx.cn('button', null, null, 'getValue');
 			YAHOO.util.Event.addListener(button, "click",function() {
 				alert(field.getValue());
 			});
@@ -57,7 +57,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.TimeField({
+			new inputEx.TimeField({
 				parentEl: 'container2', 
 				separators: [false,"h","m","s"],
 				value:'15:17:34'
@@ -85,11 +85,11 @@
 YAHOO.util.Event.addListener(window, 'load', function() {
 
 	// Example 1
-	field = new YAHOO.inputEx.TimeField({
+	field = new inputEx.TimeField({
 		parentEl: 'container1', 
 		value:'15:17:34'
 	});
-	var button = YAHOO.inputEx.cn('button', null, null, 'getValue');
+	var button = inputEx.cn('button', null, null, 'getValue');
 	YAHOO.util.Event.addListener(button, "click",function() {
 		alert(field.getValue());
 	});
@@ -97,7 +97,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	
 	// Example 2
-	new YAHOO.inputEx.TimeField({
+	new inputEx.TimeField({
 		parentEl: 'container2', 
 		separators: [false,"h","m","s"],
 		value:'15:17:34'

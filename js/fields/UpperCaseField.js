@@ -1,7 +1,5 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * A field where the value is always uppercase
  * @class inputEx.UpperCaseField

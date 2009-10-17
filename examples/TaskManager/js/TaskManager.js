@@ -1,6 +1,6 @@
 
 // Needed for inputEx
-YAHOO.inputEx.spacerUrl = "../images/space.gif";
+inputEx.spacerUrl = "../images/space.gif";
 
 /**
  * Main TaskManager object
@@ -38,7 +38,7 @@ var TaskManager = {
     * Create the Task Details Form
     */
    buildForm: function() {
-      this.oTaskDetailsForm = new YAHOO.inputEx.Group({parentEl: 'taskInformation', fields: [ 
+      this.oTaskDetailsForm = new inputEx.Group({parentEl: 'taskInformation', fields: [ 
             {inputParams: {label: 'Description', name: 'description'} },
       		{type: 'date', inputParams: {label: 'Due date', name: 'duedate' } },
             {inputParams: {label: 'Tags', name: 'tags' } },

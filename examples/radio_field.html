@@ -39,7 +39,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example1', choices: ['Ajaxian','YUI blog','other'], value:'Ajaxian', parentEl: 'container1'});
+			new inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example1', choices: ['Ajaxian','YUI blog','other'], value:'Ajaxian', parentEl: 'container1'});
 		</textarea>
 	</div>
 
@@ -56,9 +56,9 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			var field2 = new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example2', choices: ['Ajaxian','YUI blog'], parentEl: 'container2', allowAny: true});
+			var field2 = new inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example2', choices: ['Ajaxian','YUI blog'], parentEl: 'container2', allowAny: true});
 			field2.updatedEvt.subscribe(function(e, params) {
-					YAHOO.util.Dom.get('container2').appendChild( YAHOO.inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
+					YAHOO.util.Dom.get('container2').appendChild( inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
 			});
 		</textarea>
 	</div>
@@ -81,7 +81,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example3', choices: ['Ajaxian','YUI blog','other'], parentEl: 'container3', id: 'verticalChoiceField'});
+			new inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example3', choices: ['Ajaxian','YUI blog','other'], parentEl: 'container3', id: 'verticalChoiceField'});
 			
 			/* Style */
 			#verticalChoiceField div.inputEx-RadioField-choice {
@@ -103,9 +103,9 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			var field4 = new YAHOO.inputEx.RadioField({label: "What's your favorite programming language ?", name: 'example4', choices: ['Ruby','C#',"PHP"], values: ['ruby','c_sharp','php'],  allowAny: true, parentEl: 'container4', showMsg:true, required:true});
+			var field4 = new inputEx.RadioField({label: "What's your favorite programming language ?", name: 'example4', choices: ['Ruby','C#',"PHP"], values: ['ruby','c_sharp','php'],  allowAny: true, parentEl: 'container4', showMsg:true, required:true});
 			field4.updatedEvt.subscribe(function(e, params) {
-					YAHOO.util.Dom.get('container4').appendChild( YAHOO.inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
+					YAHOO.util.Dom.get('container4').appendChild( inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
 			});
 
 			var exampleDiv = YAHOO.util.Dom.get('container4');
@@ -138,7 +138,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			var field5 = new YAHOO.inputEx.RadioField({
+			var field5 = new inputEx.RadioField({
 				label: 'Would you like to receive an email reminder ?',
 				name: 'example5',
 				choices: ['No'],
@@ -157,7 +157,7 @@
 				required:true
 			});
 			field5.updatedEvt.subscribe(function(e, params) {
-					YAHOO.util.Dom.get('container5').appendChild( YAHOO.inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
+					YAHOO.util.Dom.get('container5').appendChild( inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
 			});
 			
 			/* Style */
@@ -189,21 +189,21 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	try {
 
 	// Example 1
-	new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example1', choices: ['Ajaxian','YUI blog','other'], value:'Ajaxian', parentEl: 'container1'});
+	new inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example1', choices: ['Ajaxian','YUI blog','other'], value:'Ajaxian', parentEl: 'container1'});
 	
 	// Example 2
-	var field2 = new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example2', choices: ['Ajaxian','YUI blog'], parentEl: 'container2', allowAny: true});
+	var field2 = new inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example2', choices: ['Ajaxian','YUI blog'], parentEl: 'container2', allowAny: true});
 	field2.updatedEvt.subscribe(function(e, params) {
-			YAHOO.util.Dom.get('container2').appendChild( YAHOO.inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
+			YAHOO.util.Dom.get('container2').appendChild( inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
 	});
 	
 	// Example 3
-	new YAHOO.inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example3', choices: ['Ajaxian','YUI blog','other'], parentEl: 'container3', id: 'verticalChoiceField'});
+	new inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example3', choices: ['Ajaxian','YUI blog','other'], parentEl: 'container3', id: 'verticalChoiceField'});
 	
 	// Example 4
-	var field4 = new YAHOO.inputEx.RadioField({label: "What's your favorite programming language ?", name: 'example4', choices: ['Ruby','C#',"PHP"], values: ['ruby','c_sharp','php'], value:'c_sharp', allowAny: true, parentEl: 'container4', showMsg:true, required:true});
+	var field4 = new inputEx.RadioField({label: "What's your favorite programming language ?", name: 'example4', choices: ['Ruby','C#',"PHP"], values: ['ruby','c_sharp','php'], value:'c_sharp', allowAny: true, parentEl: 'container4', showMsg:true, required:true});
 	field4.updatedEvt.subscribe(function(e, params) {
-			YAHOO.util.Dom.get('container4').appendChild( YAHOO.inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
+			YAHOO.util.Dom.get('container4').appendChild( inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
 	});
 	
 	var exampleDiv = YAHOO.util.Dom.get('container4');
@@ -217,7 +217,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	YAHOO.util.Event.addListener(button2, 'click', function() { alert(field4.getValue()); });
 	
 	// Example 5
-	var field5 = new YAHOO.inputEx.RadioField({
+	var field5 = new inputEx.RadioField({
 		label: 'Would you like to receive an email reminder ?',
 		name: 'example5',
 		choices: ['No'],
@@ -236,7 +236,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 		required:true
 	});
 	field5.updatedEvt.subscribe(function(e, params) {
-			YAHOO.util.Dom.get('container5').appendChild( YAHOO.inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
+			YAHOO.util.Dom.get('container5').appendChild( inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
 	});
 	
 	

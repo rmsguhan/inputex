@@ -95,7 +95,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 	 }
 	};
 	
-	var builder = new YAHOO.inputEx.JsonSchema.Builder({
+	var builder = new inputEx.JsonSchema.Builder({
 		'schemaIdentifierMap': schemaIdentifierMap,
 	  'defaultOptions':{
 	     'showMsg':true
@@ -103,7 +103,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
   });
 	var m = builder.schemaToInputEx(schemaIdentifierMap["Person"]);
 	m.inputParams.parentEl = 'formContainer';
-	var f = YAHOO.inputEx.buildField(m);
+	var f = inputEx.buildField(m);
 	
 });
 

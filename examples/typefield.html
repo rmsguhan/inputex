@@ -35,7 +35,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new YAHOO.inputEx.TypeField({parentEl: 'container1'});
+			new inputEx.TypeField({parentEl: 'container1'});
 		</textarea>
 	</div>
 
@@ -53,7 +53,7 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new YAHOO.inputEx.TypeField({
+			new inputEx.TypeField({
 				parentEl: 'container2', 
 				value: {
 					type:'url',
@@ -95,14 +95,14 @@
 
 YAHOO.util.Event.addListener(window, 'load', function() {
 	// Required for the TypeField
-	YAHOO.inputEx.spacerUrl = "../images/space.gif";
+	inputEx.spacerUrl = "../images/space.gif";
 
 	// Example 1
-	new YAHOO.inputEx.TypeField({parentEl: 'container1'});
+	new inputEx.TypeField({parentEl: 'container1'});
 	
 	
 	// Example 2
-	new YAHOO.inputEx.TypeField({
+	new inputEx.TypeField({
 		parentEl: 'container2', 
 		value: {
 			type:'url',

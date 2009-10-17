@@ -47,7 +47,7 @@
 					{type:'boolean', inputParams: {label: 'Happy to be there ?', name: 'happy'}}, 
 					{type:'url', inputParams: {label: 'Website', name:'website'}} 
 			];
-			new YAHOO.inputEx.Group({parentEl: 'container1', fields: contactFormFields, legend: 'Tell us about yourself...'});
+			new inputEx.Group({parentEl: 'container1', fields: contactFormFields, legend: 'Tell us about yourself...'});
 		</textarea>
 			</div>
 
@@ -61,13 +61,13 @@
 
 	<p class="title">Composition</p>
 	
-	<p>The YAHOO.inputEx.Group class inherits from inputEx.Field</p>
+	<p>The inputEx.Group class inherits from inputEx.Field</p>
 
 	<div class='demoContainer' id='container2'></div>
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new YAHOO.inputEx.ListField({
+			new inputEx.ListField({
 				elementType: {
 					type: 'group',
 					inputParams: {
@@ -94,7 +94,7 @@
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript" cols="60" rows="1">
 			var el = YAHOO.util.Dom.get('container3');
-			var group = new YAHOO.inputEx.Group({parentEl: el, fields: contactFormFields });
+			var group = new inputEx.Group({parentEl: el, fields: contactFormFields });
 			var logDiv = inputEx.cn('div', null, null, "Log :<br />");
 			el.appendChild(logDiv);
 			group.updatedEvt.subscribe(function() {
@@ -118,7 +118,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript" cols="60" rows="1">
-			new YAHOO.inputEx.Group({parentEl: 'container4', fields: contactFormFields, legend: 'User Informations', collapsible: true});
+			new inputEx.Group({parentEl: 'container4', fields: contactFormFields, legend: 'User Informations', collapsible: true});
 		</textarea>
 			</div>
 
@@ -151,8 +151,8 @@
 					]
 				}
 			})
-			var field5 = new YAHOO.inputEx.Group({parentEl: 'container5', fields: contactFormFields});
-			var button5 = YAHOO.inputEx.cn('button', null, null, 'Get value');
+			var field5 = new inputEx.Group({parentEl: 'container5', fields: contactFormFields});
+			var button5 = inputEx.cn('button', null, null, 'Get value');
 			YAHOO.util.Dom.get('container5').appendChild(button5);
 			YAHOO.util.Event.addListener(button5, "click", function() {
 				alert( YAHOO.lang.JSON.stringify(field5.getValue()) );
@@ -184,7 +184,7 @@
 					{type:'boolean', inputParams: {description: 'Check this box if you are happy to be there', label: 'Happy to be there ?', name: 'email'}}, 
 					{ type:'url', inputParams: {description: 'Your blog url', label: 'Website', name:'website'}} 
 			];
-			new YAHOO.inputEx.Group({parentEl: 'container6', fields: descriptedFields, legend: 'User Informations'});
+			new inputEx.Group({parentEl: 'container6', fields: descriptedFields, legend: 'User Informations'});
 		</textarea>
 			</div>
 
@@ -204,7 +204,7 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			var flattenGroup = new YAHOO.inputEx.Group({
+			var flattenGroup = new inputEx.Group({
 				parentEl: 'container7', 
 				legend: 'Flatten demo', 
 				inputParams: {name: "MyForm"},
@@ -256,7 +256,7 @@
 
 YAHOO.util.Event.addListener(window, 'load', function() {
 	// Required for the UrlField and listfield
-	YAHOO.inputEx.spacerUrl = "../images/space.gif";
+	inputEx.spacerUrl = "../images/space.gif";
 
 	// Example 1
 	var contactFormFields = [ 
@@ -267,11 +267,11 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 			{type:'boolean', inputParams: {label: 'Happy to be there ?', name: 'happy'}}, 
 			{type:'url', inputParams: {label: 'Website', name:'website'}} 
 	];
-	new YAHOO.inputEx.Group({parentEl: 'container1', fields: contactFormFields, legend: 'Tell us about yourself...'});
+	new inputEx.Group({parentEl: 'container1', fields: contactFormFields, legend: 'Tell us about yourself...'});
 	
 	
 	// Example 2
-	new YAHOO.inputEx.ListField({
+	new inputEx.ListField({
 		elementType: {
 			type: 'group',
 			inputParams: {
@@ -284,8 +284,8 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	// Example 3
 	var el = YAHOO.util.Dom.get('container3');
-	var group3 = new YAHOO.inputEx.Group({parentEl: el, fields: contactFormFields });
-	var logDiv = YAHOO.inputEx.cn('div', null, null, "Log :<br />");
+	var group3 = new inputEx.Group({parentEl: el, fields: contactFormFields });
+	var logDiv = inputEx.cn('div', null, null, "Log :<br />");
 	el.appendChild(logDiv);
 	group3.updatedEvt.subscribe(function() {
 		logDiv.innerHTML += "Updated at "+(new Date())+"<br />";
@@ -306,7 +306,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	
 	
 	// Example 4
-	new YAHOO.inputEx.Group({parentEl: 'container4', fields: contactFormFields, legend: 'User Informations', collapsible: true});
+	new inputEx.Group({parentEl: 'container4', fields: contactFormFields, legend: 'User Informations', collapsible: true});
 	
 	// Example 5
 	var contactFormFields2 = [ 
@@ -331,8 +331,8 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 			]
 		}
 	});
-	var field5 = new YAHOO.inputEx.Group({parentEl: 'container5', fields: contactFormFields2});
-	var button5 = YAHOO.inputEx.cn('button', null, null, 'Get value');
+	var field5 = new inputEx.Group({parentEl: 'container5', fields: contactFormFields2});
+	var button5 = inputEx.cn('button', null, null, 'Get value');
 	YAHOO.util.Dom.get('container5').appendChild(button5);
 	YAHOO.util.Event.addListener(button5, "click", function() {
 		alert( YAHOO.lang.JSON.stringify(field5.getValue()) );
@@ -354,7 +354,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	});
 	var el = YAHOO.util.Dom.get('container5');
 	el.appendChild(setValueButton);
-	var validButton = YAHOO.inputEx.cn('button', null, null, 'Validate');
+	var validButton = inputEx.cn('button', null, null, 'Validate');
 	YAHOO.util.Dom.get('container5').appendChild(validButton);
 	YAHOO.util.Event.addListener(validButton, "click", function() {
 		alert( field5.validate() );
@@ -370,12 +370,12 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 			{type:'boolean', inputParams: {description: 'Check this box if you are happy to be there', label: 'Happy to be there ?', name: 'email'}}, 
 			{ type:'url', inputParams: {description: 'Your blog url', label: 'Website', name:'website'}} 
 	];
-	new YAHOO.inputEx.Group({parentEl: 'container6', fields: descriptedFields, legend: 'User Informations'});
+	new inputEx.Group({parentEl: 'container6', fields: descriptedFields, legend: 'User Informations'});
 	
 	
 	
 	// Example 7
-	var flattenGroup = new YAHOO.inputEx.Group({
+	var flattenGroup = new inputEx.Group({
 		parentEl: 'container7', 
 		legend: 'Flatten demo', 
 		inputParams: {name: "MyForm"},

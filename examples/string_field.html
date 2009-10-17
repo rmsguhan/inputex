@@ -35,7 +35,7 @@
 	<div class='demoContainer' id='container1'></div>
 	<div class='codeContainer'>
 	  <textarea name="code" class="JScript">
-		new YAHOO.inputEx.StringField({parentEl: 'container1'});
+		new inputEx.StringField({parentEl: 'container1'});
 	  </textarea>
 	</div>
 </div>
@@ -48,7 +48,7 @@
 	<div class='demoContainer' id='container2'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-			new YAHOO.inputEx.StringField({value: 'inputEx rocks', parentEl: 'container2'});
+			new inputEx.StringField({value: 'inputEx rocks', parentEl: 'container2'});
 		</textarea>
 	</div>
 </div>
@@ -61,7 +61,7 @@
 	<div class='demoContainer' id='container3'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-		new YAHOO.inputEx.StringField({size: 40, value: 'size is set to 40 (default is 20)', parentEl: 'container3'});
+		new inputEx.StringField({size: 40, value: 'size is set to 40 (default is 20)', parentEl: 'container3'});
 		</textarea>
 	</div>
 </div>
@@ -74,7 +74,7 @@
 	<div class='demoContainer' id='container4'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-			new YAHOO.inputEx.StringField({value: '0123456789', showMsg: true, minLength: 3, maxLength: 10, parentEl: 'container4'});
+			new inputEx.StringField({value: '0123456789', showMsg: true, minLength: 3, maxLength: 10, parentEl: 'container4'});
 		</textarea>
 	</div>
 </div>
@@ -87,7 +87,7 @@
 	<div class='demoContainer' id='container5'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-			new YAHOO.inputEx.StringField({required: true, showMsg: true, parentEl: 'container5'});
+			new inputEx.StringField({required: true, showMsg: true, parentEl: 'container5'});
 		</textarea>
 	</div>
 </div>
@@ -100,7 +100,7 @@
 	<div class='demoContainer' id='container6'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-			new YAHOO.inputEx.StringField({label: 'Enter your age', regexp: /^[0-9]*$/, parentEl: 'container6'});
+			new inputEx.StringField({label: 'Enter your age', regexp: /^[0-9]*$/, parentEl: 'container6'});
 		</textarea>
 	</div>
 </div>
@@ -114,7 +114,7 @@
 	<div class='demoContainer' id='container7'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-		new YAHOO.inputEx.StringField({showMsg: true,regexp: YAHOO.inputEx.regexps.email, value: 'wrong@email', parentEl: 'container7'});
+		new inputEx.StringField({showMsg: true,regexp: inputEx.regexps.email, value: 'wrong@email', parentEl: 'container7'});
 		</textarea>
 	</div>
 </div>
@@ -128,7 +128,7 @@
 	<div class='demoContainer' id='container8'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-			var field = new YAHOO.inputEx.StringField({value: 'This field is disabled', parentEl: 'container8'});
+			var field = new inputEx.StringField({value: 'This field is disabled', parentEl: 'container8'});
 			field.disable();
 		</textarea>
 	</div>
@@ -143,8 +143,8 @@
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
 					var el = YAHOO.util.Dom.get('container9');
-					var field = new YAHOO.inputEx.StringField({parentEl: el });
-					var logDiv = YAHOO.inputEx.cn('div', null, null, "Log :");
+					var field = new inputEx.StringField({parentEl: el });
+					var logDiv = inputEx.cn('div', null, null, "Log :");
 					el.appendChild(logDiv);
 					field.updatedEvt.subscribe(function(e,params) {
 						var val = params[0];
@@ -163,7 +163,7 @@
 	<div class='demoContainer' id='container10'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-		new YAHOO.inputEx.StringField({parentEl: 'container10', typeInvite: 'lastname', description: 'Enter your lastname'});
+		new inputEx.StringField({parentEl: 'container10', typeInvite: 'lastname', description: 'Enter your lastname'});
 		</textarea>
 	</div>
 </div>
@@ -177,7 +177,7 @@
 	<div class='demoContainer' id='container11'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-			var field1 = new YAHOO.inputEx.StringField({
+			var field1 = new inputEx.StringField({
 				parentEl: 'container11', 
 				typeInvite: 'lastname', 
 				description: 'Enter your lastname', 
@@ -211,7 +211,7 @@
 	<div class='demoContainer' id='container12'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
-			var field12 = new YAHOO.inputEx.StringField({parentEl: 'container12'});
+			var field12 = new inputEx.StringField({parentEl: 'container12'});
 
 			var exampleDiv = YAHOO.util.Dom.get('container12');
 

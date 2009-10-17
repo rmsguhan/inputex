@@ -30,7 +30,7 @@ inputEx.YQL = {
 	 * @param {Function} callback Callback function
 	 */
 	query: function(yql, callback) {
-		 var  ud = 'yqlexecuteconsole'+(inputEx.YQL.query_index)++,
+		 var ud = 'yqlexecuteconsole'+(inputEx.YQL.query_index)++,
 		      API = 'http://query.yahooapis.com/v1/public/yql?q=',
 		      url = API + window.encodeURIComponent(yql) + '&format=json&callback=' + ud;
 		 window[ud]= function(o){ callback && callback(o); };

@@ -1,5 +1,5 @@
 (function() {	
-	var inputEx = YAHOO.inputEx, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
+	var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
 	
 /**
  * Create a radio button. Here are the added options :
@@ -41,7 +41,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
         this.options.allowAny = false;
       } else {
         this.options.allowAny = {};
-        if (lang.isArray(options.allowAny.separators)) { this.options.allowAny.separators = options.allowAny.separators;};
+        if (lang.isArray(options.allowAny.separators)) { this.options.allowAny.separators = options.allowAny.separators;}
         this.options.allowAny.validator = (lang.isFunction(options.allowAny.validator)) ? options.allowAny.validator : function(val) {return true;};
         this.options.allowAny.value = (!lang.isUndefined(options.allowAny.value)) ? options.allowAny.value : "";
       }
@@ -56,11 +56,12 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 	 */
 	renderComponent: function() {
 	
+		var div,sep;
 	   this.optionEls = [];
 	
 	   for(var i = 0 ; i < this.options.choices.length ; i++) {
 	
-	      var div = inputEx.cn('div', {className: 'inputEx-RadioField-choice'});
+	      div = inputEx.cn('div', {className: 'inputEx-RadioField-choice'});
 	      
 	      // radioId MUST be different for each option,
 	      // so add "-opt"+i (where i = option's position) to generated id
@@ -80,7 +81,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
      
      // Build a "any" radio combined with a StringField
      if(this.options.allowAny) {
-        var div = inputEx.cn('div', {className: 'inputEx-RadioField-choice'});
+        div = inputEx.cn('div', {className: 'inputEx-RadioField-choice'});
         
         if(YAHOO.env.ua.ie) {
            this.radioAny = document.createElement("<input type='radio' name='"+this.options.name+"'>");
@@ -96,7 +97,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
         this.anyField.disable();
         
         if (this.options.allowAny.separators) {
-     	     var sep = inputEx.cn("div",null,{margin:"3px"},this.options.allowAny.separators[0] || '');
+     	     sep = inputEx.cn("div",null,{margin:"3px"},this.options.allowAny.separators[0] || '');
      	     Dom.setStyle(sep, "float","left");
      	     div.appendChild(sep);
   	     }
@@ -104,7 +105,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
      	  div.appendChild(this.anyField.getEl());
      	  
         if (this.options.allowAny.separators) {
-     	     var sep = inputEx.cn("div",null,{margin:"3px"},this.options.allowAny.separators[1] || '');
+     	     sep = inputEx.cn("div",null,{margin:"3px"},this.options.allowAny.separators[1] || '');
      	     Dom.setStyle(sep, "float","left");
      	     div.appendChild(sep);
   	     }

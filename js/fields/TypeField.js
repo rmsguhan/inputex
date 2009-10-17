@@ -1,6 +1,6 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom, lang = YAHOO.lang;
+   var Event = YAHOO.util.Event, Dom = YAHOO.util.Dom, lang = YAHOO.lang;
 
 /**
  * TypeField is a field to create fields. The user can create any value he wants by switching fields.
@@ -203,7 +203,7 @@ lang.extend(inputEx.TypeField, inputEx.Field, {
     */
    getValue: function() {
       
-      function getDefaultValueForField(classObj, paramName) {
+      var getDefaultValueForField = function (classObj, paramName) {
          for(var i = 0 ; i < classObj.groupOptions.length ; i++) {
             var f = classObj.groupOptions[i];
             if(f.inputParams.name == paramName) return f.inputParams.value;

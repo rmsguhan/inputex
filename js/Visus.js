@@ -1,6 +1,6 @@
 (function() {
    
-   var inputEx = YAHOO.inputEx, lang = YAHOO.lang;
+   var lang = YAHOO.lang;
 /**
  * Contains the various visualization methods
  * @class inputEx.visus
@@ -14,7 +14,7 @@ inputEx.visus = {
    * options = {visuType: 'trimpath', template: "String template"}
    */
   trimpath: function(options, data) {
-      if(!TrimPath) { alert('TrimPath is not on the page. Please load inputex/lib/trimpath-template.js'); return; }
+      if(!TrimPath) { alert('TrimPath is not on the page. Please load inputex/lib/trimpath-template.js'); return null; }
       var tpl = TrimPath.parseTemplate(options.template);
      	var ret = tpl.process(data);
      	return ret;
@@ -67,7 +67,6 @@ inputEx.renderVisu = function(visuOptions,data, parentEl) {
    }
    catch(ex) {
       throw new Error("inputEx: error while running visu "+visuType+" : "+ex.message);
-      return;
    }
    
    // Get the node

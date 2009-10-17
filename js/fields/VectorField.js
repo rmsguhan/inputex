@@ -1,7 +1,5 @@
 (function() {
 
-   var inputEx = YAHOO.inputEx;
-
 /**
  * A field limited to number inputs (floating)
  * @class inputEx.VectorField
