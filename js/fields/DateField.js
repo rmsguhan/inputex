@@ -124,7 +124,7 @@ inputEx.DateField.formatDate = function(d,format) {
    var m = d.getMonth()+1;
    str = str.replace('m', ((m < 10)? '0':'')+m);
    var day = d.getDate();
-   str = str.replace('d', ((day < 10)? '0':'')+d);
+   str = str.replace('d', ((day < 10)? '0':'')+day);
 	return str;
 };
 	

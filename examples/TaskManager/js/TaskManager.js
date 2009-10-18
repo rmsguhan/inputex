@@ -240,9 +240,4 @@ var TaskManager = {
 };
 
 // Init
-YAHOO.util.Event.addListener(window, 'load', TaskManager.init, TaskManager, true);
-
-
-
-
-
+YAHOO.util.Event.onDOMReady(TaskManager.init, TaskManager, true);

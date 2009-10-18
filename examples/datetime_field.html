@@ -25,15 +25,12 @@
 
 <!-- Example 1 -->
 <div class='exampleDiv'>
-
 	<p class="title">Basic DateTimeField creation</p>
-	
 	<p>Use the following code to create a basic inputEx DateTimeField.</p>
-
 	<div class='demoContainer' id='container1'></div>
-
 	<div class='codeContainer'>
-				<textarea name="code" class="JScript">
+		<textarea name="code" class="JScript">	
+			// Example 1
 			field = new inputEx.DateTimeField({parentEl: 'container1', value: new Date()});
 			var button = inputEx.cn('button', null, null, 'getValue');
 			YAHOO.util.Event.addListener(button, "click",function() {
@@ -41,37 +38,25 @@
 			});
 			YAHOO.util.Dom.get('container1').appendChild(button);
 		</textarea>
-			</div>
-
+	</div>
 </div>
-
-
 
 <!-- Example 2 -->
 <div class='exampleDiv'>
-
 	<p class="title">Date format</p>
-	
 	<p>Change the date format</p>
-
 	<div class='demoContainer' id='container2'></div>
-
 	<div class='codeContainer'>
-				<textarea name="code" class="JScript">
+		<textarea name="code" class="JScript">
 			new inputEx.DateTimeField({parentEl: 'container2', value: new Date(), dateFormat: 'd/m/Y'});
 		</textarea>
-			</div>
-
+	</div>
 </div>
 
 
 <!-- YUI Library -->
-<script type="text/javascript" src="../lib/yui/yahoo/yahoo-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/dom/dom-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/event/event-min.js"></script>
+<script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>
-
-<script type="text/javascript" src="../lib/yui/element/element-min.js"></script>
 <script type="text/javascript" src="../lib/yui/button/button-min.js"></script>
 <script type="text/javascript" src="../lib/yui/calendar/calendar-min.js"></script>
 
@@ -87,30 +72,9 @@
 <script src="../js/fields/DatePickerField.js"  type='text/javascript'></script>
 <script src="../js/fields/DateTimeField.js"  type='text/javascript'></script>
 
-<script>
-
-YAHOO.util.Event.addListener(window, 'load', function() {
-
-	// Example 1
-	field = new inputEx.DateTimeField({parentEl: 'container1', value: new Date()});
-	var button = inputEx.cn('button', null, null, 'getValue');
-	YAHOO.util.Event.addListener(button, "click",function() {
-		alert(field.getValue());
-	});
-	YAHOO.util.Dom.get('container1').appendChild(button);
-	
-	
-	// Example 2
-	new inputEx.DateTimeField({parentEl: 'container2', value: new Date(), dateFormat: 'd/m/Y'});
-	
-});
-
-</script>
-
+<!-- inputEx examples -->
 <script src="js/dpSyntaxHighlighter.js"></script>
-<script language="javascript"> 
-dp.SyntaxHighlighter.HighlightAll('code');
-</script>
+<script src="inputex-examples.js"></script>
 
  </body>
 </html>

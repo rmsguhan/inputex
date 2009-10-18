@@ -4,8 +4,7 @@
 <title>InputEx - using XML, example with RSS</title>	
 
 <!-- YUI CSS -->
-<link rel="stylesheet" type="text/css" href="../lib/yui/reset/reset-min.css">
-<link rel="stylesheet" type="text/css" href="../lib/yui/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="../lib/yui/reset-fonts/reset-fonts.css">
 <link rel="stylesheet" type="text/css" href="../lib/yui/container/assets/container.css"> 
 <link rel="stylesheet" type="text/css" href="../lib/yui/assets/skins/sam/skin.css">
 
@@ -61,7 +60,7 @@ var rssFormDef = {
 };
 
 
-YAHOO.util.Event.addListener(window, "load", function() {
+YAHOO.util.Event.onDOMReady( function() {
 	
 		var rssForm = inputEx(rssFormDef);
 		

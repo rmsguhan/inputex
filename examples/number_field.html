@@ -11,10 +11,7 @@
 
 <!-- InputEx CSS -->
 <link type='text/css' rel='stylesheet' href='../css/inputEx.css' />
-
-<!--[if IE 6]>
-<link type='text/css' rel='stylesheet' href='../css/inputEx-IE6.css' />
-<![endif]-->
+<!--[if IE 6]><link type='text/css' rel='stylesheet' href='../css/inputEx-IE6.css' /><![endif]-->
 
 <!-- Demo CSS -->
 <link rel="stylesheet" type="text/css" href="css/demo.css"/>
@@ -29,61 +26,59 @@
 
 <!-- Example 1 -->
 <div class='exampleDiv'>
-
 	<p class="title">Basic NumberField creation</p>
-	
 	<p>Use the following code to create a basic inputEx NumberField.</p>
-
 	<div class='demoContainer' id='container1'></div>
-
 	<div class='codeContainer'>
-				<textarea name="code" class="JScript">
-			new inputEx.NumberField({parentEl: 'container1', showMsg: true, value: 0.03});
+		<textarea name="code" class="JScript">
+			field = new inputEx.NumberField({parentEl: 'container1', showMsg: true, value: 0.03});
+			var button = inputEx.cn('button', null, null, 'getValue');
+			YAHOO.util.Event.addListener(button, "click",function() {
+				alert(field.getValue());
+			});
+			YAHOO.util.Dom.get('container1').appendChild(button);
 		</textarea>
 	</div>
-
 </div>
 
 
 <!-- Example 2 -->
 <div class='exampleDiv'>
-
 	<p class="title">Supported format</p>
-	
 	<p>Everything accepted by parseFloat is valid.</p>
-
 	<div class='demoContainer' id='container2'></div>
-
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new inputEx.NumberField({parentEl: 'container2', showMsg: true, value: '03e-2', required:true, typeInvite:"Float numbers accepted" });
+			field2 = new inputEx.NumberField({parentEl: 'container2', showMsg: true, value: '03e-2', required:true, typeInvite:"Float numbers accepted"});
+			var button = inputEx.cn('button', null, null, 'getValue');
+			YAHOO.util.Event.addListener(button, "click",function() {
+				alert(field2.getValue());
+			});
+			YAHOO.util.Dom.get('container2').appendChild(button);
 		</textarea>
 	</div>
-
 </div>
 
 
 <!-- Example 3 -->
 <div class='exampleDiv'>
-
 	<p class="title">Min &amp; Max</p>
-	
 	<p>Check a minimum or a maximum value</p>
-
 	<div class='demoContainer' id='container3'></div>
-
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-            new inputEx.NumberField({parentEl: 'container3', showMsg: true, min:-15, max:'1e3', typeInvite:"Numbers between -15 and 1e3 (1000) only", size:40});
+            field3 = new inputEx.NumberField({parentEl: 'container3', showMsg: true, min:-15, max:'1e3', typeInvite:"Numbers between -15 and 1e3 (1000) only", size:40});
+			   var button = inputEx.cn('button', null, null, 'getValue');
+			   YAHOO.util.Event.addListener(button, "click",function() {
+			      alert(field3.getValue());
+			   });
+			   YAHOO.util.Dom.get('container3').appendChild(button);
 		</textarea>
 	</div>
-
 </div>
 
 <!-- YUI Library -->
-<script type="text/javascript" src="../lib/yui/yahoo/yahoo-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/dom/dom-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/event/event-min.js"></script>
+<script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>
 
 
@@ -93,43 +88,9 @@
 <script src="../js/fields/StringField.js"  type='text/javascript'></script>
 <script src="../js/fields/NumberField.js"  type='text/javascript'></script>
 
-<script>
-
-YAHOO.util.Event.addListener(window, 'load', function() {
-
-	// Example 1
-	field = new inputEx.NumberField({parentEl: 'container1', showMsg: true, value: 0.03});
-	var button = inputEx.cn('button', null, null, 'getValue');
-	YAHOO.util.Event.addListener(button, "click",function() {
-		alert(field.getValue());
-	});
-	YAHOO.util.Dom.get('container1').appendChild(button);
-	
-	
-   // Example 2
-   field2 = new inputEx.NumberField({parentEl: 'container2', showMsg: true, value: '03e-2', required:true, typeInvite:"Float numbers accepted"});
-   var button = inputEx.cn('button', null, null, 'getValue');
-   YAHOO.util.Event.addListener(button, "click",function() {
-      alert(field2.getValue());
-   });
-   YAHOO.util.Dom.get('container2').appendChild(button);
-   
-   // Example 3
-   field3 = new inputEx.NumberField({parentEl: 'container3', showMsg: true, min:-15, max:'1e3', typeInvite:"Numbers between -15 and 1e3 (1000) only", size:40});
-   var button = inputEx.cn('button', null, null, 'getValue');
-   YAHOO.util.Event.addListener(button, "click",function() {
-      alert(field3.getValue());
-   });
-   YAHOO.util.Dom.get('container3').appendChild(button);
-   
-});
-
-</script>
-
+<!-- inputEx examples -->
 <script src="js/dpSyntaxHighlighter.js"></script>
-<script language="javascript"> 
-dp.SyntaxHighlighter.HighlightAll('code');
-</script>
+<script src="inputex-examples.js"></script>
 
  </body>
 </html>

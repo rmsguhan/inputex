@@ -5,8 +5,7 @@
   <title>inputEx - MapField Usage</title>
 
 <!-- YUI CSS -->
-<link rel="stylesheet" type="text/css" href="../lib/yui/reset/reset-min.css">
-<link rel="stylesheet" type="text/css" href="../lib/yui/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="../lib/yui/reset-fonts/reset-fonts.css">
 <link rel="stylesheet" type="text/css" href="../lib/yui/container/assets/container.css"> 
 <link rel="stylesheet" type="text/css" href="../lib/yui/assets/skins/sam/skin.css">
 
@@ -14,9 +13,8 @@
 <link type='text/css' rel='stylesheet' href='../css/inputEx.css' />
 
 <!-- Demo CSS -->
-<link rel="stylesheet" type="text/css" href="../examples/css/demo.css"/>
-<link rel="stylesheet" type="text/css" href="../examples/css/dpSyntaxHighlighter.css">
-
+<link rel="stylesheet" type="text/css" href="css/demo.css"/>
+<link rel="stylesheet" type="text/css" href="dpSyntaxHighlighter.css">
 
  </head>
 
@@ -24,126 +22,93 @@
 
 <p class='demoTitle'>inputEx - MapField Usage</p>
 
-
 <!-- Example 1 -->
 <div class='exampleDiv'>
-
 	<p class="title">Virtual Earth MapField creation</p>
-	
 	<p>Use the following code to create a inputEx MapField for Virtual Earth.</p>
-
 	<div class='demoContainer' id='container1'></div>
-
 	<div class='codeContainer'>
-		<form>
 		<textarea name="code" class="JScript" cols="60" rows="5">
-		var id = 'container1';
-		var api = 'virtualearth';
-		var elExample = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
+			var id = 'container1';
+			var api = 'virtualearth';
+			var elExample1 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
 
-		var elButton = inputEx.cn('button', null, null, "getValue");
-		YAHOO.util.Event.addListener(elButton, 'click', function() {
-			alert( YAHOO.lang.JSON.stringify(elExample.getValue()) );
-		});
-		YAHOO.util.Dom.get(id).appendChild(elButton);
+			var elButton1 = inputEx.cn('button', null, null, "getValue");
+			YAHOO.util.Event.addListener(elButton1, 'click', function() {
+				alert(YAHOO.lang.JSON.stringify(elExample1.getValue()) );
+			});
+			YAHOO.util.Dom.get(id).appendChild(elButton1);
 		</textarea>
-		</form>
 	</div>
-
 </div>
 
 <!-- Example 2 -->
 <div class='exampleDiv'>
-
 	<p class="title">Yahoo Maps MapField creation</p>
-	
 	<p>Use the following code to create a inputEx MapField for Yahoo Maps.</p>
-
 	<div class='demoContainer' id='container2'></div>
-
 	<div class='codeContainer'>
-		<form>
 		<textarea name="code" class="JScript" cols="60" rows="5">
-		var id = 'container2';
-		var api = 'yahoo';
-		var elExample = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
+			var id = 'container2';
+			var api = 'yahoo';
+			var elExample2 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
 
-		var elButton = inputEx.cn('button', null, null, "getValue");
-		YAHOO.util.Event.addListener(elButton, 'click', function() {
-			alert( YAHOO.lang.JSON.stringify(elExample.getValue()) );
-		});
-		YAHOO.util.Dom.get(id).appendChild(elButton);
+			var elButton2 = inputEx.cn('button', null, null, "getValue");
+			YAHOO.util.Event.addListener(elButton2, 'click', function() {
+				alert( YAHOO.lang.JSON.stringify(elExample2.getValue()) );
+			});
+			YAHOO.util.Dom.get(id).appendChild(elButton2);
 		</textarea>
-		</form>
 	</div>
-
 </div>
 
 <!-- Example 3 -->
 <div class='exampleDiv'>
-
 	<p class="title">Google Maps MapField creation</p>
-	
 	<p>Use the following code to create a inputEx MapField for Google Maps.</p>
-
 	<div class='demoContainer' id='container3'></div>
-
 	<div class='codeContainer'>
-		<form>
 		<textarea name="code" class="JScript" cols="60" rows="5">
-		var id = 'container3';
-		var api = 'google';
-		var elExample = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
+			var id = 'container3';
+			var api = 'google';
+			var elExample3 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
 
-		var elButton = inputEx.cn('button', null, null, "getValue");
-		YAHOO.util.Event.addListener(elButton, 'click', function() {
-			alert( YAHOO.lang.JSON.stringify(elExample.getValue()) );
-		});
-		YAHOO.util.Dom.get(id).appendChild(elButton);
+			var elButton3 = inputEx.cn('button', null, null, "getValue");
+			YAHOO.util.Event.addListener(elButton3, 'click', function() {
+				alert( YAHOO.lang.JSON.stringify(elExample3.getValue()) );
+			});
+			YAHOO.util.Dom.get(id).appendChild(elButton3);
 		</textarea>
-		</form>
 	</div>
-
 </div>
 
 <!-- Example 4 -->
 <div class='exampleDiv'>
-
 	<p class="title">Default MapField creation</p>
-	
 	<p>
 	Use the following code to create a inputEx MapField for whatever the default API is.
 	We should complete this example by making buttons to change the default and store
 	that in cookies.
 	</p>
-
 	<div class='demoContainer' id='container4'></div>
-
 	<div class='codeContainer'>
-		<form>
 		<textarea name="code" class="JScript" cols="60" rows="5">
-		var id = 'container4';
-		var elExample = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px'});
+			var id = 'container4';
+			var elExample4 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px'});
 
-		var elButton = inputEx.cn('button', null, null, "getValue");
-		YAHOO.util.Event.addListener(elButton, 'click', function() {
-			alert( YAHOO.lang.JSON.stringify(elExample.getValue()) );
-		});
-		YAHOO.util.Dom.get(id).appendChild(elButton);
+			var elButton4 = inputEx.cn('button', null, null, "getValue");
+			YAHOO.util.Event.addListener(elButton4, 'click', function() {
+				alert( YAHOO.lang.JSON.stringify(elExample4.getValue()) );
+			});
+			YAHOO.util.Dom.get(id).appendChild(elButton4);
 		</textarea>
-		</form>
 	</div>
-
 </div>
 
 <!-- YUI Library -->
-<script type="text/javascript" src="../lib/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>
 <script type="text/javascript" src="../lib/yui/json/json-min.js"></script>
-
-<!-- YUI for Yahoo Maps AJAX API -->
-<script type="text/javascript" src="../lib/yui/dragdrop/dragdrop-min.js"></script>
-<script type="text/javascript" src="../lib/yui/animation/animation-min.js"></script>
 
 <!-- Yahoo Maps AJAX API -->
 <!--
@@ -161,78 +126,26 @@ YMAPPID = 'Nk0DZDzV34FM2CIAsdRAtUgQJRSsJO7x2l5tuDBduamC_gZWkzyTEqcUJxAWjtqxs9Wnx
 
 <script>
 
-// how to set up Virtual Earth as the default API
-if (1) {
-	inputEx.MapFieldGlobals['api'] = 'virtualearth';
-}
+// set up Virtual Earth as the default API
+inputEx.MapFieldGlobals['api'] = 'virtualearth';
 
 // how to set Google Maps as the default API; note the per-host API keys
-if (1) {
-	inputEx.MapFieldGlobals['api'] = 'google';
-	inputEx.MapFieldGlobals['api_key'] = {
-		'localhost' : 'ABQIAAAADeqGsYygYHMVWXMDJEowhBRA0pJg_vyJNqxN8QciTwW1nvTY9xTHCJ6F7R04FjG06dKgcV5wpIxzZQ',
-		'code.davidjanes.com' : 'ABQIAAAADeqGsYygYHMVWXMDJEowhBRA0pJg_vyJNqxN8QciTwW1nvTY9xTHCJ6F7R04FjG06dKgcV5wpIxzZQ',
-		'javascript.neyric.com' : ''
-	}
+inputEx.MapFieldGlobals['api'] = 'google';
+inputEx.MapFieldGlobals['api_key'] = {
+	'localhost' : 'ABQIAAAADeqGsYygYHMVWXMDJEowhBRA0pJg_vyJNqxN8QciTwW1nvTY9xTHCJ6F7R04FjG06dKgcV5wpIxzZQ',
+	'code.davidjanes.com' : 'ABQIAAAADeqGsYygYHMVWXMDJEowhBRA0pJg_vyJNqxN8QciTwW1nvTY9xTHCJ6F7R04FjG06dKgcV5wpIxzZQ',
+	'javascript.neyric.com' : ''
 }
 
 // how to set up Yahoo Maps as the default API
-if (1) {
-	inputEx.MapFieldGlobals['api'] = 'yahoo';
-	inputEx.MapFieldGlobals['Nk0DZDzV34FM2CIAsdRAtUgQJRSsJO7x2l5tuDBduamC_gZWkzyTEqcUJxAWjtqxs9Wnxb0-'] = 'yahoo';
-}
+inputEx.MapFieldGlobals['api'] = 'yahoo';
+inputEx.MapFieldGlobals['Nk0DZDzV34FM2CIAsdRAtUgQJRSsJO7x2l5tuDBduamC_gZWkzyTEqcUJxAWjtqxs9Wnxb0-'] = 'yahoo';
 
-YAHOO.util.Event.addListener(window, 'load', function() {
-	if (1) {
-		var id = 'container1';
-		var api = 'virtualearth';
-		var elExample1 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
-
-		var elButton1 = inputEx.cn('button', null, null, "getValue");
-		YAHOO.util.Event.addListener(elButton1, 'click', function() {
-			alert(YAHOO.lang.JSON.stringify(elExample1.getValue()) );
-		});
-		YAHOO.util.Dom.get(id).appendChild(elButton1);
-	}
-	if (1) {
-		var id = 'container2';
-		var api = 'yahoo';
-		var elExample2 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
-
-		var elButton2 = inputEx.cn('button', null, null, "getValue");
-		YAHOO.util.Event.addListener(elButton2, 'click', function() {
-			alert( YAHOO.lang.JSON.stringify(elExample2.getValue()) );
-		});
-		YAHOO.util.Dom.get(id).appendChild(elButton2);
-	}
-	if (1) {
-		var id = 'container3';
-		var api = 'google';
-		var elExample3 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px', api: api});
-
-		var elButton3 = inputEx.cn('button', null, null, "getValue");
-		YAHOO.util.Event.addListener(elButton3, 'click', function() {
-			alert( YAHOO.lang.JSON.stringify(elExample3.getValue()) );
-		});
-		YAHOO.util.Dom.get(id).appendChild(elButton3);
-	}
-	if (1) {
-		var id = 'container4';
-		var elExample4 = new inputEx.MapField({parentEl: id, name: 'mapField', width: '800px'});
-
-		var elButton4 = inputEx.cn('button', null, null, "getValue");
-		YAHOO.util.Event.addListener(elButton4, 'click', function() {
-			alert( YAHOO.lang.JSON.stringify(elExample4.getValue()) );
-		});
-		YAHOO.util.Dom.get(id).appendChild(elButton4);
-	}
-});
 </script>
 
-<script src="../examples/js/dpSyntaxHighlighter.js"></script>
-<script language="javascript"> 
-dp.SyntaxHighlighter.HighlightAll('code');
-</script>
+<!-- inputEx examples -->
+<script src="js/dpSyntaxHighlighter.js"></script>
+<script src="inputex-examples.js"></script>
 
  </body>
 </html>

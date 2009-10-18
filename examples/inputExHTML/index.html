@@ -55,7 +55,7 @@ div.inputEx-Group div.inputEx-label {
 
 inputEx.spacerUrl = "../../images/space.gif";
 
-YAHOO.util.Event.addListener(window, "load", function() {
+YAHOO.util.Event.onDOMReady( function() {
 	
 	var createHTMLElement = function() {
 
@@ -98,7 +98,8 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			"cursor": "pointer"
 		}, 
 		attributes:{}, 
-		innerHTML: "<p>Hello world !</p><p>Try to drag me !</p><p>You can also resize me !</p>" });
+		innerHTML: "<p>Hello world !</p><p>Try to drag me !</p><p>You can also resize me !</p>" 
+  });
 
   createHTMLElement();
 

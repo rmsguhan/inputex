@@ -34,12 +34,15 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			field = new inputEx.TimeField({parentEl: 'container1', showMsg: true, value:'15:17:34'});
-			var button = inputEx.cn('button', null, null, 'getValue');
-			YAHOO.util.Event.addListener(button, "click",function() {
-				alert(field.getValue());
-			});
-			YAHOO.util.Dom.get('container1').appendChild(button);
+					field = new inputEx.TimeField({
+						parentEl: 'container1', 
+						value:'15:17:34'
+					});
+					var button = inputEx.cn('button', null, null, 'getValue');
+					YAHOO.util.Event.addListener(button, "click",function() {
+						alert(field.getValue());
+					});
+					YAHOO.util.Dom.get('container1').appendChild(button);
 		</textarea>
 			</div>
 
@@ -57,18 +60,18 @@
 
 	<div class='codeContainer'>
 				<textarea name="code" class="JScript">
-			new inputEx.TimeField({
-				parentEl: 'container2', 
-				separators: [false,"h","m","s"],
-				value:'15:17:34'
-			});
+					new inputEx.TimeField({
+						parentEl: 'container2', 
+						separators: [false,"h","m","s"],
+						value:'15:17:34'
+					});
 		</textarea>
 			</div>
 
 </div>
 
 <!-- YUI Library -->
-<script type="text/javascript" src="../lib/yui/yahoo-dom-event/yahoo-dom-event.js"></script>
+<script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>
 
 
@@ -80,37 +83,9 @@
 <script src="../js/fields/CombineField.js"  type='text/javascript'></script>
 <script src="../js/fields/TimeField.js"  type='text/javascript'></script>
 
-<script>
-
-YAHOO.util.Event.addListener(window, 'load', function() {
-
-	// Example 1
-	field = new inputEx.TimeField({
-		parentEl: 'container1', 
-		value:'15:17:34'
-	});
-	var button = inputEx.cn('button', null, null, 'getValue');
-	YAHOO.util.Event.addListener(button, "click",function() {
-		alert(field.getValue());
-	});
-	YAHOO.util.Dom.get('container1').appendChild(button);
-	
-	
-	// Example 2
-	new inputEx.TimeField({
-		parentEl: 'container2', 
-		separators: [false,"h","m","s"],
-		value:'15:17:34'
-	});
-	
-});
-
-</script>
-
+<!-- inputEx examples -->
 <script src="js/dpSyntaxHighlighter.js"></script>
-<script language="javascript"> 
-dp.SyntaxHighlighter.HighlightAll('code');
-</script>
+<script src="inputex-examples.js"></script>
 
  </body>
 </html>

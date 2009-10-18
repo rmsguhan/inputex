@@ -4,37 +4,61 @@
  <head>
   <title>inputEx - Conversion to Json schema example</title>
 
+<!-- YUI CSS -->
+<link rel="stylesheet" type="text/css" href="../lib/yui/reset-fonts/reset-fonts.css">
+<link rel="stylesheet" type="text/css" href="../lib/yui/container/assets/container.css"> 
+<link rel="stylesheet" type="text/css" href="../lib/yui/assets/skins/sam/skin.css">
 
-	<!-- YUI CSS -->
-	<link rel="stylesheet" type="text/css" href="../lib/yui/reset-fonts/reset-fonts.css">
-	<link rel="stylesheet" type="text/css" href="../lib/yui/container/assets/container.css"> 
-	<link rel="stylesheet" type="text/css" href="../lib/yui/assets/skins/sam/skin.css">
+<!-- InputEx CSS -->
+<link type='text/css' rel='stylesheet' href='../css/inputEx.css' />
 
-	<!-- InputEx CSS -->
-	<link type='text/css' rel='stylesheet' href='../css/inputEx.css' />
-
-<style>
-
-#formContainer {
-	margin:40px auto;
-	width: 80%;
-	background-color: #ccccff;
-	padding: 20px;
-}
-
-#formContainer .yui-editor-container {
-	width: 70%;
-}
-
-</style>
+<!-- Demo CSS -->
+<link rel="stylesheet" type="text/css" href="css/demo.css"/>
+<link rel="stylesheet" type="text/css" href="css/dpSyntaxHighlighter.css">
 
  </head>
 
 <body class="yui-skin-sam">
 	
-	<center>
-	<div id='formContainer'></div>
-	</center>
+	<p class='demoTitle'>inputEx - Convert inputEx definition to json schema</p>
+	
+
+<!-- Example 1 -->
+<div class='exampleDiv'>
+	<p class="title">Convert inputEx definition to json schema</p>
+	<p></p>
+	<div class='demoContainer' id='container1'></div>
+	<div class='codeContainer'>
+		<textarea name="code" class="JScript">
+			// Convert the community json-schema to inputEx json
+			var builder = new inputEx.JsonSchema.Builder({
+				'schemaIdentifierMap':base_schema_map,
+			  	'defaultOptions':{
+			     	'showMsg':true
+			  	}
+		  	});
+			var inputExJson = builder.schemaToInputEx(base_schema_map["community"]);
+
+			// Convert it back to json-schema using inputExToSchema
+			var communitySchema = inputEx.JsonSchema.inputExToSchema(inputExJson);
+			//console.log(inputExJson);
+			//console.log( communitySchema );
+
+			// Converting it a last time to inputEx and build the form
+			var builder2 = new inputEx.JsonSchema.Builder({
+				'schemaIdentifierMap': {
+					"community": communitySchema
+				},
+			  'defaultOptions':{
+			     'showMsg':true
+			  }
+		  });
+			var m = builder2.schemaToInputEx(communitySchema);
+			m.inputParams.parentEl = 'container1';
+			var f = inputEx(m);
+		</textarea>
+	</div>
+</div>
 	
 <!-- YUI Library -->
 <script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
@@ -65,43 +89,9 @@
 <!-- json schema to load -->
 <script src="base-schema.js"></script>
 
-<script>
-
-inputEx.spacerUrl = "../images/space.gif";
-
-YAHOO.util.Event.addListener(window, "load", function() {
-	
-	// Convert the community json-schema to inputEx json
-	var builder = new inputEx.JsonSchema.Builder({
-		'schemaIdentifierMap':base_schema_map,
-	  'defaultOptions':{
-	     'showMsg':true
-	  }
-  });
-	var inputExJson = builder.schemaToInputEx(base_schema_map["community"]);
-	
-	// Convert it back to json-schema using inputExToSchema
-	var communitySchema = inputEx.JsonSchema.inputExToSchema(inputExJson);
-	//console.log(inputExJson);
-	//console.log( communitySchema );
-	
-	
-	// Converting it a last time to inputEx and build the form
-	var builder2 = new inputEx.JsonSchema.Builder({
-		'schemaIdentifierMap': {
-			"community": communitySchema
-		},
-	  'defaultOptions':{
-	     'showMsg':true
-	  }
-  });
-	var m = builder2.schemaToInputEx(communitySchema);
-	m.inputParams.parentEl = 'formContainer';
-	var f = inputEx(m);
-	
-});
-
-</script>
+<!-- inputEx examples -->
+<script src="js/dpSyntaxHighlighter.js"></script>
+<script src="inputex-examples.js"></script>
 
 
  </body>

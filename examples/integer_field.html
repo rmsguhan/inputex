@@ -11,10 +11,7 @@
 
 <!-- InputEx CSS -->
 <link type='text/css' rel='stylesheet' href='../css/inputEx.css' />
-
-<!--[if IE 6]>
-<link type='text/css' rel='stylesheet' href='../css/inputEx-IE6.css' />
-<![endif]-->
+<!--[if IE 6]><link type='text/css' rel='stylesheet' href='../css/inputEx-IE6.css' /><![endif]-->
 
 <!-- Demo CSS -->
 <link rel="stylesheet" type="text/css" href="css/demo.css"/>
@@ -26,25 +23,21 @@
 
 <p class='demoTitle'>inputEx - IntegerField Usage</p>
 
-
 <!-- Example 1 -->
 <div class='exampleDiv'>
-
 	<p class="title">Basic IntegerField creation</p>
-	
 	<p>Use the following code to create a basic inputEx IntegerField.</p>
-
 	<div class='demoContainer' id='container1'></div>
 	<div id='valueContainer1'></div>
-
 	<div class='codeContainer'>
-				<textarea name="code" class="JScript">
-			new inputEx.IntegerField({parentEl: 'container1', showMsg: true});
+		<textarea name="code" class="JScript">
+			var field = new inputEx.IntegerField({parentEl: 'container1', showMsg: true});
+			field.updatedEvt.subscribe(function(e, params) {
+				YAHOO.util.Dom.get('valueContainer1').innerHTML = "value: "+params[0]+", type: "+typeof(params[0]);
+			});
 		</textarea>
-			</div>
-
+	</div>
 </div>
-
 
 <!-- Example 2 -->
 <div class='exampleDiv'>
@@ -52,10 +45,12 @@
 	<p>Test IntegerField with more options.</p>
 	<div class='demoContainer' id='container2'></div>
 	<div id='valueContainer2'></div>
-
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new inputEx.IntegerField({parentEl: 'container2', showMsg: true, required:true, typeInvite:"Enter a number"});
+			var field = new inputEx.IntegerField({parentEl: 'container2', showMsg: true, required:true, typeInvite:"Enter a number"});
+			field.updatedEvt.subscribe(function(e, params) {
+				YAHOO.util.Dom.get('valueContainer2').innerHTML = "value: "+params[0]+", type: "+typeof(params[0]);
+			});
 		</textarea>
 	</div>
 </div>
@@ -87,9 +82,7 @@
 </div>
 
 <!-- YUI Library -->
-<script type="text/javascript" src="../lib/yui/yahoo/yahoo-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/dom/dom-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/event/event-min.js"></script>
+<script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>
 
 
@@ -99,37 +92,9 @@
 <script src="../js/fields/StringField.js"  type='text/javascript'></script>
 <script src="../js/fields/IntegerField.js"  type='text/javascript'></script>
 
-<script>
-
-YAHOO.util.Event.addListener(window, 'load', function() {
-
-	// Example 1
-	var field = new inputEx.IntegerField({parentEl: 'container1', showMsg: true});
-	field.updatedEvt.subscribe(function(e, params) {
-		YAHOO.util.Dom.get('valueContainer1').innerHTML = "value: "+params[0]+", type: "+typeof(params[0]);
-	});
-	
-	
-	// Example 2
-	var field = new inputEx.IntegerField({parentEl: 'container2', showMsg: true, required:true, typeInvite:"Enter a number"});
-	field.updatedEvt.subscribe(function(e, params) {
-		YAHOO.util.Dom.get('valueContainer2').innerHTML = "value: "+params[0]+", type: "+typeof(params[0]);
-	});
-	
-	// Example 3
-  new inputEx.IntegerField({parentEl: 'container3', showMsg: true, required:true, negative:true});
-
-  // Example 4
-  new inputEx.IntegerField({parentEl: 'container4', showMsg: true, min:3, max:10, typeInvite:"Integers between 3 and 10 only", size:30});
-	
-});
-
-</script>
-
+<!-- inputEx examples -->
 <script src="js/dpSyntaxHighlighter.js"></script>
-<script language="javascript"> 
-dp.SyntaxHighlighter.HighlightAll('code');
-</script>
+<script src="inputex-examples.js"></script>
 
  </body>
 </html>

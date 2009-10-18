@@ -5,8 +5,7 @@
   <title>inputEx - Autocomplete Usage</title>
 
 <!-- YUI CSS -->
-<link rel="stylesheet" type="text/css" href="../lib/yui/reset/reset-min.css">
-<link rel="stylesheet" type="text/css" href="../lib/yui/fonts/fonts-min.css">
+<link rel="stylesheet" type="text/css" href="../lib/yui/reset-fonts/reset-fonts.css">
 <link rel="stylesheet" type="text/css" href="../lib/yui/container/assets/container.css"> 
 <link rel="stylesheet" type="text/css" href="../lib/yui/assets/skins/sam/skin.css">
 
@@ -89,13 +88,19 @@
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
+			
+			// Example 2: Delicious autocompleter
+
 			// Delicious DataSource using a JSFunction
 			// Delicious.posts is set by the http://feeds.delicious.com/feeds/json/neyric?count=100 script included in the page
-			var deliciousDS = new YAHOO.widget.DS_JSFunction(function (sQuery) {
-		    if (!sQuery || sQuery.length == 0) return false;
+
+			var deliciousDS = new YAHOO.widget.DS_JSFunction( function (sQuery) {
+		    	if (!sQuery || sQuery.length == 0) {
+					return false;
+				}
 				var query = sQuery.toLowerCase();
-			  var aResults = [];
-				for(var i = 0 ; i < Delicious.posts.length ; i++) {
+			  	var aResults = [];
+				for(var i = 0 ; i != Delicious.posts.length-1 ; i++) {
 					var desc = Delicious.posts[i].d.toLowerCase();
 					if( desc.indexOf(query) != -1) {
 						aResults.push([Delicious.posts[i].d, Delicious.posts[i]]);
@@ -105,11 +110,12 @@
 		 	});
 			deliciousDS.maxCacheEntries = 100;
 
+			
 			var deliciousAC = inputEx({
 				type: "autocomplete",
 				inputParams: {
 					label: 'Search my delicious bookmarks',
-					description: 'Try "javascript"',
+					description: 'Try "javascript" or "rails"',
 					parentEl: 'container2', 
 					name: 'chosen_url',
 					datasource: deliciousDS,
@@ -125,7 +131,8 @@
 						maxResultsDisplayed: 50,
 						formatResult: function(oResultItem, sQuery) {
 							var post = oResultItem[1];
-			       	return '<a href="'+post.u+'">visit</a> <span target="_new">'+post.d+'</span>';
+							// NOTE: we use String.fromCharCode(60) and String.fromCharCode(62) for tags because otherwise our example is broken
+			       			return String.fromCharCode(60)+'a href="'+post.u+'"'+String.fromCharCode(62)+'visit'+String.fromCharCode(60)+'/a'+String.fromCharCode(62)+' '+String.fromCharCode(60)+'span target="_new"'+String.fromCharCode(62)+post.d+String.fromCharCode(60)+'/span'+String.fromCharCode(62);
 			    	}
 					}
 				}
@@ -135,15 +142,15 @@
 			YAHOO.util.Event.addListener(button , 'click', function() {
 				alert( deliciousAC.getValue() );
 			});
+			
 		</textarea>
 	</div>
 
 </div>
 
+
 <!-- YUI Library -->
-<script type="text/javascript" src="../lib/yui/yahoo/yahoo-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/dom/dom-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/event/event-min.js"></script>
+<script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/datasource/datasource-min.js"></script>
 <script type="text/javascript" src="../lib/yui/autocomplete/autocomplete-min.js"></script>
 
@@ -160,110 +167,10 @@
 <!-- For the delicious autocompleter -->
 <script src="http://feeds.delicious.com/feeds/json/neyric?count=100" type='text/javascript'></script>
 
-
-<script>
-
-YAHOO.util.Event.addListener(window, 'load', function() {
-
-	// Example 1
-	
-	// Autocompleter
-	var field = inputEx({
-		type: "autocomplete",
-		inputParams: {
-			parentEl: 'container1', 
-			label: 'Search US state',
-			typeInvite:'Enter US state',
-			datasource: new YAHOO.widget.DS_JSFunction( getStates), // see http://developer.yahoo.com/yui/examples/autocomplete/assets/js/states_jsfunction.js for getState function
-			
-			// Format the hidden value (value returned by the form)
-			returnValue: function(oResultItem) {
-				return oResultItem[1];
-			},
-			autoComp: {
-				forceSelection: true,
-				minQueryLength: 2,
-				maxResultsDisplayed: 50,
-				formatResult: function(oResultItem, sQuery) {
-	       	var sMarkup = oResultItem[0] + " (" + oResultItem[1] + ")";
-	       	return sMarkup;
-	    	}
-			}	
-		}
-	});
-	
-	var button = inputEx.cn('button', null, null, 'GetValue');
-	YAHOO.util.Dom.get('container1').appendChild(button);
-	YAHOO.util.Event.addListener(button , 'click', function() {
-		alert( field.getValue() );
-	});
-	
-	var logDiv = inputEx.cn('div', null, null, "");
-	YAHOO.util.Dom.get('container1').appendChild(logDiv);
-	field.updatedEvt.subscribe(function(e,params) {
-		var value = params[0];
-		logDiv.innerHTML += "Updated at "+(new Date())+" with value '"+value+"'<br />";
-	});
-	
-	
-	
-	// Example 2: Delicious autocompleter
-	
-	// Delicious DataSource using a JSFunction
-	// Delicious.posts is set by the http://feeds.delicious.com/feeds/json/neyric?count=100 script included in the page
-	var deliciousDS = new YAHOO.widget.DS_JSFunction(function (sQuery) {
-    if (!sQuery || sQuery.length == 0) return false;
-		var query = sQuery.toLowerCase();
-	  var aResults = [];
-		for(var i = 0 ; i < Delicious.posts.length ; i++) {
-			var desc = Delicious.posts[i].d.toLowerCase();
-			if( desc.indexOf(query) != -1) {
-				aResults.push([Delicious.posts[i].d, Delicious.posts[i]]);
-			}
-		}
-		return aResults;
- 	});
-	deliciousDS.maxCacheEntries = 100;
-	
-	var deliciousAC = inputEx({
-		type: "autocomplete",
-		inputParams: {
-			label: 'Search my delicious bookmarks',
-			description: 'Try "javascript"',
-			parentEl: 'container2', 
-			name: 'chosen_url',
-			datasource: deliciousDS,
-			// Format the hidden value (value returned by the form)
-			returnValue: function(oResultItem) {
-				var post = oResultItem[1];
-				return post.u;
-			},
-			// Autocompleter options
-			autoComp: {
-				forceSelection: true,
-				minQueryLength: 2,
-				maxResultsDisplayed: 50,
-				formatResult: function(oResultItem, sQuery) {
-					var post = oResultItem[1];
-	       	return '<a href="'+post.u+'">visit</a> <span target="_new">'+post.d+'</span>';
-	    	}
-			}
-		}
-	});
-	var button = inputEx.cn('button', null, null, 'GetValue');
-	YAHOO.util.Dom.get('container2').appendChild(button);
-	YAHOO.util.Event.addListener(button , 'click', function() {
-		alert( deliciousAC.getValue() );
-	});
-	
-});
-
-</script>
-
+<!-- inputEx examples -->
 <script src="js/dpSyntaxHighlighter.js"></script>
-<script language="javascript"> 
-dp.SyntaxHighlighter.HighlightAll('code');
-</script>
+<script src="inputex-examples.js"></script>
+
 
  </body>
 </html>

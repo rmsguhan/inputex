@@ -29,16 +29,12 @@
 
 <!-- Example 1 -->
 <div class='exampleDiv'>
-
 	<p class="title">Basic CombineField creation</p>
-	
 	<p></p>
-
 	<div class='demoContainer' id='container1'></div>
-
 	<div class='codeContainer'>
-				<textarea name="code" class="JScript">
-			new inputEx.CombineField({
+		<textarea name="code" class="JScript">
+			var field = new inputEx.CombineField({
 				parentEl: 'container1', 
 				label: 'Your name',
 				description: 'Please enter your name',
@@ -49,23 +45,37 @@
 				separators: [false,"&nbsp;&nbsp;&nbsp;",false],
 				required:true
 			});
-		</textarea>
-			</div>
 
+		   var el = YAHOO.util.Dom.get('container1');
+
+			var button1 = inputEx.cn('button', null, null, "SetValue with ['Jimi','Hendrix']");
+			var val = ['Jimi','Hendrix'];
+			el.appendChild(button1);
+			YAHOO.util.Event.addListener(button1, "click" ,function() {
+			   field.setValue(val);
+			   val = (val[0] == 'Jimi') ? ['',''] : ['Jimi','Hendrix'];
+			   button1.innerHTML = "SetValue with "+((val[0] == 'Jimi') ? "['Jimi','Hendrix']" : "['','']");
+			});
+
+			var logDiv = inputEx.cn('div', null, null, "Log :");
+			el.appendChild(logDiv);
+			field.updatedEvt.subscribe(function(e,params) {
+				var value = params[0];
+				logDiv.innerHTML += "Updated at "+(new Date())+" with value "+value;
+				logDiv.appendChild(inputEx.cn('br'));
+			});
+		</textarea>
+	</div>
 </div>
 
 
 <!-- Example 2 -->
 <div class='exampleDiv'>
-
 	<p class="title">Basic CombineField creation</p>
-	
 	<p></p>
-
 	<div class='demoContainer' id='container2'></div>
-
 	<div class='codeContainer'>
-				<textarea name="code" class="JScript">
+		<textarea name="code" class="JScript">
 			new inputEx.CombineField({
 				parentEl: 'container2', 
 				label:'Select Datetime :',
@@ -76,15 +86,12 @@
 				separators: [false,"&nbsp;",false]
 			});
 		</textarea>
-			</div>
-
+	</div>
 </div>
 
 
 <!-- YUI Library -->
-<script type="text/javascript" src="../lib/yui/yahoo/yahoo-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/dom/dom-min.js"></script> 
-<script type="text/javascript" src="../lib/yui/event/event-min.js"></script>
+<script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>
 
 
@@ -98,61 +105,9 @@
 <script src="../js/fields/TimeField.js"  type='text/javascript'></script>
 <script src="../js/fields/DateField.js"  type='text/javascript'></script>
 
-<script>
-
-YAHOO.util.Event.addListener(window, 'load', function() {
-	
-	// Example 1
-	var field = new inputEx.CombineField({
-		parentEl: 'container1', 
-		label: 'Your name',
-		description: 'Please enter your name',
-		fields: [
-			{ inputParams: {name: 'firstname', typeInvite: 'firstname'} },
-			{ inputParams: {name: 'lastname', typeInvite: 'lastname'} }
-		],
-		separators: [false,"&nbsp;&nbsp;&nbsp;",false],
-		required:true
-	});
-
-   var el = YAHOO.util.Dom.get('container1');
-
-	var button1 = inputEx.cn('button', null, null, "SetValue with ['Jimi','Hendrix']");
-	var val = ['Jimi','Hendrix'];
-	el.appendChild(button1);
-	YAHOO.util.Event.addListener(button1, "click" ,function() {
-	   field.setValue(val);
-	   val = (val[0] == 'Jimi') ? ['',''] : ['Jimi','Hendrix'];
-	   button1.innerHTML = "SetValue with "+((val[0] == 'Jimi') ? "['Jimi','Hendrix']" : "['','']");
-	});
-	
-	var logDiv = inputEx.cn('div', null, null, "Log :<br />");
-	el.appendChild(logDiv);
-	field.updatedEvt.subscribe(function(e,params) {
-		var value = params[0];
-		logDiv.innerHTML += "Updated at "+(new Date())+" with value "+value+"<br />";
-	});
-
-
-	// Example 2
-	new inputEx.CombineField({
-		parentEl: 'container2', 
-		label:'Select Datetime :',
-		fields: [
-			{type: 'date', inputParams: {name: 'date', typeInvite: 'mm/dd/YYYY'} },
-			{type: 'time', inputParams: {name: 'time'} }
-		],
-		separators: [false,"&nbsp;",false]
-	});
-	
-});
-
-</script>
-
+<!-- inputEx examples -->
 <script src="js/dpSyntaxHighlighter.js"></script>
-<script language="javascript"> 
-dp.SyntaxHighlighter.HighlightAll('code');
-</script>
+<script src="inputex-examples.js"></script>
 
  </body>
 </html>
