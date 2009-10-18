@@ -56,7 +56,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
       // In cell editing if the field is listed in this.options.editableFields
       if(lang.isArray(this.options.editableFields) ) {
          if(inputEx.indexOf(field.inputParams.name, this.options.editableFields) != -1) {
-             columnDef.editor = new inputEx.widget.InputExCellEditor(field);
+             columnDef.editor = new inputEx.widget.CellEditor(field);
          }
       }
       
@@ -82,23 +82,24 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 
 
 /**
- * The InputExCellEditor class provides functionality for inline editing
+ * The CellEditor class provides functionality for inline editing in datatables
  * using the inputEx field definition.
  *
- * @class InputExCellEditor
+ * @class inputEx.widget.CellEditor
  * @extends YAHOO.widget.BaseCellEditor 
  * @constructor
  * @param {Object} inputExFieldDef InputEx field definition object
  */
-inputEx.widget.InputExCellEditor = function(inputExFieldDef) {
+inputEx.widget.CellEditor = function(inputExFieldDef) {
     this._inputExFieldDef = inputExFieldDef;
    
-    this._sId = "yui-textboxceditor" + YAHOO.widget.BaseCellEditor._nCount++;
-    inputEx.widget.InputExCellEditor.superclass.constructor.call(this, "inputEx", {disableBtns:true});
+    this._sId = "yui-textboxceditor" + YAHOO.widget.BaseCellEditor._nCount;
+	 YAHOO.widget.BaseCellEditor._nCount++;
+    inputEx.widget.CellEditor.superclass.constructor.call(this, "inputEx", {disableBtns:true});
 };
 
-// InputExCellEditor extends BaseCellEditor
-lang.extend(inputEx.widget.InputExCellEditor, YAHOO.widget.BaseCellEditor,{
+// CellEditor extends BaseCellEditor
+lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
 
    /**
     * Render the inputEx field editor
@@ -129,26 +130,26 @@ lang.extend(inputEx.widget.InputExCellEditor, YAHOO.widget.BaseCellEditor,{
     * Hack to NOT close the field at the first updatedEvt (fired when we set the value)
     */
    show: function() {
-      inputEx.widget.InputExCellEditor.superclass.show.call(this); 
+      inputEx.widget.CellEditor.superclass.show.call(this); 
       this._updatedEvtForSetValue = true;
    },
 
    /**
-    * Resets InputExCellEditor UI to initial state.
+    * Resets CellEditor UI to initial state.
     */
    resetForm : function() {
        this._inputExField.setValue(lang.isValue(this.value) ? this.value.toString() : "");
    },
 
    /**
-    * Sets focus in InputExCellEditor.
+    * Sets focus in CellEditor.
     */
    focus : function() {
       this._inputExField.focus();
    },
 
    /**
-    * Returns new value for InputExCellEditor.
+    * Returns new value for CellEditor.
     */
    getInputValue : function() {
       return this._inputExField.getValue();
@@ -156,7 +157,7 @@ lang.extend(inputEx.widget.InputExCellEditor, YAHOO.widget.BaseCellEditor,{
 
 });
 
-// Copy static members to InputExCellEditor class
-lang.augmentObject(inputEx.widget.InputExCellEditor, YAHOO.widget.BaseCellEditor);
+// Copy static members to CellEditor class
+lang.augmentObject(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor);
 
 })();
