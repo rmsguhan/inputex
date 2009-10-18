@@ -44,18 +44,11 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
  		},
  		// RPC
  		{
- 			name: 'yui-rpc',
- 			type: 'js',
- 	  	   fullpath: pathToInputEx+'js/rpc/yui-rpc.js',
- 	  	   varName: 'YAHOO.rpc',
- 			requires: ['yahoo','connection']
- 		},
- 		{
  			name: 'inputex-rpc',
  			type: 'js',
  	  	   fullpath: pathToInputEx+'js/rpc/inputex-rpc.js',
- 	  	   varName: 'YAHOO.rpc',
- 			requires: ['yui-rpc','inputex-jsonschema']
+ 	  	   varName: 'inputEx.RPC',
+ 			requires: ['yahoo','connection','inputex-jsonschema']
  		},
 		// Widgets
 		{

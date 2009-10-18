@@ -46,7 +46,7 @@ not released yet
 		* implementation of inputEx.JsonSchema.inputExToSchema (beta)
 
 	- RPC	
-		* integrate yui-rpc as part of inputEx
+		* integrate yui-rpc as inputEx.RPC
 		* Moved inputEx RPC methods to inputEx.RPC namespace (generateServiceForm and formForMethod)
 		* new SMD examples: freebase, tinyurl
 		* Added an example using inputEx SMD support and the Flickr API

@@ -46,6 +46,5 @@ YAHOO.lang.augmentObject(YAHOO.yui.moduleMeta, {
 "inputex-uneditable":{name:"inputEx Uneditable field", type: "inputEx-Field"},
 "inputex-urlfield":{name:"inputEx URL field", type: "inputEx-Field"},
 "inputex-vectorfield":{name:"inputEx Vector field", type: "inputEx-Field"},
-"inputex-visus":{name:"inputEx Visualization utilities", type: "inputEx-Utils"},
-"yui-rpc":{name:"YUI-RPC", type: "inputEx-Utils"},
+"inputex-visus":{name:"inputEx Visualization utilities", type: "inputEx-Utils"}
 });
