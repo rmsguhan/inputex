@@ -19,9 +19,7 @@
  */
 inputEx.YQL = {
 	
-	/**
-	 * Used as an identifier for the JSONP callback hack
-	 */
+	// Used as an identifier for the JSONP callback hack
 	query_index: 0,
 	
 	/**

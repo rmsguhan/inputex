@@ -2,22 +2,6 @@
  * YQL-trimpath-page is a utility to create pages using YQL queries ant Trimpath templating
  * All YQL queries are made using the rpc/yql.js utility.
  * see examples/yql-trimpath-page.html
- */
-
-/**
- * Build a call
- * @static
- * @private
- */
-inputEx.YQL.genTrimpathCallback = function(scriptTag) {
-  return function(results) {
-     var t = TrimPath.parseTemplate(scriptTag.innerHTML);
-	  var templateResult = t.process(results);
-     scriptTag.parentNode.innerHTML += "<div class='trimpathDiv'>"+templateResult+"</div>";
-  };
-};
-
-/**
  * Call this method on page load to run yql queries and the associated templates
  * @static
  * @param {Array} additionalCallbacks List of [list of callbacks] (each yql query can call multiple callbacks)
@@ -51,4 +35,17 @@ inputEx.YQL.initTrimpathPage = function(additionalCallbacks) {
    }
 
 	inputEx.YQL.init(callbacks);
+};
+
+/**
+ * Build a call
+ * @static
+ * @private
+ */
+inputEx.YQL.genTrimpathCallback = function(scriptTag) {
+  return function(results) {
+     var t = TrimPath.parseTemplate(scriptTag.innerHTML);
+	  var templateResult = t.process(results);
+     scriptTag.parentNode.innerHTML += "<div class='trimpathDiv'>"+templateResult+"</div>";
+  };
 };

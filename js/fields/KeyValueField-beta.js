@@ -1,8 +1,9 @@
 /**
  * Display a selectors for keys and auto-update the value field
- * @class
+ * @class inputEx.KeyValueField
  * @constructor
- * @extend inputEx.CombineField
+ * @extends inputEx.CombineField
+ * @param {Object} searchFormDef InputEx definition object
  */
 inputEx.KeyValueField = function(searchFormDef) {
    

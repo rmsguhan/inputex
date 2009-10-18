@@ -2,10 +2,9 @@
  * Provide SMD support 
  * http://groups.google.com/group/json-schema/web/service-mapping-description-proposal
  * Not implemented: REST envelope, TCP/IP transport 
- *
- * @namespace YAHOO.rpc
+ * @static
  */
-YAHOO.namespace("rpc");
+YAHOO.rpc = {};
 
 (function() {
    
@@ -149,10 +148,7 @@ YAHOO.rpc.Service.prototype = {
     */
    fetch: function(url, callback) {
       
-      /**
-       * TODO: if url is not in the same domain, we should use jsonp !
-       */
-      
+      // TODO: if url is not in the same domain, we should use jsonp !
       util.Connect.asyncRequest('GET', url, { 
          success: function(o) {
             try {
@@ -186,7 +182,8 @@ YAHOO.rpc.Service._requestId = 1;
 
 
 /**
- * @namespace YAHOO.rpc.Transport
+ * YAHOO.rpc.Transport
+ * @static
  */
 YAHOO.rpc.Transport = {
    
@@ -223,7 +220,8 @@ YAHOO.rpc.Transport = {
 
 
 /**
- * @namespace YAHOO.rpc.Envelope
+ * YAHOO.rpc.Envelope
+ * @static
  */
 YAHOO.rpc.Envelope = {
    
