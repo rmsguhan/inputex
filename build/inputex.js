@@ -1627,6 +1627,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 		this.options.className =  options.className || 'inputEx-Group';
 		this.options.autocomplete = lang.isUndefined(options.autocomplete) ? true : options.autocomplete;
 		
+		this.options.enctype = options.enctype;
 
       if(options.ajax) {
          this.options.ajax = {};
@@ -1659,6 +1660,11 @@ lang.extend(inputEx.Form, inputEx.Group, {
   	   // Create the FORM element
       this.form = inputEx.cn('form', {method: this.options.method || 'POST', action: this.options.action || '', className: this.options.className || 'inputEx-Form'});
       this.divEl.appendChild(this.form);
+
+		// set the enctype
+		if(this.options.enctype) {
+			this.form.setAttribute('enctype',this.options.enctype);
+		}
 
 	   // Set the autocomplete attribute to off to disable firefox autocompletion
 		if(!this.options.autocomplete) {

@@ -2,7 +2,7 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: inputEx   es.js  (YUI Library)</title>
+	<title>API: inputEx   FileField.js  (YUI Library)</title>
 
 	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css" />
 	<link rel="stylesheet" type="text/css" href="assets/api.css" />
@@ -20,7 +20,7 @@
         <a href="./index.html" title="inputEx-library">inputEx-library</a> 
             &gt; <a href="./module_inputex.html" title="inputEx">inputEx</a>
                 
-                 &gt; es.js (source view) 
+                 &gt; FileField.js (source view) 
         <form onsubmit="return false">
             <div id="propertysearch">
                 Search: <input autocomplete="off" id="searchinput" />
@@ -47,76 +47,59 @@
                         <style>
                             #doc3 .classopts { display:none; }
                         </style>
-                        <div class="highlight"><pre><span class="c">// InputEx Spanish localization</span>
-<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                        <div class="highlight"><pre><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
-   <span class="kd">var</span> <span class="nx">msgs</span> <span class="o">=</span> <span class="nx">inputEx</span><span class="p">.</span><span class="nx">messages</span><span class="o">;</span>
+   <span class="kd">var</span> <span class="nx">Event</span> <span class="o">=</span> <span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Event</span><span class="o">;</span>
 
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">required</span> <span class="o">=</span> <span class="s2">&quot;Este campo es obligatorio&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">invalid</span> <span class="o">=</span> <span class="s2">&quot;Este campo no es válido&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">valid</span> <span class="o">=</span> <span class="s2">&quot;Este campo es válido&quot;</span><span class="o">;</span>
-   
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">invalidEmail</span> <span class="o">=</span> <span class="s2">&quot;Email no válido; ej: tu.nombre@correo.es&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">selectColor</span> <span class="o">=</span> <span class="s2">&quot;Selecciona un color:&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">invalidPassword</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;La password debe contener al menos &quot;</span><span class="o">,</span><span class="s2">&quot;numeros o letras&quot;</span><span class="p">];</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">invalidPasswordConfirmation</span> <span class="o">=</span> <span class="s2">&quot;las password son diferentes !&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">passwordStrength</span> <span class="o">=</span> <span class="s2">&quot;La password es demasiado debil&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">capslockWarning</span> <span class="o">=</span> <span class="s2">&quot;Atencione: bloqueo de mayúsculas activado&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">invalidDate</span> <span class="o">=</span> <span class="s2">&quot;Fecha no válida; ej: 25/01/2007&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">defaultDateFormat</span> <span class="o">=</span> <span class="s2">&quot;d/m/Y&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">shortMonths</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Ene&quot;</span><span class="o">,</span> <span class="s2">&quot;Feb&quot;</span><span class="o">,</span> <span class="s2">&quot;Mar&quot;</span><span class="o">,</span> <span class="s2">&quot;Abr&quot;</span><span class="o">,</span> <span class="s2">&quot;May&quot;</span><span class="o">,</span> <span class="s2">&quot;Jun&quot;</span><span class="o">,</span> <span class="s2">&quot;Jul&quot;</span><span class="o">,</span> <span class="s2">&quot;Ago&quot;</span><span class="o">,</span> <span class="s2">&quot;Sep&quot;</span><span class="o">,</span> <span class="s2">&quot;Oct&quot;</span><span class="o">,</span> <span class="s2">&quot;Nov&quot;</span><span class="o">,</span> <span class="s2">&quot;Dic&quot;</span><span class="p">];</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">months</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Enero&quot;</span><span class="o">,</span> <span class="s2">&quot;Febrero&quot;</span><span class="o">,</span> <span class="s2">&quot;Marzo&quot;</span><span class="o">,</span> <span class="s2">&quot;Abril&quot;</span><span class="o">,</span> <span class="s2">&quot;Mayo&quot;</span><span class="o">,</span> <span class="s2">&quot;Junio&quot;</span><span class="o">,</span> <span class="s2">&quot;Julio&quot;</span><span class="o">,</span> <span class="s2">&quot;Agosto&quot;</span><span class="o">,</span> <span class="s2">&quot;Septiembre&quot;</span><span class="o">,</span> <span class="s2">&quot;Octubre&quot;</span><span class="o">,</span> <span class="s2">&quot;Noviembre&quot;</span><span class="o">,</span> <span class="s2">&quot;Diciembre&quot;</span><span class="p">];</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">weekdays1char</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="o">,</span> <span class="s2">&quot;L&quot;</span><span class="o">,</span> <span class="s2">&quot;M&quot;</span><span class="o">,</span> <span class="s2">&quot;X&quot;</span><span class="o">,</span> <span class="s2">&quot;J&quot;</span><span class="o">,</span> <span class="s2">&quot;V&quot;</span><span class="o">,</span> <span class="s2">&quot;S&quot;</span><span class="p">];</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">shortWeekdays</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Do&quot;</span><span class="o">,</span> <span class="s2">&quot;Lu&quot;</span><span class="o">,</span> <span class="s2">&quot;Ma&quot;</span><span class="o">,</span> <span class="s2">&quot;Mi&quot;</span><span class="o">,</span> <span class="s2">&quot;Ju&quot;</span><span class="o">,</span> <span class="s2">&quot;Vi&quot;</span><span class="o">,</span> <span class="s2">&quot;Sa&quot;</span><span class="p">];</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">selectMonth</span> <span class="o">=</span> <span class="s2">&quot;- Selccione Mes -&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">dayTypeInvite</span> <span class="o">=</span> <span class="s2">&quot;Día&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">monthTypeInvite</span> <span class="o">=</span> <span class="s2">&quot;Mes&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">yearTypeInvite</span> <span class="o">=</span> <span class="s2">&quot;Año&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">cancelEditor</span> <span class="o">=</span> <span class="s2">&quot;Cancelar&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">okEditor</span> <span class="o">=</span> <span class="s2">&quot;Aceptar&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">defautCalendarOpts</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">navigator</span><span class="o">:</span> <span class="p">{</span>
-        <span class="nx">strings</span> <span class="o">:</span> <span class="p">{</span>
-            <span class="nx">month</span><span class="o">:</span> <span class="s2">&quot;Seleccione mes&quot;</span><span class="o">,</span>
-            <span class="nx">year</span><span class="o">:</span> <span class="s2">&quot;Introduzca año&quot;</span><span class="o">,</span>
-            <span class="nx">submit</span><span class="o">:</span> <span class="s2">&quot;Aceptar&quot;</span><span class="o">,</span>
-            <span class="nx">cancel</span><span class="o">:</span> <span class="s2">&quot;Cancelar&quot;</span><span class="o">,</span>
-            <span class="nx">invalidYear</span><span class="o">:</span> <span class="s2">&quot;Año no válido&quot;</span>
-         <span class="p">}</span>
-      <span class="p">}</span><span class="o">,</span>
-      <span class="nx">start_weekday</span><span class="o">:</span> <span class="mi">1</span> <span class="c">// la semaine commence un lundi</span>
-   <span class="p">};</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">stringTooShort</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Este campo debe contener al menos &quot;</span><span class="o">,</span><span class="s2">&quot; caracteres (letras o números)&quot;</span><span class="p">];</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">stringTooLong</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Este campo debe contener como mucho &quot;</span><span class="o">,</span><span class="s2">&quot; caracteres (letras o números)&quot;</span><span class="p">];</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">ajaxWait</span> <span class="o">=</span> <span class="s2">&quot;Enviando...&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">menuInvite</span> <span class="o">=</span> <span class="s2">&quot;Haga click aquí para seleccionar&quot;</span><span class="o">;</span>
-   
-   <span class="c">// List</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">listAddLink</span> <span class="o">=</span> <span class="s2">&quot;Añadir&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">listRemoveLink</span> <span class="o">=</span> <span class="s2">&quot;Eliminar&quot;</span><span class="o">;</span>
-   
-
-   <span class="c">// Datatable</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">saveText</span> <span class="o">=</span> <span class="s2">&quot;Salvar&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">cancelText</span> <span class="o">=</span> <span class="s2">&quot;Cancelar&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">modifyText</span> <span class="o">=</span> <span class="s2">&quot;Modificar&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">deleteText</span> <span class="o">=</span> <span class="s2">&quot;Eliminar&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">insertItemText</span> <span class="o">=</span> <span class="s2">&quot;Insertar&quot;</span><span class="o">;</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">confirmDeletion</span> <span class="o">=</span> <span class="s2">&quot;¿Está seguro que desea borrar?&quot;</span><span class="o">;</span>
-   
+<span class="c">/**</span>
+<span class="c"> * Create a file input</span>
+<span class="c"> * @class inputEx.FileField</span>
+<span class="c"> * @extends inputEx.Field</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @param {Object} options Added options:</span>
+<span class="c"> * &lt;ul&gt;</span>
+<span class="c"> * &lt;/ul&gt;</span>
+<span class="c"> */</span>
+<span class="nx">inputEx</span><span class="p">.</span><span class="nx">FileField</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+	<span class="nx">inputEx</span><span class="p">.</span><span class="nx">FileField</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span><span class="nx">options</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="nx">YAHOO</span><span class="p">.</span><span class="nx">lang</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">inputEx</span><span class="p">.</span><span class="nx">FileField</span><span class="o">,</span> <span class="nx">inputEx</span><span class="p">.</span><span class="nx">Field</span><span class="o">,</span> <span class="p">{</span>
+	
+   <span class="c">/**</span>
+<span class="c">    * Adds size and accept options</span>
+<span class="c">    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor</span>
+<span class="c">    */</span>
+   <span class="nx">setOptions</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">inputEx</span><span class="p">.</span><span class="nx">FileField</span><span class="p">.</span><span class="nx">superclass</span><span class="p">.</span><span class="nx">setOptions</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">options</span><span class="p">);</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">size</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">size</span><span class="o">;</span>
+		<span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">accept</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">accept</span><span class="o">;</span>
+	<span class="p">}</span><span class="o">,</span>
+	
+   <span class="c">/**</span>
+<span class="c">    * Render an &#39;INPUT&#39; DOM node</span>
+<span class="c">    */</span>
+   <span class="nx">renderComponent</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
       
-   <span class="c">// TimeInterval</span>
-   <span class="nx">msgs</span><span class="p">.</span><span class="nx">timeUnits</span> <span class="o">=</span> <span class="p">{</span>
-      <span class="nx">SECOND</span><span class="o">:</span> <span class="s2">&quot;segundos&quot;</span><span class="o">,</span>
-      <span class="nx">MINUTE</span><span class="o">:</span> <span class="s2">&quot;minutos&quot;</span><span class="o">,</span>
-      <span class="nx">HOUR</span><span class="o">:</span> <span class="s2">&quot;horas&quot;</span><span class="o">,</span>
-      <span class="nx">DAY</span><span class="o">:</span> <span class="s2">&quot;días&quot;</span><span class="o">,</span>
-      <span class="nx">MONTH</span><span class="o">:</span> <span class="s2">&quot;meses&quot;</span><span class="o">,</span>
-      <span class="nx">YEAR</span><span class="o">:</span> <span class="s2">&quot;años&quot;</span>
-   <span class="p">};</span>
-   
-   <span class="c">// for YUI loader </span>
-   <span class="nx">inputEx</span><span class="p">.</span><span class="nx">lang_es</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+      <span class="c">// Attributes of the input field</span>
+      <span class="kd">var</span> <span class="nx">attributes</span> <span class="o">=</span> <span class="p">{};</span>
+      <span class="nx">attributes</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">divEl</span><span class="p">.</span><span class="nx">id</span><span class="o">?</span><span class="k">this</span><span class="p">.</span><span class="nx">divEl</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;-field&#39;</span><span class="o">:</span><span class="nx">YAHOO</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">Dom</span><span class="p">.</span><span class="nx">generateId</span><span class="p">();</span>
+      <span class="nx">attributes</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="s2">&quot;file&quot;</span><span class="o">;</span>
+      <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="nx">attributes</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">name</span><span class="o">;</span>
+   	<span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">size</span><span class="p">)</span> <span class="nx">attributes</span><span class="p">.</span><span class="nx">size</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">size</span><span class="o">;</span>
+   	<span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">accept</span><span class="p">)</span> <span class="nx">attributes</span><span class="p">.</span><span class="nx">accept</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">options</span><span class="p">.</span><span class="nx">accept</span><span class="o">;</span>
+
+      <span class="c">// Create the node</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">el</span> <span class="o">=</span> <span class="nx">inputEx</span><span class="p">.</span><span class="nx">cn</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="o">,</span> <span class="nx">attributes</span><span class="p">);</span>
+      
+      <span class="c">// Append it to the main element</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">fieldContainer</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">el</span><span class="p">);</span>
+   <span class="p">}</span>
+
+<span class="p">});</span>
+
+<span class="c">// Register this class as &quot;file&quot; type</span>
+<span class="nx">inputEx</span><span class="p">.</span><span class="nx">registerType</span><span class="p">(</span><span class="s2">&quot;file&quot;</span><span class="o">,</span> <span class="nx">inputEx</span><span class="p">.</span><span class="nx">FileField</span><span class="p">);</span>
+
 <span class="p">})();</span>
 </pre></div>
 
@@ -218,10 +201,10 @@
                                 <li class=""><a href="dtDialogEdit.js.html" title="dtDialogEdit.js">dtDialogEdit.js</a></li>
                                 <li class=""><a href="dtInPlaceEdit.js.html" title="dtInPlaceEdit.js">dtInPlaceEdit.js</a></li>
                                 <li class=""><a href="EmailField.js.html" title="EmailField.js">EmailField.js</a></li>
-                                <li class="selected"><a href="es.js.html" title="es.js">es.js</a></li>
+                                <li class=""><a href="es.js.html" title="es.js">es.js</a></li>
                                 <li class=""><a href="FastTable-beta.js.html" title="FastTable-beta.js">FastTable-beta.js</a></li>
                                 <li class=""><a href="Field.js.html" title="Field.js">Field.js</a></li>
-                                <li class=""><a href="FileField.js.html" title="FileField.js">FileField.js</a></li>
+                                <li class="selected"><a href="FileField.js.html" title="FileField.js">FileField.js</a></li>
                                 <li class=""><a href="Form.js.html" title="Form.js">Form.js</a></li>
                                 <li class=""><a href="fr.js.html" title="fr.js">fr.js</a></li>
                                 <li class=""><a href="Group.js.html" title="Group.js">Group.js</a></li>

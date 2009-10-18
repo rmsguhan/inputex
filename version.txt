@@ -30,12 +30,17 @@ not released yet
 		* Form wrapObject option (ajax only)
 		* Password confirmation field defined in json
 	 	* DateField and DatePicker support for string formatting
+		* InPlaceEdit ok button is now a skinnable link
+		* Moved VectorField, MapField, IPv4Field, UpperCaseField from ext/ to fields/ (watch you references !)
+		* BirthdateField renamed to DateSelectMonthField
+		* FileField out of beta
 	
 	- Added Widget 
 		* FastTable for fast editing (beta)
 		
 	- Widget enhancements
 		* JsonTreeInspector: expand methods and JSONPath filter
+		* Dialog widget out of beta
 		
 	- JSON-Schema
 		* implementation of inputEx.JsonSchema.inputExToSchema (beta)
@@ -45,9 +50,10 @@ not released yet
 		* Moved inputEx RPC methods to inputEx.RPC namespace (generateServiceForm and formForMethod)
 		* new SMD examples: freebase, tinyurl
 		* Added an example using inputEx SMD support and the Flickr API
-		* added YQL utility to call yql queries using JSONP
+		* added YQL utility to make YQL queries using JSONP
 		
 	- Tools
+		* Providing a dependency-configurator based on yui-dependency-configurator
 		* added yql-trimpath page utility to create pages using YQL queries and trimpath templates
 	 	* added a tool to generate yql-trimpath-page built on the YUI Grids builder
 
@@ -61,15 +67,10 @@ not released yet
 		* fix on DatePickerField: we had to click twice to select a date the first time
 		
 	- Various
-		* InPlaceEdit ok button is now a skinnable link
-		* Providing a dependency-configurator based on yui-dependency-configurator
 		* Switching to yuidoc for documentation
-		* Moved VectorField, MapField, IPv4Field, UpperCaseField from ext/ to fields/ (watch you references !)
-		* BirthdateField renamed to DateSelectMonthField
-	  	* including JSMin
+	  	* including JSMin in lib/
 		* Upgrading to YUI 2.8.0r4
 		* Tickets moved to GitHub
-		* Dialog widget out of beta
 		
 	- Fields removed
 		* FrenchDate (use the french locale instead)
