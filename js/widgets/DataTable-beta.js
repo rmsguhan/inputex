@@ -65,6 +65,8 @@ inputEx.widget.DataTable.prototype = {
 
       this.options.datatableOpts = options.datatableOpts;
       this.options.fields = options.fields;
+
+		this.options.rpcService = options.rpcService;
    },
    
    
@@ -102,8 +104,67 @@ inputEx.widget.DataTable.prototype = {
    	 */
     	this.itemModifiedEvt = new util.CustomEvent('itemModified', this);
 
+		if(this.options.rpcService) {
+			this.initRpcService();
+		}
    },
    
+	/**
+	 * Uses a inputEx.RPC.Service with predefined methods (add,remove,modify)
+	 */
+	initRpcService: function() {
+		
+		this.itemModifiedEvt.subscribe(function(e,args) {
+			var record = args[0];
+			var data = record.getData();
+			//console.log(record, data);
+			this.options.rpcService.modify(data, 
+			{
+				success: function(o) {
+						alert("modify success !");
+				},
+				failure: function(o) {
+						alert("modify failure !");
+				}
+			});
+		}, this, true);
+		
+		this.itemAddedEvt.subscribe(function(e,args) {
+			var record = args[0];
+			var data = record.getData();
+			//console.log(record, data);
+			this.options.rpcService.add(data, 
+			{
+				success: function(o) {
+						alert("add success !");
+				},
+				failure: function(o) {
+						alert("add failure !");
+				}
+			});
+		}, this, true);
+		
+		
+		this.itemRemovedEvt.subscribe(function(e,args) {
+			var record = args[0];
+			var data = record.getData();
+			
+			this.options.rpcService.remove({
+				id: data.id
+			}, 
+			{
+				success: function(o) {
+						alert("remove success !");
+				},
+				failure: function(o) {
+						alert("remove failure !");
+				}
+			});
+		}, this, true);
+		
+		
+	},
+
    /**
     * Render the main container only (not the datatable)
     */
