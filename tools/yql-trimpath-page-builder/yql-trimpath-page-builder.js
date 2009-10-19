@@ -816,7 +816,6 @@
             code += '<script type="text/javascript" src="http://yui.yahooapis.com/' + YAHOO.VERSION + '/build/utilities/utilities.js"></script>\n';
             code += '<script src="http://github.com/neyric/inputex/raw/master/js/inputex.js"  type="text/javascript"></script>\n';
 				code += '<script src="http://github.com/neyric/inputex/raw/master/js/rpc/yql.js"  type="text/javascript"></script>\n';
-				code += '<script src="http://github.com/neyric/inputex/raw/master/js/tools/yql-trimpath-page.js"  type="text/javascript"></script>\n';
             code += '<script type="text/javascript" src="http://trimpath.googlecode.com/files/trimpath-template-1.0.38.js"></script>\n';
 
 
