@@ -79,7 +79,7 @@ myDataSource.responseSchema = { fields: ["id","date","quantity","amount","title"
 
 var myFields = [
 	{type: 'hidden', inputParams: {label: 'Id', name: 'id'}, formatter:formatAddress },
-	{type: 'date', inputParams: {label: 'Date', name: 'date'} }, // formatter is auto-generated
+	{type: 'date', inputParams: {label: 'Date', name: 'date', showMsg: true} }, // formatter is auto-generated
 	{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity'} },
 	{type: 'number', inputParams: {label: 'Amount', name: 'amount'} },
 	{type: 'string', inputParams: {label: 'Title', name: 'title'} },

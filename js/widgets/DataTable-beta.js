@@ -49,6 +49,20 @@ inputEx.widget.DataTable.prototype = {
       this.options.showHideColumnsDlg = lang.isUndefined(options.showHideColumnsDlg) ? false : options.showHideColumnsDlg; 
       
       this.options.datasource = options.datasource;
+
+		// Create a datasource if it does not exist, from the datasourceConfig Object
+		if(!options.datasource && options.datasourceConfig) {
+			var ds = new YAHOO.util.DataSource(options.datasourceConfig.url), fields = [];
+			if(options.datasourceConfig.keys) {
+				for ( var i = 0 ; i < options.datasourceConfig.keys.length ; i++ ) {
+	         	fields.push({ key: options.datasourceConfig.keys[i] });
+	      	}
+			}
+	      ds.responseType = options.datasourceConfig.responseType || YAHOO.util.DataSource.TYPE_JSON;
+	      ds.responseSchema = options.datasourceConfig.responseSchema || { resultsList : "Result", fields : fields};
+			this.options.datasource = ds;
+		}
+
       this.options.datatableOpts = options.datatableOpts;
       this.options.fields = options.fields;
    },
@@ -88,15 +102,7 @@ inputEx.widget.DataTable.prototype = {
    	 */
     	this.itemModifiedEvt = new util.CustomEvent('itemModified', this);
 
-    	/**
-   	 * @event Event fired when a row is reordered
-    	 * @param {YAHOO.widget.Record} Modified record
-   	 * @desc YAHOO custom event fired when a row is reoredered
-   	 */
-    	this.rowReorderedEvt = new util.CustomEvent('rowReordered', this);
-    	
    },
-   
    
    /**
     * Render the main container only (not the datatable)
