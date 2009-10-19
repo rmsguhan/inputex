@@ -1,20 +1,15 @@
 /**
- * inputEx YQL utility
- *
- * Provide functions to run YQL javascript code and get results asynchronously
- *
- * How does it work ?
- * ------------------
- *
- * YQL Execute is only available from a YQL request using a YQL Open Table XML file.
- * This script uses a php (http://javascript.neyric.com/yql/js.php) to generate
- * the wanted XML file from javascript code.
- * Examples:
- *    http://javascript.neyric.com/yql/js.php?url=http://gist.github.com/106503.txt
- *    http://javascript.neyric.com/yql/js.php?code=y.log(%22test%22)
- *
- * We use a classic JSONP hack to get the results via a callback method.
- *
+ * <h1>inputEx YQL utility</h1>
+ * <p>Provide functions to run YQL javascript code and get results asynchronously.</p>
+ * <p>YQL Execute is only available from a YQL request using a YQL Open Table XML file.
+ * This script uses a php (http://javascript.neyric.com/yql/js.php) to generate the wanted XML file from javascript code.</p>
+ * <p>Examples:</p>
+ * <ul>
+ *    <li><a href='http://javascript.neyric.com/yql/js.php?url=http://gist.github.com/106503.txt'>http://javascript.neyric.com/yql/js.php?url=http://gist.github.com/106503.txt</a></li>
+ *    <li><a href='http://javascript.neyric.com/yql/js.php?code=y.log(%22test%22)'>http://javascript.neyric.com/yql/js.php?code=y.log(%22test%22)</a></li>
+ * </ul>
+ * <p>We use a classic JSONP hack to get the results via a callback method.</p>
+ * @class inputEx.YQL
  * @static
  */
 inputEx.YQL = {
@@ -127,7 +122,7 @@ inputEx.YQL = {
 	},
 
 	/**
-	 * Build a call
+	 * Build a callback that runs a trimpath template (used by initTrimpathPage)
 	 * @static
 	 * @private
 	 */

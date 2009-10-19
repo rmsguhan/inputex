@@ -1,6 +1,7 @@
 /**
  * inputEx RPC utility functions
  * Implements SMD and create forms directly from services
+ * @class inputEx.RPC
  * @static
  */
 inputEx.RPC = {
@@ -267,23 +268,44 @@ inputEx.RPC.Service._requestId = 1;
 
 /**
  * inputEx.RPC.Transport
+ * @class inputEx.RPC.Transport
  * @static
  */
 inputEx.RPC.Transport = {
    
+	/**
+	 * Build a ajax request using 'POST' method
+	 * @method POST
+	 * @param {Object} r Object specifying target, callback and data attributes
+	 */
    "POST": function(r) {
       return util.Connect.asyncRequest('POST', r.target, r.callback, r.data );
    },
    
+	/**
+	 * Build a ajax request using 'GET' method
+	 * @method GET
+	 * @param {Object} r Object specifying target, callback and data attributes
+	 */
    "GET": function(r) {
       return util.Connect.asyncRequest('GET', r.target + (r.data ? '?'+  r.data : ''), r.callback, '');
    },
    
+	/**
+	 * Build an ajax request using the right HTTP method
+	 * @method REST
+	 * @param {Object} r Object specifying target, callback and data attributes
+	 */
    "REST": function(r) {
       // TODO
    },
    
    jsonp_id: 0,
+	/**
+	 * Receive data through JSONP (insert a script tag within the page)
+	 * @method JSONP
+	 * @param {Object} r Object specifying target, callback and data attributes
+	 */
    "JSONP": function(r) {
 		r.callbackParamName = r.callbackParamName || "callback";
 		var fctName = encodeURIComponent("inputEx.RPC.Transport.JSONP.jsonpCallback"+inputEx.RPC.Transport.jsonp_id);
@@ -296,6 +318,10 @@ inputEx.RPC.Transport = {
       return util.Get.script( r.target + ((r.target.indexOf("?") == -1) ? '?' : '&') + r.data + "&"+r.callbackParamName+"="+fctName);
    },
    
+	/**
+	 * NOT implemented
+	 * @method TCP/IP
+	 */
    "TCP/IP": function(r) {
       throw new Error("TCP/IP transport not implemented !");
    }
@@ -305,11 +331,21 @@ inputEx.RPC.Transport = {
 
 /**
  * inputEx.RPC.Envelope
+ * @class inputEx.RPC.Envelope
  * @static
  */
 inputEx.RPC.Envelope = {
    
+	/**
+	 * URL envelope
+	 * @class inputEx.RPC.Envelope.URL
+	 * @static
+	 */
    "URL":  {
+	
+			/**
+			 * Serialize data into URI encoded parameters
+			 */
          serialize: function(smd, method, data) {
             var eURI = encodeURIComponent;
             var params = [];
@@ -329,12 +365,23 @@ inputEx.RPC.Envelope = {
    				data: params.join("&")
             };   
          },
+			/**
+			 * Deserialize
+			 */
          deserialize: function(results) {
             return results;
          }
    },
-   
+
+   /**
+	 * PATH envelope
+	 * @class inputEx.RPC.Envelope.PATH
+	 * @static
+	 */
    "PATH": {
+		  /**
+		 	* serialize
+		   */
         serialize: function(smd, method, data) {
      			var target = method.target || smd.target, i;
      			if(lang.isArray(data)){
@@ -353,23 +400,45 @@ inputEx.RPC.Envelope = {
               target: target
            };   
         },
+		  /**
+		 	* deserialize
+		   */
         deserialize: function(results) {
            return results;
         }
     },
     
+	/**
+	 * JSON envelope
+	 * @class inputEx.RPC.Envelope.JSON
+	 * @static
+	 */
    "JSON": {
+		 /**
+		  * serialize
+		  */
        serialize: function(smd, method, data) {
           return {
              data: lang.JSON.stringify(data)
           };   
        },
+ 		 /**
+		  * deserialize
+		  */
        deserialize: function(results) {
           return results;
        }
     },
    
+	/**
+	 * JSON-RPC-1.0 envelope
+	 * @class inputEx.RPC.Envelope.JSON-RPC-1.0
+	 * @static
+	 */
    "JSON-RPC-1.0":  {
+		 /**
+		  * serialize
+		  */
        serialize: function(smd, method, data) {
           return {
              data: lang.JSON.stringify({
@@ -379,12 +448,23 @@ inputEx.RPC.Envelope = {
        	   })
           };   
        },
+	 	 /**
+		  * deserialize
+		  */
        deserialize: function(results) {
           return lang.JSON.parse(results.responseText);
        }
     },
-   
+
+   /**
+	 * JSON-RPC-2.0 envelope
+	 * @class inputEx.RPC.Envelope.JSON-RPC-2.0
+	 * @static
+	 */
    "JSON-RPC-2.0": {
+		/**
+  	  	 * serialize
+		 */
       serialize: function(smd, method, data) {
          return {
             data: lang.JSON.stringify({
@@ -395,6 +475,9 @@ inputEx.RPC.Envelope = {
       	   })
          };   
       },
+		/**
+ 	 	 * serialize
+		 */
       deserialize: function(results) {
          return lang.JSON.parse(results.responseText);
       }
