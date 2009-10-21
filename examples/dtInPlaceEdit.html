@@ -106,12 +106,9 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
   <textarea name="code" class="JScript">
 		new inputEx.widget.dtInPlaceEdit({
 		parentEl: 'container1', 
-
 		editableFields: ['title', 'amount', 'quantity', 'date', 'category'],
-
 		fields: myFields,
-		datasource: myDataSource,
-		datatableOpts: {caption:"DataTable Caption"}
+		datasource: myDataSource
 	});
   </textarea>
  </div>
@@ -157,16 +154,24 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 		editableFields: ['title', 'amount', 'quantity', 'date', 'category','color'],
 
 		fields: myFields,
-		datasource: myDataSource,
-		datatableOpts: {caption:"DataTable Caption"},
-		
+		datasource: myDataSource,		
 		showHideColumnsDlg: true
 	});
 	
 	myDatatable.itemAddedEvt.subscribe(function(event,record){
 		var rec = record[0];
 		this.datatable.updateCell(rec,"id","my-id-12345");
-		alert("Item added with id :"+rec.getData('id'));
+		alert("Item added with id : "+rec.getData('id'));
+	});
+	
+	myDatatable.itemRemovedEvt.subscribe(function(event,record){
+		var rec = record[0];
+		alert("Item deleted : "+rec.getData('id'));
+	});
+	
+	myDatatable.itemModifiedEvt.subscribe(function(event,record){
+		var rec = record[0];
+		alert("Item updated : "+rec.getData('id'));
 	});
   </textarea>
  </div>
@@ -199,7 +204,6 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 		editableFields: ['title', 'amount', 'quantity', 'date', 'category', 'color'],
 		fields: myFields,
 		datasource: myDataSource,
-		datatableOpts: {caption:"DataTable Caption"},
 		rpcService: service
 	});
   </textarea>

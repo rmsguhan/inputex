@@ -193,7 +193,6 @@ inputEx.widget.DataTable.prototype = {
       this.columndefs = this.fieldsToColumndefs(this.options.fields);
       
       this.datatable = new YAHOO.widget.DataTable(this.element,this.columndefs, this.options.datasource, this.options.datatableOpts);
-      caca = this.datatable;
       this.datatable.subscribe('cellClickEvent', this._onCellClick, this, true);
       
       // init the Editor
@@ -201,7 +200,7 @@ inputEx.widget.DataTable.prototype = {
       
       // Insert button
       if ( this.options.allowInsert ){
-         this.insertButton = inputEx.cn('button', null, null, inputEx.messages.insertItemText);
+         this.insertButton = inputEx.cn('input', {type:'button', value:inputEx.messages.insertItemText}, null, null);
          Event.addListener(this.insertButton, 'click', this.onInsertButton, this, true);
          this.options.parentEl.appendChild(this.insertButton);
       }
@@ -230,8 +229,8 @@ inputEx.widget.DataTable.prototype = {
       else if(column.key == 'modify') {
          this.onClickModify(rowIndex);
       } 
-      else {  
-         this.onCellClick(ev,rowIndex);
+      else {				
+      	this.onCellClick(ev,rowIndex);
       }
    },
 
@@ -260,45 +259,16 @@ inputEx.widget.DataTable.prototype = {
       tbl.addRow({});
  				
       // Select the new row
-      tbl.unselectRow(this.selectedRecord);
       var lastRow = tbl.getLastTrEl();
 		tbl.selectRow(lastRow);
-		
-		// Get the last cell's inner div node
-		lastCell = lastRow.lastElementChild.childNodes[0];
-		
-		// Empty the cell (removing "delete")
-		lastCell.innerHTML = '';
-		
-		// Create an "Add" Button
-		this.addButton = inputEx.cn('button', null, null, inputEx.messages.addButtonText);
-      Event.addListener(this.addButton, 'click', this.onAddButton, this, true);
-      lastCell.appendChild(this.addButton);
-
-		// Create a "Cancel" Button
-		this.deleteButton = inputEx.cn('button', null, null, inputEx.messages.cancelText);
-      lastCell.appendChild(this.deleteButton);
 
    },
-   
-	onAddButton: function(e) {
-		
-		var target = Event.getTarget(e);
-      var record = this.datatable.getRecord(target);		
-		
-		target.parentNode.innerHTML = inputEx.messages.deleteText;
-		
-		this.itemAddedEvt.fire(record);
-		
-		Event.stopEvent(e);
-		
-	},
    
    /**
     * Remove the record that has not been saved
     */
-   removeUnsavedRecord: function() {
-      this.datatable.deleteRow(this.selectedRecord);
+   removeUnsavedRecord: function(record) {
+      this.datatable.deleteRow(record);
    },
    
    /**

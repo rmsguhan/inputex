@@ -26,7 +26,6 @@ lang.extend(inputEx.widget.dtDialogEdit, inputEx.widget.DataTable , {
       this.options.dialogLabel = options.dialogLabel || "";
    },
    
-   
    initEditor: function() {
       // Lazy loading of the dialog
    },

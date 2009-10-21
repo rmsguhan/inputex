@@ -12,6 +12,7 @@
  */
 inputEx.widget.dtInPlaceEdit = function(options) {
    inputEx.widget.dtInPlaceEdit.superclass.constructor.call(this, options);
+ 	
 };
 
 lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
@@ -25,6 +26,20 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 			    oArgs.editor.save();
 			} 
 		};
+		
+		// When the cellEditor fires the "editorSaveEvent"
+		this.datatable.subscribe("editorSaveEvent",function(oArgs){
+			var record = oArgs.editor.getRecord();		
+			// If the record got an id (meaning it isn't a new Row that the user didn't add yet)
+			if( !YAHOO.lang.isUndefined(record.getData('id')) ){
+				// If the data in the cellEditor changed
+				if(oArgs.newData != oArgs.oldData){
+					this.itemModifiedEvt.fire(record);
+				}
+			}
+				
+		}, this, true);
+		
 	},
 
 
@@ -54,6 +69,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
       this.datatable.subscribe("cellMouseoverEvent", highlightEditableCell);
       this.datatable.subscribe("cellMouseoutEvent", this.datatable.onEventUnhighlightCell);
 		
+
    },
    
    /**
@@ -86,29 +102,120 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
       // TODO: other formatters
       return columnDef;
    },
-   
-   onCellClick: function(ev, rowIndex) {
-	
- 	  // Get a particular CellEditor
-		var elCell = ev.target, oColumn;
-	    elCell = this.datatable.getTdEl(elCell);
-	    if(elCell) {
-	        oColumn = this.datatable.getColumn(elCell);
-	        if(oColumn && oColumn.editor) {
-	            var oCellEditor = this.datatable._oCellEditor;
-	            // Clean up active CellEditor
-	            if(oCellEditor) {
-							// Return if field isn't validated
-							if( !oCellEditor._inputExField.validate() ) {
-								return;
-							}
+
+   /**
+    * Handling cell click events
+    */
+   _onCellClick: function(ev,args) {
+      var target = Event.getTarget(ev);
+      var column = this.datatable.getColumn(target);      
+      var rowIndex = this.datatable.getTrIndex(target);
+      var record = this.datatable.getRecord(target);
+
+      if (column.key == 'delete') {
+			if( !YAHOO.lang.isUndefined(record.getData('id')) ){
+	         if (confirm(inputEx.messages.confirmDeletion)) {
+	            if(this.editingNewRecord) {
+	               this.editingNewRecord = false;
 	            }
+	            else {
+	               this.itemRemovedEvt.fire( record );
+	            }
+	            this.datatable.deleteRow(target);
+	            this.hideSubform();
+	         }
+			}
+      }
+      else if(column.key == 'modify') {
+         this.onClickModify(rowIndex);
+      } 
+      else {				
+      	this.onCellClick(ev,rowIndex);
+      }
+   },
+
+   /**
+    * Public handler - When clicking on one of the datatable's cells
+    */
+   onCellClick: function(ev, rowIndex) {
+		
+		// Get a particular CellEditor
+		var elCell = ev.target, oColumn;
+		elCell = this.datatable.getTdEl(elCell);
+		if(elCell) {
+
+			oColumn = this.datatable.getColumn(elCell);
+			if(oColumn && oColumn.editor) {
+				var oCellEditor = this.datatable._oCellEditor;
+				// Clean up active CellEditor
+				if(oCellEditor) {
+					// Return if field isn't validated
+					if( !oCellEditor._inputExField.validate() ) {
+						return;
+					}
 				}
 			}
+		}
+
+		// Only if the cell is inputEx valid
+		this.datatable.onEventShowCellEditor(ev);
 		
-		// On first click or when current cell edited is validated
-      this.datatable.onEventShowCellEditor(ev);
-   }
+   },
+
+	/**
+    * When clicking on the "insert" button to add a row
+    */
+	onInsertButton: function(e) {
+		var tbl = this.datatable;
+
+      // Insert a new row
+      tbl.addRow({});
+ 				
+      // Select the new row
+      var lastRow = tbl.getLastTrEl();
+		tbl.selectRow(lastRow);
+		
+		// Get the last cell's inner div node
+		var lastIndex = lastRow.childNodes.length - 1;
+		lastCell = lastRow.childNodes[lastIndex].childNodes[0];
+		
+		// Empty the cell (removing "delete")
+		lastCell.innerHTML = '';
+		
+		// Create an "Add" Button
+		this.addButton = inputEx.cn('input', {type:'button',value:inputEx.messages.addButtonText}, null, null);
+      Event.addListener(this.addButton, 'click', this.onAddButton, this, true);
+      lastCell.appendChild(this.addButton);
+
+		// Create a "Cancel" Button
+		this.deleteButton = inputEx.cn('input', {type:'button',value:inputEx.messages.cancelText}, null, null);
+		Event.addListener(this.deleteButton, 'click', this.onCancelButton, this, true);
+      lastCell.appendChild(this.deleteButton);
+
+		// Disable the "Insert Button"
+		this.insertButton.disabled = true ;
+	},
+   
+	onAddButton: function(e) {	
+		var target = Event.getTarget(e);
+      var record = this.datatable.getRecord(target);
+		
+		target.parentNode.innerHTML = inputEx.messages.deleteText;
+		
+		this.datatable.unselectRow(record);
+		this.insertButton.disabled = false ;
+		
+		this.itemAddedEvt.fire(record);
+		Event.stopEvent(e);	
+	},
+	
+	onCancelButton: function(e) {
+		var target = Event.getTarget(e);
+		
+		this.datatable.deleteRow(target);
+    	this.insertButton.disabled = false ;
+		Event.stopEvent(e);
+	}
    
 });
 
@@ -144,7 +251,6 @@ lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
       // Build the inputEx field
       this._inputExField = inputEx(this._inputExFieldDef);
       this.getContainerEl().appendChild(this._inputExField.getEl());
- 
    },
 
    /**
@@ -153,7 +259,7 @@ lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
    resetForm : function() {
        this._inputExField.setValue(lang.isValue(this.value) ? this.value.toString() : "");
    },
-
+	
    /**
     * Sets focus in CellEditor.
     */
@@ -173,8 +279,8 @@ lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
 	 */
 	save: function() {
 		// Save only if cell is validated
-		if(this._inputExField.validate()) {
-			inputEx.widget.CellEditor.superclass.save.call(this);
+		if(this._inputExField.validate()) {	    
+			inputEx.widget.CellEditor.superclass.save.call(this);	    
 		}
 	},
 	
