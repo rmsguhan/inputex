@@ -15,7 +15,19 @@ inputEx.widget.dtInPlaceEdit = function(options) {
 };
 
 lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
-   
+	
+	renderDatatable: function() {
+		inputEx.widget.dtInPlaceEdit.superclass.renderDatatable.call(this);
+		
+		 // Force save on blur event
+		this.datatable.onEditorBlurEvent = function(oArgs) {
+			if(oArgs.editor.save) {
+			    oArgs.editor.save();
+			} 
+		};
+	},
+
+
    /**
     * Additional options
     */
@@ -38,8 +50,10 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
               this.highlightCell(elCell);
           }
       };
+
       this.datatable.subscribe("cellMouseoverEvent", highlightEditableCell);
       this.datatable.subscribe("cellMouseoutEvent", this.datatable.onEventUnhighlightCell);
+		
    },
    
    /**
@@ -74,10 +88,30 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
    },
    
    onCellClick: function(ev, rowIndex) {
+	
+ 	  // Get a particular CellEditor
+		var elCell = ev.target, oColumn;
+	    elCell = this.datatable.getTdEl(elCell);
+	    if(elCell) {
+	        oColumn = this.datatable.getColumn(elCell);
+	        if(oColumn && oColumn.editor) {
+	            var oCellEditor = this.datatable._oCellEditor;
+	            // Clean up active CellEditor
+	            if(oCellEditor) {
+							// Return if field isn't validated
+							if( !oCellEditor._inputExField.validate() ) {
+								return;
+							}
+	            }
+				}
+			}
+		
+		// On first click or when current cell edited is validated
       this.datatable.onEventShowCellEditor(ev);
    }
    
 });
+
 
 
 
@@ -95,12 +129,13 @@ inputEx.widget.CellEditor = function(inputExFieldDef) {
    
     this._sId = "yui-textboxceditor" + YAHOO.widget.BaseCellEditor._nCount;
 	 YAHOO.widget.BaseCellEditor._nCount++;
-    inputEx.widget.CellEditor.superclass.constructor.call(this, "inputEx", {disableBtns:true});
+    inputEx.widget.CellEditor.superclass.constructor.call(this, "inputEx", {disableBtns:false});
 };
 
 // CellEditor extends BaseCellEditor
 lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
-
+	
+	
    /**
     * Render the inputEx field editor
     */
@@ -109,29 +144,7 @@ lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
       // Build the inputEx field
       this._inputExField = inputEx(this._inputExFieldDef);
       this.getContainerEl().appendChild(this._inputExField.getEl());
-   
-      // Save the cell value at updatedEvt
-      this._inputExField.updatedEvt.subscribe(function(e, args) {
-         // Hack to NOT close the field at the first updatedEvt (fired when we set the value)
-         if(this._updatedEvtForSetValue) {
-            this._updatedEvtForSetValue = false;
-            return;
-         }
-         this.save();
-      }, this, true);
-   
-      if(this.disableBtns) {
-         // By default this is no-op since enter saves by default
-         this.handleDisabledBtns();
-      }
-   },
-
-   /**
-    * Hack to NOT close the field at the first updatedEvt (fired when we set the value)
-    */
-   show: function() {
-      inputEx.widget.CellEditor.superclass.show.call(this); 
-      this._updatedEvtForSetValue = true;
+ 
    },
 
    /**
@@ -153,7 +166,22 @@ lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
     */
    getInputValue : function() {
       return this._inputExField.getValue();
-   }
+   },
+
+	/**
+	 * When clicking the save button but also when clicking out of the cell
+	 */
+	save: function() {
+		// Save only if cell is validated
+		if(this._inputExField.validate()) {
+			inputEx.widget.CellEditor.superclass.save.call(this);
+		}
+	},
+	
+	cancel: function() {
+		inputEx.widget.CellEditor.superclass.cancel.call(this);
+	}
+	
 
 });
 

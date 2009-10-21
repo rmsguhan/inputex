@@ -193,7 +193,7 @@ inputEx.widget.DataTable.prototype = {
       this.columndefs = this.fieldsToColumndefs(this.options.fields);
       
       this.datatable = new YAHOO.widget.DataTable(this.element,this.columndefs, this.options.datasource, this.options.datatableOpts);
-      
+      caca = this.datatable;
       this.datatable.subscribe('cellClickEvent', this._onCellClick, this, true);
       
       // init the Editor
@@ -253,20 +253,46 @@ inputEx.widget.DataTable.prototype = {
     * Insert button event handler
     */
    onInsertButton: function(e) {
-      
+
       var tbl = this.datatable;
       
       // Insert a new row
       tbl.addRow({});
-      
+ 				
       // Select the new row
       tbl.unselectRow(this.selectedRecord);
-      var rs = tbl.getRecordSet();
-      var row = tbl.getTrEl(rs.getLength()-1);
-      tbl.selectRow(row);
-      
+      var lastRow = tbl.getLastTrEl();
+		tbl.selectRow(lastRow);
+		
+		// Get the last cell's inner div node
+		lastCell = lastRow.lastElementChild.childNodes[0];
+		
+		// Empty the cell (removing "delete")
+		lastCell.innerHTML = '';
+		
+		// Create an "Add" Button
+		this.addButton = inputEx.cn('button', null, null, inputEx.messages.addButtonText);
+      Event.addListener(this.addButton, 'click', this.onAddButton, this, true);
+      lastCell.appendChild(this.addButton);
+
+		// Create a "Cancel" Button
+		this.deleteButton = inputEx.cn('button', null, null, inputEx.messages.cancelText);
+      lastCell.appendChild(this.deleteButton);
+
    },
    
+	onAddButton: function(e) {
+		
+		var target = Event.getTarget(e);
+      var record = this.datatable.getRecord(target);		
+		
+		target.parentNode.innerHTML = inputEx.messages.deleteText;
+		
+		this.itemAddedEvt.fire(record);
+		
+		Event.stopEvent(e);
+		
+	},
    
    /**
     * Remove the record that has not been saved
@@ -323,7 +349,6 @@ inputEx.widget.DataTable.prototype = {
             }
          });
       }
-      
       
     	return columndefs;
    },
@@ -455,6 +480,7 @@ inputEx.messages.cancelText = "Cancel";
 inputEx.messages.deleteText = "delete";
 inputEx.messages.modifyText = "modify";
 inputEx.messages.insertItemText = "Insert";
+inputEx.messages.addButtonText = "Add";
 inputEx.messages.confirmDeletion = "Are you sure?";
 
 })();

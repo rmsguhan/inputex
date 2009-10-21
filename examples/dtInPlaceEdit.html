@@ -37,7 +37,7 @@
 <!-- YUI JS -->
 <script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/datasource/datasource-min.js"></script>
-<script type="text/javascript" src="../lib/yui/datatable/datatable-min.js"></script>
+<script type="text/javascript" src="../lib/yui/datatable/datatable-debug.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>
 <script type="text/javascript" src="../lib/yui/button/button-min.js"></script>
 
@@ -127,7 +127,7 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
  <div class='demoContainer' id='container2'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-	// Example 3 (test for color field)
+	// Example 2 (test for color field)
 	var myDataSource = new YAHOO.util.DataSource([
         {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing", category: "SF", color: "#993300"},
         {id:"po-0783", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"The Meaning of Life", category: "Novel", color: "#333300"},
@@ -141,7 +141,7 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 		{type: 'hidden', inputParams: {label: 'Id', name: 'id'}, formatter:formatAddress },
 		{type: 'date', inputParams: {label: 'Date', name: 'date'} }, // formatter is auto-generated
 		{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity', size:4} },
-		{type: 'number', inputParams: {label: 'Amount', name: 'amount', size:4} },
+		{type: 'number', inputParams: {label: 'Amount', name: 'amount', size:4, showMsg:true} },
 		{type: 'string', inputParams: {label: 'Title', name: 'title'} },
 		{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}},
 		{type: 'color', inputParams: {label: 'Couleur', name: 'color'}, formatter: 
@@ -151,7 +151,7 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 	   } }
 	];
 
-	new inputEx.widget.dtInPlaceEdit({
+	var myDatatable = new inputEx.widget.dtInPlaceEdit({
 		parentEl: 'container2', 
 
 		editableFields: ['title', 'amount', 'quantity', 'date', 'category','color'],
@@ -161,6 +161,12 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 		datatableOpts: {caption:"DataTable Caption"},
 		
 		showHideColumnsDlg: true
+	});
+	
+	myDatatable.itemAddedEvt.subscribe(function(event,record){
+		var rec = record[0];
+		this.datatable.updateCell(rec,"id","my-id-12345");
+		alert("Item added with id :"+rec.getData('id'));
 	});
   </textarea>
  </div>
@@ -190,7 +196,7 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 		
 	new inputEx.widget.dtInPlaceEdit({
 		parentEl: 'container3', 
-		editableFields: ['title', 'amount', 'quantity', 'date', 'category'],
+		editableFields: ['title', 'amount', 'quantity', 'date', 'category', 'color'],
 		fields: myFields,
 		datasource: myDataSource,
 		datatableOpts: {caption:"DataTable Caption"},
