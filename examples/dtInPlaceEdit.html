@@ -138,8 +138,8 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 		{type: 'hidden', inputParams: {label: 'Id', name: 'id'}, formatter:formatAddress },
 		{type: 'date', inputParams: {label: 'Date', name: 'date'} }, // formatter is auto-generated
 		{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity', size:4} },
-		{type: 'number', inputParams: {label: 'Amount', name: 'amount', size:4, showMsg:true} },
-		{type: 'string', inputParams: {label: 'Title', name: 'title'} },
+		{type: 'number', inputParams: {label: 'Amount', name: 'amount', size:4, showMsg:true, required:true} },
+		{type: 'string', inputParams: {label: 'Title', name: 'title', required:true} },
 		{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}},
 		{type: 'color', inputParams: {label: 'Couleur', name: 'color'}, formatter: 
 		function(elCell, record) {
@@ -160,7 +160,14 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 	
 	myDatatable.itemAddedEvt.subscribe(function(event,record){
 		var rec = record[0];
-		this.datatable.updateCell(rec,"id","my-id-12345");
+		var data = rec.getData();
+		
+		// We add an id
+		data.id = 'my-id-12345';
+
+		// We send back the record and the updated data
+		this.onAddSucess(rec,data);
+
 		alert("Item added with id : "+rec.getData('id'));
 	});
 	

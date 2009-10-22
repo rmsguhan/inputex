@@ -31,7 +31,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		this.datatable.subscribe("editorSaveEvent",function(oArgs){
 			var record = oArgs.editor.getRecord();		
 			// If the record got an id (meaning it isn't a new Row that the user didn't add yet)
-			if( !YAHOO.lang.isUndefined(record.getData('id')) ){
+			if( !lang.isUndefined(record.getData('id')) ){
 				// If the data in the cellEditor changed
 				if(oArgs.newData != oArgs.oldData){
 					this.itemModifiedEvt.fire(record);
@@ -61,7 +61,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
       // Set up editing flow
       var highlightEditableCell = function(oArgs) {
           var elCell = oArgs.target;
-          if(YAHOO.util.Dom.hasClass(elCell, "yui-dt-editable")) {
+          if(Dom.hasClass(elCell, "yui-dt-editable")) {
               this.highlightCell(elCell);
           }
       };
@@ -113,7 +113,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
       var record = this.datatable.getRecord(target);
 
       if (column.key == 'delete') {
-			if( !YAHOO.lang.isUndefined(record.getData('id')) ){
+			if( !lang.isUndefined(record.getData('id')) ){
 	         if (confirm(inputEx.messages.confirmDeletion)) {
 	            if(this.editingNewRecord) {
 	               this.editingNewRecord = false;
@@ -126,9 +126,6 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	         }
 			}
       }
-      else if(column.key == 'modify') {
-         this.onClickModify(rowIndex);
-      } 
       else {				
       	this.onCellClick(ev,rowIndex);
       }
@@ -196,25 +193,52 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		this.insertButton.disabled = true ;
 	},
    
-	onAddButton: function(e) {	
-		var target = Event.getTarget(e);
-      var record = this.datatable.getRecord(target);
-		
-		target.parentNode.innerHTML = inputEx.messages.deleteText;
-		
-		this.datatable.unselectRow(record);
-		this.insertButton.disabled = false ;
-		
-		this.itemAddedEvt.fire(record);
+	onAddButton: function(e) {
 		Event.stopEvent(e);	
+		var target = Event.getTarget(e),
+      record = this.datatable.getRecord(target),
+		field;
+		
+		
+		for(var i=0, fieldsLength = this.options.fields.length; i<fieldsLength; i++){
+			field = this.options.fields[i];
+			if( !lang.isUndefined(field.inputParams.required) ){
+				if( lang.isUndefined(record.getData(field.inputParams.name)) ){
+					alert('Vous devez remplir le champ : "'+field.inputParams.label+'"');
+					return;
+				}
+			}
+		}
+				
+		this.itemAddedEvt.fire(record);
 	},
 	
 	onCancelButton: function(e) {
-		var target = Event.getTarget(e);
-		
+		Event.stopEvent(e);
+		var target = Event.getTarget(e);	
 		this.datatable.deleteRow(target);
     	this.insertButton.disabled = false ;
-		Event.stopEvent(e);
+	},
+	
+	/**
+	 * Validate the new record's row : 
+	 * You need to call this function when you really added the item with an id
+	 * Ie if you trigger an Ajax request to insert your record into database,
+	 * you trigger this function only if your request didn't failed
+	 */
+	onAddSucess: function(record, oData){
+		var recordNode = Dom.get(this.datatable.getLastSelectedRecord()),
+		childNodes = recordNode.childNodes,
+		childNodeIndex = childNodes.length - 1,
+		innerDivNode = childNodes[childNodeIndex].childNodes[0];
+		
+		// Update Row with new record
+		this.datatable.updateRow(record, oData);
+		// Update the ADD / CANCEL buttons to "delete" text
+		innerDivNode.innerHTML = inputEx.messages.deleteText;
+		// Unselect Row and enable "Insert" button again
+		this.datatable.unselectRow(recordNode);
+		this.insertButton.disabled = false ;
 	}
    
 });
@@ -233,7 +257,6 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
  */
 inputEx.widget.CellEditor = function(inputExFieldDef) {
     this._inputExFieldDef = inputExFieldDef;
-   
     this._sId = "yui-textboxceditor" + YAHOO.widget.BaseCellEditor._nCount;
 	 YAHOO.widget.BaseCellEditor._nCount++;
     inputEx.widget.CellEditor.superclass.constructor.call(this, "inputEx", {disableBtns:false});

@@ -34,7 +34,7 @@ inputEx.widget.DataTable.prototype = {
     * Set the options
     */
    setOptions: function(options) {
-      
+
       this.options = {};
       this.options.id = options.id || Dom.generateId();
       this.options.parentEl = lang.isString(options.parentEl) ? Dom.get(options.parentEl) : options.parentEl;
