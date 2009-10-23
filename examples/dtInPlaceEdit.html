@@ -180,6 +180,19 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 		var rec = record[0];
 		alert("Item updated : "+rec.getData('id'));
 	});
+	
+	/* Subscribe to this event to handle the non-filled required fields */
+	myDatatable.requiredFieldsEvt.subscribe(function(event,args){
+		var reqFields = args[0],
+		rlength = reqFields.length;
+		
+		var error = 'You need to complete the following field(s) : \n';
+		for(var i=0; i != rlength; i++){
+			error += ' - '+reqFields[i]+'\n';
+		}
+		alert(error);
+	});
+	
   </textarea>
  </div>
 </div>

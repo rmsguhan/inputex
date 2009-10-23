@@ -12,7 +12,7 @@
  */
 inputEx.widget.dtInPlaceEdit = function(options) {
    inputEx.widget.dtInPlaceEdit.superclass.constructor.call(this, options);
- 	
+	
 };
 
 lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
@@ -54,6 +54,15 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
    },
    
    /**
+    * Init the events
+    */
+   initEvents: function() {
+	  inputEx.widget.dtInPlaceEdit.superclass.initEvents.call(this);
+	
+     this.requiredFieldsEvt = new YAHOO.util.CustomEvent('requiredFields', this);
+	},
+	
+   /**
     * Make the datatable inplace editable with inputEx fields
     */
    initEditor: function() {
@@ -68,8 +77,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 
       this.datatable.subscribe("cellMouseoverEvent", highlightEditableCell);
       this.datatable.subscribe("cellMouseoutEvent", this.datatable.onEventUnhighlightCell);
-		
-
+		    	    
    },
    
    /**
@@ -140,7 +148,6 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		var elCell = ev.target, oColumn;
 		elCell = this.datatable.getTdEl(elCell);
 		if(elCell) {
-
 			oColumn = this.datatable.getColumn(elCell);
 			if(oColumn && oColumn.editor) {
 				var oCellEditor = this.datatable._oCellEditor;
@@ -197,19 +204,23 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		Event.stopEvent(e);	
 		var target = Event.getTarget(e),
       record = this.datatable.getRecord(target),
-		field;
-		
+		field, requiredFields = [];
 		
 		for(var i=0, fieldsLength = this.options.fields.length; i<fieldsLength; i++){
 			field = this.options.fields[i];
 			if( !lang.isUndefined(field.inputParams.required) ){
 				if( lang.isUndefined(record.getData(field.inputParams.name)) ){
-					alert('Vous devez remplir le champ : "'+field.inputParams.label+'"');
-					return;
+					requiredFields.push(field.inputParams.label);
 				}
 			}
 		}
-				
+		
+		// If not all the required fields are set
+		if(requiredFields.length > 0){
+			this.requiredFieldsEvt.fire(requiredFields);			
+			return;
+		}
+		
 		this.itemAddedEvt.fire(record);
 	},
 	
