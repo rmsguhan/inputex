@@ -166,13 +166,17 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 		data.id = 'my-id-12345';
 
 		// We send back the record and the updated data
-		this.onAddSucess(rec,data);
+		this.onAddSuccess(rec,data);
 
 		alert("Item added with id : "+rec.getData('id'));
 	});
 	
 	myDatatable.itemRemovedEvt.subscribe(function(event,record){
 		var rec = record[0];
+		
+		// We send back the record to really delete the item in the datatable
+		this.onRemoveSuccess(rec);
+		
 		alert("Item deleted : "+rec.getData('id'));
 	});
 	

@@ -121,18 +121,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
       var record = this.datatable.getRecord(target);
 
       if (column.key == 'delete') {
-			if( !lang.isUndefined(record.getData('id')) ){
-	         if (confirm(inputEx.messages.confirmDeletion)) {
-	            if(this.editingNewRecord) {
-	               this.editingNewRecord = false;
-	            }
-	            else {
-	               this.itemRemovedEvt.fire( record );
-	            }
-	            this.datatable.deleteRow(target);
-	            this.hideSubform();
-	         }
-			}
+			this.onRemoveItem(record);	
       }
       else {				
       	this.onCellClick(ev,rowIndex);
@@ -166,6 +155,26 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		
    },
 
+	/**
+	 * When trying to delete a row
+	 */
+	onRemoveItem: function(record){
+		// Only if the row has an id
+		if( !lang.isUndefined(record.getData('id')) ){
+         if (confirm(inputEx.messages.confirmDeletion)) {
+				this.itemRemovedEvt.fire( record );            
+         }
+		}
+	},
+	
+	/**
+	 * When succes to delete a row
+	 */
+	onRemoveSuccess: function(record){
+		this.datatable.deleteRow(record);
+	},
+	
+	
 	/**
     * When clicking on the "insert" button to add a row
     */
@@ -237,7 +246,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	 * Ie if you trigger an Ajax request to insert your record into database,
 	 * you trigger this function only if your request didn't failed
 	 */
-	onAddSucess: function(record, oData){
+	onAddSuccess: function(record, oData){
 		var recordNode = Dom.get(this.datatable.getLastSelectedRecord()),
 		childNodes = recordNode.childNodes,
 		childNodeIndex = childNodes.length - 1,
