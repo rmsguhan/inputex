@@ -77,9 +77,8 @@ lang.extend(inputEx.ColorField, inputEx.Field, {
       // Render the overlay
       this.oOverlay.render(this.wrapEl);
       
-      // TODO : why ?
       // HACK: Set position absolute to the overlay
-      // Dom.setStyle(this.oOverlay.body.parentNode, "position", "absolute");
+      Dom.setStyle(this.oOverlay.body.parentNode, "position", "absolute");
       
       // toggle Menu when clicking on colorEl
       Event.addListener(this.colorEl,'mousedown',function(e){
