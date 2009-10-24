@@ -255,7 +255,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	        }
 	    }
 	    if(!p.type) p.type = 'object';
-	       var type = p.type;
+	    var type = p.type;
 	       
 	       // If type is a "Union type definition", we'll use the first type for the field
 	       // "array" <=>  [] <=> ["any"]
@@ -307,7 +307,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	          fieldDef.inputParams.fields = fields;
 	          
 	       }
-	       else if(type == "string" && p["enum"] ) {
+	       else if(type == "string" && (p["enum"] || p["options"]) ) {
 	          fieldDef.type = "select";
 	          
 	          if(p.options) {
@@ -365,7 +365,12 @@ inputEx.JsonSchema.Builder.prototype = {
     	          }
 	          }
 	       }
-	    
+	
+			 // Override inputEx's type with the "_type" attribute
+			 if( !!p["_inputex"] && !!p["_inputex"]["_type"]) {
+				fieldDef.type = p["_inputex"]["_type"];
+			 }
+	
 	    // Add the defaultOptions
 	    for(var kk in this.defaultOptions) {
 	        if(this.defaultOptions.hasOwnProperty(kk) && lang.isUndefined(fieldDef.inputParams[kk])) {
