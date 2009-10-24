@@ -143,7 +143,12 @@ inputEx.JsonSchema = {
     		};
       }
       else {
-         throw new Error("inputEx type '"+t+"' not handled in inputExToSchema.");
+			return {
+				'type': 'string',
+				'title': ip.label,
+				'optional': typeof ip.required == "undefined" ? true : !ip.required,
+				'_inputex': ip
+			};
       }
       
    }
@@ -285,6 +290,10 @@ inputEx.JsonSchema.Builder.prototype = {
 	        	  // when items is an object, it's a schema that describes each item in the list
 	        	  fieldDef.inputParams.elementType = this.schemaToInputEx(p.items, propertyName);
 	          }
+	
+		       if(p.minItems) { fieldDef.inputParams.minItems = p.minItems; }
+				 if(p.maxItems) { fieldDef.inputParams.maxItems = p.maxItems; }
+	
 	       }
 	       else if(type == "object" ) {
 	          fieldDef.type = "group";
