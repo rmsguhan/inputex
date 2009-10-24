@@ -15,7 +15,7 @@
 
 YAHOO.util.Event.onDOMReady(function() {
 	
-	var service = new inputEx.RPC.Service("smd/mathservice.smd",{
+	var service = new inputEx.RPC.Service("mathservice.smd",{
 			success: function() {
 				this.add({a: 3, b: 4}, {
 					success: function(result) {
