@@ -173,38 +173,5 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
 </div>
 
 
-
-<!-- Example 4 -->
-<div class='exampleDiv'>
- <p class="title">Using RPC service</p>
- <p>Create an instance of inputEx.RPC.service that contains 3 methods (add,remove,modify) and pass it to the <i>rpcService</i> parameter.</p>
- <div class='demoContainer' id='container4'></div>
- <div class='codeContainer'>
-  <textarea name="code" class="JScript">
-	
-	var service = new inputEx.RPC.Service({
-	   "SMDVersion":"2.0",
-	   "envelope":"URL",
-	   "transport":"POST",
-	   "target": "/my/basepath/",
-	   "services": {
-		   "add" : {"target": "addBook"},
-		   "modify" : {"target": "modifyBook"},
-		   "remove" : {	"target": "deleteBook"}
-	 	}
-	});
-	
-	var dt = new inputEx.widget.dtDialogEdit({
-		parentEl: 'container4', 
-		fields: myFields,
-		datasource: myDataSource/*,
-		rpcService: service*/
-	});
-  </textarea>
- </div>
-</div>
-
-
-
 </body>
 </html>

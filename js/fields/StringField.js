@@ -83,8 +83,7 @@ lang.extend(inputEx.StringField, inputEx.Field, {
        }
 
 	   Event.addFocusListener(this.el, this.onFocus, this, true);
-	   Event.addBlurListener(this.el, this.onBlur, this, true);
-
+		Event.addBlurListener(this.el, this.onBlur, this, true);
 	   Event.addListener(this.el, "keypress", this.onKeyPress, this, true);
 	   Event.addListener(this.el, "keyup", this.onKeyUp, this, true);
    },

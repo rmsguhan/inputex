@@ -313,7 +313,7 @@ lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
    /**
     * Returns new value for CellEditor.
     */
-   getInputValue : function() {
+   getInputValue : function() {	
       return this._inputExField.getValue();
    },
 
