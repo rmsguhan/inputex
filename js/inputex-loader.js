@@ -50,6 +50,20 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
  	  	   varName: 'inputEx.RPC',
  			requires: ['yahoo','connection','inputex-jsonschema']
  		},
+		{
+ 			name: 'inputex-smdtester',
+ 			type: 'js',
+ 	  	   fullpath: pathToInputEx+'js/rpc/smdTester.js',
+ 	  	   varName: 'inputEx.RPC.SMDTester',
+ 			requires: ['inputex-rpc', 'inputex-jsontreeinspector']
+ 		},
+		{
+ 			name: 'inputex-yql',
+ 			type: 'js',
+ 	  	   fullpath: pathToInputEx+'js/rpc/yql.js',
+ 	  	   varName: 'inputEx.YQL',
+ 			requires: ['inputex']
+ 		},
 		// Widgets
 		{
  			name: 'inputex-ddlist',
@@ -63,9 +77,43 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
  			type: 'js',
  	  	   fullpath: pathToInputEx+'js/widgets/Dialog.js',
  	  	   varName: 'inputEx.widget.Dialog',
- 			requires: ['inputex', 'dragdrop', 'container']
+ 			requires: ['inputex', 'inputex-group', 'dragdrop', 'container']
  		},
- 		
+ 		{
+ 			name: 'inputex-datatable',
+ 			type: 'js',
+ 	  	   fullpath: pathToInputEx+'js/widgets/Datatable-beta.js',
+ 	  	   varName: 'inputEx.widget.DataTable',
+ 			requires: ['datatable', 'inputex']
+ 		},
+		{
+ 			name: 'inputex-dialog-datatable',
+ 			type: 'js',
+ 	  	   fullpath: pathToInputEx+'js/widgets/dtDialogEdit.js',
+ 	  	   varName: 'inputEx.widget.dtDialogEdit',
+ 			requires: ['inputex-datatable', 'inputex-dialog']
+ 		},
+		{
+ 			name: 'inputex-inplace-datatable',
+ 			type: 'js',
+ 	  	   fullpath: pathToInputEx+'js/widgets/dtInPlaceEdit.js',
+ 	  	   varName: 'inputEx.widget.dtInPlaceEdit',
+ 			requires: ['inputex-datatable']
+ 		},
+		{
+ 			name: 'inputex-fasttable',
+ 			type: 'js',
+ 	  	   fullpath: pathToInputEx+'js/widgets/FastTable-beta.js',
+ 	  	   varName: 'inputEx.widget.FastTable',
+ 			requires: ['inputex']
+ 		},
+		{
+ 			name: 'inputex-jsontreeinspector',
+ 			type: 'js',
+ 	  	   fullpath: pathToInputEx+'js/widgets/json-tree-inspector.js',
+ 	  	   varName: 'inputEx.widget.JsonTreeInspector',
+ 			requires: ['inputex']
+ 		},
 		// MetaFields
 		{
 			name: 'inputex-group',
@@ -109,7 +157,13 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 	  	   varName: 'inputEx.InPlaceEdit',
 			requires: ['inputex-field', 'animation']
 		},
-		
+		{
+			name: 'inputex-lens',
+			type: 'js',
+	  	   fullpath: pathToInputEx+'js/fields/Lens-beta.js',
+	  	   varName: 'inputEx.Lens',
+			requires: ['inputex-group']
+		},
 		// Fields
 		{
 			name: 'inputex-stringfield',
@@ -140,6 +194,13 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 			requires: ['inputex-field']
 		},
 		{
+		   name: 'inputex-colorpickerfield',
+			type: 'js',
+	  	   fullpath: pathToInputEx+'js/fields/ColorPickerField.js',
+	  	   varName: 'inputEx.ColorPickerField',
+			requires: ['inputex-field','colorpicker']
+		},
+		{
 		   name: 'inputex-datefield',
 			type: 'js',
 	  	   fullpath: pathToInputEx+'js/fields/DateField.js',
@@ -152,6 +213,13 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 	  	   fullpath: pathToInputEx+'js/fields/DatePickerField.js',
 	  	   varName: 'inputEx.DatePickerField',
 			requires: ['inputex-datefield', 'calendar', 'container']
+		},
+		{
+		   name: 'inputex-dateselectmonthfield',
+			type: 'js',
+	  	   fullpath: pathToInputEx+'js/fields/DateSelectMonthField.js',
+	  	   varName: 'inputEx.DateSelectMonthField',
+			requires: ['inputex-combinefield']
 		},
 		{
 		   name: 'inputex-integerfield',
@@ -215,6 +283,20 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 	  	   fullpath: pathToInputEx+'js/fields/HiddenField.js',
 	  	   varName: 'inputEx.HiddenField',
 			requires: ['inputex-field']
+		},
+		{
+		   name: 'inputex-keyvaluefield',
+			type: 'js',
+	  	   fullpath: pathToInputEx+'js/fields/KeyValueField-beta.js',
+	  	   varName: 'inputEx.KeyValueField',
+			requires: ['inputex-combinefield']
+		},
+		{
+		   name: 'inputex-keyopvaluefield',
+			type: 'js',
+	  	   fullpath: pathToInputEx+'js/fields/KeyOpValueField-beta.js',
+	  	   varName: 'inputEx.KeyOpValueField',
+			requires: ['inputex-keyvaluefield']
 		},
       {
 		   name: 'inputex-multiautocomplete',

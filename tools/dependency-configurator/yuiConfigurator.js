@@ -31,6 +31,10 @@ YAHOO.yui.configurator = function(container) {
     };
 
     function createButton(label) {
+		 if(!YAHOO.yui.moduleMeta[label]) {
+			 throw new Error("no module called "+label);
+  		 }
+	
         var b = new Button({
             id: label,
             type: "checkbox",
