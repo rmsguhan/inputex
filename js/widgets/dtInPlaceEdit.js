@@ -300,7 +300,8 @@ lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
     * Resets CellEditor UI to initial state.
     */
    resetForm : function() {
-       this._inputExField.setValue(lang.isValue(this.value) ? this.value.toString() : "");
+   	this._inputExField.clear();
+		this._inputExField.setValue(this.value);
    },
 	
    /**
