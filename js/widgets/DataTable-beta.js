@@ -389,6 +389,7 @@ inputEx.messages.deleteText = "delete";
 inputEx.messages.modifyText = "modify";
 inputEx.messages.insertItemText = "Insert";
 inputEx.messages.addButtonText = "Add";
+inputEx.messages.loadingText = "Loading..";
 inputEx.messages.confirmDeletion = "Are you sure?";
 
 })();
