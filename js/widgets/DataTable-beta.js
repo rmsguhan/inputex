@@ -132,6 +132,14 @@ inputEx.widget.DataTable.prototype = {
       
       this.datatable = new YAHOO.widget.DataTable(this.element,this.columndefs, this.options.datasource, this.options.datatableOpts);
       this.datatable.subscribe('cellClickEvent', this._onCellClick, this, true);
+
+		// Automatically set up the paginator
+		if(this.options.datatableOpts && this.options.datatableOpts.paginator) {
+			this.datatable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+	        oPayload.totalRecords = oResponse.meta.totalRecords;
+	        return oPayload;
+	    	};
+		}
       
       // init the Editor
       this.initEditor();
