@@ -12,13 +12,14 @@
 <link rel="stylesheet" type="text/css" href="../lib/yui/calendar/assets/skins/sam/calendar.css" />
 
 
-<!-- InputEx CSS -->
-<link type='text/css' rel='stylesheet' href='../css/inputEx.css' />
+
 
 <!-- Demo CSS -->
 <link rel="stylesheet" type="text/css" href="css/demo.css"/>
 <link rel="stylesheet" type="text/css" href="css/dpSyntaxHighlighter.css">
 
+<!-- InputEx CSS -->
+<link type='text/css' rel='stylesheet' href='../css/inputEx.css' />
 </head>
 
 <body class=" yui-skin-sam">
@@ -125,7 +126,7 @@ var myFields = [
 
 	var myFields = [
 		{type: 'hidden', inputParams: {label: 'Id', name: 'id'} },
-		{type: 'datepicker', inputParams: {label: 'Date', name: 'date'} }, // formatter is auto-generated
+		{type: 'date', inputParams: {label: 'Date', name: 'date'} }, // formatter is auto-generated
 		{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity', size:4} },
 		{type: 'number', inputParams: {label: 'Amount', name: 'amount', size:4, showMsg:true, required:true} },
 		{type: 'string', inputParams: {label: 'Title', name: 'title', required:true} },
@@ -171,6 +172,8 @@ var myFields = [
 	
 	myDatatable.itemModifiedEvt.subscribe(function(event,record){
 		var rec = record[0];
+		
+		this.onModifySuccess(rec);
 		alert("Item updated : "+rec.getData('id'));
 	});
 	
