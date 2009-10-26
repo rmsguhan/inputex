@@ -53,6 +53,9 @@
    msgs.deleteText = "supprimer";
    msgs.insertItemText = "Ajouter";
    msgs.confirmDeletion = "Êtes-vous sûr ?";
+	msgs.addButtonText = "Ajouter";
+	msgs.loadingText = "Patientez...";
+
    
    // TimeInterval
    msgs.timeUnits = {

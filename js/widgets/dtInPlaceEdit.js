@@ -307,10 +307,13 @@ lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
     * Render the inputEx field editor
     */
    renderForm : function() {
-   
       // Build the inputEx field
       this._inputExField = inputEx(this._inputExFieldDef);
       this.getContainerEl().appendChild(this._inputExField.getEl());
+		
+		// Locals for Save/Cancel Buttons
+		this.LABEL_SAVE = inputEx.messages.saveText;
+		this.LABEL_CANCEL = inputEx.messages.cancelText;
    },
 
    /**
