@@ -199,7 +199,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		this.addButton = inputEx.cn('input', {type:'button',value:inputEx.messages.addButtonText}, null, null);
       Event.addListener(this.addButton, 'click', this.onAddButton, this, true);
       lastCell.appendChild(this.addButton);
-
+		
 		// Create a "Cancel" Button
 		this.deleteButton = inputEx.cn('input', {type:'button',value:inputEx.messages.cancelText}, null, null);
 		Event.addListener(this.deleteButton, 'click', this.onCancelButton, this, true);
@@ -214,7 +214,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		var target = Event.getTarget(e),
       record = this.datatable.getRecord(target),
 		field, requiredFields = [];
-		
+
 		for(var i=0, fieldsLength = this.options.fields.length; i<fieldsLength; i++){
 			field = this.options.fields[i];
 			if( !lang.isUndefined(field.inputParams.required) ){
@@ -224,12 +224,14 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 			}
 		}
 		
-		// If not all the required fields are set
+		//If not all the required fields are set
 		if(requiredFields.length > 0){
 			this.requiredFieldsEvt.fire(requiredFields);			
 			return;
 		}
 		
+		this.addButton.value = inputEx.messages.loadingText;
+		this.addButton.disabled = true;
 		this.itemAddedEvt.fire(record);
 	},
 	
@@ -305,10 +307,13 @@ lang.extend(inputEx.widget.CellEditor, YAHOO.widget.BaseCellEditor,{
     * Render the inputEx field editor
     */
    renderForm : function() {
-   
       // Build the inputEx field
       this._inputExField = inputEx(this._inputExFieldDef);
       this.getContainerEl().appendChild(this._inputExField.getEl());
+		
+		// Locals for Save/Cancel Buttons
+		this.LABEL_SAVE = inputEx.messages.saveText;
+		this.LABEL_CANCEL = inputEx.messages.cancelText;
    },
 
    /**
