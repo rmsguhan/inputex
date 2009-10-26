@@ -34,7 +34,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 			if( !lang.isUndefined(record.getData('id')) ){
 				// If the data in the cellEditor changed
 				if(oArgs.newData != oArgs.oldData){
-					this.itemModifiedEvt.fire(record);
+					this.onModifyItem(record, oArgs);
 				}
 			}
 				
@@ -259,8 +259,23 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		// Unselect Row and enable "Insert" button again
 		this.datatable.unselectRow(recordNode);
 		this.insertButton.disabled = false ;
-	}
+	},
    
+	onModifyItem: function(record, oArgs){
+		var itemContainer = oArgs.editor.getTdEl().childNodes[0];
+		// Add CSS
+		Dom.addClass(itemContainer, "inputEx-onModifyItem");
+		this.itemModifiedEvt.fire(record);
+	},
+	
+	onModifySuccess: function(record){
+		var nodes = this.datatable.getElementsByClassName("inputEx-onModifyItem");
+		// Remove CSS
+		for(i=0,nodesLength = nodes.length; i<nodesLength; i++){
+			Dom.removeClass(nodes[i], "inputEx-onModifyItem");
+		}
+	}
+
 });
 
 

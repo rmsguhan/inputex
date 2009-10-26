@@ -670,3 +670,10 @@ ul.inputEx-JsonTreeInspector li span.type-null {
 .inputEx-FastTable-field input {
 	border: 0;
 }
+
+/**
+ * inputEx-dtInPlaceEdit
+ */
+tbody.yui-dt-data td.yui-dt-editable div.inputEx-onModifyItem{
+	background-color: #FFAFAF;
+}
