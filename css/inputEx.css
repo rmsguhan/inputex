@@ -674,11 +674,11 @@ ul.inputEx-JsonTreeInspector li span.type-null {
 /**
  * inputEx-dtInPlaceEdit
  */
-tbody.yui-dt-data td.yui-dt-editable div.inputEx-onModifyItem{
+tbody.yui-dt-data td.yui-dt-editable div.inputEx-dtInPlaceEdit-onModifyItem{
 	background-color: #FFAFAF;
 }
 
-tbody.yui-dt-data div.inputEx-Loader{
+tbody.yui-dt-data div.inputEx-dtInPlaceEdit-deleteLinkSpinner{
 	width:16px;
 	height:16px;
 	background:transparent url(../images/ajax-loader.gif) no-repeat scroll 20px 4px;
