@@ -162,34 +162,35 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		var targetNode = target.childNodes[0];
 		
 		// Only if the row has an id && isn't already being removed
-		if( !lang.isUndefined(record.getData('id')) && this.removeNode != targetNode ){
+		if( !lang.isUndefined(record.getData('id')) && this.deleteLinkNode != targetNode ){
 
          if (confirm(inputEx.messages.confirmDeletion)) {
-				this.removeNode = targetNode;
-				
-				this.removeNode.innerHTML = '';
-				Dom.addClass(this.removeNode,'inputEx-Loader');
+				this.deleteLinkNode = targetNode;		
+				this.deleteLinkNode.innerHTML = '';
+				Dom.addClass(this.deleteLinkNode,'inputEx-dtInPlaceEdit-deleteLinkSpinner');
 				this.itemRemovedEvt.fire( record );            
          }
 		}
 	},
 	
 	/**
-	 * When succes to delete a row
+	 * When successfully deleted a row
 	 */
 	onRemoveSuccess: function(record){
 		this.datatable.deleteRow(record);
 	},
 	
+	/**
+	 * When failed to delete a row
+	 */
 	onRemoveFailure: function(){
-		this.removeNode.innerHTML = inputEx.messages.deleteText;
-		Dom.removeClass(this.removeNode,'inputEx-Loader');
-		this.removeNode = null;
+		this.deleteLinkNode.innerHTML = inputEx.messages.deleteText;
+		Dom.removeClass(this.deleteLinkNode,'inputEx-dtInPlaceEdit-deleteLinkSpinner');
+		this.deleteLinkNode = null;
 	},
 	
-	
 	/**
-    * When clicking on the "insert" button to add a row
+    * When clicking on the "insert" button to add a new row
     */
 	onInsertButton: function(e) {
 		var tbl = this.datatable;
@@ -222,6 +223,9 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		this.insertButton.disabled = true ;
 	},
    
+	/**
+	 * When clicking "Add" button to save a new row
+	 */
 	onAddButton: function(e) {
 		Event.stopEvent(e);	
 		var target = Event.getTarget(e),
@@ -248,6 +252,9 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		this.itemAddedEvt.fire(record);
 	},
 	
+	/**
+	 * When clicking "Cancel" button to cancel a new row
+	 */
 	onCancelButton: function(e) {
 		Event.stopEvent(e);
 		var target = Event.getTarget(e);	
@@ -276,23 +283,32 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		this.insertButton.disabled = false ;
 	},
    
+	/**
+	 * When Failed to Add Row
+	 */
 	onAddFailure: function(){
 		this.addButton.value = inputEx.messages.addButtonText;
 		this.addButton.disabled = false;
 	},
 	
+	/**
+	 * When modifying a row
+	 */
 	onModifyItem: function(record, oArgs){
 		var itemContainer = oArgs.editor.getTdEl().childNodes[0];
 		// Add CSS
-		Dom.addClass(itemContainer, "inputEx-onModifyItem");
+		Dom.addClass(itemContainer, "inputEx-dtInPlaceEdit-onModifyItem");
 		this.itemModifiedEvt.fire(record);
 	},
 	
+	/**
+	 * When successfully modified a row
+	 */
 	onModifySuccess: function(record){
-		var nodes = this.datatable.getElementsByClassName("inputEx-onModifyItem");
+		var nodes = this.datatable.getElementsByClassName("inputEx-dtInPlaceEdit-onModifyItem");
 		// Remove CSS
 		for(i=0,nodesLength = nodes.length; i<nodesLength; i++){
-			Dom.removeClass(nodes[i], "inputEx-onModifyItem");
+			Dom.removeClass(nodes[i], "inputEx-dtInPlaceEdit-onModifyItem");
 		}
 	}
 
