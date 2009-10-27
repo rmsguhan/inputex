@@ -121,7 +121,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
       var record = this.datatable.getRecord(target);
 
       if (column.key == 'delete') {
-			this.onRemoveItem(record);	
+			this.onRemoveItem(record,target);	
       }
       else {				
       	this.onCellClick(ev,rowIndex);
@@ -158,10 +158,17 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	/**
 	 * When trying to delete a row
 	 */
-	onRemoveItem: function(record){
-		// Only if the row has an id
-		if( !lang.isUndefined(record.getData('id')) ){
+	onRemoveItem: function(record,target){
+		var targetNode = target.childNodes[0];
+		
+		// Only if the row has an id && isn't already being removed
+		if( !lang.isUndefined(record.getData('id')) && this.removeNode != targetNode ){
+
          if (confirm(inputEx.messages.confirmDeletion)) {
+				this.removeNode = targetNode;
+				
+				this.removeNode.innerHTML = '';
+				Dom.addClass(this.removeNode,'inputEx-Loader');
 				this.itemRemovedEvt.fire( record );            
          }
 		}
@@ -172,6 +179,12 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	 */
 	onRemoveSuccess: function(record){
 		this.datatable.deleteRow(record);
+	},
+	
+	onRemoveFailure: function(){
+		this.removeNode.innerHTML = inputEx.messages.deleteText;
+		Dom.removeClass(this.removeNode,'inputEx-Loader');
+		this.removeNode = null;
 	},
 	
 	
@@ -263,6 +276,11 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		this.insertButton.disabled = false ;
 	},
    
+	onAddFailure: function(){
+		this.addButton.value = inputEx.messages.addButtonText;
+		this.addButton.disabled = false;
+	},
+	
 	onModifyItem: function(record, oArgs){
 		var itemContainer = oArgs.editor.getTdEl().childNodes[0];
 		// Add CSS
