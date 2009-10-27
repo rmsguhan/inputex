@@ -21,7 +21,7 @@ generator_out=~/Projets/inputex/master/doc/
 template=~/Tools/yuidoc/template
 
 # The version of your project to display within the documentation.
-version=0.2.3rc1
+version=0.4.0rc1
 
 # The version of YUI the project is using.  This effects the output for
 # YUI configuration attributes.  This should start with '2' or '3'.

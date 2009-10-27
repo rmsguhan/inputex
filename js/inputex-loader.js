@@ -82,16 +82,9 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
  		{
  			name: 'inputex-datatable',
  			type: 'js',
- 	  	   fullpath: pathToInputEx+'js/widgets/Datatable-beta.js',
+ 	  	   fullpath: pathToInputEx+'js/widgets/DataTable.js',
  	  	   varName: 'inputEx.widget.DataTable',
- 			requires: ['datatable', 'inputex']
- 		},
-		{
- 			name: 'inputex-dialog-datatable',
- 			type: 'js',
- 	  	   fullpath: pathToInputEx+'js/widgets/dtDialogEdit.js',
- 	  	   varName: 'inputEx.widget.dtDialogEdit',
- 			requires: ['inputex-datatable', 'inputex-dialog']
+ 			requires: ['datatable', 'inputex', 'inputex-dialog']
  		},
 		{
  			name: 'inputex-inplace-datatable',

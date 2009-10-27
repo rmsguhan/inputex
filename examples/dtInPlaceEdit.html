@@ -52,7 +52,8 @@
 <script src="../js/json-schema.js"  type='text/javascript'></script>
 <script src="../js/rpc/inputex-rpc.js"  type='text/javascript'></script>
 
-<script src="../js/widgets/DataTable-beta.js"  type='text/javascript'></script>
+<script src="../js/widgets/Dialog.js"  type='text/javascript'></script>
+<script src="../js/widgets/DataTable.js"  type='text/javascript'></script>
 <script src="../js/widgets/dtInPlaceEdit.js"  type='text/javascript'></script>
 
 
@@ -148,8 +149,8 @@ var myFields = [
 		showHideColumnsDlg: true
 	});
 	
-	myDatatable.itemAddedEvt.subscribe(function(event,record){
-		var rec = record[0];
+	myDatatable.itemAddedEvt.subscribe(function(event,args){
+		var rec = args[0];
 		var data = rec.getData();
 		
 		// We add an id
@@ -161,8 +162,8 @@ var myFields = [
 		alert("Item added with id : "+rec.getData('id'));
 	});
 	
-	myDatatable.itemRemovedEvt.subscribe(function(event,record){
-		var rec = record[0];
+	myDatatable.itemRemovedEvt.subscribe(function(event,args){
+		var rec = args[0];
 		
 		// We send back the record to really delete the item in the datatable
 		this.onRemoveSuccess(rec);
@@ -170,8 +171,8 @@ var myFields = [
 		alert("Item deleted : "+rec.getData('id'));
 	});
 	
-	myDatatable.itemModifiedEvt.subscribe(function(event,record){
-		var rec = record[0];
+	myDatatable.itemModifiedEvt.subscribe(function(event,args){
+		var rec = args[0];
 		
 		this.onModifySuccess(rec);
 		alert("Item updated : "+rec.getData('id'));
@@ -179,6 +180,81 @@ var myFields = [
 	
 	/* Subscribe to this event to handle the non-filled required fields */
 	myDatatable.requiredFieldsEvt.subscribe(function(event,args){
+		var reqFields = args[0],
+		rlength = reqFields.length;
+		
+		var error = 'You need to complete the following field(s) : \n';
+		for(var i=0; i != rlength; i++){
+			error += ' - '+reqFields[i]+'\n';
+		}
+		alert(error);
+	});
+	
+  </textarea>
+ </div>
+</div>
+
+
+
+<!-- Example 3 -->
+<div class='exampleDiv'>
+ <p class="title">Add with a dialog</p>
+ <p>Use the following code to add items through a dialog</p>
+ <div class='demoContainer' id='container3'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+	
+	// Example 2 (test for color field)
+	var myDialogDataSource = new YAHOO.util.DataSource([
+        {id:"po-0167", date:new Date(1980, 2, 24), quantity:1, amount:4, title:"A Book About Nothing", category: "SF", color: "#993300"},
+        {id:"po-0783", date:new Date("January 3, 1983"), quantity:null, amount:12.12345, title:"The Meaning of Life", category: "Novel", color: "#333300"},
+        {id:"po-0297", date:new Date(1978, 11, 12), quantity:12, amount:1.25, title:"This Book Was Meant to Be Read Aloud", category: "SF", color: "#003300"},
+        {id:"po-1482", date:new Date("March 11, 1985"), quantity:6, amount:3.5, title:"Read Me Twice", category: "Philosophy", color: "#003366"}
+  ]);
+  myDialogDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+  myDialogDataSource.responseSchema = { fields: ["id","date","quantity","amount","title", "category","color"] };
+	
+	
+	var myDialogDatatable = new inputEx.widget.dtInPlaceEdit({
+		parentEl: 'container3', 
+		editableFields: ['color', 'title', 'amount', 'quantity', 'date', 'category'],
+		fields: myFields,
+		datasource: myDialogDataSource,
+		insertWithDialog: true
+	});
+	
+	
+	myDialogDatatable.itemAddedEvt.subscribe(function(event,args){
+		var rec = args[0];
+		var data = rec.getData();
+		
+		// We add an id
+		data.id = 'my-id-12345';
+		
+		// We send back the record and the updated data
+		this.onAddSuccess(rec,data);
+		
+		alert("Item added with id : "+rec.getData('id'));
+	});
+	
+	myDialogDatatable.itemRemovedEvt.subscribe(function(event,args){
+		var rec = args[0];
+		
+		// We send back the record to really delete the item in the datatable
+		this.onRemoveSuccess(rec);
+		
+		alert("Item deleted : "+rec.getData('id'));
+	});
+	
+	myDialogDatatable.itemModifiedEvt.subscribe(function(event,args){
+		var rec = args[0];
+		
+		this.onModifySuccess(rec);
+		alert("Item updated : "+rec.getData('id'));
+	});
+	
+	/* Subscribe to this event to handle the non-filled required fields */
+	myDialogDatatable.requiredFieldsEvt.subscribe(function(event,args){
 		var reqFields = args[0],
 		rlength = reqFields.length;
 		

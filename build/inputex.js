@@ -63,7 +63,7 @@ inputEx = function(fieldOptions) {
 
 lang.augmentObject(inputEx, {
    
-   VERSION: "0.2.3a",
+   VERSION: "0.4.0rc1",
    
    /**
     * Url to the spacer image. This url schould be changed according to your project directories
@@ -569,7 +569,12 @@ inputEx.JsonSchema = {
     		};
       }
       else {
-         throw new Error("inputEx type '"+t+"' not handled in inputExToSchema.");
+			return {
+				'type': 'string',
+				'title': ip.label,
+				'optional': typeof ip.required == "undefined" ? true : !ip.required,
+				'_inputex': ip
+			};
       }
       
    }
@@ -681,7 +686,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	        }
 	    }
 	    if(!p.type) p.type = 'object';
-	       var type = p.type;
+	    var type = p.type;
 	       
 	       // If type is a "Union type definition", we'll use the first type for the field
 	       // "array" <=>  [] <=> ["any"]
@@ -711,6 +716,10 @@ inputEx.JsonSchema.Builder.prototype = {
 	        	  // when items is an object, it's a schema that describes each item in the list
 	        	  fieldDef.inputParams.elementType = this.schemaToInputEx(p.items, propertyName);
 	          }
+	
+		       if(p.minItems) { fieldDef.inputParams.minItems = p.minItems; }
+				 if(p.maxItems) { fieldDef.inputParams.maxItems = p.maxItems; }
+	
 	       }
 	       else if(type == "object" ) {
 	          fieldDef.type = "group";
@@ -733,7 +742,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	          fieldDef.inputParams.fields = fields;
 	          
 	       }
-	       else if(type == "string" && p["enum"] ) {
+	       else if(type == "string" && (p["enum"] || p["options"]) ) {
 	          fieldDef.type = "select";
 	          
 	          if(p.options) {
@@ -791,7 +800,12 @@ inputEx.JsonSchema.Builder.prototype = {
     	          }
 	          }
 	       }
-	    
+	
+			 // Override inputEx's type with the "_type" attribute
+			 if( !!p["_inputex"] && !!p["_inputex"]["_type"]) {
+				fieldDef.type = p["_inputex"]["_type"];
+			 }
+	
 	    // Add the defaultOptions
 	    for(var kk in this.defaultOptions) {
 	        if(this.defaultOptions.hasOwnProperty(kk) && lang.isUndefined(fieldDef.inputParams[kk])) {
@@ -2166,8 +2180,7 @@ lang.extend(inputEx.StringField, inputEx.Field, {
        }
 
 	   Event.addFocusListener(this.el, this.onFocus, this, true);
-	   Event.addBlurListener(this.el, this.onBlur, this, true);
-
+		Event.addBlurListener(this.el, this.onBlur, this, true);
 	   Event.addListener(this.el, "keypress", this.onKeyPress, this, true);
 	   Event.addListener(this.el, "keyup", this.onKeyUp, this, true);
    },
@@ -2726,9 +2739,8 @@ lang.extend(inputEx.ColorField, inputEx.Field, {
       // Render the overlay
       this.oOverlay.render(this.wrapEl);
       
-      // TODO : why ?
       // HACK: Set position absolute to the overlay
-      // Dom.setStyle(this.oOverlay.body.parentNode, "position", "absolute");
+      Dom.setStyle(this.oOverlay.body.parentNode, "position", "absolute");
       
       // toggle Menu when clicking on colorEl
       Event.addListener(this.colorEl,'mousedown',function(e){

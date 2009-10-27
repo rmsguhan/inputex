@@ -12,13 +12,15 @@
  */
 inputEx.widget.dtInPlaceEdit = function(options) {
    inputEx.widget.dtInPlaceEdit.superclass.constructor.call(this, options);
-	
 };
 
 lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	
 	renderDatatable: function() {
 		inputEx.widget.dtInPlaceEdit.superclass.renderDatatable.call(this);
+
+      // init the Editor
+      this.initEditor();
 		
 		 // Force save on blur event
 		this.datatable.onEditorBlurEvent = function(oArgs) {
@@ -51,6 +53,8 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
      
      this.options.allowModify = false;
      this.options.editableFields = options.editableFields; 
+
+		this.options.insertWithDialog = lang.isUndefined(options.insertWithDialog) ? false : options.insertWithDialog; 
    },
    
    /**
@@ -193,6 +197,13 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
     * When clicking on the "insert" button to add a new row
     */
 	onInsertButton: function(e) {
+		
+		// If insertWithDialog, display the dialog
+		if(this.options.insertWithDialog) {
+			inputEx.widget.dtInPlaceEdit.superclass.onInsertButton.call(this, e);
+			return;
+		}
+		
 		var tbl = this.datatable;
 
       // Insert a new row
@@ -269,6 +280,12 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	 * you trigger this function only if your request didn't failed
 	 */
 	onAddSuccess: function(record, oData){
+		
+		if(this.options.insertWithDialog) {
+			this.datatable.updateRow(record, oData);
+			return;
+		}
+		
 		var recordNode = Dom.get(this.datatable.getLastSelectedRecord()),
 		childNodes = recordNode.childNodes,
 		childNodeIndex = childNodes.length - 1,

@@ -1,6 +1,6 @@
  _                   _   _____      
 (_)_ __  _ __  _   _| |_| ____|_  __
-| | '_ \| '_ \| | | | __|  _| \ \/ /		version 0.2.3rc1
+| | '_ \| '_ \| | | | __|  _| \ \/ /		version 0.4.0rc1
 | | | | | |_) | |_| | |_| |___ >  < 		Distributed under the MIT License (see license.txt)
 |_|_| |_| .__/ \____|\__|_____/_/\_\
         |_|                         
@@ -9,10 +9,15 @@
 Release Notes:
 ==============
 
-version 0.2.3rc1:
+version 0.4.0rc1:
 ------------------
 
 not released yet
+
+	- Various
+		* Upgrading to YUI 2.8.0r4
+		* Switching to yuidoc for documentation
+		* Tickets moved to GitHub
 
 	- Added Fields
 		* Lens (beta)
@@ -65,12 +70,6 @@ not released yet
 		* fix on MultiSelectField
 		* fix empty test for Integer and Number Fields
 		* fix on DatePickerField: we had to click twice to select a date the first time
-		
-	- Various
-		* Switching to yuidoc for documentation
-	  	* including JSMin in lib/
-		* Upgrading to YUI 2.8.0r4
-		* Tickets moved to GitHub
 		
 	- Fields removed
 		* FrenchDate (use the french locale instead)

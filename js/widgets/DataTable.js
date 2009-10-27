@@ -65,6 +65,9 @@ inputEx.widget.DataTable.prototype = {
 
       this.options.datatableOpts = options.datatableOpts;
       this.options.fields = options.fields;
+
+		this.options.dialogLabel = options.dialogLabel || "";
+
    },
    
    
@@ -140,10 +143,7 @@ inputEx.widget.DataTable.prototype = {
 	        return oPayload;
 	    	};
 		}
-      
-      // init the Editor
-      this.initEditor();
-      
+            
       // Insert button
       if ( this.options.allowInsert ){
          this.insertButton = inputEx.cn('input', {type:'button', value:inputEx.messages.insertItemText}, null, null);
@@ -151,6 +151,99 @@ inputEx.widget.DataTable.prototype = {
          this.options.parentEl.appendChild(this.insertButton);
       }
    },
+	
+   /**
+    * Render the dialog for row edition
+    */
+   renderDialog: function() {
+      
+     var that = this;
+      
+     this.dialog = new inputEx.widget.Dialog({
+				inputExDef: {
+				         type: 'form',
+				         inputParams: {
+				            fields: this.options.fields,
+				            buttons: [
+				               {type: 'button', value: 'Save', onClick: function() { that.onDialogSave();} },
+				               {type: 'button', value: 'Cancel', onClick: function() { that.onDialogCancel(); } }
+				            ]				
+				         }
+				      },
+				title: this.options.dialogLabel,
+				panelConfig: {
+					constraintoviewport: true, 
+					underlay:"shadow", 
+					close:true, 
+					fixedcenter: true,
+					visible:true, 
+					draggable:true,
+					modal: true
+				}		
+		});
+		
+		// Add a listener on the closing button and hook it to onDialogCancel()
+		YAHOO.util.Event.addListener(that.dialog.close,"click",function(){
+			that.onDialogCancel();
+		},that);
+		
+   },
+
+	/**
+    * When saving the Dialog
+    */
+   onDialogSave: function() {
+		
+		var newvalues, record;
+		
+	  	//Validate the Form
+	  	if ( !this.dialog.getForm().validate() ) return ;
+	   
+		// Update the record
+		if(!this.insertNewRecord){
+						
+			// Update the row
+			newvalues = this.dialog.getValue();
+			this.datatable.updateRow( this.selectedRecord , newvalues );
+
+			// Get the new record
+			record = this.datatable.getRecord(this.selectedRecord);
+			
+			// Fire the modify event
+         this.itemModifiedEvt.fire(record);
+
+		}
+		// Adding new record
+		else{
+			// Insert a new row
+	      this.datatable.addRow({});
+
+			// Set the Selected Record
+			var rowIndex = this.datatable.getRecordSet().getLength() - 1;
+			this.selectedRecord = rowIndex;
+			
+			// Update the row
+			newvalues = this.dialog.getValue();
+			this.datatable.updateRow( this.selectedRecord , newvalues );
+			
+			// Get the new record
+			record = this.datatable.getRecord(this.selectedRecord);
+						
+			// Fire the add event
+         this.itemAddedEvt.fire(record);
+		}
+      
+      this.dialog.hide();
+   },
+
+	/**
+    * When canceling the Dialog
+    */
+	onDialogCancel: function(){
+		this.insertNewRecord = false;
+		this.dialog.hide();
+	},
+
    
    /**
     * Handling cell click events
@@ -188,10 +281,31 @@ inputEx.widget.DataTable.prototype = {
    },
    
    /**
+    * Opens the Dialog to edit the row
     * Called when the user clicked on modify button
     */
    onClickModify: function(rowIndex) {
-      
+
+      if(!this.dialog) {
+         this.renderDialog();
+      }
+
+      // NOT Inserting new record
+		this.insertNewRecord = false;
+		
+		// Set the selected Record
+		this.selectedRecord = rowIndex;
+		
+		// Get the selected Record
+      var record = this.datatable.getRecord(this.selectedRecord);
+
+		// Set the initial value, use setTimeout to escape the stack
+		var that = this;
+		setTimeout(function() {
+			that.dialog.setValue(record.getData());
+			that.dialog.show();
+		},0);
+
    },
    
    /**
@@ -199,14 +313,19 @@ inputEx.widget.DataTable.prototype = {
     */
    onInsertButton: function(e) {
 
-      var tbl = this.datatable;
-      
-      // Insert a new row
-      tbl.addRow({});
- 				
-      // Select the new row
-      var lastRow = tbl.getLastTrEl();
-		tbl.selectRow(lastRow);
+      if(!this.dialog) {
+         this.renderDialog();
+      }
+		
+		// Inserting new record
+		this.insertNewRecord = true;
+		
+		// Escaping stack
+		var that = this;
+		setTimeout(function() {
+			that.dialog.getForm().clear();
+	      that.dialog.show();
+		},0);
 
    },
    

@@ -16,7 +16,6 @@ YAHOO.lang.augmentObject(YAHOO.yui.moduleMeta, {
 "inputex-datetimefield":{name:"inputEx DateTime Field", type: "inputEx-Field"},
 "inputex-ddlist":{name:"inputEx DDList widget", type: "inputEx-Widget"},
 "inputex-dialog":{name:"inputEx Dialog widget", type: "inputEx-Widget"},
-"inputex-dialog-datatable":{name:"inputEx Dialog Datatable", type: "inputEx-Widget"},
 "inputex-dsselectfield":{name:"inputEx DSSelect Field", type: "inputEx-Field"},
 "inputex-emailfield":{name:"inputEx Email Field", type: "inputEx-Field"},
 "inputex-fasttable":{name:"inputEx Fasttable", type: "inputEx-Widget"},

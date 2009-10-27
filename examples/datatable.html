@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
  <head>
-  <title>inputEx - dtDialogEdit Usage</title>
+  <title>inputEx - Datatable Usage</title>
 
 <!-- YUI CSS -->
 <link rel="stylesheet" type="text/css" href="../lib/yui/reset-fonts/reset-fonts.css">
@@ -37,7 +37,7 @@
 
 
 
-	<p class='demoTitle'>inputEx - dtDialogEdit Usage</p>
+	<p class='demoTitle'>inputEx - DataTable Usage</p>
 
 
 <!-- YUI JS -->
@@ -61,14 +61,10 @@
 <script src="../js/fields/NumberField.js"  type='text/javascript'></script>
 <script src="../js/fields/DateField.js"  type='text/javascript'></script>
 <script src="../js/fields/ColorField.js"  type='text/javascript'></script>
-<script src="../js/widgets/DataTable-beta.js"  type='text/javascript'></script>
-
-
 <script src="../js/json-schema.js"  type='text/javascript'></script>
 <script src="../js/rpc/inputex-rpc.js"  type='text/javascript'></script>
-
 <script src="../js/widgets/Dialog.js"  type='text/javascript'></script>
-<script src="../js/widgets/dtDialogEdit.js"  type='text/javascript'></script>
+<script src="../js/widgets/DataTable.js"  type='text/javascript'></script>
 
 
 <script src="js/dpSyntaxHighlighter.js"></script>
@@ -113,7 +109,7 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
  <div class='demoContainer' id='container1'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-		new inputEx.widget.dtDialogEdit({
+		new inputEx.widget.DataTable({
 			parentEl: 'container1', 
 			fields: myFields,
 			datasource: myDataSource,
@@ -132,7 +128,7 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
  <div class='demoContainer' id='container2'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-		new inputEx.widget.dtDialogEdit({
+		new inputEx.widget.DataTable({
 			parentEl: 'container2', 
 			fields: myFields,
 			datasource: myDataSource,
@@ -150,7 +146,7 @@ var formatAddress = function(elCell, oRecord, oColumn, oData) {
  <div class='demoContainer' id='container3'></div>
  <div class='codeContainer'>
   <textarea name="code" class="JScript">
-		var myDialog = new inputEx.widget.dtDialogEdit({
+		var myDialog = new inputEx.widget.DataTable({
 			parentEl: 'container3', 
 			fields: myFields,
 			datasource: myDataSource,
