@@ -83,37 +83,27 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
       this.datatable.subscribe("cellMouseoutEvent", this.datatable.onEventUnhighlightCell);
 		    	    
    },
-   
-   /**
-    * Convert a single inputEx field definition to a DataTable column definition
-    */
-   fieldToColumndef: function(field) {
-      var columnDef = {
-         key: field.inputParams.name,
-         label: field.inputParams.label,
-         sortable: this.options.sortable, 
-         resizeable: this.options.resizeable
-      };
 
-      // In cell editing if the field is listed in this.options.editableFields
-      if(lang.isArray(this.options.editableFields) ) {
-         if(inputEx.indexOf(field.inputParams.name, this.options.editableFields) != -1) {
-             columnDef.editor = new inputEx.widget.CellEditor(field);
-         }
-      }
-      
-      // Field formatter
-      if(field.formatter) {
-         columnDef.formatter = field.formatter;
-      }
-      else {
-         if(field.type == "date") {
-            columnDef.formatter = YAHOO.widget.DataTable.formatDate;
-         }
-      }
-      // TODO: other formatters
-      return columnDef;
-   },
+	/**
+	 * Modify the column definitions to add the inputEx CellEditor
+	 */
+   setColumnDefs: function() {
+		var columndefs = inputEx.widget.dtInPlaceEdit.superclass.setColumnDefs.call(this);
+		
+		// index fields declaration by keys
+		var fieldsByKey = {};
+		for(var k = 0 ; k < this.options.fields.length ; k++) {
+			fieldsByKey[this.options.fields[k].inputParams.name] = this.options.fields[k];
+		}
+		for(var i = 0 ; i < columndefs.length ; i++) {
+			var columnDef = columndefs[i];
+			if( !columnDef.editor && !!fieldsByKey[columnDef.key] && inputEx.indexOf(columnDef.key, this.options.editableFields) != -1) {
+	          columnDef.editor = new inputEx.widget.CellEditor(fieldsByKey[columnDef.key]);
+	      }
+		}
+		
+		return columndefs;
+	},
 
    /**
     * Handling cell click events

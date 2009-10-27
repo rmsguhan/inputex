@@ -46,6 +46,7 @@ not released yet
 	- Widget enhancements
 		* JsonTreeInspector: expand methods and JSONPath filter
 		* Dialog widget out of beta
+		* Datatables out of beta
 		
 	- JSON-Schema
 		* implementation of inputEx.JsonSchema.inputExToSchema (beta)
