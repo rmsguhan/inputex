@@ -1,6 +1,6 @@
 (function() {
 
-   var util = YAHOO.util, lang = YAHOO.lang, Dom = util.Dom, Event = util.Event;
+   var util = YAHOO.util, lang = YAHOO.lang, Dom = util.Dom, Event = util.Event, msgs = inputEx.messages;
 
 /**
  * Create an editable datatable
@@ -165,7 +165,7 @@ inputEx.widget.DataTable.prototype = {
             
       // Insert button
       if ( this.options.allowInsert ){
-         this.insertButton = inputEx.cn('input', {type:'button', value:inputEx.messages.insertItemText}, null, null);
+         this.insertButton = inputEx.cn('input', {type:'button', value:msgs.insertItemText}, null, null);
          Event.addListener(this.insertButton, 'click', this.onInsertButton, this, true);
          this.options.parentEl.appendChild(this.insertButton);
       }
@@ -197,7 +197,7 @@ inputEx.widget.DataTable.prototype = {
     	      key:'modify',
     	      label:' ',
     	      formatter:function(elCell) {
-               elCell.innerHTML = inputEx.messages.modifyText;
+               elCell.innerHTML = msgs.modifyText;
                elCell.style.cursor = 'pointer';
             }
          }]);
@@ -209,7 +209,7 @@ inputEx.widget.DataTable.prototype = {
       	    key:'delete',
       	    label:' ',
       	    formatter:function(elCell) {
-               elCell.innerHTML = inputEx.messages.deleteText;
+               elCell.innerHTML = msgs.deleteText;
                elCell.style.cursor = 'pointer';
             }
          }]);
@@ -231,8 +231,8 @@ inputEx.widget.DataTable.prototype = {
 				         inputParams: {
 				            fields: this.options.fields,
 				            buttons: [
-				               {type: 'button', value: inputEx.messages.saveText, onClick: function() { that.onDialogSave();} },
-				               {type: 'button', value: inputEx.messages.cancelText, onClick: function() { that.onDialogCancel(); } }
+				               {type: 'button', value: msgs.saveText, onClick: function() { that.onDialogSave();} },
+				               {type: 'button', value: msgs.cancelText, onClick: function() { that.onDialogCancel(); } }
 				            ]				
 				         }
 				      },
@@ -311,7 +311,7 @@ inputEx.widget.DataTable.prototype = {
       var column = this.datatable.getColumn(target);      
       var rowIndex = this.datatable.getTrIndex(target);
       if (column.key == 'delete') {
-         if (confirm(inputEx.messages.confirmDeletion)) {
+         if (confirm(msgs.confirmDeletion)) {
             var record = this.datatable.getRecord(target);
             if(this.editingNewRecord) {
                this.editingNewRecord = false;
@@ -416,7 +416,6 @@ inputEx.widget.DataTable.prototype = {
     	for(var i = 0 ; i < fields.length ; i++) {
     		columndefs.push( this.fieldToColumndef(fields[i]) );
     	}
-      
     	return columndefs;
    },
 
@@ -450,7 +449,7 @@ inputEx.widget.DataTable.prototype = {
     * Render the dialog (+link) to show/hide columns
     */
    renderShowHideColumnsDlg: function() {
-      this.tableOptions = inputEx.cn('a', {href: ''}, null, "Table options");
+      this.tableOptions = inputEx.cn('a', {href: ''}, null, msgs.tableOptions);
       this.options.parentEl.appendChild(this.tableOptions);
       
       // Create the SimpleDialog
@@ -460,13 +459,13 @@ inputEx.widget.DataTable.prototype = {
 		        visible: false,
 		        modal: true,
 		        buttons: [ 
-				      { text:"Close",  handler: function(e) { this.hide(); } }
+				      { text:msgs.columnDialogCloseButton,  handler: function(e) { this.hide(); } }
               ],
               fixedcenter: true,
               constrainToViewport: true
 	   });
 	   this.tableOptionsDlg.bodyId = Dom.generateId();
-	   this.tableOptionsDlg.setHeader("Choose which columns you would like to see");
+	   this.tableOptionsDlg.setHeader(msgs.columnDialogTitle);
 	   this.tableOptionsDlg.setBody("<div id='"+this.tableOptionsDlg.bodyId+"'></div>");
 	   this.tableOptionsDlg.render(document.body);
    },
@@ -516,9 +515,9 @@ inputEx.widget.DataTable.prototype = {
                
                // Write the Column key
                elKey = elColumn.firstChild;
-               elKey.innerHTML = oColumn.getKey();
+               elKey.innerHTML = (oColumn.label && oColumn.label !== "") ? oColumn.label : oColumn.getKey();
                
-               if(elKey.innerHTML != "delete" && elKey.innerHTML != "modify") {
+               if(oColumn.getKey() != "delete" && oColumn.getKey() != "modify") {
                
                   // Create a ButtonGroup
                   oButtonGrp = new YAHOO.widget.ButtonGroup({ 
@@ -527,8 +526,8 @@ inputEx.widget.DataTable.prototype = {
                                   container: elKey.nextSibling
                   });
                   oButtonGrp.addButtons([
-                      { label: "Show", value: "Show", checked: ((!oColumn.hidden)), onclick: onclickObj},
-                      { label: "Hide", value: "Hide", checked: ((oColumn.hidden)), onclick: onclickObj}
+                      { label: msgs.showColumnButton, value: "Show", checked: ((!oColumn.hidden)), onclick: onclickObj},
+                      { label: msgs.hideColumnButton, value: "Hide", checked: ((oColumn.hidden)), onclick: onclickObj}
                   ]);
                     
                   elPicker.appendChild(elColumn);
@@ -544,13 +543,19 @@ inputEx.widget.DataTable.prototype = {
 };
 
 
-inputEx.messages.saveText = "Save";
-inputEx.messages.cancelText = "Cancel";
-inputEx.messages.deleteText = "delete";
-inputEx.messages.modifyText = "modify";
-inputEx.messages.insertItemText = "Insert";
-inputEx.messages.addButtonText = "Add";
-inputEx.messages.loadingText = "Loading...";
-inputEx.messages.confirmDeletion = "Are you sure?";
+msgs.saveText = "Save";
+msgs.cancelText = "Cancel";
+msgs.deleteText = "delete";
+msgs.modifyText = "modify";
+msgs.insertItemText = "Insert";
+msgs.addButtonText = "Add";
+msgs.loadingText = "Loading...";
+msgs.confirmDeletion = "Are you sure?";
+
+msgs.tableOptions = "Table options";
+msgs.showColumnButton = "Show";
+msgs.hideColumnButton = "Hide";
+msgs.columnDialogTitle = "Choose which columns you would like to see";
+msgs.columnDialogCloseButton = "Close";
 
 })();

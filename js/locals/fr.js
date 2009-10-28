@@ -55,7 +55,12 @@
    msgs.confirmDeletion = "Êtes-vous sûr ?";
 	msgs.addButtonText = "Ajouter";
 	msgs.loadingText = "Patientez...";
-
+	
+	msgs.tableOptions = "Options des colonnes";
+	msgs.showColumnButton = "Afficher";
+	msgs.hideColumnButton = "Masquer";
+	msgs.columnDialogTitle = "Choisissez les colonnes à afficher";
+	msgs.columnDialogCloseButton = "Fermer";
    
    // TimeInterval
    msgs.timeUnits = {
