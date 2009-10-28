@@ -186,6 +186,26 @@
  </div>
 </div>
 
+<!-- Example 8 -->
+<div class='exampleDiv'>
+ <p class="title">Options</p>
+ <p>Same list without "remove" link</p>
+ <div class='demoContainer' id='container8'></div>
+ <div class='codeContainer'>
+  <style>
+	#myList li {-moz-border-radius:7px; background-color:#EEEEEE; border:0 none; margin:5px; text-align: center;}
+  </style>
+  <textarea name="code" class="JScript">
+		var list = new inputEx.widget.DDList({
+			parentEl: 'container8',
+			id: 'myList',
+			allowDelete: false,
+			value: ['I was in first position !', 'I\'m second.', 'Third element']
+		});
+  </textarea>
+ </div>
+</div>
+
 
  </body>
 </html>

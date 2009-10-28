@@ -1,6 +1,6 @@
 (function() {
 
-   var DD = YAHOO.util.DragDropMgr, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event;
+   var DD = YAHOO.util.DragDropMgr, Dom = YAHOO.util.Dom, Event = YAHOO.util.Event, lang = YAHOO.lang;
    
 /**
  * DDProxy for DDList items (used by DDList)
@@ -137,14 +137,8 @@ inputEx.widget.DDList = function(options) {
    
    this.items = [];
    
-   if(options.id) {
-      this.ul.id = options.id;
-   }
-   
-   if(options.value) {
-      this.setValue(options.value);
-   }
-   
+   this.setOptions(options);
+
    /**
 	 * @event YAHOO custom event fired when an item is removed
 	 * @param {Any} itemValue value of the removed item
@@ -156,19 +150,38 @@ inputEx.widget.DDList = function(options) {
 	 */
    this.listReorderedEvt = new YAHOO.util.CustomEvent('listReordered', this);
    
+
    // append it immediatly to the parent DOM element
 	if(options.parentEl) {
-	   if( YAHOO.lang.isString(options.parentEl) ) {
+	   if( lang.isString(options.parentEl) ) {
 	     Dom.get(options.parentEl).appendChild(this.ul);  
 	   }
 	   else {
 	      options.parentEl.appendChild(this.ul);
       }
 	}
+	
 };
 
 inputEx.widget.DDList.prototype = {
-   
+	
+   /**
+    * Set the options 
+    */
+   setOptions: function(options) {
+	   	this.options = {};
+   		this.options.allowDelete = lang.isUndefined(options.allowDelete) ? true : options.allowDelete; 
+	
+		   if(options.id) {
+		      this.ul.id = options.id;
+		   }
+
+		   if(options.value) {
+		      this.setValue(options.value);
+		   }
+
+   },	
+
    /**
     * Add an item to the list
     * @param {String|Object} item Either a string with the given value or an object with "label" and "value" attributes
@@ -176,14 +189,18 @@ inputEx.widget.DDList.prototype = {
    addItem: function(item) {
       var li = inputEx.cn('li', {className: 'inputEx-DDList-item'});
       li.appendChild( inputEx.cn('span', null, null, (typeof item == "object") ? item.label : item) );
-      var removeLink = inputEx.cn('a', null, null, "remove"); 
-      li.appendChild( removeLink );
-      Event.addListener(removeLink, 'click', function(e) {
-         var a = Event.getTarget(e);
-         var li = a.parentNode;
-         this.removeItem( inputEx.indexOf(li,this.ul.childNodes) );
-      }, this, true);
-      
+
+      // Option for the "remove" link (default: true)
+		if(!!this.options.allowDelete){
+			var removeLink = inputEx.cn('a', null, null, "remove"); 
+	      li.appendChild( removeLink );
+	      Event.addListener(removeLink, 'click', function(e) {
+	         var a = Event.getTarget(e);
+	         var li = a.parentNode;
+	         this.removeItem( inputEx.indexOf(li,this.ul.childNodes) );
+	      }, this, true);
+      }
+
       var dditem = new inputEx.widget.DDListItem(li);
       dditem._list = this;
       
@@ -261,7 +278,7 @@ inputEx.widget.DDList.prototype = {
     */
    setValue: function(value) {
       // if trying to set wrong value (or ""), reset
-      if (!YAHOO.lang.isArray(value)) {
+      if (!lang.isArray(value)) {
          value = [];
       }
       
