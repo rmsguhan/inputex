@@ -19,9 +19,6 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	renderDatatable: function() {
 		inputEx.widget.dtInPlaceEdit.superclass.renderDatatable.call(this);
 
-      // init the Editor
-      this.initEditor();
-		
 		 // Force save on blur event
 		this.datatable.onEditorBlurEvent = function(oArgs) {
 			if(oArgs.editor.save) {
@@ -52,8 +49,6 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
      inputEx.widget.dtInPlaceEdit.superclass.setOptions.call(this, options);
      
      this.options.allowModify = false;
-     this.options.editableFields = options.editableFields; 
-
 		this.options.insertWithDialog = lang.isUndefined(options.insertWithDialog) ? false : options.insertWithDialog; 
    },
    
@@ -65,24 +60,6 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	
      this.requiredFieldsEvt = new YAHOO.util.CustomEvent('requiredFields', this);
 	},
-	
-   /**
-    * Make the datatable inplace editable with inputEx fields
-    */
-   initEditor: function() {
-      
-      // Set up editing flow
-      var highlightEditableCell = function(oArgs) {
-          var elCell = oArgs.target;
-          if(Dom.hasClass(elCell, "yui-dt-editable")) {
-              this.highlightCell(elCell);
-          }
-      };
-
-      this.datatable.subscribe("cellMouseoverEvent", highlightEditableCell);
-      this.datatable.subscribe("cellMouseoutEvent", this.datatable.onEventUnhighlightCell);
-		    	    
-   },
 
 	/**
 	 * Modify the column definitions to add the inputEx CellEditor
@@ -97,7 +74,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		}
 		for(var i = 0 ; i < columndefs.length ; i++) {
 			var columnDef = columndefs[i];
-			if( !columnDef.editor && !!fieldsByKey[columnDef.key] && inputEx.indexOf(columnDef.key, this.options.editableFields) != -1) {
+			if( YAHOO.lang.isUndefined(columnDef.editor) && !!fieldsByKey[columnDef.key] ) {
 	          columnDef.editor = new inputEx.widget.CellEditor(fieldsByKey[columnDef.key]);
 	      }
 		}

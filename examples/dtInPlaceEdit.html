@@ -50,11 +50,9 @@
 		{type: 'string', inputParams: {label: 'Title', name: 'title'} },
 		{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}}
 	];
-	
-	
-		new inputEx.widget.dtInPlaceEdit({
+		
+	new inputEx.widget.dtInPlaceEdit({
 		parentEl: 'container1', 
-		editableFields: ['title', 'amount', 'quantity', 'date', 'category'],
 		fields: myFields,
 		datasource: myDataSource
 	});
@@ -94,15 +92,12 @@
 	
 	var myDatatable = new inputEx.widget.dtInPlaceEdit({
 		parentEl: 'container2', 
-
-		editableFields: ['title', 'amount', 'quantity', 'date', 'category', 'color'],
-
 		fields: myFields,
 		datasource: myDataSource,		
 		showHideColumnsDlg: true,
 		
 		columnDefs: [
-			{"key": "id", "label": "Id", resizeable: true, sortable: true },
+			{"key": "id", "label": "Id", resizeable: true, sortable: true, editor: null },
 			{"key": "date", "label": "Date", resizeable: true, sortable: true, formatter: YAHOO.widget.DataTable.formatDate},
 			{"key": "quantity", "label": "Quantity", resizeable: true, sortable: true, hidden: true},
 			{"key": "amount", "label": "Amount", resizeable: true, sortable: true},
@@ -184,7 +179,6 @@
 	
 	var myDialogDatatable = new inputEx.widget.dtInPlaceEdit({
 		parentEl: 'container3', 
-		editableFields: ['color', 'title', 'amount', 'quantity', 'date', 'category'],
 		fields: myFields,
 		datasource: myDialogDataSource,
 		insertWithDialog: true

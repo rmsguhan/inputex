@@ -167,6 +167,19 @@ inputEx.widget.DataTable.prototype = {
          Event.addListener(this.insertButton, 'click', this.onInsertButton, this, true);
          this.options.parentEl.appendChild(this.insertButton);
       }
+
+		
+      // Set up editing flow
+      var highlightEditableCell = function(oArgs) {
+          var elCell = oArgs.target;
+          if(Dom.hasClass(elCell, "yui-dt-editable") || Dom.hasClass(elCell,"yui-dt-col-delete") || Dom.hasClass(elCell,"yui-dt-col-modify") ) {
+              this.highlightCell(elCell);
+          }
+      };
+
+      this.datatable.subscribe("cellMouseoverEvent", highlightEditableCell);
+      this.datatable.subscribe("cellMouseoutEvent", this.datatable.onEventUnhighlightCell);
+
    },
 
 	/**
