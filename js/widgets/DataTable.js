@@ -449,12 +449,10 @@ inputEx.widget.DataTable.prototype = {
     * Render the dialog (+link) to show/hide columns
     */
    renderShowHideColumnsDlg: function() {
-      this.tableOptions = inputEx.cn('a', {href: ''}, null, msgs.tableOptions);
+      this.tableOptions = inputEx.cn('a', {href: '#'}, null, msgs.tableOptions);
       this.options.parentEl.appendChild(this.tableOptions);
       
-      // Create the SimpleDialog
-      Dom.removeClass("dt-dlg", "inprogress");
-      this.tableOptionsDlg = new YAHOO.widget.SimpleDialog("dt-dlg", {
+      this.tableOptionsDlg = new YAHOO.widget.SimpleDialog( Dom.generateId(), {
               width: "30em",
 		        visible: false,
 		        modal: true,
@@ -464,6 +462,9 @@ inputEx.widget.DataTable.prototype = {
               fixedcenter: true,
               constrainToViewport: true
 	   });
+	
+		Dom.addClass(this.tableOptionsDlg.element.firstChild, "inputex-datatable-columnsDlg");
+		
 	   this.tableOptionsDlg.bodyId = Dom.generateId();
 	   this.tableOptionsDlg.setHeader(msgs.columnDialogTitle);
 	   this.tableOptionsDlg.setBody("<div id='"+this.tableOptionsDlg.bodyId+"'></div>");

@@ -621,6 +621,27 @@ ul.inputEx-JsonTreeInspector li span.type-null {
 
 
 /**
+ * Datatable
+ */
+.yui-skin-sam .inputex-datatable-columnsDlg {visibility:hidden;border:1px solid #808080;background-color:#E3E3E3;}
+.yui-skin-sam .inputex-datatable-columnsDlg .hd {font-weight:bold;padding:1em;background:none;background-color:#E3E3E3;border-bottom:0;}
+.yui-skin-sam .inputex-datatable-columnsDlg .ft {text-align:right;padding:.5em;background-color:#E3E3E3;}
+.yui-skin-sam .inputex-datatable-columnsDlg .bd {height:10em;margin:0 1em;overflow:auto;border:1px solid black;background-color:white;}
+.yui-skin-sam .inputex-datatable-columnsDlg .dt-dlg-pickercol {clear:both;padding:.5em 1em 3em;border-bottom:1px solid gray;}
+.yui-skin-sam .inputex-datatable-columnsDlg .dt-dlg-pickerkey {float:left;}
+.yui-skin-sam .inputex-datatable-columnsDlg .dt-dlg-pickerbtns {float:right;}
+/* Container workarounds for Mac Gecko scrollbar issues */
+.yui-skin-sam .yui-panel-container.hide-scrollbars .inputex-datatable-columnsDlg .bd {
+    /* Hide scrollbars by default for Gecko on OS X */
+    overflow: hidden;
+}
+.yui-skin-sam .yui-panel-container.show-scrollbars .inputex-datatable-columnsDlg .bd {
+    /* Show scrollbars for Gecko on OS X when the Panel is visible  */
+    overflow: auto;
+}
+
+
+/**
  * inputEx-FastTable
  */
 .inputEx-FastTable-table {
