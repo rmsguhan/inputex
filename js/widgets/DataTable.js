@@ -156,8 +156,10 @@ inputEx.widget.DataTable.prototype = {
 		// Automatically set up the paginator
 		if(this.options.datatableOpts && this.options.datatableOpts.paginator) {
 			this.datatable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-	        oPayload.totalRecords = oResponse.meta.totalRecords;
-	        return oPayload;
+				if(oPayload) {
+	        		oPayload.totalRecords = oResponse.meta.totalRecords;
+				}
+	        	return oPayload;
 	    	};
 		}
             
