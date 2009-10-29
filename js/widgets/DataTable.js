@@ -71,8 +71,9 @@ inputEx.widget.DataTable.prototype = {
       this.options.datatableOpts = options.datatableOpts;
       this.options.fields = options.fields;
 
+		this.options.dialogId = options.dialogId || null;
 		this.options.dialogLabel = options.dialogLabel || "";
-
+		
 		this.options.panelConfig = options.panelConfig || {
 			constraintoviewport: true, 
 			underlay:"shadow", 
@@ -226,6 +227,7 @@ inputEx.widget.DataTable.prototype = {
      var that = this;
       
      this.dialog = new inputEx.widget.Dialog({
+				id: this.options.dialogId,
 				inputExDef: {
 				         type: 'form',
 				         inputParams: {
