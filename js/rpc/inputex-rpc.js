@@ -139,11 +139,12 @@ inputEx.RPC.Service.prototype = {
 		   var callback = {
    	      success: function(o) {
                var results = envelope.deserialize(o);
-      	      opts.success.call(opts.scope || self,results);
+      	      opts.success.call(opts.scope || self, results);
    	      },
    	      failure: function(o) {
    	         if(lang.isFunction(opts.failure) ) {
-   	            opts.failure.call(opts.scope || self, {error: "unable to transport"});
+						var results = envelope.deserialize(o);
+   	            opts.failure.call(opts.scope || self, results);
    	         }
    	      },
    	      scope: self
