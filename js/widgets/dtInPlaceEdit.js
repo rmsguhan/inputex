@@ -165,21 +165,21 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
     */
 	onInsertButton: function(e) {
 		
-		// If insertWithDialog, display the dialog
+		// If insertWithDialog
 		if(this.options.insertWithDialog) {
 			inputEx.widget.dtInPlaceEdit.superclass.onInsertButton.call(this, e);
 			return;
 		}
 		
 		var tbl = this.datatable;
-
-      // Insert a new row
+		
+		// Insert a new row
       tbl.addRow({});
- 				
-      // Select the new row
+
+		// Select the new row
       var lastRow = tbl.getLastTrEl();
 		tbl.selectRow(lastRow);
-		
+				
 		// Get the last cell's inner div node
 		var lastIndex = lastRow.childNodes.length - 1;
 		lastCell = lastRow.childNodes[lastIndex].childNodes[0];
@@ -200,6 +200,36 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		// Disable the "Insert Button"
 		this.insertButton.disabled = true ;
 	},
+	
+	/**
+    * When saving the Dialog (option insertWithDialog)
+    */
+   onDialogSave: function() {
+		var record, newvalues;
+		
+		// Validate the Form
+	  	if ( !this.dialog.getForm().validate() ) return ;
+	
+		// Insert a new row
+      this.datatable.addRow({});
+
+		// Set the Selected Record
+		var rowIndex = this.datatable.getRecordSet().getLength() - 1;
+		this.selectedRecord = rowIndex;
+		
+		// Update the row
+		newvalues = this.dialog.getValue();
+		this.datatable.updateRow( this.selectedRecord , newvalues );
+		
+		// Get the new record
+		record = this.datatable.getRecord(this.selectedRecord);
+					
+		// Fire the add event
+      this.itemAddedEvt.fire(record);
+		
+		// Hide the dialog 
+      this.dialog.hide();
+   },
    
 	/**
 	 * When clicking "Add" button to save a new row
@@ -239,7 +269,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		this.datatable.deleteRow(target);
     	this.insertButton.disabled = false ;
 	},
-	
+
 	/**
 	 * Validate the new record's row : 
 	 * You need to call this function when you really added the item with an id
@@ -247,7 +277,7 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	 * you trigger this function only if your request didn't failed
 	 */
 	onAddSuccess: function(record, oData){
-		
+
 		if(this.options.insertWithDialog) {
 			this.datatable.updateRow(record, oData);
 			return;
@@ -271,7 +301,9 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	 * When Failed to Add Row
 	 */
 	onAddFailure: function(){
+	
 		if(this.options.insertWithDialog) {
+			this.datatable.deleteRow(this.selectedRecord);
 			return;
 		}
 		
