@@ -271,6 +271,10 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 	 * When Failed to Add Row
 	 */
 	onAddFailure: function(){
+		if(this.options.insertWithDialog) {
+			return;
+		}
+		
 		this.addButton.value = inputEx.messages.addButtonText;
 		this.addButton.disabled = false;
 	},
