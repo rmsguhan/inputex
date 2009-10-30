@@ -89,7 +89,14 @@
 	<div class='demoContainer' id='container4'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			var field4 = new inputEx.RadioField({label: "What's your favorite programming language ?", name: 'example4', choices: ['Ruby','C#',"PHP"], values: ['ruby','c_sharp','php'], value:'c_sharp', allowAny: true, parentEl: 'container4', showMsg:true, required:true});
+			var field4 = new inputEx.RadioField({
+			label: "What's your favorite programming language ?", 
+			name: 'example4', choices: ['Ruby','C#',"PHP"], 
+			values: ['ruby','c_sharp','php'], 
+			value:'c_sharp', 
+			allowAny:{value: 'Other'}, 
+			parentEl: 'container4', showMsg:true, required:true});
+
 			field4.updatedEvt.subscribe(function(e, params) {
 					YAHOO.util.Dom.get('container4').appendChild( inputEx.cn('div',null,null, "Updated with value: "+params[0]) );
 			});
@@ -103,6 +110,10 @@
 			var button2 = inputEx.cn('button', null, null, 'getValue()');
 			exampleDiv.appendChild(button2); 
 			YAHOO.util.Event.addListener(button2, 'click', function() { alert(field4.getValue()); });
+			
+			var button3 = inputEx.cn('button', null, null, 'clear()');
+			exampleDiv.appendChild(button3); 
+			YAHOO.util.Event.addListener(button3, 'click', function() { field4.clear(); });
 		</textarea>
 	</div>
 </div>

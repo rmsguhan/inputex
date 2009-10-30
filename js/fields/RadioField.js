@@ -199,16 +199,33 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
          }
 	   }
 	   
-	   if(this.radioAny && checkAny) {
-         anyEl.checked = true;
-         this.anyField.enable(); // enable anyField
-         this.anyField.setValue(value, false);
-      }
-	   
+		// Option allowAny
+		if(this.radioAny){
+			if(checkAny){
+				anyEl.checked = true;
+	         this.anyField.enable();
+	         this.anyField.setValue(value, false);
+			}else{
+				this.anyField.disable();
+			}
+		}
+
       // call parent class method to set style and fire updatedEvt
       inputEx.StringField.superclass.setValue.call(this, value, sendUpdatedEvt);
 	},
 	
+	/**
+    * Clear the field by setting the field value to this.options.value
+    * @param {boolean} [sendUpdatedEvt] (optional) Wether this clear should fire the updatedEvt or not (default is true, pass false to NOT send the event)
+    */
+   clear: function(sendUpdatedEvt) {
+		if(this.radioAny){
+			this.anyField.setValue(this.options.allowAny.value, false);
+		}
+		
+      inputEx.RadioField.superclass.clear.call(this, sendUpdatedEvt);
+   },
+
 	validate: function() {
 	   if (this.options.allowAny) {
 	      for(var i = 0 ; i < this.optionEls.length ; i++) {
