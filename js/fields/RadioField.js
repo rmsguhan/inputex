@@ -226,6 +226,26 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
       inputEx.RadioField.superclass.clear.call(this, sendUpdatedEvt);
    },
 
+   /**
+    * Should return true if empty
+    */
+   isEmpty: function() {
+	
+	   for(var i = 0 ; i < this.optionEls.length ; i++) {
+	      if(this.optionEls[i].checked) {
+	         // if "any" option checked
+	         if(this.radioAny && this.radioAny == this.optionEls[i]) {
+	            return this.anyField.getValue() === '';
+	         }else{
+					return false;
+				}
+	      }
+	   }
+	
+		return true;
+		
+   },
+
 	validate: function() {
 	   if (this.options.allowAny) {
 	      for(var i = 0 ; i < this.optionEls.length ; i++) {
