@@ -55,6 +55,8 @@
    msgs.confirmDeletion = "Êtes-vous sûr ?";
 	msgs.addButtonText = "Ajouter";
 	msgs.loadingText = "Patientez...";
+	msgs.emptyDataText = "Aucune donnée.";
+	msgs.errorDataText = "Erreur de données.";
 	
 	msgs.tableOptions = "Options des colonnes";
 	msgs.showColumnButton = "Afficher";

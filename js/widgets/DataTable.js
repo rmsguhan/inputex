@@ -32,6 +32,7 @@ inputEx.widget.DataTable = function(options) {
    this.render();
    
    this.initEvents();
+	
 };
 
 inputEx.widget.DataTable.prototype = {
@@ -179,6 +180,11 @@ inputEx.widget.DataTable.prototype = {
               this.highlightCell(elCell);
           }
       };
+		
+		// Locals
+		this.datatable.set("MSG_LOADING", msgs.loadingText );
+		this.datatable.set("MSG_EMPTY", msgs.emptyDataText );
+		this.datatable.set("MSG_ERROR", msgs.errorDataText );
 
       this.datatable.subscribe("cellMouseoverEvent", highlightEditableCell);
       this.datatable.subscribe("cellMouseoutEvent", this.datatable.onEventUnhighlightCell);
@@ -553,6 +559,8 @@ msgs.modifyText = "modify";
 msgs.insertItemText = "Insert";
 msgs.addButtonText = "Add";
 msgs.loadingText = "Loading...";
+msgs.emptyDataText = "No records found.";
+msgs.errorDataText = "Data error.";
 msgs.confirmDeletion = "Are you sure?";
 
 msgs.tableOptions = "Table options";
