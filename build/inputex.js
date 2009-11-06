@@ -2490,7 +2490,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
     */
    setValue: function(value, sendUpdatedEvt) {
 	
-      this.hiddenEl.value = value;
+      this.hiddenEl.value = value || "";
       
       // "inherited" from inputex.Field :
       //    (can't inherit of inputex.StringField because would set this.el.value...)
@@ -6132,7 +6132,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
     */
    setValue: function(value, sendUpdatedEvt) {
 	
-      this.hiddenEl.value = value;
+      this.hiddenEl.value = value || "";
       
       // "inherited" from inputex.Field :
       //    (can't inherit of inputex.StringField because would set this.el.value...)
