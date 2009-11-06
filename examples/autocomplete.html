@@ -68,7 +68,7 @@
 			YAHOO.util.Dom.get('container1').appendChild(logDiv);
 			field.updatedEvt.subscribe(function(e,params) {
 				var value = params[0];
-				logDiv.innerHTML += "Updated at "+(new Date())+" with value '"+value+"'<br />";
+				logDiv.appendChild( inputEx.cn('div',null, null, "Updated at "+(new Date())+" with value '"+value+"'") );
 			});
 		</textarea>
 	</div>

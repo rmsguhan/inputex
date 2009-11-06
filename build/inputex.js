@@ -2476,13 +2476,11 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
 	   this.setClassFromState();
 	   
 	   // Clear the field when no value 
-      YAHOO.lang.later(50, this, function() {
+      lang.later(50, this, function() {
          if(this.el.value == "") {
             this.setValue("");
          }
       });
-      
-      this.fireUpdatedEvt();
 	},
    
    /**
@@ -2491,6 +2489,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
     * @param {boolean} [sendUpdatedEvt] (optional) Wether this setValue should fire the updatedEvt or not (default is true, pass false to NOT send the event)
     */
    setValue: function(value, sendUpdatedEvt) {
+	
       this.hiddenEl.value = value;
       
       // "inherited" from inputex.Field :
@@ -4778,16 +4777,53 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
          }
 	   }
 	   
-	   if(this.radioAny && checkAny) {
-         anyEl.checked = true;
-         this.anyField.enable(); // enable anyField
-         this.anyField.setValue(value, false);
-      }
-	   
+		// Option allowAny
+		if(this.radioAny){
+			if(checkAny){
+				anyEl.checked = true;
+	         this.anyField.enable();
+	         this.anyField.setValue(value, false);
+			}else{
+				this.anyField.disable();
+			}
+		}
+
       // call parent class method to set style and fire updatedEvt
       inputEx.StringField.superclass.setValue.call(this, value, sendUpdatedEvt);
 	},
 	
+	/**
+    * Clear the field by setting the field value to this.options.value
+    * @param {boolean} [sendUpdatedEvt] (optional) Wether this clear should fire the updatedEvt or not (default is true, pass false to NOT send the event)
+    */
+   clear: function(sendUpdatedEvt) {
+		if(this.radioAny){
+			this.anyField.setValue(this.options.allowAny.value, false);
+		}
+		
+      inputEx.RadioField.superclass.clear.call(this, sendUpdatedEvt);
+   },
+
+   /**
+    * Should return true if empty
+    */
+   isEmpty: function() {
+	
+	   for(var i = 0 ; i < this.optionEls.length ; i++) {
+	      if(this.optionEls[i].checked) {
+	         // if "any" option checked
+	         if(this.radioAny && this.radioAny == this.optionEls[i]) {
+	            return this.anyField.getValue() === '';
+	         }else{
+					return false;
+				}
+	      }
+	   }
+	
+		return true;
+		
+   },
+
 	validate: function() {
 	   if (this.options.allowAny) {
 	      for(var i = 0 ; i < this.optionEls.length ; i++) {
@@ -6082,13 +6118,11 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
 	   this.setClassFromState();
 	   
 	   // Clear the field when no value 
-      YAHOO.lang.later(50, this, function() {
+      lang.later(50, this, function() {
          if(this.el.value == "") {
             this.setValue("");
          }
       });
-      
-      this.fireUpdatedEvt();
 	},
    
    /**
@@ -6097,6 +6131,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
     * @param {boolean} [sendUpdatedEvt] (optional) Wether this setValue should fire the updatedEvt or not (default is true, pass false to NOT send the event)
     */
    setValue: function(value, sendUpdatedEvt) {
+	
       this.hiddenEl.value = value;
       
       // "inherited" from inputex.Field :

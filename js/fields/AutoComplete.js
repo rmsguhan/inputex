@@ -130,13 +130,11 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
 	   this.setClassFromState();
 	   
 	   // Clear the field when no value 
-      YAHOO.lang.later(50, this, function() {
+      lang.later(50, this, function() {
          if(this.el.value == "") {
             this.setValue("");
          }
       });
-      
-      this.fireUpdatedEvt();
 	},
    
    /**
@@ -145,6 +143,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
     * @param {boolean} [sendUpdatedEvt] (optional) Wether this setValue should fire the updatedEvt or not (default is true, pass false to NOT send the event)
     */
    setValue: function(value, sendUpdatedEvt) {
+	
       this.hiddenEl.value = value;
       
       // "inherited" from inputex.Field :
