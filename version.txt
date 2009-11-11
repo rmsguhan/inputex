@@ -39,9 +39,7 @@ not released yet
 		* Moved VectorField, MapField, IPv4Field, UpperCaseField from ext/ to fields/ (watch you references !)
 		* BirthdateField renamed to DateSelectMonthField
 		* FileField out of beta
-	
-	- Added Widget 
-		* FastTable for fast editing (beta)
+		* Group/Form setErrors method to display custom messages
 		
 	- Widget enhancements
 		* JsonTreeInspector: expand methods and JSONPath filter

@@ -235,6 +235,46 @@
 </div>
 
 
+
+
+<!-- Example 8 -->
+<div class='exampleDiv'>
+	<p class="title">Set error messages</p>
+	<p>Use the <i>setErrors</i> method on Group or Form instances to set error messages. The field will show the message only if the <i>showMsg</i> option is enabled on this field.</p>
+	<p>This feature is helpful for Ajax forms with server-side validation.</p>
+	<div class='demoContainer' id='container8'></div>
+	<div class='codeContainer'>
+		<textarea name="code" class="JScript">
+					var myForm = new inputEx.Group({
+						parentEl: 'container8', 
+						inputParams: {name: "MyForm"},
+						fields: [
+					      {inputParams: {label: 'Firstname', name: 'firstname', showMsg: true } },
+						  {inputParams: {label: 'Age', name: 'age', showMsg: true} },
+					      { inputParams: {label: 'Title', name: 'title' } }
+					   ]
+					});
+					
+					myForm.setErrors({
+						firstname: "Cannot be empty",
+						age: "Must be a number",
+						title: "Cannot be empty !!! (not visible because no showMsg)"
+					});
+					
+					// Equivalent call :
+					myForm.setErrors([
+						["firstname", "Cannot be empty"],
+						["age", "Must be a number"],
+						["title", "Cannot be empty !!! (not visible because no showMsg)"]
+					]);
+					
+		</textarea>
+	</div>
+</div>
+
+
+
+
 <!-- YUI Library -->
 <script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>

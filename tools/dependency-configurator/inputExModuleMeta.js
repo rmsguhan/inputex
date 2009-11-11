@@ -18,7 +18,6 @@ YAHOO.lang.augmentObject(YAHOO.yui.moduleMeta, {
 "inputex-dialog":{name:"inputEx Dialog widget", type: "inputEx-Widget"},
 "inputex-dsselectfield":{name:"inputEx DSSelect Field", type: "inputEx-Field"},
 "inputex-emailfield":{name:"inputEx Email Field", type: "inputEx-Field"},
-"inputex-fasttable":{name:"inputEx Fasttable", type: "inputEx-Widget"},
 "inputex-field":{name:"inputEx Field Core", type: "inputEx-Core"},
 "inputex-form":{name:"inputEx Form", type: "inputEx-Field"},
 "inputex-group":{name:"inputEx Group", type: "inputEx-Field"},

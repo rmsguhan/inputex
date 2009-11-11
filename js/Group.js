@@ -373,6 +373,36 @@ lang.extend(inputEx.Group, inputEx.Field, {
 	      // fire update event
          this.fireUpdatedEvt();
       }
+	},
+	
+	/**
+	 * Write error messages for fields as specified in the hash
+	 * @param {Object || Array} errors Hash object containing error messages as Strings referenced by the field name, or array [ ["fieldName", "Message"], ...]
+	 */
+	setErrors: function(errors) {	
+		if(YAHOO.lang.isArray(errors)) {
+			for(var i = 0 ; i < errors.length ; i++) {
+				var key = errors[i][0], value = errors[i][1];
+				if(this.inputsNames[key]) {
+					if(this.inputsNames[key].options.showMsg) {
+						this.inputsNames[key].displayMessage(value);
+						Dom.addClass(this.inputsNames[key].divEl, "inputEx-invalid" );
+					}
+				}
+			}
+		}
+		else if(YAHOO.lang.isObject(errors)) {
+			for(var k in errors) {
+				if(errors.hasOwnProperty(k)) {
+					if(this.inputsNames[k]) {
+						if(this.inputsNames[k].options.showMsg) {
+							this.inputsNames[k].displayMessage(errors[k]);
+							Dom.addClass(this.inputsNames[k].divEl, "inputEx-invalid" );
+						}
+					}
+				}
+			}
+		}
 	}
    
    

@@ -94,13 +94,6 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
  			requires: ['inputex-datatable']
  		},
 		{
- 			name: 'inputex-fasttable',
- 			type: 'js',
- 	  	   fullpath: pathToInputEx+'js/widgets/FastTable-beta.js',
- 	  	   varName: 'inputEx.widget.FastTable',
- 			requires: ['inputex']
- 		},
-		{
  			name: 'inputex-jsontreeinspector',
  			type: 'js',
  	  	   fullpath: pathToInputEx+'js/widgets/json-tree-inspector.js',
