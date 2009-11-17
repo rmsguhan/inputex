@@ -380,24 +380,26 @@ lang.extend(inputEx.Group, inputEx.Field, {
 	 * @param {Object || Array} errors Hash object containing error messages as Strings referenced by the field name, or array [ ["fieldName", "Message"], ...]
 	 */
 	setErrors: function(errors) {	
+		var i,k;
 		if(YAHOO.lang.isArray(errors)) {
-			for(var i = 0 ; i < errors.length ; i++) {
-				var key = errors[i][0], value = errors[i][1];
-				if(this.inputsNames[key]) {
-					if(this.inputsNames[key].options.showMsg) {
-						this.inputsNames[key].displayMessage(value);
-						Dom.addClass(this.inputsNames[key].divEl, "inputEx-invalid" );
+			for(i = 0 ; i < errors.length ; i++) {
+				k = errors[i][0];
+				value = errors[i][1];
+				if(this.inputsNames[k]) {
+					if(this.inputsNames[k].options.showMsg) {
+						this.inputsNames[k].displayMessage(value);
+						Dom.replaceClass(this.inputsNames[k].divEl, "inputEx-valid", "inputEx-invalid" );
 					}
 				}
 			}
 		}
 		else if(YAHOO.lang.isObject(errors)) {
-			for(var k in errors) {
+			for(k in errors) {
 				if(errors.hasOwnProperty(k)) {
 					if(this.inputsNames[k]) {
 						if(this.inputsNames[k].options.showMsg) {
 							this.inputsNames[k].displayMessage(errors[k]);
-							Dom.addClass(this.inputsNames[k].divEl, "inputEx-invalid" );
+							Dom.replaceClass(this.inputsNames[k].divEl, "inputEx-valid", "inputEx-invalid" );
 						}
 					}
 				}
