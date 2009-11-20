@@ -109,7 +109,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 				throw new Error("inputEx.Form: One of the provided button is undefined ! (check trailing comma)");
 			}
 			
-	      buttonEl = inputEx.cn('input', {type: button.type, value: button.value});
+	      buttonEl = inputEx.cn('input', {type: button.type, value: button.value, name: button.name});
 	      if( button.onClick ) { buttonEl.onclick = button.onClick; }
 	      this.buttons.push(buttonEl);
 	      this.buttonDiv.appendChild(buttonEl);
