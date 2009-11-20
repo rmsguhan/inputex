@@ -94,6 +94,7 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
  			requires: ['inputex-datatable']
  		},
 		{
+
  			name: 'inputex-jsontreeinspector',
  			type: 'js',
  	  	   fullpath: pathToInputEx+'js/widgets/json-tree-inspector.js',
@@ -416,6 +417,13 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 		   type: 'js',
 		   fullpath: pathToInputEx+'js/locals/es.js',
 		   varName: 'inputEx.lang_es',
+		   requires: ['inputex']
+		},
+		{
+		   name: 'inputex-lang-de',
+		   type: 'js',
+		   fullpath: pathToInputEx+'js/locals/de.js',
+		   varName: 'inputEx.lang_de',
 		   requires: ['inputex']
 		}
 	];
