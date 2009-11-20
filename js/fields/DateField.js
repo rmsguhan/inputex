@@ -27,7 +27,7 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
    	
    	// Overwrite options
    	this.options.className = options.className ? options.className : 'inputEx-Field inputEx-DateField';
-   	this.options.messages.invalid = inputEx.messages.invalidDate;
+   	this.options.messages.invalid = inputEx.messages.invalidDate ? inputEx.messages.invalidDate : "Invalid date, ex: 03/27/2008";
    	
    	// Added options
    	this.options.dateFormat = options.dateFormat || inputEx.messages.defaultDateFormat;
@@ -129,7 +129,7 @@ inputEx.DateField.formatDate = function(d,format) {
 };
 	
 // Specific message for the container
-inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
+//inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
 	
 // Register this class as "date" type
 inputEx.registerType("date", inputEx.DateField, [
