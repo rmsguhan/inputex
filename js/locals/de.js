@@ -1,4 +1,4 @@
-// InputEx German localization
+// InputEx German localization 
 (function() {
 
    var msgs = inputEx.messages;
@@ -8,18 +8,18 @@
    msgs.valid = "Eingabe korrekt";
    
    msgs.invalidEmail = "Email nicht korrekt; ej: ihr.name@beispiel.de";
-   msgs.selectColor = "Farbe wählen:";
+   msgs.selectColor = "Farbe wÃ¤hlen:";
    msgs.invalidPassword = ["Das Passwort muss aus mindestens "," Zeichen bestehen"];
-   msgs.invalidPasswordConfirmation = "Das Passwort stimmt nicht überein!";
+   msgs.invalidPasswordConfirmation = "Das Passwort stimmt nicht Ã¼berein!";
    msgs.passwordStrength = "Das Passwort ist zu schwach";
    msgs.capslockWarning = "Achtung: die caps-lock Taste ist aktiviert";
    msgs.invalidDate = "falsches Datumsformat, bsp: 25.01.2007";
    msgs.defaultDateFormat = "d.m.Y";
    msgs.shortMonths=["Jan", "Feb", "Mrz", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dez"];
-   msgs.months=["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
+   msgs.months=["Januar", "Februar", "MÃ¤rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
    msgs.weekdays1char=["S", "M", "D", "M", "D", "F", "S"];
    msgs.shortWeekdays=["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
-   msgs.selectMonth = "- Monat auswählen -";
+   msgs.selectMonth = "- Monat auswÃ¤hlen -";
    msgs.dayTypeInvite = "Tag";
    msgs.monthTypeInvite = "Monat";
    msgs.yearTypeInvite = "Jahr";
@@ -28,8 +28,8 @@
    msgs.defautCalendarOpts = {
       navigator: {
         strings : {
-            month: "Monat auswählen",
-            year: "Jahr ergänzen",
+            month: "Monat auswÃ¤hlen",
+            year: "Jahr ergÃ¤nzen",
             submit: "Ok",
             cancel: "Abbrechen",
             invalidYear: "Jahr stimmt nicht"
@@ -42,17 +42,17 @@
    msgs.ajaxWait = "lade...";
    
    // List
-   msgs.listAddLink = "Hinzufügen";
-   msgs.listRemoveLink = "Löschen";
+   msgs.listAddLink = "HinzufÃ¼gen";
+   msgs.listRemoveLink = "LÃ¶schen";
    
 
    // Datatable
    msgs.saveText = "Speichern";
    msgs.cancelText = "Abbrechen";
    msgs.modifyText = "Bearbeiten";
-   msgs.deleteText = "Löschen";
-   msgs.insertItemText = "Einfügen";
-   msgs.confirmDeletion = "Möchten Sie das Element wirklich löschen?";
+   msgs.deleteText = "LÃ¶schen";
+   msgs.insertItemText = "EinfÃ¼gen";
+   msgs.confirmDeletion = "MÃ¶chten Sie das Element wirklich lÃ¶schen?";
    
       
    // TimeInterval
