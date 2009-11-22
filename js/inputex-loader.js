@@ -199,7 +199,7 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 			type: 'js',
 	  	   fullpath: pathToInputEx+'js/fields/DatePickerField.js',
 	  	   varName: 'inputEx.DatePickerField',
-			requires: ['inputex-datefield', 'calendar', 'container']
+			requires: ['calendar', 'button', 'inputex-datefield']
 		},
 		{
 		   name: 'inputex-dateselectmonthfield',
@@ -241,7 +241,7 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 			type: 'js',
 	  	   fullpath: pathToInputEx+'js/fields/DateTimeField.js',
 	  	   varName: 'inputEx.DateTimeField',
-			requires: ['inputex-combinefield', 'inputex-datepickerfield', 'inputex-timefield']
+			requires: ['inputex-datepickerfield', 'inputex-combinefield', 'inputex-timefield']
 		},
 		{
 		   name: 'inputex-timeintervalfield',
