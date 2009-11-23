@@ -169,15 +169,17 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    // Select the right date and display the right page on calendar, when the field has a value
    beforeShowOverlay: function() {
       var date = this.getValue(true);
-      if (!!date && !!this.calendar) {
+      if (!!this.calendar) {
          
-         // HACK: don't fire Field updatedEvt when selecting date
-         this.ignoreBeforeShowOverlayCall = true;
-         // select the previous date in calendar
-         this.calendar.select(date);
-			this.ignoreBeforeShowOverlayCall = false;
-         
-         this.calendar.cfg.setProperty("pagedate",(date.getMonth()+1)+"/"+date.getFullYear());
+			if(!!date) {
+         	// HACK: don't fire Field updatedEvt when selecting date
+         	this.ignoreBeforeShowOverlayCall = true;
+         	// select the previous date in calendar
+        		this.calendar.select(date);
+				this.ignoreBeforeShowOverlayCall = false;
+         	this.calendar.cfg.setProperty("pagedate",(date.getMonth()+1)+"/"+date.getFullYear());
+			}
+
          this.calendar.render(); // refresh calendar
       }
    }

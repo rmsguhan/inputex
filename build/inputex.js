@@ -1746,7 +1746,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 				throw new Error("inputEx.Form: One of the provided button is undefined ! (check trailing comma)");
 			}
 			
-	      buttonEl = inputEx.cn('input', {type: button.type, value: button.value});
+	      buttonEl = inputEx.cn('input', {type: button.type, value: button.value, name: button.name});
 	      if( button.onClick ) { buttonEl.onclick = button.onClick; }
 	      this.buttons.push(buttonEl);
 	      this.buttonDiv.appendChild(buttonEl);
@@ -2997,7 +2997,7 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
    	
    	// Overwrite options
    	this.options.className = options.className ? options.className : 'inputEx-Field inputEx-DateField';
-   	this.options.messages.invalid = inputEx.messages.invalidDate;
+   	this.options.messages.invalid = inputEx.messages.invalidDate ? inputEx.messages.invalidDate : "Invalid date, ex: 03/27/2008";
    	
    	// Added options
    	this.options.dateFormat = options.dateFormat || inputEx.messages.defaultDateFormat;
@@ -3099,7 +3099,7 @@ inputEx.DateField.formatDate = function(d,format) {
 };
 	
 // Specific message for the container
-inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
+//inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
 	
 // Register this class as "date" type
 inputEx.registerType("date", inputEx.DateField, [
@@ -3427,15 +3427,17 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    // Select the right date and display the right page on calendar, when the field has a value
    beforeShowOverlay: function() {
       var date = this.getValue(true);
-      if (!!date && !!this.calendar) {
+      if (!!this.calendar) {
          
-         // HACK: don't fire Field updatedEvt when selecting date
-         this.ignoreBeforeShowOverlayCall = true;
-         // select the previous date in calendar
-         this.calendar.select(date);
-			this.ignoreBeforeShowOverlayCall = false;
-         
-         this.calendar.cfg.setProperty("pagedate",(date.getMonth()+1)+"/"+date.getFullYear());
+			if(!!date) {
+         	// HACK: don't fire Field updatedEvt when selecting date
+         	this.ignoreBeforeShowOverlayCall = true;
+         	// select the previous date in calendar
+        		this.calendar.select(date);
+				this.ignoreBeforeShowOverlayCall = false;
+         	this.calendar.cfg.setProperty("pagedate",(date.getMonth()+1)+"/"+date.getFullYear());
+			}
+
          this.calendar.render(); // refresh calendar
       }
    }
