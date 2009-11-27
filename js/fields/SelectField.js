@@ -48,18 +48,18 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
       
       if (this.options.multiple) {this.el.multiple = true; this.el.size = this.options.selectValues.length;}
       
-      this.optionEls = {};
+      this.optionEls = [];
       
       var optionEl;
       for( var i = 0 ; i < this.options.selectValues.length ; i++) {
          
          optionEl = inputEx.cn('option', {value: this.options.selectValues[i]}, null, this.options.selectOptions[i]);
          
-         this.optionEls[this.options.selectOptions[i]] = optionEl;
+         this.optionEls.push(optionEl);
          this.el.appendChild(optionEl);
       }
       this.fieldContainer.appendChild(this.el);
-   },  
+   },
    
    /**
     * Register the "change" event
@@ -146,12 +146,12 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
       }
       
       // update values and options lists
-      this.options.selectValues = this.options.selectValues.slice(0,position).concat([value]).concat(this.options.selectValues.slice(position,nbOptions));
-      this.options.selectOptions = this.options.selectOptions.slice(0,position).concat([option]).concat(this.options.selectOptions.slice(position,nbOptions));
+      this.options.selectValues.splice(position,0,value); // insert value at position
+      this.options.selectOptions.splice(position,0,option);
 
       // new option in select
       var newOption = inputEx.cn('option', {value: value}, null, option);
-      this.optionEls[option] = newOption;
+      this.optionEls = this.optionEls.splice(position,0,newOption);
       
       if (position<nbOptions) {
          YAHOO.util.Dom.insertBefore(newOption,this.el.childNodes[position]);
@@ -202,12 +202,12 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
       }
 
       // remove from selectValues / selectOptions array
-      this.options.selectValues.splice(position,1);
-      var removedOption = this.options.selectOptions.splice(position,1);
+      this.options.selectValues.splice(position,1); // remove 1 element at position
+      this.options.selectOptions.splice(position,1); // remove 1 element at position
 
       // remove from selector
-      this.el.removeChild(this.optionEls[removedOption]);
-      delete this.optionEls[removedOption];
+      this.el.removeChild(this.optionEls[position]);
+      this.optionEls.splice(position,1); // remove 1 element at position
       
       // clear if previous selected value doesn't exist anymore
       if (selectedIndex == position) {

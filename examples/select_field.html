@@ -99,11 +99,12 @@
 			el.appendChild(button2);
 			el.appendChild(button3);
 
-			var logDiv3 = inputEx.cn('div', null, null, "Log :<br />");
+			var logDiv3 = inputEx.cn('div', null, null, "Log : ");
 			el.appendChild(logDiv3);
 			field3.updatedEvt.subscribe(function(e,params) {
 				var value = params[0];
-				logDiv3.innerHTML += "Updated at "+(new Date())+" with value "+value+"<br />";
+				logDiv3.innerHTML += "Updated at "+(new Date())+" with value "+value;
+				logDiv3.appendChild(inputEx.cn('br'));
 			});
 		</textarea>
 	</div>
@@ -146,11 +147,12 @@
 			el.appendChild(button5);
 			el.appendChild(button6);
 
-			var logDiv4 = inputEx.cn('div', null, null, "Log :<br />");
+			var logDiv4 = inputEx.cn('div', null, null, "Log : ");
 			el.appendChild(logDiv4);
 			field4.updatedEvt.subscribe(function(e,params) {
 				var value = params[0];
-				logDiv4.innerHTML += "Updated at "+(new Date())+" with value "+value+"<br />";
+				logDiv4.innerHTML += "Updated at "+(new Date())+" with value "+value;
+				logDiv4.appendChild(inputEx.cn('br'));
 			});
 		</textarea>
 	</div>
