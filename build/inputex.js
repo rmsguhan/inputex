@@ -2595,15 +2595,15 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	renderComponent: function() {
 	
    	var checkBoxId = this.divEl.id?this.divEl.id+'-field':YAHOO.util.Dom.generateId();
-   	
-	   this.el = inputEx.cn('input', { id: checkBoxId, type: 'checkbox', checked:(this.options.checked === false) ? false : true });
+	   this.el = inputEx.cn('input', { id: checkBoxId, type: 'checkbox' });
+
 	   this.fieldContainer.appendChild(this.el);
 	
 	   this.rightLabelEl = inputEx.cn('label', {"for": checkBoxId, className: 'inputEx-CheckBox-rightLabel'}, null, this.options.rightLabel);
 	   this.fieldContainer.appendChild(this.rightLabelEl);
 	
 	   // Keep state of checkbox in a hidden field (format : this.checkedValue or this.uncheckedValue)
-	   this.hiddenEl = inputEx.cn('input', {type: 'hidden', name: this.options.name || '', value: this.el.checked ? this.checkedValue : this.uncheckedValue});
+	   this.hiddenEl = inputEx.cn('input', {type: 'hidden', name: this.options.name || '', value: this.uncheckedValue});
 	   this.fieldContainer.appendChild(this.hiddenEl);
 	},
 	   
@@ -2655,15 +2655,17 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	setValue: function(value, sendUpdatedEvt) {
 	   if (value===this.checkedValue) {
 			this.hiddenEl.value = value;
-			this.el.checked = true;
+			this.el.setAttribute("checked","checked");
+			this.el.setAttribute("defaultChecked","checked"); // for IE6
 		}
-	   else {
+	   else {		
 	      // DEBUG :
 	      /*if (value!==this.uncheckedValue && lang.isObject(console) && lang.isFunction(console.log) ) {
 	         console.log("inputEx.CheckBox: value is *"+value+"*, schould be in ["+this.checkedValue+","+this.uncheckedValue+"]");
          }*/
 			this.hiddenEl.value = value;
-			this.el.checked = false;
+			this.el.removeAttribute("checked");
+			this.el.removeAttribute("defaultChecked"); // for IE6 
 		}
 		
 		// Call Field.setValue to set class and fire updated event
@@ -5045,18 +5047,18 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
       
       if (this.options.multiple) {this.el.multiple = true; this.el.size = this.options.selectValues.length;}
       
-      this.optionEls = {};
+      this.optionEls = [];
       
       var optionEl;
       for( var i = 0 ; i < this.options.selectValues.length ; i++) {
          
          optionEl = inputEx.cn('option', {value: this.options.selectValues[i]}, null, this.options.selectOptions[i]);
          
-         this.optionEls[this.options.selectOptions[i]] = optionEl;
+         this.optionEls.push(optionEl);
          this.el.appendChild(optionEl);
       }
       this.fieldContainer.appendChild(this.el);
-   },  
+   },
    
    /**
     * Register the "change" event
@@ -5143,12 +5145,12 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
       }
       
       // update values and options lists
-      this.options.selectValues = this.options.selectValues.slice(0,position).concat([value]).concat(this.options.selectValues.slice(position,nbOptions));
-      this.options.selectOptions = this.options.selectOptions.slice(0,position).concat([option]).concat(this.options.selectOptions.slice(position,nbOptions));
+      this.options.selectValues.splice(position,0,value); // insert value at position
+      this.options.selectOptions.splice(position,0,option);
 
       // new option in select
       var newOption = inputEx.cn('option', {value: value}, null, option);
-      this.optionEls[option] = newOption;
+      this.optionEls = this.optionEls.splice(position,0,newOption);
       
       if (position<nbOptions) {
          YAHOO.util.Dom.insertBefore(newOption,this.el.childNodes[position]);
@@ -5199,12 +5201,12 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
       }
 
       // remove from selectValues / selectOptions array
-      this.options.selectValues.splice(position,1);
-      var removedOption = this.options.selectOptions.splice(position,1);
+      this.options.selectValues.splice(position,1); // remove 1 element at position
+      this.options.selectOptions.splice(position,1); // remove 1 element at position
 
       // remove from selector
-      this.el.removeChild(this.optionEls[removedOption]);
-      delete this.optionEls[removedOption];
+      this.el.removeChild(this.optionEls[position]);
+      this.optionEls.splice(position,1); // remove 1 element at position
       
       // clear if previous selected value doesn't exist anymore
       if (selectedIndex == position) {
