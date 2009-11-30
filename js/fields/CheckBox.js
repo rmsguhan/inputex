@@ -43,15 +43,15 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	renderComponent: function() {
 	
    	var checkBoxId = this.divEl.id?this.divEl.id+'-field':YAHOO.util.Dom.generateId();
-   	
-	   this.el = inputEx.cn('input', { id: checkBoxId, type: 'checkbox', checked:(this.options.checked === false) ? false : true });
+	   this.el = inputEx.cn('input', { id: checkBoxId, type: 'checkbox' });
+
 	   this.fieldContainer.appendChild(this.el);
 	
 	   this.rightLabelEl = inputEx.cn('label', {"for": checkBoxId, className: 'inputEx-CheckBox-rightLabel'}, null, this.options.rightLabel);
 	   this.fieldContainer.appendChild(this.rightLabelEl);
 	
 	   // Keep state of checkbox in a hidden field (format : this.checkedValue or this.uncheckedValue)
-	   this.hiddenEl = inputEx.cn('input', {type: 'hidden', name: this.options.name || '', value: this.el.checked ? this.checkedValue : this.uncheckedValue});
+	   this.hiddenEl = inputEx.cn('input', {type: 'hidden', name: this.options.name || '', value: this.uncheckedValue});
 	   this.fieldContainer.appendChild(this.hiddenEl);
 	},
 	   
@@ -103,15 +103,17 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	setValue: function(value, sendUpdatedEvt) {
 	   if (value===this.checkedValue) {
 			this.hiddenEl.value = value;
-			this.el.checked = true;
+			this.el.setAttribute("checked","checked");
+			this.el.setAttribute("defaultChecked","checked"); // for IE6
 		}
-	   else {
+	   else {		
 	      // DEBUG :
 	      /*if (value!==this.uncheckedValue && lang.isObject(console) && lang.isFunction(console.log) ) {
 	         console.log("inputEx.CheckBox: value is *"+value+"*, schould be in ["+this.checkedValue+","+this.uncheckedValue+"]");
          }*/
 			this.hiddenEl.value = value;
-			this.el.checked = false;
+			this.el.removeAttribute("checked");
+			this.el.removeAttribute("defaultChecked"); // for IE6 
 		}
 		
 		// Call Field.setValue to set class and fire updated event
