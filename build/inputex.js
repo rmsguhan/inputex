@@ -2,7 +2,7 @@
 Distributed under the MIT License :
 Visit http://javascript.neyric.com/inputex for more informations
 
-Copyright (c) 2007-2009, Eric Abouaf <eric.abouaf at gmail.com>
+Copyright (c) 2007-2010, Eric Abouaf <eric.abouaf at gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -32,9 +32,14 @@ THE SOFTWARE.
  var lang = YAHOO.lang;
  
 /**
+ * The inputEx method lets you create a field from the JSON definition:
+ * <pre>
+ *    inputEx({type: 'string', inputParams: { name: 'company', label: 'Your company'} })
+ * </pre>
  * Build a field from an object like: { type: 'color' or fieldClass: inputEx.ColorField, inputParams: {} }<br />
  * The inputParams property is the object that will be passed as the <code>options</code> parameter to the field class constructor.<br />
  * If the neither type or fieldClass are found, it uses inputEx.StringField
+ *
  * @class inputEx
  * @static
  * @param {Object} fieldOptions
@@ -63,7 +68,7 @@ inputEx = function(fieldOptions) {
 
 lang.augmentObject(inputEx, {
    
-   VERSION: "0.4.0rc1",
+   VERSION: "0.4.0",
    
    /**
     * Url to the spacer image. This url schould be changed according to your project directories
@@ -182,8 +187,7 @@ lang.augmentObject(inputEx, {
    },
    
    /**
-    * Kept for backward compatibility
-    * @alias inputEx
+    * @deprecated Kept for backward compatibility (alias for inputEx() )
     * @param {Object} fieldOptions
     * @return {inputEx.Field} Created field instance
     */
@@ -1344,12 +1348,12 @@ lang.extend(inputEx.Group, inputEx.Field, {
   
    /**
     * Instanciate one field given its parameters, type or fieldClass
-    * @param {Object} fieldOptions The field properties as required bu inputEx.buildField
+    * @param {Object} fieldOptions The field properties as required by the inputEx() method
     */
    renderField: function(fieldOptions) {
 
       // Instanciate the field
-      var fieldInstance = inputEx.buildField(fieldOptions);      
+      var fieldInstance = inputEx(fieldOptions);      
       
 	   this.inputs.push(fieldInstance);
       
@@ -2970,10 +2974,8 @@ inputEx.ColorField.ensureHexa = function (color) {
 // Register this class as "color" type
 inputEx.registerType("color", inputEx.ColorField, []);
 	
-})();(function() {
-	
+})();(function() {	
    var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
-	
 /**
  * A Date Field. 
  * @class inputEx.DateField
@@ -3080,7 +3082,9 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 
 });
 
-// Those methods are limited but largely enough for our usage
+/**
+ * Those methods are limited but largely enough for our usage
+ */
 inputEx.DateField.parseWithFormat = function(sDate,format) {
 	var separator = format.match(/[^Ymd ]/g)[0];
 	var ladate = sDate.split(separator);
@@ -3091,6 +3095,9 @@ inputEx.DateField.parseWithFormat = function(sDate,format) {
    return (new Date(Y,m,d));
 };
 
+/**
+ * Those methods are limited but largely enough for our usage
+ */
 inputEx.DateField.formatDate = function(d,format) {
 	var str = format.replace('Y',d.getFullYear());
    var m = d.getMonth()+1;
@@ -3101,7 +3108,7 @@ inputEx.DateField.formatDate = function(d,format) {
 };
 	
 // Specific message for the container
-//inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
+// inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
 	
 // Register this class as "date" type
 inputEx.registerType("date", inputEx.DateField, [
@@ -3593,7 +3600,7 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
       this.editorContainer = inputEx.cn('div', {className: CSS_PREFIX+'editor'}, {display: 'none'});
       
       // Render the editor field
-      this.editorField = inputEx.buildField(this.options.editorField);
+      this.editorField = inputEx(this.options.editorField);
       var editorFieldEl = this.editorField.getEl();
       
       this.editorContainer.appendChild( editorFieldEl );
@@ -4103,7 +4110,7 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	   if(!opts.inputParams) opts.inputParams = {};
 	   if(!lang.isUndefined(value)) opts.inputParams.value = value;
 	   
-	   var el = inputEx.buildField(opts);
+	   var el = inputEx(opts);
 	   
 	   var subFieldEl = el.getEl();
 	   Dom.setStyle(subFieldEl, 'margin-left', '4px');

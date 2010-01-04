@@ -252,6 +252,4 @@ inputEx.widget.JsonTreeInspector.jsonPath = function (obj, expr, arg) {
    }
 };
 
-
-
 })();

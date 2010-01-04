@@ -58,7 +58,7 @@ YAHOO.lang.extend(inputEx.TreeField, inputEx.ListField, {
 	   this.fieldContainer.appendChild(this.addButton);      
 	      
 	   // Instanciate the new subField
-	   this.subField = inputEx.buildField(this.options.elementType);
+	   this.subField = inputEx(this.options.elementType);
 	   
 	   var subFieldEl = this.subField.getEl();
 	   Dom.setStyle(subFieldEl, 'margin-left', '4px');

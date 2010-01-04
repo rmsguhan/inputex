@@ -226,7 +226,7 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	   if(!opts.inputParams) opts.inputParams = {};
 	   if(!lang.isUndefined(value)) opts.inputParams.value = value;
 	   
-	   var el = inputEx.buildField(opts);
+	   var el = inputEx(opts);
 	   
 	   var subFieldEl = el.getEl();
 	   Dom.setStyle(subFieldEl, 'margin-left', '4px');

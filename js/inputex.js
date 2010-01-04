@@ -8,9 +8,14 @@
  var lang = YAHOO.lang;
  
 /**
+ * The inputEx method lets you create a field from the JSON definition:
+ * <pre>
+ *    inputEx({type: 'string', inputParams: { name: 'company', label: 'Your company'} })
+ * </pre>
  * Build a field from an object like: { type: 'color' or fieldClass: inputEx.ColorField, inputParams: {} }<br />
  * The inputParams property is the object that will be passed as the <code>options</code> parameter to the field class constructor.<br />
  * If the neither type or fieldClass are found, it uses inputEx.StringField
+ *
  * @class inputEx
  * @static
  * @param {Object} fieldOptions
@@ -39,7 +44,7 @@ inputEx = function(fieldOptions) {
 
 lang.augmentObject(inputEx, {
    
-   VERSION: "0.4.0rc1",
+   VERSION: "0.4.0",
    
    /**
     * Url to the spacer image. This url schould be changed according to your project directories
@@ -158,8 +163,7 @@ lang.augmentObject(inputEx, {
    },
    
    /**
-    * Kept for backward compatibility
-    * @alias inputEx
+    * @deprecated Kept for backward compatibility (alias for inputEx() )
     * @param {Object} fieldOptions
     * @return {inputEx.Field} Created field instance
     */

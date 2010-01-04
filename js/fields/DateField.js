@@ -1,7 +1,5 @@
-(function() {
-	
+(function() {	
    var lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = YAHOO.util.Dom;
-	
 /**
  * A Date Field. 
  * @class inputEx.DateField
@@ -108,7 +106,9 @@ lang.extend(inputEx.DateField, inputEx.StringField, {
 
 });
 
-// Those methods are limited but largely enough for our usage
+/**
+ * Those methods are limited but largely enough for our usage
+ */
 inputEx.DateField.parseWithFormat = function(sDate,format) {
 	var separator = format.match(/[^Ymd ]/g)[0];
 	var ladate = sDate.split(separator);
@@ -119,6 +119,9 @@ inputEx.DateField.parseWithFormat = function(sDate,format) {
    return (new Date(Y,m,d));
 };
 
+/**
+ * Those methods are limited but largely enough for our usage
+ */
 inputEx.DateField.formatDate = function(d,format) {
 	var str = format.replace('Y',d.getFullYear());
    var m = d.getMonth()+1;
@@ -129,7 +132,7 @@ inputEx.DateField.formatDate = function(d,format) {
 };
 	
 // Specific message for the container
-//inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
+// inputEx.messages.invalidDate = "Invalid date, ex: 03/27/2008";
 	
 // Register this class as "date" type
 inputEx.registerType("date", inputEx.DateField, [

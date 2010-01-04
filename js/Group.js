@@ -130,12 +130,12 @@ lang.extend(inputEx.Group, inputEx.Field, {
   
    /**
     * Instanciate one field given its parameters, type or fieldClass
-    * @param {Object} fieldOptions The field properties as required bu inputEx.buildField
+    * @param {Object} fieldOptions The field properties as required by the inputEx() method
     */
    renderField: function(fieldOptions) {
 
       // Instanciate the field
-      var fieldInstance = inputEx.buildField(fieldOptions);      
+      var fieldInstance = inputEx(fieldOptions);      
       
 	   this.inputs.push(fieldInstance);
       
