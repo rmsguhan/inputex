@@ -23,7 +23,7 @@ inputEx.DSSelectField = function(options) {
 YAHOO.lang.extend(inputEx.DSSelectField, inputEx.SelectField, {
    /**
     * Setup the additional options for selectfield
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
 	   // set this.options.selectValues and this.options.selectOptions

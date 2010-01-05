@@ -28,7 +28,7 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
    
 	/**
 	 * Add the password regexp, strengthIndicator, capsLockWarning
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
 	setOptions: function(options) {
 	   inputEx.PasswordField.superclass.setOptions.call(this, options);
@@ -258,8 +258,8 @@ inputEx.messages.passwordStrength = "Password Strength";
 
 // Register this class as "password" type
 inputEx.registerType("password", inputEx.PasswordField, [
-   {type: 'boolean', inputParams: {label: 'Strength indicator', name: 'strengthIndicator', value: false} },
-   {type: 'boolean', inputParams: {label: 'CapsLock warning', name: 'capsLockWarning', value: false} }
+   {type: 'boolean', label: 'Strength indicator', name: 'strengthIndicator', value: false },
+   {type: 'boolean', label: 'CapsLock warning', name: 'capsLockWarning', value: false }
 ]);
 	
 })();

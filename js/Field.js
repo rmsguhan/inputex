@@ -55,7 +55,7 @@ inputEx.Field.prototype = {
   
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
 
@@ -363,11 +363,11 @@ inputEx.Field.prototype = {
 };
 
 inputEx.Field.groupOptions = [
-   { type: "string", inputParams:{label: "Label", name: "label", value: ''} },
-   { type: "string", inputParams:{label: "Name", name: "name", value: ''} },
-   { type: "string", inputParams: {label: "Description",name: "description", value: ''} },
-   { type: "boolean", inputParams: {label: "Required?",name: "required", value: false} },
-   { type: "boolean", inputParams: {label: "Show messages",name: "showMsg", value: false} }
+   { type: "string", label: "Label", name: "label", value: '' },
+   { type: "string", label: "Name", name: "name", value: '' },
+   { type: "string", label: "Description",name: "description", value: '' },
+   { type: "boolean", label: "Required?",name: "required", value: false },
+   { type: "boolean", label: "Show messages",name: "showMsg", value: false }
 ];
 
 })();

@@ -30,7 +30,9 @@ inputEx.JsonSchema = {
    inputExToSchema: function(inputExJson) {
       
       var t = inputExJson.type || "string",
-          ip = inputExJson.inputParams || {};
+          // inputParams is here for retro-compatibility : TODO -> remove
+          // -> ip = inputExJson || {};
+          ip = (lang.isObject(inputExJson.inputParams) ? inputExJson.inputParams : inputExJson) || {};
       
       if(t == "group") {
          var ret = {
@@ -42,7 +44,9 @@ inputEx.JsonSchema = {
          
          for(var i = 0 ; i < ip.fields.length ; i++) {
             var field = ip.fields[i];
-            var fieldName = field.inputParams.name;
+            // inputParams is here for retro-compatibility : TODO -> remove
+            // -> var fieldName = field.name;
+            var fieldName = lang.isObject(field.inputParams) ? field.inputParams.name : field.name;
             ret.properties[fieldName] = inputEx.JsonSchema.inputExToSchema(field);
          }
          
@@ -170,7 +174,7 @@ inputEx.JsonSchema.Builder = function(opts) {
 	this.schemaToParamMap = options.schemaToParamMap || {
 		'title':'label',
 		'description':'description',
-		'_inputex':null	// null value means copy child key/value pairs into inputParams directly
+		'_inputex':null	// null value means copy child key/value pairs into field options directly
 	};
 	
 	/**
@@ -179,7 +183,7 @@ inputEx.JsonSchema.Builder = function(opts) {
 	this.referenceResolver = options.referenceResolver || null;
 	
 	/**
-	 * options to be applied to inputParams unless already specified
+	 * options to be applied unless already specified
 	 * @property defaultOptions
 	 */
 	this.defaultOptions = options.defaultOptions || {};	
@@ -206,9 +210,9 @@ inputEx.JsonSchema.Builder.prototype = {
 	 */
 	schemaToInputEx:function(p, propertyName) {
 	
-	   var fieldDef = {inputParams: { label: propertyName, name: propertyName} };
+	   var fieldDef = { label: propertyName, name: propertyName };
 	   var schemaMap = this.schemaToParamMap;
-    	var referencedSchema = p["$ref"]; 
+    	var referencedSchema = p["$ref"];
 		var key;
 	    
 	   if(referencedSchema){
@@ -235,7 +239,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	   }
 
 	   if(!p.optional) {
-	      fieldDef.inputParams.required = true;
+	      fieldDef.required = true;
 	   }
 
 	    for(key in schemaMap) {
@@ -244,17 +248,17 @@ inputEx.JsonSchema.Builder.prototype = {
 	      	  var v = p[key];
 	      	  if(!lang.isUndefined(v)) {
 	      		  if(paramName === null) {
-	      			  // copy / merge values from v directly into inputParams
+	      			  // copy / merge values from v directly into options
 	      			  if(lang.isObject(v)) {
-	      				  // v must be an object, copy key/value pairs into inputParams
+	      				  // v must be an object, copy key/value pairs into options
 	      				  for(var vkey in v) {
 	      					  if(v.hasOwnProperty(vkey)) {
-	      						  fieldDef.inputParams[vkey] = v[vkey];
+	      						  fieldDef[vkey] = v[vkey];
 	      					  }
 	      				  }
 	      			  }
 	      		  } else {
-	      			  fieldDef.inputParams[paramName] = v;
+	      			  fieldDef[paramName] = v;
 	      		  }
 	      	  }
 	        }
@@ -281,30 +285,30 @@ inputEx.JsonSchema.Builder.prototype = {
 	       
 	       // default value
 	       if( !lang.isUndefined(p["default"]) ) {
-	          fieldDef.inputParams.value = p["default"];
+	          fieldDef.value = p["default"];
 	       }
 	    
 	       if(type == "array" ) {
 	          fieldDef.type = "list";
 	          if(lang.isObject(p.items) && !lang.isArray(p.items)) {
 	        	  // when items is an object, it's a schema that describes each item in the list
-	        	  fieldDef.inputParams.elementType = this.schemaToInputEx(p.items, propertyName);
+	        	  fieldDef.elementType = this.schemaToInputEx(p.items, propertyName);
 	          }
 	
-		       if(p.minItems) { fieldDef.inputParams.minItems = p.minItems; }
-				 if(p.maxItems) { fieldDef.inputParams.maxItems = p.maxItems; }
+		       if(p.minItems) { fieldDef.minItems = p.minItems; }
+				 if(p.maxItems) { fieldDef.maxItems = p.maxItems; }
 	
 	       }
 	       else if(type == "object" ) {
 	          fieldDef.type = "group";
-	          if(p.title && lang.isUndefined(fieldDef.inputParams.legend)) {
-	        	  fieldDef.inputParams.legend = p.title; 
+	          if(p.title && lang.isUndefined(fieldDef.legend)) {
+	        	  fieldDef.legend = p.title; 
 	          }
-	          //fieldDef.inputParams = this.schemaToInputEx(p, propertyName);
-	          //fieldDef.inputParams = this._parseSchemaProperty(p, propertyName);
+	          //fieldDef = this.schemaToInputEx(p, propertyName);
+	          //fieldDef = this._parseSchemaProperty(p, propertyName);
 	          var fields = [];
 	          if(propertyName) {
-	        	  fieldDef.inputParams.name = propertyName;
+	        	  fieldDef.name = propertyName;
 	          }
 	
 	          for(key in p.properties) {
@@ -313,43 +317,43 @@ inputEx.JsonSchema.Builder.prototype = {
 	             }
 	          }
 	
-	          fieldDef.inputParams.fields = fields;
+	          fieldDef.fields = fields;
 	          
 	       }
 	       else if(type == "string" && (p["enum"] || p["options"]) ) {
 	          fieldDef.type = "select";
 	          
 	          if(p.options) {
-  	             fieldDef.inputParams.selectOptions = [];
-     	          fieldDef.inputParams.selectValues = [];
+  	             fieldDef.selectOptions = [];
+     	          fieldDef.selectValues = [];
 	             for(var i = 0 ; i < p.options.length ; i++) {
 	                var o = p.options[i];
-	                fieldDef.inputParams.selectOptions[i] = o.label;
-	                fieldDef.inputParams.selectValues[i] = o.value;
+	                fieldDef.selectOptions[i] = o.label;
+	                fieldDef.selectValues[i] = o.value;
 	             }
              }
              else {
-    	          fieldDef.inputParams.selectValues = p["enum"];
+    	          fieldDef.selectValues = p["enum"];
              }
 	       }
 	       else if(type == "string") {
-	    	  if(!lang.isUndefined(p.pattern) && lang.isUndefined(fieldDef.inputParams.regexp)) {
+	    	  if(!lang.isUndefined(p.pattern) && lang.isUndefined(fieldDef.regexp)) {
 	    		  if(lang.isString(p.pattern)) {
-	    			  fieldDef.inputParams.regexp = new RegExp(p.pattern);
+	    			  fieldDef.regexp = new RegExp(p.pattern);
 	    		  } else {
-	    			  fieldDef.inputParams.regexp = p.pattern;
+	    			  fieldDef.regexp = p.pattern;
 	    		  }
 	    	  }
-	    	  if(!lang.isUndefined(p.maxLength) && lang.isUndefined(fieldDef.inputParams.maxLength)) {
-	    		  fieldDef.inputParams.maxLength = p.maxLength; 
+	    	  if(!lang.isUndefined(p.maxLength) && lang.isUndefined(fieldDef.maxLength)) {
+	    		  fieldDef.maxLength = p.maxLength; 
 	    	  }
 
-	    	  if(!lang.isUndefined(p.minLength) && lang.isUndefined(fieldDef.inputParams.minLength)) {
-	    		  fieldDef.inputParams.minLength = p.minLength; 
+	    	  if(!lang.isUndefined(p.minLength) && lang.isUndefined(fieldDef.minLength)) {
+	    		  fieldDef.minLength = p.minLength; 
 	    	  }
 
-	    	  if(!lang.isUndefined(p.readonly) && lang.isUndefined(fieldDef.inputParams.readonly)) {
-	    		  fieldDef.inputParams.readonly = p.readonly; 
+	    	  if(!lang.isUndefined(p.readonly) && lang.isUndefined(fieldDef.readonly)) {
+	    		  fieldDef.readonly = p.readonly; 
 	    	  }
 
            // According to http://groups.google.com/group/json-schema/web/json-schema-possible-formats
@@ -358,7 +362,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	                fieldDef.type = "html";
 	             } else if(p.format == "date") {
 	                fieldDef.type = "date";
-	                fieldDef.inputParams.tooltipIcon = true;
+	                fieldDef.tooltipIcon = true;
 	             } else if(p.format == 'url') {
 	            	 fieldDef.type = 'url';
 	             } else if(p.format == 'email') {
@@ -382,8 +386,8 @@ inputEx.JsonSchema.Builder.prototype = {
 	
 	    // Add the defaultOptions
 	    for(var kk in this.defaultOptions) {
-	        if(this.defaultOptions.hasOwnProperty(kk) && lang.isUndefined(fieldDef.inputParams[kk])) {
-	        	fieldDef.inputParams[kk] = this.defaultOptions[kk]; 
+	        if(this.defaultOptions.hasOwnProperty(kk) && lang.isUndefined(fieldDef[kk])) {
+	        	fieldDef[kk] = this.defaultOptions[kk]; 
 	        }	    	
 	    }
 	    return fieldDef;
@@ -402,8 +406,8 @@ inputEx.JsonSchema.Builder.prototype = {
       
       // Set the default value of each property to the instance value
       for(var i = 0 ; i < formDef.fields.length ; i++) {
-         var fieldName = formDef.fields[i].inputParams.name;
-         formDef.fields[i].inputParams.value = instanceObject[fieldName];
+         var fieldName = formDef.fields[i].name;
+         formDef.fields[i].value = instanceObject[fieldName];
       }
       
       return formDef;

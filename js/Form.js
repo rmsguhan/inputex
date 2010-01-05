@@ -21,7 +21,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 
    /**
     * Adds buttons and set ajax default parameters
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.Form.superclass.setOptions.call(this, options);
@@ -312,19 +312,17 @@ inputEx.messages.ajaxWait = "Please wait...";
 
 // Register this class as "form" type
 inputEx.registerType("form", inputEx.Form, [
-   {type: 'list', inputParams:{ 
+   {  
+      type: 'list', 
       label: 'Buttons', 
       name: 'buttons', 
-         elementType: {
-            type: 'group', 
-            inputParams: { 
-               fields: [
-                  { inputParams: {label: 'Label', name: 'value'}},
-                  { type: 'select', inputParams: {label: 'Type', name: 'type', selectValues:["button", "submit"]} }
-               ] 
-            } 
-         } 
-      } 
+      elementType: {
+         type: 'group', 
+         fields: [
+            { label: 'Label', name: 'value'},
+            { type: 'select', label: 'Type', name: 'type', selectValues:["button", "submit"] }
+         ]
+      }
    }
 ]);
 

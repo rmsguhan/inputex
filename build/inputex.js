@@ -34,10 +34,9 @@ THE SOFTWARE.
 /**
  * The inputEx method lets you create a field from the JSON definition:
  * <pre>
- *    inputEx({type: 'string', inputParams: { name: 'company', label: 'Your company'} })
+ *    inputEx({type: 'string', name: 'company', label: 'Your company' })
  * </pre>
- * Build a field from an object like: { type: 'color' or fieldClass: inputEx.ColorField, inputParams: {} }<br />
- * The inputParams property is the object that will be passed as the <code>options</code> parameter to the field class constructor.<br />
+ * Build a field from an object like: { type: 'color' or fieldClass: inputEx.ColorField, ... }<br />
  * If the neither type or fieldClass are found, it uses inputEx.StringField
  *
  * @class inputEx
@@ -46,7 +45,9 @@ THE SOFTWARE.
  * @return {inputEx.Field} Created field instance
  */
 inputEx = function(fieldOptions) {
-   var fieldClass = null;
+   var fieldClass = null,
+       inputInstance;
+   
 	if(fieldOptions.type) {
 	   fieldClass = inputEx.getFieldClass(fieldOptions.type);
 	   if(fieldClass === null) fieldClass = inputEx.StringField;
@@ -56,7 +57,16 @@ inputEx = function(fieldOptions) {
 	}
 
    // Instanciate the field
-   var inputInstance = new fieldClass(fieldOptions.inputParams);
+   
+   // Retro-compatibility with deprecated inputParams Object
+   if (lang.isObject(fieldOptions.inputParams)) {
+      console.log("old : ",fieldOptions);
+      inputInstance = new fieldClass(fieldOptions.inputParams);
+      
+   // New prefered way to instanciate a field
+   } else {
+      inputInstance = new fieldClass(fieldOptions);
+   }
 
    // Add the flatten attribute if present in the params
    /*if(fieldOptions.flatten) {
@@ -460,7 +470,9 @@ inputEx.JsonSchema = {
    inputExToSchema: function(inputExJson) {
       
       var t = inputExJson.type || "string",
-          ip = inputExJson.inputParams || {};
+          // inputParams is here for retro-compatibility : TODO -> remove
+          // -> ip = inputExJson || {};
+          ip = (lang.isObject(inputExJson.inputParams) ? inputExJson.inputParams : inputExJson) || {};
       
       if(t == "group") {
          var ret = {
@@ -472,7 +484,9 @@ inputEx.JsonSchema = {
          
          for(var i = 0 ; i < ip.fields.length ; i++) {
             var field = ip.fields[i];
-            var fieldName = field.inputParams.name;
+            // inputParams is here for retro-compatibility : TODO -> remove
+            // -> var fieldName = field.name;
+            var fieldName = lang.isObject(field.inputParams) ? field.inputParams.name : field.name;
             ret.properties[fieldName] = inputEx.JsonSchema.inputExToSchema(field);
          }
          
@@ -600,7 +614,7 @@ inputEx.JsonSchema.Builder = function(opts) {
 	this.schemaToParamMap = options.schemaToParamMap || {
 		'title':'label',
 		'description':'description',
-		'_inputex':null	// null value means copy child key/value pairs into inputParams directly
+		'_inputex':null	// null value means copy child key/value pairs into field options directly
 	};
 	
 	/**
@@ -609,7 +623,7 @@ inputEx.JsonSchema.Builder = function(opts) {
 	this.referenceResolver = options.referenceResolver || null;
 	
 	/**
-	 * options to be applied to inputParams unless already specified
+	 * options to be applied unless already specified
 	 * @property defaultOptions
 	 */
 	this.defaultOptions = options.defaultOptions || {};	
@@ -636,9 +650,9 @@ inputEx.JsonSchema.Builder.prototype = {
 	 */
 	schemaToInputEx:function(p, propertyName) {
 	
-	   var fieldDef = {inputParams: { label: propertyName, name: propertyName} };
+	   var fieldDef = { label: propertyName, name: propertyName };
 	   var schemaMap = this.schemaToParamMap;
-    	var referencedSchema = p["$ref"]; 
+    	var referencedSchema = p["$ref"];
 		var key;
 	    
 	   if(referencedSchema){
@@ -665,7 +679,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	   }
 
 	   if(!p.optional) {
-	      fieldDef.inputParams.required = true;
+	      fieldDef.required = true;
 	   }
 
 	    for(key in schemaMap) {
@@ -674,17 +688,17 @@ inputEx.JsonSchema.Builder.prototype = {
 	      	  var v = p[key];
 	      	  if(!lang.isUndefined(v)) {
 	      		  if(paramName === null) {
-	      			  // copy / merge values from v directly into inputParams
+	      			  // copy / merge values from v directly into options
 	      			  if(lang.isObject(v)) {
-	      				  // v must be an object, copy key/value pairs into inputParams
+	      				  // v must be an object, copy key/value pairs into options
 	      				  for(var vkey in v) {
 	      					  if(v.hasOwnProperty(vkey)) {
-	      						  fieldDef.inputParams[vkey] = v[vkey];
+	      						  fieldDef[vkey] = v[vkey];
 	      					  }
 	      				  }
 	      			  }
 	      		  } else {
-	      			  fieldDef.inputParams[paramName] = v;
+	      			  fieldDef[paramName] = v;
 	      		  }
 	      	  }
 	        }
@@ -711,30 +725,30 @@ inputEx.JsonSchema.Builder.prototype = {
 	       
 	       // default value
 	       if( !lang.isUndefined(p["default"]) ) {
-	          fieldDef.inputParams.value = p["default"];
+	          fieldDef.value = p["default"];
 	       }
 	    
 	       if(type == "array" ) {
 	          fieldDef.type = "list";
 	          if(lang.isObject(p.items) && !lang.isArray(p.items)) {
 	        	  // when items is an object, it's a schema that describes each item in the list
-	        	  fieldDef.inputParams.elementType = this.schemaToInputEx(p.items, propertyName);
+	        	  fieldDef.elementType = this.schemaToInputEx(p.items, propertyName);
 	          }
 	
-		       if(p.minItems) { fieldDef.inputParams.minItems = p.minItems; }
-				 if(p.maxItems) { fieldDef.inputParams.maxItems = p.maxItems; }
+		       if(p.minItems) { fieldDef.minItems = p.minItems; }
+				 if(p.maxItems) { fieldDef.maxItems = p.maxItems; }
 	
 	       }
 	       else if(type == "object" ) {
 	          fieldDef.type = "group";
-	          if(p.title && lang.isUndefined(fieldDef.inputParams.legend)) {
-	        	  fieldDef.inputParams.legend = p.title; 
+	          if(p.title && lang.isUndefined(fieldDef.legend)) {
+	        	  fieldDef.legend = p.title; 
 	          }
-	          //fieldDef.inputParams = this.schemaToInputEx(p, propertyName);
-	          //fieldDef.inputParams = this._parseSchemaProperty(p, propertyName);
+	          //fieldDef = this.schemaToInputEx(p, propertyName);
+	          //fieldDef = this._parseSchemaProperty(p, propertyName);
 	          var fields = [];
 	          if(propertyName) {
-	        	  fieldDef.inputParams.name = propertyName;
+	        	  fieldDef.name = propertyName;
 	          }
 	
 	          for(key in p.properties) {
@@ -743,43 +757,43 @@ inputEx.JsonSchema.Builder.prototype = {
 	             }
 	          }
 	
-	          fieldDef.inputParams.fields = fields;
+	          fieldDef.fields = fields;
 	          
 	       }
 	       else if(type == "string" && (p["enum"] || p["options"]) ) {
 	          fieldDef.type = "select";
 	          
 	          if(p.options) {
-  	             fieldDef.inputParams.selectOptions = [];
-     	          fieldDef.inputParams.selectValues = [];
+  	             fieldDef.selectOptions = [];
+     	          fieldDef.selectValues = [];
 	             for(var i = 0 ; i < p.options.length ; i++) {
 	                var o = p.options[i];
-	                fieldDef.inputParams.selectOptions[i] = o.label;
-	                fieldDef.inputParams.selectValues[i] = o.value;
+	                fieldDef.selectOptions[i] = o.label;
+	                fieldDef.selectValues[i] = o.value;
 	             }
              }
              else {
-    	          fieldDef.inputParams.selectValues = p["enum"];
+    	          fieldDef.selectValues = p["enum"];
              }
 	       }
 	       else if(type == "string") {
-	    	  if(!lang.isUndefined(p.pattern) && lang.isUndefined(fieldDef.inputParams.regexp)) {
+	    	  if(!lang.isUndefined(p.pattern) && lang.isUndefined(fieldDef.regexp)) {
 	    		  if(lang.isString(p.pattern)) {
-	    			  fieldDef.inputParams.regexp = new RegExp(p.pattern);
+	    			  fieldDef.regexp = new RegExp(p.pattern);
 	    		  } else {
-	    			  fieldDef.inputParams.regexp = p.pattern;
+	    			  fieldDef.regexp = p.pattern;
 	    		  }
 	    	  }
-	    	  if(!lang.isUndefined(p.maxLength) && lang.isUndefined(fieldDef.inputParams.maxLength)) {
-	    		  fieldDef.inputParams.maxLength = p.maxLength; 
+	    	  if(!lang.isUndefined(p.maxLength) && lang.isUndefined(fieldDef.maxLength)) {
+	    		  fieldDef.maxLength = p.maxLength; 
 	    	  }
 
-	    	  if(!lang.isUndefined(p.minLength) && lang.isUndefined(fieldDef.inputParams.minLength)) {
-	    		  fieldDef.inputParams.minLength = p.minLength; 
+	    	  if(!lang.isUndefined(p.minLength) && lang.isUndefined(fieldDef.minLength)) {
+	    		  fieldDef.minLength = p.minLength; 
 	    	  }
 
-	    	  if(!lang.isUndefined(p.readonly) && lang.isUndefined(fieldDef.inputParams.readonly)) {
-	    		  fieldDef.inputParams.readonly = p.readonly; 
+	    	  if(!lang.isUndefined(p.readonly) && lang.isUndefined(fieldDef.readonly)) {
+	    		  fieldDef.readonly = p.readonly; 
 	    	  }
 
            // According to http://groups.google.com/group/json-schema/web/json-schema-possible-formats
@@ -788,7 +802,7 @@ inputEx.JsonSchema.Builder.prototype = {
 	                fieldDef.type = "html";
 	             } else if(p.format == "date") {
 	                fieldDef.type = "date";
-	                fieldDef.inputParams.tooltipIcon = true;
+	                fieldDef.tooltipIcon = true;
 	             } else if(p.format == 'url') {
 	            	 fieldDef.type = 'url';
 	             } else if(p.format == 'email') {
@@ -812,8 +826,8 @@ inputEx.JsonSchema.Builder.prototype = {
 	
 	    // Add the defaultOptions
 	    for(var kk in this.defaultOptions) {
-	        if(this.defaultOptions.hasOwnProperty(kk) && lang.isUndefined(fieldDef.inputParams[kk])) {
-	        	fieldDef.inputParams[kk] = this.defaultOptions[kk]; 
+	        if(this.defaultOptions.hasOwnProperty(kk) && lang.isUndefined(fieldDef[kk])) {
+	        	fieldDef[kk] = this.defaultOptions[kk]; 
 	        }	    	
 	    }
 	    return fieldDef;
@@ -832,8 +846,8 @@ inputEx.JsonSchema.Builder.prototype = {
       
       // Set the default value of each property to the instance value
       for(var i = 0 ; i < formDef.fields.length ; i++) {
-         var fieldName = formDef.fields[i].inputParams.name;
-         formDef.fields[i].inputParams.value = instanceObject[fieldName];
+         var fieldName = formDef.fields[i].name;
+         formDef.fields[i].value = instanceObject[fieldName];
       }
       
       return formDef;
@@ -901,7 +915,7 @@ inputEx.Field.prototype = {
   
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
 
@@ -1209,11 +1223,11 @@ inputEx.Field.prototype = {
 };
 
 inputEx.Field.groupOptions = [
-   { type: "string", inputParams:{label: "Label", name: "label", value: ''} },
-   { type: "string", inputParams:{label: "Name", name: "name", value: ''} },
-   { type: "string", inputParams: {label: "Description",name: "description", value: ''} },
-   { type: "boolean", inputParams: {label: "Required?",name: "required", value: false} },
-   { type: "boolean", inputParams: {label: "Show messages",name: "showMsg", value: false} }
+   { type: "string", label: "Label", name: "label", value: '' },
+   { type: "string", label: "Name", name: "name", value: '' },
+   { type: "string", label: "Description",name: "description", value: '' },
+   { type: "boolean", label: "Required?",name: "required", value: false },
+   { type: "boolean", label: "Show messages",name: "showMsg", value: false }
 ];
 
 })();(function() {
@@ -1227,7 +1241,7 @@ inputEx.Field.groupOptions = [
  * @constructor
  * @param {Object} options The following options are added for Groups and subclasses:
  * <ul>
- *   <li>fields: Array of input fields declared like { label: 'Enter the value:' , type: 'text' or fieldClass: inputEx.Field, optional: true/false, inputParams: {inputparams object} }</li>
+ *   <li>fields: Array of input fields declared like { label: 'Enter the value:' , type: 'text' or fieldClass: inputEx.Field, optional: true/false, ... }</li>
  *   <li>legend: The legend for the fieldset (default is an empty string)</li>
  *   <li>collapsible: Boolean to make the group collapsible (default is false)</li>
  *   <li>collapsed: If collapsible only, will be collapsed at creation (default is false)</li>
@@ -1246,7 +1260,7 @@ lang.extend(inputEx.Group, inputEx.Field, {
    
    /**
     * Adds some options: legend, collapsible, fields...
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
    
@@ -1631,11 +1645,11 @@ lang.extend(inputEx.Group, inputEx.Field, {
    
 // Register this class as "group" type
 inputEx.registerType("group", inputEx.Group, [
-   { type: "string", inputParams:{label: "Name", name: "name", value: ''} },
-   { type: 'string', inputParams: { label: 'Legend', name:'legend'}},
-   { type: 'boolean', inputParams: {label: 'Collapsible', name:'collapsible', value: false}},
-   { type: 'boolean', inputParams: {label: 'Collapsed', name:'collapsed', value: false}},
-   { type: 'list', inputParams:{ label: 'Fields', name: 'fields', elementType: {type: 'type' } } }
+   { type: "string", label: "Name", name: "name", value: '' },
+   { type: 'string', label: 'Legend', name:'legend'},
+   { type: 'boolean', label: 'Collapsible', name:'collapsible', value: false},
+   { type: 'boolean', label: 'Collapsed', name:'collapsed', value: false},
+   { type: 'list', label: 'Fields', name: 'fields', elementType: {type: 'type' } }
 ], true);
 
 
@@ -1662,7 +1676,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 
    /**
     * Adds buttons and set ajax default parameters
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.Form.superclass.setOptions.call(this, options);
@@ -1953,19 +1967,17 @@ inputEx.messages.ajaxWait = "Please wait...";
 
 // Register this class as "form" type
 inputEx.registerType("form", inputEx.Form, [
-   {type: 'list', inputParams:{ 
+   {  
+      type: 'list', 
       label: 'Buttons', 
       name: 'buttons', 
-         elementType: {
-            type: 'group', 
-            inputParams: { 
-               fields: [
-                  { inputParams: {label: 'Label', name: 'value'}},
-                  { type: 'select', inputParams: {label: 'Type', name: 'type', selectValues:["button", "submit"]} }
-               ] 
-            } 
-         } 
-      } 
+      elementType: {
+         type: 'group', 
+         fields: [
+            { label: 'Label', name: 'value'},
+            { type: 'select', label: 'Type', name: 'type', selectValues:["button", "submit"] }
+         ]
+      }
    }
 ]);
 
@@ -1992,7 +2004,7 @@ inputEx.CombineField = function(options) {
 lang.extend( inputEx.CombineField, inputEx.Group, {
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.CombineField.superclass.setOptions.call(this, options);
@@ -2073,8 +2085,7 @@ lang.extend( inputEx.CombineField, inputEx.Group, {
       
       // Subfields should inherit required property
       if (this.options.required) {
-         if (!fieldOptions.inputParams) {fieldOptions.inputParams = {};}
-         fieldOptions.inputParams.required = true;
+         fieldOptions.required = true;
       }
       
       return inputEx.CombineField.superclass.renderField.call(this, fieldOptions);
@@ -2127,8 +2138,8 @@ lang.extend( inputEx.CombineField, inputEx.Group, {
 	
 // Register this class as "combine" type
 inputEx.registerType("combine", inputEx.CombineField, [
-   { type: 'list', inputParams: {name: 'fields', label: 'Elements', required: true, elementType: {type: 'type'} } },
-   { type: 'list', inputParams: {name: 'separators', label: 'Separators', required: true } }
+   { type: 'list', name: 'fields', label: 'Elements', required: true, elementType: {type: 'type'} },
+   { type: 'list', name: 'separators', label: 'Separators', required: true }
 ]);
 	
 })();(function() {
@@ -2161,7 +2172,7 @@ inputEx.StringField = function(options) {
 lang.extend(inputEx.StringField, inputEx.Field, {
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
 	   inputEx.StringField.superclass.setOptions.call(this, options);
@@ -2374,9 +2385,9 @@ inputEx.messages.stringTooShort = ["This field should contain at least "," numbe
 
 // Register this class as "string" type
 inputEx.registerType("string", inputEx.StringField, [
-    { type: 'string',  inputParams: { label: 'Type invite', name: 'typeInvite', value: ''}},
-    { type: 'integer', inputParams: { label: 'Size', name: 'size', value: 20}},
-    { type: 'integer', inputParams: { label: 'Min. length', name: 'minLength', value: 0}}
+    { type: 'string', label: 'Type invite', name: 'typeInvite', value: ''},
+    { type: 'integer', label: 'Size', name: 'size', value: 20},
+    { type: 'integer', label: 'Min. length', name: 'minLength', value: 0}
 ]);
 
 })();
@@ -2404,7 +2415,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
 
    /**
     * Adds autocomplete options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.AutoComplete.superclass.setOptions.call(this, options);
@@ -2576,7 +2587,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	   
 	/**
 	 * Adds the CheckBox specific options
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
 	setOptions: function(options) {
 	   inputEx.CheckBox.superclass.setOptions.call(this, options);
@@ -2607,6 +2618,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	   this.fieldContainer.appendChild(this.rightLabelEl);
 	
 	   // Keep state of checkbox in a hidden field (format : this.checkedValue or this.uncheckedValue)
+	   // This is useful for non-javascript form submit (it allows custom checked/unchecked values to be submitted)
 	   this.hiddenEl = inputEx.cn('input', {type: 'hidden', name: this.options.name || '', value: this.uncheckedValue});
 	   this.fieldContainer.appendChild(this.hiddenEl);
 	},
@@ -2659,17 +2671,33 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	setValue: function(value, sendUpdatedEvt) {
 	   if (value===this.checkedValue) {
 			this.hiddenEl.value = value;
-			this.el.setAttribute("checked","checked");
-			this.el.setAttribute("defaultChecked","checked"); // for IE6
+			
+			// check checkbox (all browsers)
+			this.el.checked = true;
+			
+			// hacks for IE6, because input is not operational at init, 
+			// so "this.el.checked = true" would work for default values !
+			// (but still work for later setValue calls)
+			if (YAHOO.env.ua.ie === 6) {
+			   this.el.setAttribute("defaultChecked","checked"); // for IE6
+		   }
 		}
-	   else {		
+	   else {
 	      // DEBUG :
 	      /*if (value!==this.uncheckedValue && lang.isObject(console) && lang.isFunction(console.log) ) {
 	         console.log("inputEx.CheckBox: value is *"+value+"*, schould be in ["+this.checkedValue+","+this.uncheckedValue+"]");
          }*/
 			this.hiddenEl.value = value;
-			this.el.removeAttribute("checked");
-			this.el.removeAttribute("defaultChecked"); // for IE6 
+			
+			// uncheck checkbox (all browsers)
+		   this.el.checked = false;
+		   
+			// hacks for IE6, because input is not operational at init, 
+			// so "this.el.checked = false" would work for default values !
+			// (but still work for later setValue calls)
+			if (YAHOO.env.ua.ie === 6) {
+			   this.el.removeAttribute("defaultChecked"); // for IE6
+		   }
 		}
 		
 		// Call Field.setValue to set class and fire updated event
@@ -2694,7 +2722,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	
 // Register this class as "boolean" type
 inputEx.registerType("boolean", inputEx.CheckBox, [ 
-   {type: 'string', inputParams: {label: 'Right Label', name: 'rightLabel'} } 
+   {type: 'string', label: 'Right Label', name: 'rightLabel'}
 ]);
 	
 })();(function() {
@@ -2725,7 +2753,7 @@ lang.extend(inputEx.ColorField, inputEx.Field, {
    
 	/**
 	 * Adds the 'inputEx-ColorField' default className
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
    setOptions: function(options) {
    	inputEx.ColorField.superclass.setOptions.call(this, options);
@@ -2994,7 +3022,7 @@ inputEx.DateField = function(options) {
 lang.extend(inputEx.DateField, inputEx.StringField, {
 	/**
 	 * Adds the 'inputEx-DateField' default className
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
    setOptions: function(options) {
    	inputEx.DateField.superclass.setOptions.call(this, options);
@@ -3112,7 +3140,7 @@ inputEx.DateField.formatDate = function(d,format) {
 	
 // Register this class as "date" type
 inputEx.registerType("date", inputEx.DateField, [
-   {type: 'select', inputParams: {label: 'Date format', name: 'dateFormat', selectOptions: ["m/d/Y", "d/m/Y"], selectValues: ["m/d/Y", "d/m/Y"] } }
+   {type: 'select', label: 'Date format', name: 'dateFormat', selectOptions: ["m/d/Y", "d/m/Y"], selectValues: ["m/d/Y", "d/m/Y"] }
 ]);
 	
 })();(function() {
@@ -3136,13 +3164,13 @@ inputEx.DateSplitField = function(options) {
    options.fields = [];
    for(var i = 0 ; i < 3 ; i++) {
       if(i == this.dayIndex) {
-         options.fields.push({type: 'integer', inputParams: { typeInvite: inputEx.messages.dayTypeInvite, size: 2} });
+         options.fields.push({type: 'integer', typeInvite: inputEx.messages.dayTypeInvite, size: 2 });
       }
       else if(i == this.yearIndex) {
-         options.fields.push({type: 'integer', inputParams: { typeInvite: inputEx.messages.yearTypeInvite, size: 4} });
+         options.fields.push({type: 'integer', typeInvite: inputEx.messages.yearTypeInvite, size: 4 });
       }
       else {
-         options.fields.push({type: 'integer', inputParams: {typeInvite: inputEx.messages.monthTypeInvite, size: 2} });
+         options.fields.push({type: 'integer', typeInvite: inputEx.messages.monthTypeInvite, size: 2 });
       }
    }
 
@@ -3286,7 +3314,7 @@ inputEx.DatePickerField = function(options) {
 lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    /**
     * Set the default date picker CSS classes
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.DatePickerField.superclass.setOptions.call(this, options);
@@ -3474,7 +3502,7 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
    
    /**
     * Set the email regexp and invalid message
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.EmailField.superclass.setOptions.call(this, options);
@@ -3574,7 +3602,7 @@ inputEx.InPlaceEdit = function(options) {
 lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.InPlaceEdit.superclass.setOptions.call(this, options);
@@ -3812,7 +3840,7 @@ inputEx.messages.okEditor = "Ok";
 
 // Register this class as "inplaceedit" type
 inputEx.registerType("inplaceedit", inputEx.InPlaceEdit, [
-   { type:'type', inputParams: {label: 'Editor', name: 'editorField'} }
+   { type:'type', label: 'Editor', name: 'editorField'}
 ]);
 
 })();(function() {
@@ -3878,8 +3906,8 @@ YAHOO.lang.extend(inputEx.IntegerField, inputEx.StringField, {
 
 // Register this class as "integer" type
 inputEx.registerType("integer", inputEx.IntegerField, [
-   //{ type: 'integer', inputParams: {label: 'Radix', name: 'radix', value: 10}},
-   {type: 'boolean', inputParams: {label: 'Accept negative', name: 'negative', value: false} }
+   //{ type: 'integer', label: 'Radix', name: 'radix', value: 10},
+   {type: 'boolean', label: 'Accept negative', name: 'negative', value: false }
 ]);
 
 })();(function() {
@@ -3916,7 +3944,7 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	   
 	/**
 	 * Set the ListField classname
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
 	setOptions: function(options) {
 	   inputEx.ListField.superclass.setOptions.call(this, options);
@@ -4107,8 +4135,15 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	      
 	   // Instantiate the new subField
 	   var opts = lang.merge({}, this.options.elementType);
-	   if(!opts.inputParams) opts.inputParams = {};
-	   if(!lang.isUndefined(value)) opts.inputParams.value = value;
+	   
+	   // Retro-compatibility with deprecated inputParams Object : TODO -> remove
+      if(lang.isObject(opts.inputParams) && !lang.isUndefined(value)) {
+         opts.inputParams.value = value;
+         
+      // New prefered way to set options of a field
+      } else if (!lang.isUndefined(value)) {
+         opts.value = value;
+      }
 	   
 	   var el = inputEx(opts);
 	   
@@ -4286,8 +4321,8 @@ lang.extend(inputEx.ListField,inputEx.Field, {
 	
 // Register this class as "list" type
 inputEx.registerType("list", inputEx.ListField, [
-   { type: 'string', inputParams: {label: 'List label', name: 'listLabel', value: ''}},
-   { type: 'type', inputParams: {label: 'List element type', required: true, name: 'elementType'} }
+   { type: 'string', label: 'List label', name: 'listLabel', value: ''},
+   { type: 'type', label: 'List element type', required: true, name: 'elementType' }
 ]);
 
 
@@ -4385,7 +4420,7 @@ lang.extend(inputEx.PasswordField, inputEx.StringField, {
    
 	/**
 	 * Add the password regexp, strengthIndicator, capsLockWarning
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
 	setOptions: function(options) {
 	   inputEx.PasswordField.superclass.setOptions.call(this, options);
@@ -4615,8 +4650,8 @@ inputEx.messages.passwordStrength = "Password Strength";
 
 // Register this class as "password" type
 inputEx.registerType("password", inputEx.PasswordField, [
-   {type: 'boolean', inputParams: {label: 'Strength indicator', name: 'strengthIndicator', value: false} },
-   {type: 'boolean', inputParams: {label: 'CapsLock warning', name: 'capsLockWarning', value: false} }
+   {type: 'boolean', label: 'Strength indicator', name: 'strengthIndicator', value: false },
+   {type: 'boolean', label: 'CapsLock warning', name: 'capsLockWarning', value: false }
 ]);
 	
 })();(function() {	
@@ -4652,7 +4687,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 	   
 	/**
 	 * Adds the Radio button specific options
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
 	setOptions: function(options) {
 	   inputEx.RadioField.superclass.setOptions.call(this, options);
@@ -4887,8 +4922,8 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 	
 // Register this class as "radio" type
 inputEx.registerType("radio", inputEx.RadioField, [
-   {type: 'list', inputParams: {label: 'Options', name: 'choices', elementType: {type: 'string'} } },
-   {type: 'boolean', inputParams: {label: 'Allow custom value', name: 'allowAny'}, value: false  }
+   {type: 'list', label: 'Options', name: 'choices', elementType: {type: 'string'} },
+   {type: 'boolean', label: 'Allow custom value', name: 'allowAny', value: false  }
 ]);
 	
 })();(function() {
@@ -4912,7 +4947,7 @@ inputEx.RTEField = function(options) {
 lang.extend(inputEx.RTEField, inputEx.Field, {   
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
   	setOptions: function(options) {
   	   inputEx.RTEField.superclass.setOptions.call(this, options);
@@ -5026,7 +5061,7 @@ inputEx.SelectField = function(options) {
 lang.extend(inputEx.SelectField, inputEx.Field, {
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
 	   inputEx.SelectField.superclass.setOptions.call(this,options);
@@ -5225,8 +5260,8 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
 
 // Register this class as "select" type
 inputEx.registerType("select", inputEx.SelectField, [
-   {  type: 'list', inputParams: {name: 'selectValues', label: 'Values', elementType: {type: 'string'}, required: true } },
-   {  type: 'list', inputParams: {name: 'selectOptions', label: 'Options', elementType: {type: 'string'} } }
+   {  type: 'list', name: 'selectValues', label: 'Values', elementType: {type: 'string'}, required: true },
+   {  type: 'list', name: 'selectOptions', label: 'Options', elementType: {type: 'string'} }
 ]);
 
 })();(function() {
@@ -5251,7 +5286,7 @@ YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField, {
 
    /**
     * Set the specific options (rows and cols)
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.Textarea.superclass.setOptions.call(this, options);
@@ -5345,8 +5380,8 @@ inputEx.messages.stringTooLong = ["This field should contain at most "," numbers
 
 // Register this class as "text" type
 inputEx.registerType("text", inputEx.Textarea, [
-   { type: 'integer', inputParams: {label: 'Rows',  name: 'rows', value: 6} },
-   { type: 'integer', inputParams: {label: 'Cols', name: 'cols', value: 23} }
+   { type: 'integer', label: 'Rows',  name: 'rows', value: 6 },
+   { type: 'integer', label: 'Cols', name: 'cols', value: 23 }
 ]);
 
 })();(function() {
@@ -5367,9 +5402,9 @@ inputEx.TimeField = function(options) {
    for(i = 0 ; i < 24 ; i++) { s="";if(i<10){s="0";} s+= i;h.push(s);}
    for(i = 0 ; i < 60 ; i++) { s="";if(i<10){s="0";} s+= i;m.push(s);secs.push(s);}
    options.fields = [
-      {type: 'select', inputParams: {selectOptions: h, selectValues: h} },
-      {type: 'select', inputParams: {selectOptions: m, selectValues: m} },
-      {type: 'select', inputParams: {selectOptions: secs, selectValues: secs} }
+      {type: 'select', selectOptions: h, selectValues: h },
+      {type: 'select', selectOptions: m, selectValues: m },
+      {type: 'select', selectOptions: secs, selectValues: secs }
    ];
    options.separators = options.separators || [false,":",":",false];
    inputEx.TimeField.superclass.constructor.call(this,options);
@@ -5414,11 +5449,11 @@ inputEx.registerType("time", inputEx.TimeField);
  */
 inputEx.DateTimeField = function(options) {
    options.fields = [
-      {type: 'datepicker', inputParams: {}},
-      {type: 'time', inputParams: {}}
+      {type: 'datepicker'},
+      {type: 'time'}
    ];
    if(options.dateFormat) {
-      options.fields[0].inputParams.dateFormat = options.dateFormat;
+      options.fields[0].dateFormat = options.dateFormat;
    }
    options.separators = options.separators || [false, "&nbsp;&nbsp;", false];
    inputEx.DateTimeField.superclass.constructor.call(this,options);
@@ -5481,7 +5516,7 @@ YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, {
    
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
       inputEx.UneditableField.superclass.setOptions.call(this,options);
@@ -5536,7 +5571,7 @@ lang.extend(inputEx.UrlField, inputEx.StringField, {
 
    /**
     * Adds the invalid Url message
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.UrlField.superclass.setOptions.call(this, options);
@@ -5613,7 +5648,7 @@ inputEx.messages.invalidUrl = "Invalid URL, ex: http://www.test.com";
 
 // Register this class as "url" type
 inputEx.registerType("url", inputEx.UrlField, [
-   {  type: 'boolean', inputParams: {label: 'Display favicon', name:'favicon', value: true}}
+   { type: 'boolean', label: 'Display favicon', name:'favicon', value: true}
 ]);
 
 })();(function() {
@@ -6053,7 +6088,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
 
    /**
     * Adds autocomplete options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.AutoComplete.superclass.setOptions.call(this, options);
@@ -6337,7 +6372,7 @@ YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, {
    
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
       inputEx.UneditableField.superclass.setOptions.call(this,options);
@@ -6387,7 +6422,7 @@ inputEx.SliderField = function(options) {
 YAHOO.lang.extend(inputEx.SliderField, inputEx.Field, {
    /**
     * Set the classname to 'inputEx-SliderField'
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.SliderField.superclass.setOptions.call(this, options);
@@ -6470,8 +6505,8 @@ YAHOO.lang.extend(inputEx.SliderField, inputEx.Field, {
 
 // Register this class as "slider" type
 inputEx.registerType("slider", inputEx.SliderField, [
-   { type: 'integer', inputParams: {label: 'Min. value',  name: 'minValue', value: 0} },
-   { type: 'integer', inputParams: {label: 'Max. value', name: 'maxValue', value: 100} }
+   { type: 'integer', label: 'Min. value',  name: 'minValue', value: 0 },
+   { type: 'integer', label: 'Max. value', name: 'maxValue', value: 100 }
 ]);
 
 })();

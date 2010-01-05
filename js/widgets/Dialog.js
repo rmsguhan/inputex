@@ -52,7 +52,16 @@ YAHOO.lang.extend(inputEx.widget.Dialog, YAHOO.widget.Panel, {
 	 * Render the form
 	 */
    renderForm: function() {
-		this._inputExOptions.inputExDef.inputParams.parentEl = this._inputExBodyId;
+      
+      // Retro-compatibility with deprecated inputParams Object
+      if (YAHOO.lang.isObject(this._inputExOptions.inputExDef.inputParams)) {
+		   this._inputExOptions.inputExDef.inputParams.parentEl = this._inputExBodyId;
+		   
+		// New prefered syntax for field options
+	   } else {
+		   this._inputExOptions.inputExDef.parentEl = this._inputExBodyId;
+	   }
+		
       this._inputExFieldInstance = inputEx(this._inputExOptions.inputExDef);
       this._inputExFieldInstance._inputExDialog = this;
 	},

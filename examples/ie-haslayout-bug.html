@@ -58,7 +58,7 @@
 
 		<style type="text/css">
 			div.block1 { padding:10px; background-color:#FFFFFF; }
-			div.block2 { border: 2px solid #888888; padding:15px; width:370px;}
+			div.block2 { border: 2px solid #888888; padding:15px; width:570px;}
          
 			div.container { margin-right:10px;}
 			div#firstContainer { position:relative; }
@@ -74,11 +74,11 @@
 			// Example 1
 			new inputEx.Form( { 
 				fields: [ 
-					{type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-					{inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
-					{inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }, 
-					{type:'email', inputParams: {label: 'Email', name: 'email'}}, 
-					{type:'url', inputParams: {label: 'Website',name:'website'}} 
+					{type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+					{label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+					{label: 'Lastname', name: 'lastname', value:'Dupont' },
+					{type:'email', label: 'Email', name: 'email'},
+					{type:'url', label: 'Website',name:'website'}
 				], 
 				buttons: [{type: 'submit', value: 'Change'}], 	
 				parentEl: 'leftBlock2' 
@@ -87,11 +87,11 @@
 			// Example 2
 			new inputEx.Form( { 
 				fields: [ 
-					{type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-					{inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
-					{inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }, 
-					{type:'email', inputParams: {label: 'Email', name: 'email'}}, 
-					{type:'url', inputParams: {label: 'Website',name:'website'}} 
+					{type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+					{label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+					{label: 'Lastname', name: 'lastname', value:'Dupont' },
+					{type:'email', label: 'Email', name: 'email'},
+					{type:'url', label: 'Website',name:'website'}
 				], 
 				buttons: [{type: 'submit', value: 'Change'}], 	
 				parentEl: 'rightBlock2' 

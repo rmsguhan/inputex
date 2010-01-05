@@ -69,13 +69,11 @@
 		<textarea name="code" class="JScript">
 			inputEx({
 				type: "uneditable",
-				inputParams: {
-					name: 'pagerank', 
-					value: 5, 
-					label: "Pagerank",
-					visu: {visuType: 'func', func: function(value){ return inputEx.cn('img',{src: "http://www.page-rank-lookup.com/i/style1/pagerank"+value+".png"}) } },
-					parentEl: 'container3' 
-				}
+				name: 'pagerank', 
+				value: 5, 
+				label: "Pagerank",
+				visu: {visuType: 'func', func: function(value){ return inputEx.cn('img',{src: "http://www.page-rank-lookup.com/i/style1/pagerank"+value+".png"}) } },
+				parentEl: 'container3'
 			});
 		</textarea>
 	</div>

@@ -70,7 +70,15 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 		// index fields declaration by keys
 		var fieldsByKey = {};
 		for(var k = 0 ; k < this.options.fields.length ; k++) {
-			fieldsByKey[this.options.fields[k].inputParams.name] = this.options.fields[k];
+		   
+		   // Retro-compatibility with inputParms
+         if (lang.isObject(this.options.fields[k].inputParams)) {
+            fieldsByKey[this.options.fields[k].inputParams.name] = this.options.fields[k];
+         // New prefered way to use options of a field
+         } else {
+            fieldsByKey[this.options.fields[k].name] = this.options.fields[k];
+         }
+		   
 		}
 		for(var i = 0 ; i < columndefs.length ; i++) {
 			var columnDef = columndefs[i];
@@ -242,11 +250,27 @@ lang.extend(inputEx.widget.dtInPlaceEdit, inputEx.widget.DataTable , {
 
 		for(var i=0, fieldsLength = this.options.fields.length; i<fieldsLength; i++){
 			field = this.options.fields[i];
-			if( !lang.isUndefined(field.inputParams.required) ){
-				if( lang.isUndefined(record.getData(field.inputParams.name)) ){
-					requiredFields.push(field.inputParams.label);
-				}
-			}
+			
+			// Retro-compatibility with inputParms
+         if (lang.isObject(field.inputParams)) {
+            
+            if( !lang.isUndefined(field.inputParams.required) ){
+   				if( lang.isUndefined(record.getData(field.inputParams.name)) ){
+   					requiredFields.push(field.inputParams.label);
+   				}
+   			}
+
+         // New prefered way to set options of a field
+         } else {
+            
+            if( !lang.isUndefined(field.required) ){
+   				if( lang.isUndefined(record.getData(field.name)) ){
+   					requiredFields.push(field.label);
+   				}
+   			}
+         }
+         
+			
 		}
 		
 		//If not all the required fields are set

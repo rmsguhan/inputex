@@ -28,7 +28,7 @@ inputEx.StringField = function(options) {
 lang.extend(inputEx.StringField, inputEx.Field, {
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
 	   inputEx.StringField.superclass.setOptions.call(this, options);
@@ -241,9 +241,9 @@ inputEx.messages.stringTooShort = ["This field should contain at least "," numbe
 
 // Register this class as "string" type
 inputEx.registerType("string", inputEx.StringField, [
-    { type: 'string',  inputParams: { label: 'Type invite', name: 'typeInvite', value: ''}},
-    { type: 'integer', inputParams: { label: 'Size', name: 'size', value: 20}},
-    { type: 'integer', inputParams: { label: 'Min. length', name: 'minLength', value: 0}}
+    { type: 'string', label: 'Type invite', name: 'typeInvite', value: ''},
+    { type: 'integer', label: 'Size', name: 'size', value: 20},
+    { type: 'integer', label: 'Min. length', name: 'minLength', value: 0}
 ]);
 
 })();

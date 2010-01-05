@@ -20,7 +20,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	   
 	/**
 	 * Adds the CheckBox specific options
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
 	setOptions: function(options) {
 	   inputEx.CheckBox.superclass.setOptions.call(this, options);
@@ -155,7 +155,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	
 // Register this class as "boolean" type
 inputEx.registerType("boolean", inputEx.CheckBox, [ 
-   {type: 'string', inputParams: {label: 'Right Label', name: 'rightLabel'} } 
+   {type: 'string', label: 'Right Label', name: 'rightLabel'}
 ]);
 	
 })();

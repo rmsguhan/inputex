@@ -20,7 +20,7 @@ inputEx.SelectField = function(options) {
 lang.extend(inputEx.SelectField, inputEx.Field, {
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
 	   inputEx.SelectField.superclass.setOptions.call(this,options);
@@ -219,8 +219,8 @@ lang.extend(inputEx.SelectField, inputEx.Field, {
 
 // Register this class as "select" type
 inputEx.registerType("select", inputEx.SelectField, [
-   {  type: 'list', inputParams: {name: 'selectValues', label: 'Values', elementType: {type: 'string'}, required: true } },
-   {  type: 'list', inputParams: {name: 'selectOptions', label: 'Options', elementType: {type: 'string'} } }
+   {  type: 'list', name: 'selectValues', label: 'Values', elementType: {type: 'string'}, required: true },
+   {  type: 'list', name: 'selectOptions', label: 'Options', elementType: {type: 'string'} }
 ]);
 
 })();

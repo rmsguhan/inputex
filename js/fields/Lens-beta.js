@@ -28,7 +28,7 @@ lang.extend(inputEx.Lens, inputEx.Group, {
 		var lens = "";
 		if( !lang.isString(options.lens) ) {
 			for(var i = 0 ; i < this.options.fields.length ; i++) {
-				lens += "<div class='field-"+this.options.fields[i].inputParams.name+"'></div>";
+				lens += "<div class='field-"+this.options.fields[i].name+"'></div>";
 			}
 		}
 		this.options.lens = lang.isString(options.lens) ? options.lens : lens;
@@ -44,9 +44,9 @@ lang.extend(inputEx.Lens, inputEx.Group, {
 			parentEl.innerHTML = this.options.lens;
 			
 			for(var i = 0 ; i < this.options.fields.length ; i++) {
-				var els = YAHOO.util.Dom.getElementsByClassName( "field-"+this.options.fields[i].inputParams.name, "div", parentEl);
+				var els = YAHOO.util.Dom.getElementsByClassName( "field-"+this.options.fields[i].name, "div", parentEl);
 				var el = els[0];
-				var params = { parentEl: el, editorField: this.options.fields[i], name: this.options.fields[i].inputParams.name };
+				var params = { parentEl: el, editorField: this.options.fields[i], name: this.options.fields[i].name };
 				if(this.options.visus) {
 					params.visu = this.options.visus[i];
 				}

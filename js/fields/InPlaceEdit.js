@@ -21,7 +21,7 @@ inputEx.InPlaceEdit = function(options) {
 lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.InPlaceEdit.superclass.setOptions.call(this, options);
@@ -259,7 +259,7 @@ inputEx.messages.okEditor = "Ok";
 
 // Register this class as "inplaceedit" type
 inputEx.registerType("inplaceedit", inputEx.InPlaceEdit, [
-   { type:'type', inputParams: {label: 'Editor', name: 'editorField'} }
+   { type:'type', label: 'Editor', name: 'editorField'}
 ]);
 
 })();

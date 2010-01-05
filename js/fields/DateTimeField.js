@@ -14,11 +14,11 @@
  */
 inputEx.DateTimeField = function(options) {
    options.fields = [
-      {type: 'datepicker', inputParams: {}},
-      {type: 'time', inputParams: {}}
+      {type: 'datepicker'},
+      {type: 'time'}
    ];
    if(options.dateFormat) {
-      options.fields[0].inputParams.dateFormat = options.dateFormat;
+      options.fields[0].dateFormat = options.dateFormat;
    }
    options.separators = options.separators || [false, "&nbsp;&nbsp;", false];
    inputEx.DateTimeField.superclass.constructor.call(this,options);

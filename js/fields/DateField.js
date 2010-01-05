@@ -18,7 +18,7 @@ inputEx.DateField = function(options) {
 lang.extend(inputEx.DateField, inputEx.StringField, {
 	/**
 	 * Adds the 'inputEx-DateField' default className
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
    setOptions: function(options) {
    	inputEx.DateField.superclass.setOptions.call(this, options);
@@ -136,7 +136,7 @@ inputEx.DateField.formatDate = function(d,format) {
 	
 // Register this class as "date" type
 inputEx.registerType("date", inputEx.DateField, [
-   {type: 'select', inputParams: {label: 'Date format', name: 'dateFormat', selectOptions: ["m/d/Y", "d/m/Y"], selectValues: ["m/d/Y", "d/m/Y"] } }
+   {type: 'select', label: 'Date format', name: 'dateFormat', selectOptions: ["m/d/Y", "d/m/Y"], selectValues: ["m/d/Y", "d/m/Y"] }
 ]);
 	
 })();

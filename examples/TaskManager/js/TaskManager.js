@@ -38,11 +38,11 @@ var TaskManager = {
     * Create the Task Details Form
     */
    buildForm: function() {
-      this.oTaskDetailsForm = new inputEx.Group({parentEl: 'taskInformation', fields: [ 
-            {inputParams: {label: 'Description', name: 'description'} },
-      		{type: 'date', inputParams: {label: 'Due date', name: 'duedate' } },
-            {inputParams: {label: 'Tags', name: 'tags' } },
-      		{type:'text', inputParams: {label: 'Comments', name:'comments'}}
+      this.oTaskDetailsForm = new inputEx.Group({parentEl: 'taskInformation', fields: [
+            {label: 'Description', name: 'description'},
+      		{type: 'date', label: 'Due date', name: 'duedate'},
+            {label: 'Tags', name: 'tags'},
+      		{type:'text', label: 'Comments', name:'comments'}
       ] });
    },
    

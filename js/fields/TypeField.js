@@ -7,7 +7,7 @@
  * @class inputEx.TypeField
  * @extends inputEx.Field
  * @constructor
- * @param {Object} options  Standard inputEx inputParams definition
+ * @param {Object} options  Standard inputEx options definition
  */
 inputEx.TypeField = function(options) {
    inputEx.TypeField.superclass.constructor.call(this, options);
@@ -149,13 +149,16 @@ lang.extend(inputEx.TypeField, inputEx.Field, {
          if(this.fieldValue) {
             this.fieldValue.close();
             this.fieldValue.destroy();
-            this.fieldValue = null;
+            delete this.fieldValue;
             this.fieldValueWrapper.innerHTML = '';
          }
       
          // Re-build the fieldValue
-         var fieldOptions = { type: this.getValue().type, inputParams: this.group.getValue() };
-         fieldOptions.inputParams.parentEl = this.fieldValueWrapper;
+         var fieldOptions = this.group.getValue();
+         
+         fieldOptions.type = this.getValue().type;
+         fieldOptions.parentEl = this.fieldValueWrapper;
+         
          this.fieldValue = inputEx(fieldOptions);
       
          // Refire the event when the fieldValue is updated
@@ -173,7 +176,7 @@ lang.extend(inputEx.TypeField, inputEx.Field, {
     * @param {boolean} [sendUpdatedEvt] (optional) Wether this setValue should fire the updatedEvt or not (default is true, pass false to NOT send the event)
     */
    setValue: function(value, sendUpdatedEvt) {
-      
+
       // Set type in property panel
       this.typeSelect.setValue(value.type, false);
       
@@ -181,14 +184,28 @@ lang.extend(inputEx.TypeField, inputEx.Field, {
       this.rebuildGroupOptions();
       
       // Set the parameters value
-      this.group.setValue(value.inputParams, false);
+      
+      // Retro-compatibility with deprecated inputParams Object
+      if (lang.isObject(value.inputParams)) {
+         this.group.setValue(value.inputParams, false);
+
+      // New prefered way to describe a field
+      } else {
+         this.group.setValue(value, false);
+      }
       
       // Rebuild the fieldValue
       this.updateFieldValue();
       
-      // Set field value
-      if(lang.isObject(value.inputParams) && typeof value.inputParams.value != "undefined") {
+      // Set field value : TODO -> fix it for default value (because updateFieldValue is called after first setValue)
+      
+      // Retro-compatibility with deprecated inputParams Object
+      if(lang.isObject(value.inputParams) && !lang.isUndefined(value.inputParams.value)) {
          this.fieldValue.setValue(value.inputParams.value);
+         
+      // New prefered way to describe a field
+      } else if (!lang.isUndefined(value.value)) {
+         this.fieldValue.setValue(value.value);
       }
       
 	   if(sendUpdatedEvt !== false) {
@@ -204,40 +221,46 @@ lang.extend(inputEx.TypeField, inputEx.Field, {
    getValue: function() {
       
       var getDefaultValueForField = function (classObj, paramName) {
-         for(var i = 0 ; i < classObj.groupOptions.length ; i++) {
-            var f = classObj.groupOptions[i];
-            if(f.inputParams.name == paramName) return f.inputParams.value;
+         var i, length = classObj.groupOptions.length, f;
+         
+         for(i = 0 ; i < length ; i++) {
+            f = classObj.groupOptions[i];
+            
+            // Retro-compatibility with deprecated inputParams Object
+            if(lang.isObject(f.inputParams) && f.inputParams.name == paramName) {
+               return f.inputParams.value;
+               
+            // New prefered way to use field options
+            } else if (f.name == paramName) {
+               return f.value;
+            }
          }
          return undefined;
       };
       
-      var inputParams = this.group.getValue();
+      
+      // The field parameters
+      var fieldParams = this.group.getValue();
       var classObj = inputEx.getFieldClass(this.typeSelect.getValue());
       
-      for(var key in inputParams) {
-         if( inputParams.hasOwnProperty(key) ) {
+      // + default values
+      for(var key in fieldParams) {
+         if( fieldParams.hasOwnProperty(key) ) {
             var value1 = getDefaultValueForField(classObj, key);
-            var value2 = inputParams[key];
+            var value2 = fieldParams[key];
             if(value1 == value2) {
-               inputParams[key] = undefined;
+               fieldParams[key] = undefined;
             }
          }
       }
       
-      
-      
-      var obj = { 
-         // The field type
-         type: this.typeSelect.getValue(),
-         
-         // The field parameters
-         inputParams: inputParams
-      };
+      // The field type
+      fieldParams.type = this.typeSelect.getValue();
       
       // The value defined by the fieldValue
-      if(this.fieldValue) obj.inputParams.value = this.fieldValue.getValue();
+      if(this.fieldValue) fieldParams.value = this.fieldValue.getValue();
       
-      return obj;
+      return fieldParams;
    }
    
 });

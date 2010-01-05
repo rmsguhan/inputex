@@ -39,21 +39,19 @@
 				Example1 = {};
 				var formConfig =		{
 				         type: 'form',
-				         inputParams: {
-				            fields: [ 
-												{type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-												{inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
-												{inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }, 
-												{type:'email', inputParams: {label: 'Email', name: 'email'}}, 
-												{type:'url', inputParams: {label: 'Website',name:'website'}} 
-											],
-				            buttons: [
-				               {type: 'button', value: 'Send', onClick: function() { 
-														alert(YAHOO.lang.JSON.stringify(Example1.myPanel.getForm().getValue())); 
-											 }},
-				               {type: 'button', value: 'Cancel', onClick: function() { Example1.myPanel.hide(); } }
-				            ]
-				         }
+			            fields: [ 
+											{type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+											{label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+											{label: 'Lastname', name: 'lastname', value:'Dupont' } },
+											{type:'email', label: 'Email', name: 'email'},
+											{type:'url', label: 'Website',name:'website'}
+										],
+			            buttons: [
+			               {type: 'button', value: 'Send', onClick: function() { 
+													alert(YAHOO.lang.JSON.stringify(Example1.myPanel.getForm().getValue())); 
+										 }},
+			               {type: 'button', value: 'Cancel', onClick: function() { Example1.myPanel.hide(); } }
+			            ]
 				      }
 				Example1.myPanel = new inputEx.widget.Dialog({
 					inputExDef: formConfig,
@@ -83,20 +81,18 @@
 				Example2.myPanel = new inputEx.widget.Dialog({
 						inputExDef: {
 						         type: 'form',
-						         inputParams: {
-						            fields: [ 
-														{type:'string', inputParams: {label: 'Name', name: 'firstname', required: true } }, 
-														{type:'email', inputParams: {label: 'Email', name: 'email', description: 'Won\'t be displayed...'}}, 
-														{type:'url', inputParams: {label: 'Website',name:'website', typeInvite: '(optional)'}}, 
-														{type:'text', inputParams: {label: 'Your comment',name:'comments'}}
-													],
-						            buttons: [
-						               {type: 'button', value: 'Send', onClick: function() { 
-																alert(YAHOO.lang.JSON.stringify(Example2.myPanel.getForm().getValue())); 
-													 }},
-						               {type: 'button', value: 'Cancel', onClick: function() { Example2.myPanel.hide(); } }
-						            ]
-						         }
+					            fields: [ 
+													{type:'string', label: 'Name', name: 'firstname', required: true },
+													{type:'email', label: 'Email', name: 'email', description: 'Won\'t be displayed...'},
+													{type:'url', label: 'Website',name:'website', typeInvite: '(optional)'},
+													{type:'text', label: 'Your comment',name:'comments'}
+												],
+					            buttons: [
+					               {type: 'button', value: 'Send', onClick: function() { 
+															alert(YAHOO.lang.JSON.stringify(Example2.myPanel.getForm().getValue())); 
+												 }},
+					               {type: 'button', value: 'Cancel', onClick: function() { Example2.myPanel.hide(); } }
+					            ]
 						      },
 						title: 'Please post a comment !',
 						panelConfig: {
@@ -131,21 +127,19 @@ function init() {
 	Example1 = {};
 	var formConfig =		{
 	         type: 'form',
-	         inputParams: {
-	            fields: [ 
-									{type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-									{inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
-									{inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }, 
-									{type:'email', inputParams: {label: 'Email', name: 'email'}}, 
-									{type:'url', inputParams: {label: 'Website',name:'website'}} 
-								],
-	            buttons: [
-	               {type: 'button', value: 'Send', onClick: function() { 
-											alert(YAHOO.lang.JSON.stringify(Example1.myPanel.getForm().getValue())); 
-								 }},
-	               {type: 'button', value: 'Cancel', onClick: function() { Example1.myPanel.hide(); } }
-	            ]
-	         }
+            fields: [ 
+								{type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+								{label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+								{label: 'Lastname', name: 'lastname', value:'Dupont' },
+								{type:'email', label: 'Email', name: 'email'},
+								{type:'url', label: 'Website',name:'website'}
+							],
+            buttons: [
+               {type: 'button', value: 'Send', onClick: function() { 
+										alert(YAHOO.lang.JSON.stringify(Example1.myPanel.getForm().getValue())); 
+							 }},
+               {type: 'button', value: 'Cancel', onClick: function() { Example1.myPanel.hide(); } }
+            ]
 	      };
 	Example1.myPanel = new inputEx.widget.Dialog({
 		inputExDef: formConfig,
@@ -157,20 +151,18 @@ function init() {
 	Example2.myPanel = new inputEx.widget.Dialog({
 			inputExDef: {
 			         type: 'form',
-			         inputParams: {
-			            fields: [ 
-											{type:'string', inputParams: {label: 'Name', name: 'firstname', required: true } }, 
-											{type:'email', inputParams: {label: 'Email', name: 'email', description: 'Won\'t be displayed...'}}, 
-											{type:'url', inputParams: {label: 'Website',name:'website', typeInvite: '(optional)'}}, 
-											{type:'text', inputParams: {label: 'Your comment',name:'comments'}}
-										],
-			            buttons: [
-			               {type: 'button', value: 'Send', onClick: function() { 
-													alert(YAHOO.lang.JSON.stringify(Example2.myPanel.getForm().getValue())); 
-										 }},
-			               {type: 'button', value: 'Cancel', onClick: function() { Example2.myPanel.hide(); } }
-			            ]
-			         }
+		            fields: [ 
+										{type:'string', label: 'Name', name: 'firstname', required: true },
+										{type:'email', label: 'Email', name: 'email', description: 'Won\'t be displayed...'},
+										{type:'url', label: 'Website',name:'website', typeInvite: '(optional)'},
+										{type:'text', label: 'Your comment',name:'comments'}
+									],
+		            buttons: [
+		               {type: 'button', value: 'Send', onClick: function() { 
+												alert(YAHOO.lang.JSON.stringify(Example2.myPanel.getForm().getValue())); 
+									 }},
+		               {type: 'button', value: 'Cancel', onClick: function() { Example2.myPanel.hide(); } }
+		            ]
 			      },
 			title: 'Please post a comment !',
 			panelConfig: {

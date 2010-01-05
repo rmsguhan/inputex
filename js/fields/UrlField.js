@@ -20,7 +20,7 @@ lang.extend(inputEx.UrlField, inputEx.StringField, {
 
    /**
     * Adds the invalid Url message
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.UrlField.superclass.setOptions.call(this, options);
@@ -97,7 +97,7 @@ inputEx.messages.invalidUrl = "Invalid URL, ex: http://www.test.com";
 
 // Register this class as "url" type
 inputEx.registerType("url", inputEx.UrlField, [
-   {  type: 'boolean', inputParams: {label: 'Display favicon', name:'favicon', value: true}}
+   { type: 'boolean', label: 'Display favicon', name:'favicon', value: true}
 ]);
 
 })();

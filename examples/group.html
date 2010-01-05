@@ -32,12 +32,12 @@
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
 					var contactFormFields = [ 
-							{type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-							{inputParams: {label: 'Firstname', name: 'firstname', required: true } }, 
-							{inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont'} }, 
-							{type:'email', inputParams: {label: 'Email', name: 'email', required: true, showMsg: true}}, 
-							{type:'boolean', inputParams: {label: 'Happy to be there ?', name: 'happy'}}, 
-							{type:'url', inputParams: {label: 'Website', name:'website'}} 
+							{type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme']},
+							{label: 'Firstname', name: 'firstname', required: true},
+							{label: 'Lastname', name: 'lastname', value:'Dupont'},
+							{type:'email', label: 'Email', name: 'email', required: true, showMsg: true},
+							{type:'boolean', label: 'Happy to be there ?', name: 'happy'},
+							{type:'url', label: 'Website', name:'website'}
 					];
 					new inputEx.Group({parentEl: 'container1', fields: contactFormFields, legend: 'Tell us about yourself...'});
 		</textarea>
@@ -55,9 +55,7 @@
 			new inputEx.ListField({
 				elementType: {
 					type: 'group',
-					inputParams: {
-						fields: contactFormFields
-					}
+					fields: contactFormFields
 				},
 				parentEl: 'container2'
 			});
@@ -122,26 +120,24 @@
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
 					var contactFormFields2 = [ 
-							{type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-							{inputParams: {label: 'Firstname', name: 'firstname', required: true } }, 
-							{inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont', required:false } }, 
-							{type:'email', inputParams: {label: 'Email', name: 'email', required: true, showMsg: true}}, 
-							{type:'boolean', inputParams: {label: 'Happy to be there ?', name: 'happy'}}, 
-							{type:'url', inputParams: {label: 'Website', name:'website'}} 
+							{type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+							{label: 'Firstname', name: 'firstname', required: true },
+							{label: 'Lastname', name: 'lastname', value:'Dupont', required:false },
+							{type:'email', label: 'Email', name: 'email', required: true, showMsg: true},
+							{type:'boolean', label: 'Happy to be there ?', name: 'happy'},
+							{type:'url', label: 'Website', name:'website'}
 					];
 					contactFormFields2.push({
 						type: 'group',
-						inputParams: {
-							name: 'phone',
-							collapsible: true,
-							legend: 'Phone number',
-							fields: [
-								{ inputParams: {label: 'Home', name: 'home' } },
-								{ inputParams: {label: 'Business', name: 'business' } },
-								{ inputParams: {label: 'Mobile',name: 'mobile' } },
-								{ inputParams: {label: 'Fax', name: 'fax' } }
-							]
-						}
+						name: 'phone',
+						collapsible: true,
+						legend: 'Phone number',
+						fields: [
+							{ label: 'Home', name: 'home' },
+							{ label: 'Business', name: 'business' },
+							{ label: 'Mobile',name: 'mobile' },
+							{ label: 'Fax', name: 'fax' }
+						]
 					});
 					var field5 = new inputEx.Group({parentEl: 'container5', fields: contactFormFields2});
 					var button5 = inputEx.cn('button', null, null, 'Get value');
@@ -186,12 +182,12 @@
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
 					var descriptedFields = [ 
-							{type: 'select', inputParams: {label: 'Title', name: 'title', description: 'Select your gender',  selectValues: ['Mr','Mrs','Mme'] } },
-							{ inputParams: {label: 'Firstname', description: 'Your firstname', name: 'firstname', required: true, value:'Jacques' } }, 
-							{ inputParams: {label: 'Lastname', description: 'Your lastname', name: 'lastname', value:'Dupont' } }, 
-							{ type:'email', inputParams: {description: 'Your email. We wont send you any commercial information', label: 'Email', name: 'email'}}, 
-							{type:'boolean', inputParams: {description: 'Check this box if you are happy to be there', label: 'Happy to be there ?', name: 'email'}}, 
-							{ type:'url', inputParams: {description: 'Your blog url', label: 'Website', name:'website'}} 
+							{ type: 'select', label: 'Title', name: 'title', description: 'Select your gender',  selectValues: ['Mr','Mrs','Mme'] },
+							{ label: 'Firstname', description: 'Your firstname', name: 'firstname', required: true, value:'Jacques' },
+							{ label: 'Lastname', description: 'Your lastname', name: 'lastname', value:'Dupont' },
+							{ type:'email', description: 'Your email. We wont send you any commercial information', label: 'Email', name: 'email'},
+							{ type:'boolean', description: 'Check this box if you are happy to be there', label: 'Happy to be there ?', name: 'email'},
+							{ type:'url', description: 'Your blog url', label: 'Website', name:'website'}
 					];
 					new inputEx.Group({parentEl: 'container6', fields: descriptedFields, legend: 'User Informations'});
 		</textarea>
@@ -210,20 +206,18 @@
 					var flattenGroup = new inputEx.Group({
 						parentEl: 'container7', 
 						legend: 'Flatten demo', 
-						inputParams: {name: "MyForm"},
+						name: "MyForm",
 						fields: [
 					      { 
 					          type: 'group',
-					          inputParams: {
-											name: "MySubForm",
-						          flatten: true,
-											fields: [
-						             {inputParams: {label: 'Firstname', name: 'firstname' }},
-						             {inputParams: {label: 'Lastname', name: 'lastname',description: "Firstname and Lastname are within the same sub-group" }}
-						          ]
-										}
+					          name: "MySubForm",
+					          flatten: true,
+					          fields: [
+					             { label: 'Firstname', name: 'firstname' },
+					             { label: 'Lastname', name: 'lastname', description: "Firstname and Lastname are within the same sub-group" }
+					          ]
 					      },
-					      { inputParams: {label: 'Title', name: 'title' } }
+					      { label: 'Title', name: 'title' }
 					   ]
 					});
 					flattenGroup.updatedEvt.subscribe(function(e,params) {
@@ -247,11 +241,11 @@
 		<textarea name="code" class="JScript">
 					var myForm = new inputEx.Group({
 						parentEl: 'container8', 
-						inputParams: {name: "MyForm"},
+						name: "MyForm",
 						fields: [
-					      {inputParams: {label: 'Firstname', name: 'firstname', showMsg: true } },
-						  {inputParams: {label: 'Age', name: 'age', showMsg: true} },
-					      { inputParams: {label: 'Title', name: 'title' } }
+					     {label: 'Firstname', name: 'firstname', showMsg: true},
+					     {label: 'Age', name: 'age', showMsg: true},
+					     {label: 'Title', name: 'title'}
 					   ]
 					});
 					

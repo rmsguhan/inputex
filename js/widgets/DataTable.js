@@ -236,13 +236,11 @@ inputEx.widget.DataTable.prototype = {
 				id: this.options.dialogId,
 				inputExDef: {
 				         type: 'form',
-				         inputParams: {
-				            fields: this.options.fields,
-				            buttons: [
-				               {type: 'button', value: msgs.saveText, onClick: function() { that.onDialogSave();} },
-				               {type: 'button', value: msgs.cancelText, onClick: function() { that.onDialogCancel(); } }
-				            ]				
-				         }
+			            fields: this.options.fields,
+			            buttons: [
+			               {type: 'button', value: msgs.saveText, onClick: function() { that.onDialogSave();} },
+			               {type: 'button', value: msgs.cancelText, onClick: function() { that.onDialogCancel(); } }
+			            ]
 				      },
 				title: this.options.dialogLabel,
 				panelConfig: this.options.panelConfig
@@ -431,9 +429,23 @@ inputEx.widget.DataTable.prototype = {
     * Convert a single inputEx field definition to a DataTable column definition
     */
    fieldToColumndef: function(field) {
-      var columnDef = {
-         key: field.inputParams.name,
-         label: field.inputParams.label,
+      
+      var key, label, colmunDef;
+      
+      // Retro-compatibility with inputParms
+      if (lang.isObject(field.inputParams)) {
+         key = field.inputParams.name;
+         label = field.inputParams.label;
+      
+      // New prefered way to set options of a field
+      } else {
+         key = field.name;
+         label = field.label;
+      }
+      
+      columnDef = {
+         key: key,
+         label: label,
          sortable: true, 
          resizeable: true
       };

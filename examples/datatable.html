@@ -44,12 +44,12 @@
 	myDataSource.responseSchema = { fields: ["id","date","quantity","amount","title", "category"] };
 
 	var myFields = [
-		{type: 'hidden', inputParams: {label: 'Id', name: 'id'} },
-		{type: 'date', inputParams: {label: 'Date', name: 'date'} },
-		{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity'} },
-		{type: 'number', inputParams: {label: 'Amount', name: 'amount'} },
-		{type: 'string', inputParams: {label: 'Title', name: 'title', required: true, showMsg: true} },
-		{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']} }
+		{type: 'hidden', label: 'Id', name: 'id' },
+		{type: 'date', label: 'Date', name: 'date' },
+		{type: 'integer', label: 'Quantity', name: 'quantity' },
+		{type: 'number', label: 'Amount', name: 'amount'},
+		{type: 'string', label: 'Title', name: 'title', required: true, showMsg: true },
+		{type: 'select', label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy'] }
 	];
 
 	

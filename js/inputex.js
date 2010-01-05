@@ -10,10 +10,9 @@
 /**
  * The inputEx method lets you create a field from the JSON definition:
  * <pre>
- *    inputEx({type: 'string', inputParams: { name: 'company', label: 'Your company'} })
+ *    inputEx({type: 'string', name: 'company', label: 'Your company' })
  * </pre>
- * Build a field from an object like: { type: 'color' or fieldClass: inputEx.ColorField, inputParams: {} }<br />
- * The inputParams property is the object that will be passed as the <code>options</code> parameter to the field class constructor.<br />
+ * Build a field from an object like: { type: 'color' or fieldClass: inputEx.ColorField, ... }<br />
  * If the neither type or fieldClass are found, it uses inputEx.StringField
  *
  * @class inputEx
@@ -22,7 +21,9 @@
  * @return {inputEx.Field} Created field instance
  */
 inputEx = function(fieldOptions) {
-   var fieldClass = null;
+   var fieldClass = null,
+       inputInstance;
+   
 	if(fieldOptions.type) {
 	   fieldClass = inputEx.getFieldClass(fieldOptions.type);
 	   if(fieldClass === null) fieldClass = inputEx.StringField;
@@ -32,7 +33,16 @@ inputEx = function(fieldOptions) {
 	}
 
    // Instanciate the field
-   var inputInstance = new fieldClass(fieldOptions.inputParams);
+   
+   // Retro-compatibility with deprecated inputParams Object
+   if (lang.isObject(fieldOptions.inputParams)) {
+      console.log("old : ",fieldOptions);
+      inputInstance = new fieldClass(fieldOptions.inputParams);
+      
+   // New prefered way to instanciate a field
+   } else {
+      inputInstance = new fieldClass(fieldOptions);
+   }
 
    // Add the flatten attribute if present in the params
    /*if(fieldOptions.flatten) {

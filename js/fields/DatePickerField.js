@@ -19,7 +19,7 @@ inputEx.DatePickerField = function(options) {
 lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    /**
     * Set the default date picker CSS classes
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.DatePickerField.superclass.setOptions.call(this, options);

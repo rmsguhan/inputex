@@ -36,13 +36,13 @@ div#container3 { width:400px }
 		<textarea name="code" class="JScript">
 			new inputEx.Form( { 
 				fields: [ 
-					{type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-					{inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
-					{inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }, 
-					{type:'email', inputParams: {label: 'Email', name: 'email'}}, 
-					{type:'url', inputParams: {label: 'Website',name:'website'}} 
+					{type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+					{label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+					{label: 'Lastname', name: 'lastname', value:'Dupont' },
+					{type:'email', label: 'Email', name: 'email'},
+					{type:'url', label: 'Website',name:'website'}
 				], 
-				buttons: [{type: 'submit', value: 'Change'}], 	
+				buttons: [{type: 'submit', value: 'Change'}],
 				parentEl: 'container1' 
 			});
 		</textarea>
@@ -58,15 +58,25 @@ div#container3 { width:400px }
     <textarea name="code" class="JScript">
 	   	new inputEx.Form( {
 		        fields: [
-		            {type:'group',inputParams:{legend:'group 1',name:'group1',fields:[
-		                {type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-		                {inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } },
-		                {inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }
-		            ]}},
-		            { type:'group',inputParams:{legend:'group 2',name:'group2',fields:[
-		                {type:'email', inputParams: {label: 'Email', name: 'email'}},
-		                {type:'url', inputParams: {label: 'Website',name:'website'}}
-		            ]}}
+		            { 
+		               type:'group',
+		               legend:'group 1',
+		               name:'group1',
+		               fields:[
+		                 {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+		                 {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+		                 {label: 'Lastname', name: 'lastname', value:'Dupont' }
+		               ]
+		            },
+		            { 
+		               type:'group',
+		               legend:'group 2',
+		               name:'group2',
+		               fields:[
+		                 {type:'email', label: 'Email', name: 'email'},
+		                 {type:'url', label: 'Website',name:'website'}
+		               ]
+		            }
 		        ],
 		        buttons: [{type: 'submit', value: 'Change'}],
 		        parentEl: 'container2'
@@ -88,9 +98,9 @@ div#container3 { width:400px }
 		<textarea name="code" class="JScript">
 			new inputEx.Form( {
 				fields: [ 
-					{ type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-					{ inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
-					{ inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }
+					{ type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+					{ label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+					{ label: 'Lastname', name: 'lastname', value:'Dupont' }
 				], 
 				buttons: [{type: 'submit', value: 'Change'}], 	
 				parentEl: 'container3',
@@ -120,9 +130,9 @@ div#container3 { width:400px }
 		<textarea name="code" class="JScript">
 			new inputEx.Form( {
 				fields: [ 
-					{ type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-					{ inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
-					{ inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }
+					{ type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+					{ label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+					{ label: 'Lastname', name: 'lastname', value:'Dupont' }
 				], 
 				buttons: [{type: 'submit', value: 'Change'}], 	
 				parentEl: 'container4',
@@ -152,9 +162,9 @@ div#container3 { width:400px }
 		<textarea name="code" class="JScript">
 			new inputEx.Form( {
 				fields: [ 
-					{ type: 'select', inputParams: {label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] } },
-					{ inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } }, 
-					{ inputParams: {label: 'Lastname', name: 'lastname', value:'Dupont' } }
+					{ type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+					{ label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+					{ label: 'Lastname', name: 'lastname', value:'Dupont' }
 				], 
 				buttons: [{type: 'submit', value: 'Change'}], 	
 				parentEl: 'container5',

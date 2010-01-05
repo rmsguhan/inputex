@@ -19,13 +19,13 @@ inputEx.DateSplitField = function(options) {
    options.fields = [];
    for(var i = 0 ; i < 3 ; i++) {
       if(i == this.dayIndex) {
-         options.fields.push({type: 'integer', inputParams: { typeInvite: inputEx.messages.dayTypeInvite, size: 2} });
+         options.fields.push({type: 'integer', typeInvite: inputEx.messages.dayTypeInvite, size: 2 });
       }
       else if(i == this.yearIndex) {
-         options.fields.push({type: 'integer', inputParams: { typeInvite: inputEx.messages.yearTypeInvite, size: 4} });
+         options.fields.push({type: 'integer', typeInvite: inputEx.messages.yearTypeInvite, size: 4 });
       }
       else {
-         options.fields.push({type: 'integer', inputParams: {typeInvite: inputEx.messages.monthTypeInvite, size: 2} });
+         options.fields.push({type: 'integer', typeInvite: inputEx.messages.monthTypeInvite, size: 2 });
       }
    }
 

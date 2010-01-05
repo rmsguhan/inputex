@@ -30,7 +30,7 @@
 	<div class='demoContainer' id='container1'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new inputEx.InPlaceEdit({parentEl: 'container1', editorField:{type:'string', inputParams: {} }, animColors:{from:"#FFFF99" , to:"#DDDDFF"} });
+			new inputEx.InPlaceEdit({parentEl: 'container1', editorField:{type:'string'}, animColors:{from:"#FFFF99" , to:"#DDDDFF"} });
 		</textarea>
 	</div>
 </div>
@@ -47,17 +47,15 @@
 				parentEl: 'container2', 
 				editorField:{
 					type:'group', 
-					inputParams: {
-						fields: [
-							{ inputParams: {label: 'Firstname',name: 'firstname' } }, 
-							{ inputParams: {label: 'Lastname', name: 'lastname' } }, 
-							{ type:'url', inputParams: {label: 'Photo', name:'picUrl', favicon: false} }
-						]
-					} 
+					fields: [
+						{ label: 'Firstname',name: 'firstname' },
+						{ label: 'Lastname', name: 'lastname' },
+						{ type:'url', label: 'Photo', name:'picUrl', favicon: false }
+					]
 				},
 				visu: {visuType: 'func', func: function(val) {
 					if( YAHOO.lang.isUndefined(val) ) return inputEx.messages.emptyInPlaceEdit;
-					return '<img src="'+val.picUrl+'" style="width: 128px; height: 128px;"><br /><b>'+val.firstname+' '+val.lastname+'</b>';
+					return '<img src="'+val.picUrl+'" style="width: 128px; height: 128px;" /><br /><b>'+val.firstname+' '+val.lastname+'</b>';
 				}},
 				value: {
 						firstname: 'Lena',
@@ -78,7 +76,7 @@
 	<div class='demoContainer' id='container3'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			var field = new inputEx.InPlaceEdit({parentEl: 'container3', editorField:{type:'string', inputParams: {} } });
+			var field = new inputEx.InPlaceEdit({parentEl: 'container3', editorField:{type:'string'} });
 			var button = inputEx.cn('button', null, null, "getValue");
 			YAHOO.util.Event.addListener(button, 'click', function() {
 				alert(field.getValue());
@@ -100,24 +98,20 @@
 		<textarea name="code" class="JScript">
 			inputEx({
 				type: 'inplaceedit',
-				inputParams: {
-					parentEl: 'container4', 
-					label: "PageRank",
-					editorField:{
-						type:'select', 
-						inputParams: {
-							name: 'pagerank',
-							selectValues: ['0','1','2','3','4','5','6','7','8','9','10']
-						} 
-					},
-					visu: {
-						visuType: 'func', 
-						func: function(val) {
-							return inputEx.cn('img',{src: "http://www.page-rank-lookup.com/i/style1/pagerank"+val+".png"});
-						}
-					},
-					value: '5'
-				}
+				parentEl: 'container4', 
+				label: "PageRank",
+				editorField:{
+					type:'select', 
+					name: 'pagerank',
+					selectValues: ['0','1','2','3','4','5','6','7','8','9','10']
+				},
+				visu: {
+					visuType: 'func', 
+					func: function(val) {
+						return inputEx.cn('img',{src: "http://www.page-rank-lookup.com/i/style1/pagerank"+val+".png"});
+					}
+				},
+				value: '5'
 			});
 		</textarea>
 	</div>

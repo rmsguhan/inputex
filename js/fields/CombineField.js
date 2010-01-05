@@ -19,7 +19,7 @@ inputEx.CombineField = function(options) {
 lang.extend( inputEx.CombineField, inputEx.Group, {
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.CombineField.superclass.setOptions.call(this, options);
@@ -100,8 +100,7 @@ lang.extend( inputEx.CombineField, inputEx.Group, {
       
       // Subfields should inherit required property
       if (this.options.required) {
-         if (!fieldOptions.inputParams) {fieldOptions.inputParams = {};}
-         fieldOptions.inputParams.required = true;
+         fieldOptions.required = true;
       }
       
       return inputEx.CombineField.superclass.renderField.call(this, fieldOptions);
@@ -154,8 +153,8 @@ lang.extend( inputEx.CombineField, inputEx.Group, {
 	
 // Register this class as "combine" type
 inputEx.registerType("combine", inputEx.CombineField, [
-   { type: 'list', inputParams: {name: 'fields', label: 'Elements', required: true, elementType: {type: 'type'} } },
-   { type: 'list', inputParams: {name: 'separators', label: 'Separators', required: true } }
+   { type: 'list', name: 'fields', label: 'Elements', required: true, elementType: {type: 'type'} },
+   { type: 'list', name: 'separators', label: 'Separators', required: true }
 ]);
 	
 })();

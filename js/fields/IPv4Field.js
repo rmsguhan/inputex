@@ -14,7 +14,7 @@ YAHOO.lang.extend(inputEx.IPv4Field, inputEx.StringField, {
    
    /**
     * set IPv4 regexp and invalid string
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.IPv4Field.superclass.setOptions.call(this, options);

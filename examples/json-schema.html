@@ -64,7 +64,7 @@ var builder = new inputEx.JsonSchema.Builder({
 var inputExDefinition = builder.schemaToInputEx(schemaIdentifierMap["Person"]);
 
 // Add 'container1' as parent element
-inputExDefinition.inputParams.parentEl = 'container1';
+inputExDefinition.parentEl = 'container1';
 
 // Create the form
 var f = inputEx(inputExDefinition);
@@ -112,7 +112,7 @@ var builder = new inputEx.JsonSchema.Builder({
 var inputExDefinition = builder.schemaToInputEx(schemaIdentifierMap["Person"]);
 
 // Add 'container2' as parent element
-inputExDefinition.inputParams.parentEl = 'container2';
+inputExDefinition.parentEl = 'container2';
 
 // Create the form
 var f = inputEx(inputExDefinition);

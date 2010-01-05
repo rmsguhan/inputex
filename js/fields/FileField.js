@@ -18,7 +18,7 @@ YAHOO.lang.extend(inputEx.FileField, inputEx.Field, {
 	
    /**
     * Adds size and accept options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
 		inputEx.FileField.superclass.setOptions.call(this, options);

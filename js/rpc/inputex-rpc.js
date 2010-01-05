@@ -15,21 +15,19 @@ inputEx.RPC = {
    
       var options = null;
       if(YAHOO.lang.isObject(formOpts) && YAHOO.lang.isArray(formOpts.fields) ) {
-         options = {
-            inputParams: formOpts
-         };
+         options = formOpts;
       }
       // create the form directly from the method params
       else {
          options = inputEx.RPC.formForMethod(method);
       	// Add user options from formOpts
-         YAHOO.lang.augmentObject(options.inputParams, formOpts, true);
+         YAHOO.lang.augmentObject(options, formOpts, true);
       }
    
       // Add buttons to launch the service
       options.type = "form";
-      if(!options.inputParams.buttons) {
-         options.inputParams.buttons = [
+      if(!options.buttons) {
+         options.buttons = [
             {type: 'submit', value: method.name, onClick: function(e) {
                YAHOO.util.Event.stopEvent(e);
                form.showMask();
@@ -52,7 +50,6 @@ inputEx.RPC = {
    
       return form;
    },
-
 
    /**
     * Return the inputEx form options from a method

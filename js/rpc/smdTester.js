@@ -9,12 +9,10 @@ inputEx.RPC.SMDTester = function(parentEl, smdList) {
 	var selectStr = 'select smd';
 	inputEx({
 		type: 'select',
-		inputParams: {
-			label: "SMD",
-			parentEl: this.el,
-			selectValues: [selectStr].concat(smdList), 
-			description: "Select the Service Mapping Description file"
-		}
+		label: "SMD",
+		parentEl: this.el,
+		selectValues: [selectStr].concat(smdList), 
+		description: "Select the Service Mapping Description file"
 	}).updatedEvt.subscribe(function(e, params) {
 			var smdFile = params[0];
 			if(smdFile != selectStr) {
@@ -74,12 +72,10 @@ inputEx.RPC.SMDTester.prototype = {
 		}	
 		var select = inputEx({
 				type: 'select',
-				inputParams: {
-					parentEl: this.serviceMethodEl,
-					selectValues: genMethods,
-					label: 'Method',
-					description: "Select the method"
-				}
+				parentEl: this.serviceMethodEl,
+				selectValues: genMethods,
+				label: 'Method',
+				description: "Select the method"
 		});
 		
 		select.updatedEvt.subscribe(function(e, params) {

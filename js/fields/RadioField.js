@@ -31,7 +31,7 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 	   
 	/**
 	 * Adds the Radio button specific options
-	 * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+	 * @param {Object} options Options object as passed to the constructor
 	 */
 	setOptions: function(options) {
 	   inputEx.RadioField.superclass.setOptions.call(this, options);
@@ -266,8 +266,8 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 	
 // Register this class as "radio" type
 inputEx.registerType("radio", inputEx.RadioField, [
-   {type: 'list', inputParams: {label: 'Options', name: 'choices', elementType: {type: 'string'} } },
-   {type: 'boolean', inputParams: {label: 'Allow custom value', name: 'allowAny'}, value: false  }
+   {type: 'list', label: 'Options', name: 'choices', elementType: {type: 'string'} },
+   {type: 'boolean', label: 'Allow custom value', name: 'allowAny', value: false  }
 ]);
 	
 })();

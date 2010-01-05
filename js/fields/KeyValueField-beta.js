@@ -11,14 +11,14 @@ inputEx.KeyValueField = function(searchFormDef) {
    var fieldNames = [], fieldLabels = [];
    for(var i = 0 ; i < searchFormDef.fields.length ; i++) {
       var field =  searchFormDef.fields[i];
-      this.nameIndex[field.inputParams.name] = field;
-      fieldNames.push(field.inputParams.name);
-		fieldLabels.push(field.inputParams.label || field.inputParams.name);
+      this.nameIndex[field.name] = field;
+      fieldNames.push(field.name);
+		fieldLabels.push(field.label || field.name);
    }
    
    var opts = {
       fields: [
-         {type: 'select', inputParams: { selectValues: fieldNames, selectOptions: fieldLabels } },
+         {type: 'select', selectValues: fieldNames, selectOptions: fieldLabels },
          searchFormDef.fields[0]
       ],
 		parentEl: searchFormDef.parentEl

@@ -37,11 +37,11 @@
 			var g = new inputEx.Lens({
 				parentEl: 'container1',
 				fields: [
-					{ inputParams: {typeInvite: 'Firstname',name: 'firstname' } },  
-					{ inputParams: {typeInvite: 'Lastname', name: 'lastname' } },
-					{ inputParams: {typeInvite: 'Email', name: 'email' } },
-					{ type: 'url', inputParams: {name: "picUrl", typeInvite: 'url' } },
-					{ type: 'map', inputParams: {name: "position", width: '800px', api: 'google'}}
+					{ typeInvite: 'Firstname',name: 'firstname'  },  
+					{ typeInvite: 'Lastname', name: 'lastname' },
+					{ typeInvite: 'Email', name: 'email' },
+					{ type: 'url', name: "picUrl", typeInvite: 'url' },
+					{ type: 'map', name: "position", width: '800px', api: 'google'}
 				],
 				value: {
 					firstname: 'Lena',
@@ -109,11 +109,11 @@ YAHOO.util.Event.onDOMReady( function() {
 	var g = new inputEx.Lens({
 		parentEl: 'container1',
 		fields: [
-			{ inputParams: {typeInvite: 'Firstname',name: 'firstname' } },  
-			{ inputParams: {typeInvite: 'Lastname', name: 'lastname' } },
-			{ inputParams: {typeInvite: 'Email', name: 'email' } },
-			{ type: 'url', inputParams: {name: "picUrl", typeInvite: 'url' } },
-			{ type: 'map', inputParams: {name: "position", width: '800px', api: 'google'}}
+			{ typeInvite: 'Firstname',name: 'firstname' },
+			{ typeInvite: 'Lastname', name: 'lastname' },
+			{ typeInvite: 'Email', name: 'email' },
+			{ type: 'url', name: "picUrl", typeInvite: 'url' },
+			{ type: 'map', name: "position", width: '800px', api: 'google'}
 		],
 		value: {
 			firstname: 'Lena',

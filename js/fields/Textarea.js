@@ -20,7 +20,7 @@ YAHOO.lang.extend(inputEx.Textarea, inputEx.StringField, {
 
    /**
     * Set the specific options (rows and cols)
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.Textarea.superclass.setOptions.call(this, options);
@@ -114,8 +114,8 @@ inputEx.messages.stringTooLong = ["This field should contain at most "," numbers
 
 // Register this class as "text" type
 inputEx.registerType("text", inputEx.Textarea, [
-   { type: 'integer', inputParams: {label: 'Rows',  name: 'rows', value: 6} },
-   { type: 'integer', inputParams: {label: 'Cols', name: 'cols', value: 23} }
+   { type: 'integer', label: 'Rows',  name: 'rows', value: 6 },
+   { type: 'integer', label: 'Cols', name: 'cols', value: 23 }
 ]);
 
 })();

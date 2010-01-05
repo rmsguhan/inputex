@@ -35,8 +35,8 @@
 		var exampleDiv = YAHOO.util.Dom.get('container1');
 		var group = new inputEx.Group({
 			 	fields: [ 
-					{ type: 'hidden', inputParams: {name: 'id', value: 12 } }, 
-					{ inputParams: {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' } } 
+					{ type: 'hidden', name: 'id', value: 12 },
+					{ type: 'string', label: 'Firstname', name: 'firstname', required: true, value:'Jacques'}
 				], 
 				parentEl: exampleDiv
 		});

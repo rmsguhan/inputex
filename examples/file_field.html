@@ -36,17 +36,15 @@
 		<textarea name="code" class="JScript">
 			inputEx({
 				type: 'form',
-				inputParams: {
-					parentEl: 'container1',
-					enctype: 'multipart/form-data',
-					action: 'input_file.php',
-					fields: [
-						{type: 'file', inputParams: {name: 'textFile', accept: 'text/*', size: 50} }
-					],
-					buttons: [
-						{type: 'submit', value: 'Upload'}
-					]
-				}
+				parentEl: 'container1',
+				enctype: 'multipart/form-data',
+				action: 'input_file.php',
+				fields: [
+					{type: 'file', name: 'textFile', label:'Search file', accept: 'text/*', size: 50 }
+				],
+				buttons: [
+					{type: 'submit', value: 'Upload'}
+				]
 			});
 		</textarea>
 	</div>

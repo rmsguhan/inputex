@@ -14,7 +14,7 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
    
    /**
     * Set the email regexp and invalid message
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
       inputEx.EmailField.superclass.setOptions.call(this, options);

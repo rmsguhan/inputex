@@ -19,7 +19,7 @@ inputEx.RTEField = function(options) {
 lang.extend(inputEx.RTEField, inputEx.Field, {   
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
   	setOptions: function(options) {
   	   inputEx.RTEField.superclass.setOptions.call(this, options);

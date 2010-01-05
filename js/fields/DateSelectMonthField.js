@@ -19,13 +19,13 @@ inputEx.DateSelectMonthField = function(options) {
    options.fields = [];
    for(var i = 0 ; i < 3 ; i++) {
       if(i == this.dayIndex) {
-         options.fields.push({type: 'string', inputParams: { typeInvite: inputEx.messages.dayTypeInvite, size: 2} });
+         options.fields.push({type: 'string', typeInvite: inputEx.messages.dayTypeInvite, size: 2 });
       }
       else if(i == this.yearIndex) {
-         options.fields.push({type: 'string', inputParams: { typeInvite: inputEx.messages.yearTypeInvite, size: 4} });
+         options.fields.push({type: 'string', typeInvite: inputEx.messages.yearTypeInvite, size: 4 });
       }
       else {
-         options.fields.push({type: 'select', inputParams: {selectOptions: ([inputEx.messages.selectMonth]).concat(inputEx.messages.months), selectValues: [-1,0,1,2,3,4,5,6,7,8,9,10,11], value: -1} });
+         options.fields.push({type: 'select', selectOptions: ([inputEx.messages.selectMonth]).concat(inputEx.messages.months), selectValues: [-1,0,1,2,3,4,5,6,7,8,9,10,11], value: -1 });
       }
    }
 

@@ -18,7 +18,7 @@ YAHOO.lang.extend(inputEx.UneditableField, inputEx.Field, {
    
    /**
     * Set the default values of the options
-    * @param {Object} options Options object (inputEx inputParams) as passed to the constructor
+    * @param {Object} options Options object as passed to the constructor
     */
 	setOptions: function(options) {
       inputEx.UneditableField.superclass.setOptions.call(this,options);

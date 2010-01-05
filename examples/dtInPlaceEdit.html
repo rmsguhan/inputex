@@ -44,12 +44,12 @@
 	myDataSource.responseSchema = { fields: ["id","date","quantity","amount","title", "category"] };
 
 	var myFields = [
-		{type: 'hidden', inputParams: {label: 'Id', name: 'id'} },
-		{type: 'date', inputParams: {label: 'Date', name: 'date', showMsg: true} },
-		{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity'} },
-		{type: 'number', inputParams: {label: 'Amount', name: 'amount'} },
-		{type: 'string', inputParams: {label: 'Title', name: 'title'} },
-		{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}}
+		{type: 'hidden', label: 'Id', name: 'id' },
+		{type: 'date', label: 'Date', name: 'date', showMsg: true},
+		{type: 'integer', label: 'Quantity', name: 'quantity'},
+		{type: 'number', label: 'Amount', name: 'amount'},
+		{type: 'string', label: 'Title', name: 'title'},
+		{type: 'select', label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}
 	];
 		
 	new inputEx.widget.dtInPlaceEdit({
@@ -82,13 +82,13 @@
   myDataSource.responseSchema = { fields: ["id","date","quantity","amount","title", "category","color"] };
 
 	var myFields = [
-		{type: 'hidden', inputParams: {label: 'Id', name: 'id'} },
-		{type: 'date', inputParams: {label: 'Date', name: 'date'} },
-		{type: 'integer', inputParams: {label: 'Quantity', name: 'quantity', size:4} },
-		{type: 'number', inputParams: {label: 'Amount', name: 'amount', size:4, showMsg:true, required:true} },
-		{type: 'string', inputParams: {label: 'Title', name: 'title', required:true} },
-		{type: 'select', inputParams: {label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']}},
-		{type: 'color', inputParams: {label: 'Couleur', name: 'color'}  }
+		{type: 'hidden', label: 'Id', name: 'id' },
+		{type: 'date', label: 'Date', name: 'date' },
+		{type: 'integer', label: 'Quantity', name: 'quantity', size:4 },
+		{type: 'number', label: 'Amount', name: 'amount', size:4, showMsg:true, required:true },
+		{type: 'string', label: 'Title', name: 'title', required:true },
+		{type: 'select', label: 'Category', name: 'category', selectValues: ['SF', 'Novel', 'Philosophy']},
+		{type: 'color', label: 'Couleur', name: 'color' }
 	];
 	
 	var myDatatable = new inputEx.widget.dtInPlaceEdit({
