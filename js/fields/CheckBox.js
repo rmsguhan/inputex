@@ -51,6 +51,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	   this.fieldContainer.appendChild(this.rightLabelEl);
 	
 	   // Keep state of checkbox in a hidden field (format : this.checkedValue or this.uncheckedValue)
+	   // This is useful for non-javascript form submit (it allows custom checked/unchecked values to be submitted)
 	   this.hiddenEl = inputEx.cn('input', {type: 'hidden', name: this.options.name || '', value: this.uncheckedValue});
 	   this.fieldContainer.appendChild(this.hiddenEl);
 	},
@@ -103,17 +104,33 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	setValue: function(value, sendUpdatedEvt) {
 	   if (value===this.checkedValue) {
 			this.hiddenEl.value = value;
-			this.el.setAttribute("checked","checked");
-			this.el.setAttribute("defaultChecked","checked"); // for IE6
+			
+			// check checkbox (all browsers)
+			this.el.checked = true;
+			
+			// hacks for IE6, because input is not operational at init, 
+			// so "this.el.checked = true" would work for default values !
+			// (but still work for later setValue calls)
+			if (YAHOO.env.ua.ie === 6) {
+			   this.el.setAttribute("defaultChecked","checked"); // for IE6
+		   }
 		}
-	   else {		
+	   else {
 	      // DEBUG :
 	      /*if (value!==this.uncheckedValue && lang.isObject(console) && lang.isFunction(console.log) ) {
 	         console.log("inputEx.CheckBox: value is *"+value+"*, schould be in ["+this.checkedValue+","+this.uncheckedValue+"]");
          }*/
 			this.hiddenEl.value = value;
-			this.el.removeAttribute("checked");
-			this.el.removeAttribute("defaultChecked"); // for IE6 
+			
+			// uncheck checkbox (all browsers)
+		   this.el.checked = false;
+		   
+			// hacks for IE6, because input is not operational at init, 
+			// so "this.el.checked = false" would work for default values !
+			// (but still work for later setValue calls)
+			if (YAHOO.env.ua.ie === 6) {
+			   this.el.removeAttribute("defaultChecked"); // for IE6
+		   }
 		}
 		
 		// Call Field.setValue to set class and fire updated event

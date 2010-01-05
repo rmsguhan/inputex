@@ -74,10 +74,16 @@
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
 			var exampleDiv = YAHOO.util.Dom.get('container4');
-			var field2 = new inputEx.CheckBox({sentValues: ['Yes', 'No'], rightLabel: 'Do you agree ?', parentEl: exampleDiv, value: 'No'});
+			var field2 = new inputEx.CheckBox({sentValues: ['Yes', 'No'], rightLabel: 'Do you agree ?', parentEl: exampleDiv, value: 'Yes'});
 			var button = inputEx.cn('button', null, null, 'getValue()');
+			var button2 = inputEx.cn('button', null, null, 'setValue("No")');
+			var button3 = inputEx.cn('button', null, null, 'setValue("Yes")');
 			exampleDiv.appendChild(button); 
+			exampleDiv.appendChild(button2); 
+			exampleDiv.appendChild(button3); 
 			YAHOO.util.Event.addListener(button, 'click', function() { alert(field2.getValue()); });
+			YAHOO.util.Event.addListener(button2, 'click', function() { field2.setValue('No'); });
+			YAHOO.util.Event.addListener(button3, 'click', function() { field2.setValue('Yes'); });
 		</textarea>
 	</div>
 </div>
