@@ -36,7 +36,6 @@ inputEx = function(fieldOptions) {
    
    // Retro-compatibility with deprecated inputParams Object
    if (lang.isObject(fieldOptions.inputParams)) {
-      console.log("old : ",fieldOptions);
       inputInstance = new fieldClass(fieldOptions.inputParams);
       
    // New prefered way to instanciate a field

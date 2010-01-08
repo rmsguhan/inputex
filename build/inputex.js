@@ -60,7 +60,6 @@ inputEx = function(fieldOptions) {
    
    // Retro-compatibility with deprecated inputParams Object
    if (lang.isObject(fieldOptions.inputParams)) {
-      console.log("old : ",fieldOptions);
       inputInstance = new fieldClass(fieldOptions.inputParams);
       
    // New prefered way to instanciate a field
@@ -1752,11 +1751,12 @@ lang.extend(inputEx.Form, inputEx.Group, {
     * Render the buttons
     */
    renderButtons: function() {
-
+       
+      var button, buttonEl, innerSpan, i, buttonsNb = this.options.buttons.length;
+	   
       this.buttonDiv = inputEx.cn('div', {className: 'inputEx-Form-buttonBar'});
 
-	   var button, buttonEl;
-	   for(var i = 0 ; i < this.options.buttons.length ; i++ ) {
+	   for(i = 0 ; i < buttonsNb ; i++ ) {
 	      button = this.options.buttons[i];
 	
 			// Throw Error if button is undefined
@@ -1764,8 +1764,31 @@ lang.extend(inputEx.Form, inputEx.Group, {
 				throw new Error("inputEx.Form: One of the provided button is undefined ! (check trailing comma)");
 			}
 			
-	      buttonEl = inputEx.cn('input', {type: button.type, value: button.value, name: button.name});
-	      if( button.onClick ) { buttonEl.onclick = button.onClick; }
+			// custom submit button, rendered as "link"
+			if (button.type == "link") {
+			   
+			   buttonEl = inputEx.cn('a', {name: button.name, className:"inputEx-Form-Button", href:"#"});
+			   innerSpan = inputEx.cn('span', null, null, button.value);
+			   
+			   buttonEl.appendChild(innerSpan);
+   	      
+			// default type is "submit" input
+			} else {
+			   
+			   buttonEl = inputEx.cn('input', {type: button.type, value: button.value, name: button.name, className:"inputEx-Form-Button"});
+   	      
+			}
+			
+			// add id and/or classname
+			if (!lang.isUndefined(button.id)) { inputEx.sn(buttonEl,{id:button.id}); }
+			if (!lang.isUndefined(button.className)) { Dom.addClass(buttonEl,button.className); }
+			
+			// add onClick listener
+			if( button.onClick ) {
+			   Event.addListener(buttonEl,"click",button.onClick,buttonEl,true);
+			}
+			
+			// save and add to Dom
 	      this.buttons.push(buttonEl);
 	      this.buttonDiv.appendChild(buttonEl);
 	   }
