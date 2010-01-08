@@ -9,10 +9,23 @@
 Release Notes:
 ==============
 
-version 0.4.0 :
+
+version 0.4.1 :
 ---------------
 
-not released yet
+- API changes:
+   * remove "inputParams" syntax when defining fields inside a group or form definition
+
+- Field enhancements:
+	* id and className on form buttons
+	* form buttons rendered as links (type:"link" instead of type:"submit")
+	
+- Bug fixes
+	* fixing setValue bug on checkboxes
+
+
+version 0.4.0 :
+---------------
 
 	- Various
 		* Upgrading to YUI 2.8.0r4
