@@ -48,15 +48,10 @@ YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,{
     * Add an item to the list when the select changed
     */
    onAddNewItem: function() {
-      if(this.el.selectedIndex != 0) {
+      if(this.el.selectedIndex !== 0) {
          
          // Add the value to the ddlist
-         if(this.options.selectOptions) {
-            this.ddlist.addItem({value: this.options.selectValues[this.el.selectedIndex], label: this.options.selectOptions[this.el.selectedIndex]});
-         }
-         else {
-            this.ddlist.addItem(this.options.selectValues[this.el.selectedIndex]);
-         }
+         this.ddlist.addItem({value: this.options.selectValues[this.el.selectedIndex], label: this.options.selectOptions[this.el.selectedIndex]});
          
          // mark option disabled
          this.el.childNodes[this.el.selectedIndex].disabled = true;
@@ -75,17 +70,28 @@ YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,{
     */
    setValue: function(value, sendUpdatedEvt) {
       
-      this.ddlist.setValue(value);
+      var i, length, index, label, ddlistValue = [];
+      
+      if (!YAHOO.lang.isArray(value)) { return; }
       
       // Re-enable all options
-      for(var i = 0 ; i < this.el.childNodes.length ; i++) {
+      for(i = 0, length=this.el.childNodes.length ; i < length ; i++) {
          this.el.childNodes[i].disabled = false;
       }
-      // disable selected options
-      for(i = 0 ; i < value.length ; i++) {
-         var index = inputEx.indexOf(value[i], this.options.selectValues);
+      
+      // disable selected options and fill ddlist value
+      for(i = 0, length=value.length ; i < length ; i++) {
+         
+         index = inputEx.indexOf(value[i], this.options.selectValues);
+         label = this.options.selectOptions[index];
+         ddlistValue.push({value: value[i], label: label});
+         
          this.el.childNodes[index].disabled = true;
       }
+      
+      // set ddlist value
+      this.ddlist.setValue(ddlistValue);
+      
 	   
 	   if(sendUpdatedEvt !== false) {
 	      // fire update event
