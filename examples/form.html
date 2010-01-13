@@ -29,93 +29,93 @@ div#container3 { width:400px }
 
 <!-- Example 1 -->
 <div class='exampleDiv'>
-	<p class="title">Basic Form creation</p>
-	<p>Use the following code to create a basic inputEx Form.</p>
-	<div class='demoContainer' id='container1'></div>
-	<div class='codeContainer'>
-		<textarea name="code" class="JScript">
-			new inputEx.Form( { 
-				fields: [ 
-					{type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
-					{label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
-					{label: 'Lastname', name: 'lastname', value:'Dupont' },
-					{type:'email', label: 'Email', name: 'email'},
-					{type:'url', label: 'Website',name:'website'}
-				], 
-				buttons: [{type: 'submit', value: 'Change'}],
-				parentEl: 'container1' 
-			});
-		</textarea>
-	</div>
+   <p class="title">Basic Form creation</p>
+   <p>Use the following code to create a basic inputEx Form.</p>
+   <div class='demoContainer' id='container1'></div>
+   <div class='codeContainer'>
+      <textarea name="code" class="JScript">
+         new inputEx.Form( { 
+            fields: [ 
+               {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+               {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+               {label: 'Lastname', name: 'lastname', value:'Dupont' },
+               {type:'email', label: 'Email', name: 'email'},
+               {type:'url', label: 'Website',name:'website'}
+            ], 
+            buttons: [{type: 'submit', value: 'Change'}],
+            parentEl: 'container1'
+         });
+      </textarea>
+   </div>
 </div>
 
 <!-- Example 2 -->
 <div class='exampleDiv'>
-	<p class="title">Multi-group Form</p>
-	<p>Use the following code to create a Form with multiple Groups (fieldsets).</p>
-	<div class='demoContainer' id='container2'></div>
-	<div class='codeContainer'>
+   <p class="title">Multi-group Form</p>
+   <p>Use the following code to create a Form with multiple Groups (fieldsets).</p>
+   <div class='demoContainer' id='container2'></div>
+   <div class='codeContainer'>
     <textarea name="code" class="JScript">
-	   	new inputEx.Form( {
-		        fields: [
-		            { 
-		               type:'group',
-		               legend:'group 1',
-		               name:'group1',
-		               fields:[
-		                 {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
-		                 {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
-		                 {label: 'Lastname', name: 'lastname', value:'Dupont' }
-		               ]
-		            },
-		            { 
-		               type:'group',
-		               legend:'group 2',
-		               name:'group2',
-		               fields:[
-		                 {type:'email', label: 'Email', name: 'email'},
-		                 {type:'url', label: 'Website',name:'website'}
-		               ]
-		            }
-		        ],
-		        buttons: [{type: 'submit', value: 'Change'}],
-		        parentEl: 'container2'
-		    });
-	</textarea>
+         new inputEx.Form( {
+              fields: [
+                  { 
+                     type:'group',
+                     legend:'group 1',
+                     name:'group1',
+                     fields:[
+                       {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+                       {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+                       {label: 'Lastname', name: 'lastname', value:'Dupont' }
+                     ]
+                  },
+                  { 
+                     type:'group',
+                     legend:'group 2',
+                     name:'group2',
+                     fields:[
+                       {type:'email', label: 'Email', name: 'email'},
+                       {type:'url', label: 'Website',name:'website'}
+                     ]
+                  }
+              ],
+              buttons: [{type: 'submit', value: 'Change'}],
+              parentEl: 'container2'
+          });
+   </textarea>
     </div>
 </div>
 
 <!-- Example 3 -->
 <div class='exampleDiv'>
 
-	<p class="title">Send in json with ajax</p>
-	
-	<p>How to send the form data using Ajax</p>
+   <p class="title">Send in json with ajax</p>
+   
+   <p>How to send the form data using Ajax</p>
 
-	<div class='demoContainer' id='container3'></div>
+   <div class='demoContainer' id='container3'></div>
 
-	<div class='codeContainer'>
-		<textarea name="code" class="JScript">
-			new inputEx.Form( {
-				fields: [ 
-					{ type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
-					{ label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
-					{ label: 'Lastname', name: 'lastname', value:'Dupont' }
-				], 
-				buttons: [{type: 'submit', value: 'Change'}], 	
-				parentEl: 'container3',
-				ajax: {
-					method: 'POST',
-					uri: 'default.php',
-					callback: {
-						success: function(o) { alert("success", o); },
-						failure: function(o) { alert("failure", o); }
-					},
-					showMask:true
-				}
-			});
-		</textarea>
-	</div>
+   <div class='codeContainer'>
+      <textarea name="code" class="JScript">
+         new inputEx.Form( {
+            fields: [ 
+               { type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+               { label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+               { label: 'Lastname', name: 'lastname', value:'Dupont' }
+            ], 
+            buttons: [{type: 'submit', value: 'Change'}],    
+            parentEl: 'container3',
+            ajax: {
+               method: 'POST',
+               uri: 'default.php',
+               callback: {
+                  success: function(o) { alert("success", o); },
+                  failure: function(o) { alert("failure", o); }
+               },
+               showMask:true
+            }
+         });
+      </textarea>
+   </div>
 
 </div>
 
@@ -123,96 +123,167 @@ div#container3 { width:400px }
 
 <!-- Example 4 -->
 <div class='exampleDiv'>
-	<p class="title">Send with ajax using url encoded parameters</p>
-	<p>How to send the form data using Ajax</p>
-	<div class='demoContainer' id='container4'></div>
-	<div class='codeContainer'>
-		<textarea name="code" class="JScript">
-			new inputEx.Form( {
-				fields: [ 
-					{ type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
-					{ label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
-					{ label: 'Lastname', name: 'lastname', value:'Dupont' }
-				], 
-				buttons: [{type: 'submit', value: 'Change'}], 	
-				parentEl: 'container4',
-				ajax: {
-					method: 'POST',
-					uri: 'default.php',
-					contentType: "application/x-www-form-urlencoded",
-					callback: {
-						success: function(o) { alert("success", o); },
-						failure: function(o) { alert("failure", o); }
-					},
-					showMask:true
-				}
-			});
-		</textarea>
-	</div>
+   <p class="title">Send with ajax using url encoded parameters</p>
+   <p>How to send the form data using Ajax</p>
+   <div class='demoContainer' id='container4'></div>
+   <div class='codeContainer'>
+      <textarea name="code" class="JScript">
+         new inputEx.Form( {
+            fields: [ 
+               { type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+               { label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+               { label: 'Lastname', name: 'lastname', value:'Dupont' }
+            ], 
+            buttons: [{type: 'submit', value: 'Change'}],    
+            parentEl: 'container4',
+            ajax: {
+               method: 'POST',
+               uri: 'default.php',
+               contentType: "application/x-www-form-urlencoded",
+               callback: {
+                  success: function(o) { alert("success", o); },
+                  failure: function(o) { alert("failure", o); }
+               },
+               showMask:true
+            }
+         });
+      </textarea>
+   </div>
 </div>
 
 
 
 <!-- Example 5 -->
 <div class='exampleDiv'>
-	<p class="title">Send with ajax using url encoded parameters wrapped in an object</p>
-	<p>Use wrapObject</p>
-	<div class='demoContainer' id='container5'></div>
-	<div class='codeContainer'>
-		<textarea name="code" class="JScript">
-			new inputEx.Form( {
-				fields: [ 
-					{ type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
-					{ label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
-					{ label: 'Lastname', name: 'lastname', value:'Dupont' }
-				], 
-				buttons: [{type: 'submit', value: 'Change'}], 	
-				parentEl: 'container5',
-				ajax: {
-					method: 'POST',
-					uri: 'default.php',
-					contentType: "application/x-www-form-urlencoded",
-					wrapObject: "person",
-					callback: {
-						success: function(o) { alert("success", o); },
-						failure: function(o) { alert("failure", o); }
-					},
-					showMask:true
-				}
-			});
-		</textarea>
-	</div>
+   <p class="title">Send with ajax using url encoded parameters wrapped in an object</p>
+   <p>Use wrapObject</p>
+   <div class='demoContainer' id='container5'></div>
+   <div class='codeContainer'>
+      <textarea name="code" class="JScript">
+         new inputEx.Form( {
+            fields: [ 
+               { type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'] },
+               { label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+               { label: 'Lastname', name: 'lastname', value:'Dupont' }
+            ], 
+            buttons: [{type: 'submit', value: 'Change'}],    
+            parentEl: 'container5',
+            ajax: {
+               method: 'POST',
+               uri: 'default.php',
+               contentType: "application/x-www-form-urlencoded",
+               wrapObject: "person",
+               callback: {
+                  success: function(o) { alert("success", o); },
+                  failure: function(o) { alert("failure", o); }
+               },
+               showMask:true
+            }
+         });
+      </textarea>
+   </div>
 </div>
 
 
 <!-- Example 6 -->
 <div class='exampleDiv'>
-	<p class="title">Different button types</p>
-	<p>Use the following code to create submit buttons, or "link" buttons.</p>
-	<div class='demoContainer' id='container6'></div>
-	<div class='codeContainer'>
-		<textarea name="code" class="JScript">
-			var basicForm = new inputEx.Form( { 
-				fields: [ 
-					{type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'], value:'Mr' },
-					{label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
-					{label: 'Lastname', name: 'lastname', value:'Dupont' }
-				], 
-				buttons: [
-				   {type: 'submit', value: 'Submit'},
-				   {type: 'link', value: 'Reset form', onClick:function(e) {basicForm.clear();YAHOO.util.Event.preventDefault(e);}}
-				],
-				parentEl: 'container6'
-			});
-		</textarea>
-	</div>
-	<p>"link" buttons are useful because :
-	   <ul style="margin-left:40px;list-style-type:disc">
-	      <li style="list-style-type:disc">they allow to differenciate strong actions (like a "submit"), and weak actions (like a form "reset")</li>
-	      <li style="list-style-type:disc">they are easier to style (see : <a href="styling_buttons.html">styling buttons example</a>)</li>
-	   </ul>
-	</p>
+   <p class="title">Setting and getting form value</p>
+   <p>Use the following code to set or get the value from javascript</p>
+   <div class='demoContainer' id='container6'></div>
+   <div class='codeContainer'>
+      <textarea name="code" class="JScript">
+         var form6 = new inputEx.Form( { 
+            fields: [ 
+               {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'], value:'Mr' },
+               {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+               {label: 'Lastname', name: 'lastname', value:'Dupont' },
+               {
+                  type: 'group',
+                  legend: 'Emails',
+                  name: 'emails',
+                  fields: [
+                     {type:'email', label: 'Email 1', name:'first'},
+                     {type:'email', label: 'Email 2', name:'second'}
+                  ]
+               }
+            ],
+            buttons: [
+               {
+                  type: 'submit',
+                  value: 'Set form value',
+                  
+                  onClick: function(e) {
+                     
+                     // valueObject : object to be passed to setValue function
+                     //               its structure is { field_name : field_value, ... }
+                     
+                     var valueObject = {
+                        title:"Mrs",
+                        firstname:"Candy",
+                        lastname:"Jones",
+                        // note the nested object when setting value of a form with a 'group' field :
+                        emails:{
+                           first:'first@email.com',
+                           second:'second@email.com'
+                        }
+                     };
+                     
+                     form6.setValue(valueObject);
+                     
+                     YAHOO.util.Event.preventDefault(e); // stop button click, to prevent form submitting
+                     
+                  }
+               },
+               {
+                  type: 'submit',
+                  value: 'Get form value',
+                  
+                  onClick:function(e) {
+                     
+                     var valueAsJsObject = form6.getValue();
+                     var valueAsJsonString = YAHOO.lang.JSON.stringify(valueAsJsObject);
+                     
+                     alert(valueAsJsonString);
+                     YAHOO.util.Event.preventDefault(e); // stop button click, to prevent form submitting
+                  }
+               }
+            ],
+            parentEl: 'container6'
+         });
+      </textarea>
+   </div>
 </div>
+
+<!-- Example 7 -->
+<div class='exampleDiv'>
+   <p class="title">Different button types</p>
+   <p>Use the following code to create submit buttons, or "link" buttons.</p>
+   <div class='demoContainer' id='container7'></div>
+   <div class='codeContainer'>
+      <textarea name="code" class="JScript">
+         var form7 = new inputEx.Form( { 
+            fields: [ 
+               {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'], value:'Mr' },
+               {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+               {label: 'Lastname', name: 'lastname', value:'Dupont' }
+            ], 
+            buttons: [
+               {type: 'submit', value: 'Submit'},
+               {type: 'link', value: 'Reset form', onClick:function(e) {form7.clear();YAHOO.util.Event.preventDefault(e);}}
+            ],
+            parentEl: 'container7'
+         });
+      </textarea>
+   </div>
+   <p>"link" buttons are useful because :
+      <ul style="margin-left:40px;list-style-type:disc">
+         <li style="list-style-type:disc">they allow to differenciate strong actions (like a "submit"), and weak actions (like a form "reset")</li>
+         <li style="list-style-type:disc">they are easier to style (see : <a href="styling_buttons.html">styling buttons example</a>)</li>
+      </ul>
+   </p>
+</div>
+
+
 
 <!-- YUI Library -->
 <script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
