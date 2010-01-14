@@ -24,8 +24,6 @@ lang.extend( inputEx.CombineField, inputEx.Group, {
    setOptions: function(options) {
       inputEx.CombineField.superclass.setOptions.call(this, options);
 
-      this.options.label = options.label;
-
       // Overwrite options
       this.options.className = options.className ? options.className : 'inputEx-CombineField';
       

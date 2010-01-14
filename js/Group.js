@@ -31,25 +31,16 @@ lang.extend(inputEx.Group, inputEx.Field, {
     * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
-   
-   	this.options = {};
-   	
+      
+      inputEx.Group.superclass.setOptions.call(this, options);
+         	
    	this.options.className = options.className || 'inputEx-Group';
    	
    	this.options.fields = options.fields;
    	
-   	this.options.id = options.id;
-   	
-   	this.options.name = options.name;
-   	
-   	this.options.value = options.value;
-   	
    	this.options.flatten = options.flatten;
    
       this.options.legend = options.legend || '';
-   
-      // leave this for compatibility reasons
-      this.inputConfigs = options.fields;
    
       this.options.collapsible = lang.isUndefined(options.collapsible) ? false : options.collapsible;
       this.options.collapsed = lang.isUndefined(options.collapsed) ? false : options.collapsed;
