@@ -103,7 +103,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	 */
 	setValue: function(value, sendUpdatedEvt) {
 	   if (value===this.checkedValue) {
-			this.hiddenEl.value = value;
+			this.hiddenEl.value = this.checkedValue;
 			
 			// check checkbox (all browsers)
 			this.el.checked = true;
@@ -120,7 +120,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	      /*if (value!==this.uncheckedValue && lang.isObject(console) && lang.isFunction(console.log) ) {
 	         console.log("inputEx.CheckBox: value is *"+value+"*, schould be in ["+this.checkedValue+","+this.uncheckedValue+"]");
          }*/
-			this.hiddenEl.value = value;
+			this.hiddenEl.value = this.uncheckedValue;
 			
 			// uncheck checkbox (all browsers)
 		   this.el.checked = false;
