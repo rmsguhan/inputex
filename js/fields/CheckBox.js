@@ -60,7 +60,6 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	 * Clear the previous events and listen for the "change" event
 	 */
 	initEvents: function() {
-	   Event.addListener(this.el, "change", this.onChange, this, true);	
 	   
 	   // Awful Hack to work in IE6 and below (the checkbox doesn't fire the change event)
 	   // It seems IE 8 removed this behavior from IE7 so it only works with IE 7 ??
@@ -68,7 +67,9 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	      Event.addListener(this.el, "click", function() { this.fireUpdatedEvt(); }, this, true);	
 	   }*/
 	   if( YAHOO.env.ua.ie ) {
-	      Event.addListener(this.el, "click", function() { YAHOO.lang.later(10,this,this.fireUpdatedEvt); }, this, true);	
+	      Event.addListener(this.el, "click", function(e) { YAHOO.lang.later(10,this,function(){this.onChange(e);}); }, this, true);	
+	   } else {
+	      Event.addListener(this.el, "change", this.onChange, this, true);
 	   }
 	   
 	   Event.addFocusListener(this.el, this.onFocus, this, true);
@@ -82,10 +83,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	onChange: function(e) {
 	   this.hiddenEl.value = this.el.checked ? this.checkedValue : this.uncheckedValue;
 	
-      // In IE the fireUpdatedEvent is sent by the click ! We need to send it only once ! 
-      if( !YAHOO.env.ua.ie ) {
-	      inputEx.CheckBox.superclass.onChange.call(this,e);
-      }
+	   inputEx.CheckBox.superclass.onChange.call(this,e);
 	},
 	
 	/**
