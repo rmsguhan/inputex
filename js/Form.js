@@ -111,9 +111,11 @@ lang.extend(inputEx.Form, inputEx.Group, {
 			}
 			
 			// custom submit button, rendered as "link"
-			if (button.type == "link") {
+			if (button.type === "link" || button.type === "submit-link") {
 			   
 			   buttonEl = inputEx.cn('a', {name: button.name, className:"inputEx-Form-Button", href:"#"});
+			   Dom.addClass(buttonEl,button.type === "link" ? "inputEx-Form-Button-Link" : "inputEx-Form-Button-Submit-Link");
+   	      
 			   innerSpan = inputEx.cn('span', null, null, button.value);
 			   
 			   buttonEl.appendChild(innerSpan);
@@ -121,8 +123,8 @@ lang.extend(inputEx.Form, inputEx.Group, {
 			// default type is "submit" input
 			} else {
 			   
-			   buttonEl = inputEx.cn('input', {type: button.type, value: button.value, name: button.name, className:"inputEx-Form-Button"});
-   	      
+			   buttonEl = inputEx.cn('input', {type: "submit", value: button.value, name: button.name, className:"inputEx-Form-Button"});
+   	      Dom.addClass(buttonEl,"inputEx-Form-Button-Submit");
 			}
 			
 			// add id and/or classname
@@ -134,11 +136,27 @@ lang.extend(inputEx.Form, inputEx.Group, {
 			   Event.addListener(buttonEl,"click",button.onClick,buttonEl,true);
 			}
 			
+			// "submit-link" should submit the form !
+			// (after "onClick" to mimic 'submit' type behavior)
+			if (button.type === "submit-link") {
+			   
+			   Event.addListener(buttonEl,"click",this.onSubmit,this,true);
+			
+			// prevent default behavior on "link" : this is NOT a regular link !
+			} else if (button.type === "link") {
+			   
+			   Event.addListener(buttonEl,"click",function(e) {Event.preventDefault(e);});
+			   
+			}
+			
 			// save and add to Dom
 	      this.buttons.push(buttonEl);
 	      this.buttonDiv.appendChild(buttonEl);
 	   }
-
+	   
+	   // useful for link buttons re-styling (float required on <a>'s ... )
+      this.buttonDiv.appendChild(inputEx.cn('div',null,{clear:'both'}));
+      
 	   this.form.appendChild(this.buttonDiv);
    },
 
@@ -160,16 +178,21 @@ lang.extend(inputEx.Form, inputEx.Group, {
     */
    onSubmit: function(e) {
       
+      Event.stopEvent(e); // stop submit event (if button.type == "submit")
+                          //   or click event (if button.type = "submit-link")
+	   
       // do nothing if does not validate
 	   if ( !this.validate() ) {
-		   Event.stopEvent(e); // no submit
-		   return; // no ajax submit
+		   return; // no submit
 	   }
 	   
 	   if(this.options.ajax) {
-		   Event.stopEvent(e);
-	      this.asyncRequest();
+	      this.asyncRequest(); // send ajax request
+	      return;
 	   }
+	   
+	   // normal submit finally
+	   this.form.submit();
    },
 
    /**

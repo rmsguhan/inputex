@@ -154,6 +154,8 @@ div.inputEx-Form-buttonBar {
    margin: 3px 0 0 137px;
 }
 
+.inputEx-Form-Button { margin:0 4px 0 0; }
+
 div.inputEx-Form-Mask {
    height:275px;
    left:0pt;

@@ -61,10 +61,6 @@
    a.inputEx-Form-Button:hover span{
       text-decoration:underline;
    }
-   
-   div.inputEx-Form-buttonBar {
-      height:40px;
-   }
 
 	</style>
 
@@ -82,12 +78,13 @@
       	   buttons:[
       	      /*
       	      *
-      	      * Note that we use "type:'link'" buttons here because they are easier to style
-      	      * in a cross-browser way than submit inputs (<input type="submit" />).
+      	      * Note that we use "type:'submit-link'" or "type:'link'" buttons here because they
+      	      * are rendered with a different DOM that is easier to style in a cross-browser way
+      	      * than "type:'submit'" (<input type="submit" />).
       	      *
       	      */
-      	      {type: 'link', value: 'Submit Form', onClick:function() {form.form.submit();}},  /* classic form submit triggered on <form> node */
-      	      {type: 'link', value: 'Cancel', onClick:function(e) {form.clear();YAHOO.util.Event.preventDefault(e);}} /* reset inputEx form + preventDefault to disable link */
+      	      {type: 'submit-link', value: 'Submit Form'},  /* classic form submit triggered, as with type:'submit' */
+      	      {type: 'link', value: 'Cancel', onClick:function(e) {form.clear();} /* reset inputEx form */
       	   ]
       	});
    
@@ -119,10 +116,6 @@
          } 
          a.inputEx-Form-Button:hover span{
             text-decoration:underline;
-         }
-
-         div.inputEx-Form-buttonBar {
-            height:40px;
          }
 		</textarea>
 	</div>
@@ -160,7 +153,7 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	// Example 1
 	var descriptedFields = [ 
 			{type: 'select', label: 'A select', selectValues: ['One','Two','Three'], value:"One" },
-			{label: 'StringField', value:'Jacques' },
+			{label: 'StringField', value:'Jacques', required:true },
 			{type: 'boolean', label: 'Happy to be there ?', name: 'happy'},
 			{ type: 'radio', label: 'Radio', name: 'example1', choices: ['Ajaxian','YUI blog','other']}
 	];
@@ -171,8 +164,8 @@ YAHOO.util.Event.addListener(window, 'load', function() {
 	   fields: descriptedFields, 
 	   legend: 'User Informations',
 	   buttons:[
-	      {type: 'link', value: 'Submit Form', onClick:function() {form.form.submit();}},
-	      {type: 'link', value: 'Cancel', onClick:function(e) {YAHOO.util.Event.preventDefault(e);form.clear();}}
+	      {type: 'submit-link', value: 'Submit Form'},
+	      {type: 'link', value: 'Cancel', onClick:function(e) {form.clear();}}
 	   ]
 	});
 	

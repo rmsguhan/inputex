@@ -261,7 +261,7 @@ div#container3 { width:400px }
    <div class='demoContainer' id='container7'></div>
    <div class='codeContainer'>
       <textarea name="code" class="JScript">
-         var form7 = new inputEx.Form( { 
+         form7 = new inputEx.Form( { 
             fields: [ 
                {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'], value:'Mr' },
                {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
@@ -269,13 +269,22 @@ div#container3 { width:400px }
             ], 
             buttons: [
                {type: 'submit', value: 'Submit'},
-               {type: 'link', value: 'Reset form', onClick:function(e) {form7.clear();YAHOO.util.Event.preventDefault(e);}}
+               {type: 'submit-link', value: 'Submit'},
+               {type: 'link', value: 'Reset form', onClick:function(e) {form7.clear();}}
             ],
             parentEl: 'container7'
          });
       </textarea>
    </div>
-   <p>"link" buttons are useful because :
+   <p>You can use 3 types of inputEx form buttons :
+      <ul style="margin-left:40px;list-style-type:disc">
+         <li style="list-style-type:disc"><u>submit</u>&nbsp;: a (&lt;input type="submit" /&gt;)-tag is created. A handler is automatically added on 'click' to submit the form only if it validates (no invalid fields, or no empty required fields). </li>
+         <li style="list-style-type:disc"><u>submit-link</u>&nbsp;: same as 'submit' type, but with a different markup (&lt;a&gt;&lt;span&gt;Submit&lt;/span&gt;&lt;/a&gt;) to render as 'link'. The same handler as with 'submit' type is added on link.</li>
+         <li style="list-style-type:disc"><u>link</u>&nbsp;: same markup as 'submit-link' but with no handler to submit the form. You must add your own 'onClick' function to trigger a specific action. The default link behavior is disabled, so you don't have to do it yourself in the onClick handler.</li>
+      </ul>
+   </p>
+   <br />
+   <p>"link" and "submit-link" buttons are also useful because :
       <ul style="margin-left:40px;list-style-type:disc">
          <li style="list-style-type:disc">they allow to differenciate strong actions (like a "submit"), and weak actions (like a form "reset")</li>
          <li style="list-style-type:disc">they are easier to style (see : <a href="styling_buttons.html">styling buttons example</a>)</li>
