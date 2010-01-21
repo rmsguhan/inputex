@@ -34,7 +34,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
    	this.options.method = options.method;
 
 		this.options.className =  options.className || 'inputEx-Group';
-		this.options.autocomplete = lang.isUndefined(options.autocomplete) ? true : options.autocomplete;
+		this.options.autocomplete = (options.autocomplete === false || options.autocomplete === "off") ? false : true;
 		
 		this.options.enctype = options.enctype;
 

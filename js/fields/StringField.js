@@ -39,6 +39,7 @@ lang.extend(inputEx.StringField, inputEx.Field, {
 	   this.options.minLength = options.minLength;
 	   this.options.typeInvite = options.typeInvite;
 	   this.options.readonly = options.readonly;
+	   this.options.autocomplete = (options.autocomplete === false || options.autocomplete === "off") ? false : true;
    },
 
 
@@ -54,11 +55,12 @@ lang.extend(inputEx.StringField, inputEx.Field, {
       var attributes = {};
       attributes.type = 'text';
       attributes.id = this.divEl.id?this.divEl.id+'-field':YAHOO.util.Dom.generateId();
-      if(this.options.size) attributes.size = this.options.size;
-      if(this.options.name) attributes.name = this.options.name;
-      if(this.options.readonly) attributes.readonly = 'readonly';
+      if(this.options.size) { attributes.size = this.options.size; }
+      if(this.options.name) { attributes.name = this.options.name; }
+      if(this.options.readonly) { attributes.readonly = 'readonly'; }
 
-      if(this.options.maxLength) attributes.maxLength = this.options.maxLength;
+      if(this.options.maxLength) { attributes.maxLength = this.options.maxLength; }
+      if(!this.options.autocomplete) { attributes.autocomplete = 'off'; }
 
       // Create the node
       this.el = inputEx.cn('input', attributes);
