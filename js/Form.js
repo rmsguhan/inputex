@@ -140,7 +140,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 			// (after "onClick" to mimic 'submit' type behavior)
 			if (button.type === "submit-link") {
 			   
-			   Event.addListener(buttonEl,"click",this.onSubmit,this,true);
+			   Event.addListener(buttonEl,"click",this.options.onSubmit || this.onSubmit,this,true);
 			
 			// prevent default behavior on "link" : this is NOT a regular link !
 			} else if (button.type === "link") {
