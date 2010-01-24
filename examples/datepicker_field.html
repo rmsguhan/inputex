@@ -85,6 +85,30 @@
 </div>
 
 
+<!-- Example 5 -->
+<div class='exampleDiv'>
+	<p class="title">Disable DatePicker</p>
+	<p>Disable method</p>
+	<div class='demoContainer' id='container5'></div>
+	<div class='codeContainer'>
+		<textarea name="code" class="JScript">
+			var f = new inputEx.DatePickerField({parentEl: 'container5'});
+			
+			var exampleDiv = YAHOO.util.Dom.get('container5');
+			
+			var button1 = inputEx.cn('button', null, null, 'disable()');
+			exampleDiv.appendChild(button1); 
+			YAHOO.util.Event.addListener(button1, 'click', function() { f.disable(); });
+
+			var button2 = inputEx.cn('button', null, null, 'enable()');
+			exampleDiv.appendChild(button2); 
+			YAHOO.util.Event.addListener(button2, 'click', function() { f.enable(); });
+			
+		</textarea>
+	</div>
+</div>
+
+
 <!-- YUI Library -->
 <script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>

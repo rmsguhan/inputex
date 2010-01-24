@@ -260,6 +260,24 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 	   }
 	   
 	   return true;
+	},
+	
+	/**
+    * Disable the field
+    */
+	disable: function() {
+		for(var i = 0 ; i < this.optionEls.length; i++) {
+			this.optionEls[i].disabled = true;
+		}
+	},
+	
+	/**
+    * Enable the field
+    */
+	enable: function() {
+		for(var i = 0 ; i < this.optionEls.length; i++) {
+			this.optionEls[i].disabled = false;
+		}
 	}
 	
 });   

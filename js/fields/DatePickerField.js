@@ -166,8 +166,11 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
       this.calendarRendered = true;
    },
    
-   // Select the right date and display the right page on calendar, when the field has a value
-   beforeShowOverlay: function() {
+   /**
+  	 * Select the right date and display the right page on calendar, when the field has a value
+ 	 */
+   beforeShowOverlay: function(e) {
+	
       var date = this.getValue(true);
       if (!!this.calendar) {
          
@@ -182,7 +185,23 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
 
          this.calendar.render(); // refresh calendar
       }
-   }
+   },
+
+	/**
+	 * Disable the field
+	 */
+	disable: function() {
+		inputEx.DatePickerField.superclass.disable.call(this);
+		this.button.set('disabled', true);
+	},
+	
+	/**
+	 * Enable the field
+	 */
+	enable: function() {
+		inputEx.DatePickerField.superclass.enable.call(this);
+		this.button.set('disabled', false);
+	}
    
 });
 

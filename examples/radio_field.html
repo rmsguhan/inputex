@@ -166,6 +166,31 @@
 </div>
 
 
+
+<!-- Example 6 -->
+<div class='exampleDiv'>
+	<p class="title">Disable RadioField</p>
+	<p>Disable method</p>
+	<div class='demoContainer' id='container6'></div>
+	<div class='codeContainer'>
+		<textarea name="code" class="JScript">
+			var f = new inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example6', choices: ['Ajaxian','YUI blog','other'], value:'Ajaxian', parentEl: 'container6'});
+			
+			var exampleDiv = YAHOO.util.Dom.get('container6');
+			
+			var button1 = inputEx.cn('button', null, null, 'disable()');
+			exampleDiv.appendChild(button1); 
+			YAHOO.util.Event.addListener(button1, 'click', function() { f.disable(); });
+
+			var button2 = inputEx.cn('button', null, null, 'enable()');
+			exampleDiv.appendChild(button2); 
+			YAHOO.util.Event.addListener(button2, 'click', function() { f.enable(); });
+			
+		</textarea>
+	</div>
+</div>
+
+
 <!-- YUI Library -->
 <script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 
