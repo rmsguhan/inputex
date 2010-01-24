@@ -42,9 +42,10 @@ THE SOFTWARE.
  * @class inputEx
  * @static
  * @param {Object} fieldOptions
+ * @param {inputEx.Group|inputEx.Form|inputEx.ListField|inputEx.CombineField} (optional) parentField The parent field instance
  * @return {inputEx.Field} Created field instance
  */
-inputEx = function(fieldOptions) {
+inputEx = function(fieldOptions, parentField) {
    var fieldClass = null,
        inputInstance;
    
@@ -66,6 +67,11 @@ inputEx = function(fieldOptions) {
    } else {
       inputInstance = new fieldClass(fieldOptions);
    }
+
+	// If the parentField argument is provided
+	if(parentField) {
+		inputInstance.setParentField(parentField);
+	}
 
    // Add the flatten attribute if present in the params
    /*if(fieldOptions.flatten) {
@@ -1217,7 +1223,24 @@ inputEx.Field.prototype = {
     */
    isEmpty: function() {
       return this.getValue() === '';
-   }
+   },
+
+	/**
+	 * Set the parentField.
+	 * Generally use by composable fields (ie. Group,Form,ListField,CombineField,...}
+	 * @param {inputEx.Group|inputEx.Form|inputEx.ListField|inputEx.CombineField} parentField The parent field instance
+	 */
+	setParentField: function(parentField) {
+		this.parentField = parentField;
+	},
+	
+	/**
+	 * Return the parent field instance
+	 * @return {inputEx.Group|inputEx.Form|inputEx.ListField|inputEx.CombineField}
+	 */
+	getParentField: function() {
+		return this.parentField;
+	}
    
 };
 
@@ -1262,25 +1285,16 @@ lang.extend(inputEx.Group, inputEx.Field, {
     * @param {Object} options Options object as passed to the constructor
     */
    setOptions: function(options) {
-   
-   	this.options = {};
-   	
+      
+      inputEx.Group.superclass.setOptions.call(this, options);
+         	
    	this.options.className = options.className || 'inputEx-Group';
    	
    	this.options.fields = options.fields;
    	
-   	this.options.id = options.id;
-   	
-   	this.options.name = options.name;
-   	
-   	this.options.value = options.value;
-   	
    	this.options.flatten = options.flatten;
    
       this.options.legend = options.legend || '';
-   
-      // leave this for compatibility reasons
-      this.inputConfigs = options.fields;
    
       this.options.collapsible = lang.isUndefined(options.collapsible) ? false : options.collapsible;
       this.options.collapsed = lang.isUndefined(options.collapsed) ? false : options.collapsed;
@@ -1329,7 +1343,7 @@ lang.extend(inputEx.Group, inputEx.Field, {
       }
    
       if(!lang.isUndefined(this.options.legend) && this.options.legend !== ''){
-         this.legend.appendChild( document.createTextNode(" "+this.options.legend) );
+         this.legend.appendChild( inputEx.cn("span", null, null, " "+this.options.legend) );
       }
    
       if( this.options.collapsible || (!lang.isUndefined(this.options.legend) && this.options.legend !== '') ) {
@@ -1366,7 +1380,7 @@ lang.extend(inputEx.Group, inputEx.Field, {
    renderField: function(fieldOptions) {
 
       // Instanciate the field
-      var fieldInstance = inputEx(fieldOptions);      
+      var fieldInstance = inputEx(fieldOptions,this);
       
 	   this.inputs.push(fieldInstance);
       
@@ -1688,7 +1702,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
    	this.options.method = options.method;
 
 		this.options.className =  options.className || 'inputEx-Group';
-		this.options.autocomplete = lang.isUndefined(options.autocomplete) ? true : options.autocomplete;
+		this.options.autocomplete = (options.autocomplete === false || options.autocomplete === "off") ? false : true;
 		
 		this.options.enctype = options.enctype;
 
@@ -1765,9 +1779,11 @@ lang.extend(inputEx.Form, inputEx.Group, {
 			}
 			
 			// custom submit button, rendered as "link"
-			if (button.type == "link") {
+			if (button.type === "link" || button.type === "submit-link") {
 			   
 			   buttonEl = inputEx.cn('a', {name: button.name, className:"inputEx-Form-Button", href:"#"});
+			   Dom.addClass(buttonEl,button.type === "link" ? "inputEx-Form-Button-Link" : "inputEx-Form-Button-Submit-Link");
+   	      
 			   innerSpan = inputEx.cn('span', null, null, button.value);
 			   
 			   buttonEl.appendChild(innerSpan);
@@ -1775,8 +1791,8 @@ lang.extend(inputEx.Form, inputEx.Group, {
 			// default type is "submit" input
 			} else {
 			   
-			   buttonEl = inputEx.cn('input', {type: button.type, value: button.value, name: button.name, className:"inputEx-Form-Button"});
-   	      
+			   buttonEl = inputEx.cn('input', {type: "submit", value: button.value, name: button.name, className:"inputEx-Form-Button"});
+   	      Dom.addClass(buttonEl,"inputEx-Form-Button-Submit");
 			}
 			
 			// add id and/or classname
@@ -1788,11 +1804,27 @@ lang.extend(inputEx.Form, inputEx.Group, {
 			   Event.addListener(buttonEl,"click",button.onClick,buttonEl,true);
 			}
 			
+			// "submit-link" should submit the form !
+			// (after "onClick" to mimic 'submit' type behavior)
+			if (button.type === "submit-link") {
+			   
+			   Event.addListener(buttonEl,"click",this.options.onSubmit || this.onSubmit,this,true);
+			
+			// prevent default behavior on "link" : this is NOT a regular link !
+			} else if (button.type === "link") {
+			   
+			   Event.addListener(buttonEl,"click",function(e) {Event.preventDefault(e);});
+			   
+			}
+			
 			// save and add to Dom
 	      this.buttons.push(buttonEl);
 	      this.buttonDiv.appendChild(buttonEl);
 	   }
-
+	   
+	   // useful for link buttons re-styling (float required on <a>'s ... )
+      this.buttonDiv.appendChild(inputEx.cn('div',null,{clear:'both'}));
+      
 	   this.form.appendChild(this.buttonDiv);
    },
 
@@ -1814,16 +1846,21 @@ lang.extend(inputEx.Form, inputEx.Group, {
     */
    onSubmit: function(e) {
       
+      Event.stopEvent(e); // stop submit event (if button.type == "submit")
+                          //   or click event (if button.type = "submit-link")
+	   
       // do nothing if does not validate
 	   if ( !this.validate() ) {
-		   Event.stopEvent(e); // no submit
-		   return; // no ajax submit
+		   return; // no submit
 	   }
 	   
 	   if(this.options.ajax) {
-		   Event.stopEvent(e);
-	      this.asyncRequest();
+	      this.asyncRequest(); // send ajax request
+	      return;
 	   }
+	   
+	   // normal submit finally
+	   this.form.submit();
    },
 
    /**
@@ -2032,8 +2069,6 @@ lang.extend( inputEx.CombineField, inputEx.Group, {
    setOptions: function(options) {
       inputEx.CombineField.superclass.setOptions.call(this, options);
 
-      this.options.label = options.label;
-
       // Overwrite options
       this.options.className = options.className ? options.className : 'inputEx-CombineField';
       
@@ -2206,6 +2241,7 @@ lang.extend(inputEx.StringField, inputEx.Field, {
 	   this.options.minLength = options.minLength;
 	   this.options.typeInvite = options.typeInvite;
 	   this.options.readonly = options.readonly;
+	   this.options.autocomplete = (options.autocomplete === false || options.autocomplete === "off") ? false : true;
    },
 
 
@@ -2221,11 +2257,12 @@ lang.extend(inputEx.StringField, inputEx.Field, {
       var attributes = {};
       attributes.type = 'text';
       attributes.id = this.divEl.id?this.divEl.id+'-field':YAHOO.util.Dom.generateId();
-      if(this.options.size) attributes.size = this.options.size;
-      if(this.options.name) attributes.name = this.options.name;
-      if(this.options.readonly) attributes.readonly = 'readonly';
+      if(this.options.size) { attributes.size = this.options.size; }
+      if(this.options.name) { attributes.name = this.options.name; }
+      if(this.options.readonly) { attributes.readonly = 'readonly'; }
 
-      if(this.options.maxLength) attributes.maxLength = this.options.maxLength;
+      if(this.options.maxLength) { attributes.maxLength = this.options.maxLength; }
+      if(!this.options.autocomplete) { attributes.autocomplete = 'off'; }
 
       // Create the node
       this.el = inputEx.cn('input', attributes);
@@ -2650,7 +2687,6 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	 * Clear the previous events and listen for the "change" event
 	 */
 	initEvents: function() {
-	   Event.addListener(this.el, "change", this.onChange, this, true);	
 	   
 	   // Awful Hack to work in IE6 and below (the checkbox doesn't fire the change event)
 	   // It seems IE 8 removed this behavior from IE7 so it only works with IE 7 ??
@@ -2658,7 +2694,9 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	      Event.addListener(this.el, "click", function() { this.fireUpdatedEvt(); }, this, true);	
 	   }*/
 	   if( YAHOO.env.ua.ie ) {
-	      Event.addListener(this.el, "click", function() { YAHOO.lang.later(10,this,this.fireUpdatedEvt); }, this, true);	
+	      Event.addListener(this.el, "click", function(e) { YAHOO.lang.later(10,this,function(){this.onChange(e);}); }, this, true);	
+	   } else {
+	      Event.addListener(this.el, "change", this.onChange, this, true);
 	   }
 	   
 	   Event.addFocusListener(this.el, this.onFocus, this, true);
@@ -2672,10 +2710,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	onChange: function(e) {
 	   this.hiddenEl.value = this.el.checked ? this.checkedValue : this.uncheckedValue;
 	
-      // In IE the fireUpdatedEvent is sent by the click ! We need to send it only once ! 
-      if( !YAHOO.env.ua.ie ) {
-	      inputEx.CheckBox.superclass.onChange.call(this,e);
-      }
+	   inputEx.CheckBox.superclass.onChange.call(this,e);
 	},
 	
 	/**
@@ -2693,7 +2728,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	 */
 	setValue: function(value, sendUpdatedEvt) {
 	   if (value===this.checkedValue) {
-			this.hiddenEl.value = value;
+			this.hiddenEl.value = this.checkedValue;
 			
 			// check checkbox (all browsers)
 			this.el.checked = true;
@@ -2710,7 +2745,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	      /*if (value!==this.uncheckedValue && lang.isObject(console) && lang.isFunction(console.log) ) {
 	         console.log("inputEx.CheckBox: value is *"+value+"*, schould be in ["+this.checkedValue+","+this.uncheckedValue+"]");
          }*/
-			this.hiddenEl.value = value;
+			this.hiddenEl.value = this.uncheckedValue;
 			
 			// uncheck checkbox (all browsers)
 		   this.el.checked = false;
@@ -3342,9 +3377,10 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    setOptions: function(options) {
       inputEx.DatePickerField.superclass.setOptions.call(this, options);
       
-      // Overwrite options
+      // Overwrite default options
       this.options.className = options.className ? options.className : 'inputEx-Field inputEx-DateField inputEx-PickerField inputEx-DatePickerField';
-      this.options.readonly = true;
+
+      this.options.readonly = YAHOO.lang.isUndefined(options.readonly) ? true : options.readonly;
       
       // Added options
       this.options.calendar = options.calendar || inputEx.messages.defautCalendarOpts;
@@ -3372,16 +3408,18 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
       // HACK: Set position absolute to the overlay
       Dom.setStyle(this.oOverlay.body.parentNode, "position", "absolute");
       
-      
-      Event.addListener(this.el,'click',function(){
-         // calendar may not have been rendered yet
-         this.renderCalendar();
+      // Subscribe the click handler on the field only if readonly
+		if(this.options.readonly) {
+	      Event.addListener(this.el,'click',function(){
+	         // calendar may not have been rendered yet
+	         this.renderCalendar();
          
-         if (!this.oOverlay.justHidden) {
-            this.button._showMenu();
-         }
-      },this,true);
-      
+	         if (!this.oOverlay.justHidden) {
+	            this.button._showMenu();
+	         }
+	      },this,true);
+      }
+
       this.oOverlay.hideEvent.subscribe(function() {
          this.oOverlay.justHidden = true;
          YAHOO.lang.later(250,this,function(){this.oOverlay.justHidden=false;});
@@ -3484,8 +3522,11 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
       this.calendarRendered = true;
    },
    
-   // Select the right date and display the right page on calendar, when the field has a value
-   beforeShowOverlay: function() {
+   /**
+  	 * Select the right date and display the right page on calendar, when the field has a value
+ 	 */
+   beforeShowOverlay: function(e) {
+	
       var date = this.getValue(true);
       if (!!this.calendar) {
          
@@ -3500,7 +3541,23 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
 
          this.calendar.render(); // refresh calendar
       }
-   }
+   },
+
+	/**
+	 * Disable the field
+	 */
+	disable: function() {
+		inputEx.DatePickerField.superclass.disable.call(this);
+		this.button.set('disabled', true);
+	},
+	
+	/**
+	 * Enable the field
+	 */
+	enable: function() {
+		inputEx.DatePickerField.superclass.enable.call(this);
+		this.button.set('disabled', false);
+	}
    
 });
 
@@ -3651,7 +3708,7 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
       this.editorContainer = inputEx.cn('div', {className: CSS_PREFIX+'editor'}, {display: 'none'});
       
       // Render the editor field
-      this.editorField = inputEx(this.options.editorField);
+      this.editorField = inputEx(this.options.editorField,this);
       var editorFieldEl = this.editorField.getEl();
       
       this.editorContainer.appendChild( editorFieldEl );
@@ -4168,7 +4225,7 @@ lang.extend(inputEx.ListField,inputEx.Field, {
          opts.value = value;
       }
 	   
-	   var el = inputEx(opts);
+	   var el = inputEx(opts,this);
 	   
 	   var subFieldEl = el.getEl();
 	   Dom.setStyle(subFieldEl, 'margin-left', '4px');
@@ -4939,6 +4996,24 @@ lang.extend(inputEx.RadioField, inputEx.Field, {
 	   }
 	   
 	   return true;
+	},
+	
+	/**
+    * Disable the field
+    */
+	disable: function() {
+		for(var i = 0 ; i < this.optionEls.length; i++) {
+			this.optionEls[i].disabled = true;
+		}
+	},
+	
+	/**
+    * Enable the field
+    */
+	enable: function() {
+		for(var i = 0 ; i < this.optionEls.length; i++) {
+			this.optionEls[i].disabled = false;
+		}
 	}
 	
 });   
@@ -6029,15 +6104,10 @@ YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,{
     * Add an item to the list when the select changed
     */
    onAddNewItem: function() {
-      if(this.el.selectedIndex != 0) {
+      if(this.el.selectedIndex !== 0) {
          
          // Add the value to the ddlist
-         if(this.options.selectOptions) {
-            this.ddlist.addItem({value: this.options.selectValues[this.el.selectedIndex], label: this.options.selectOptions[this.el.selectedIndex]});
-         }
-         else {
-            this.ddlist.addItem(this.options.selectValues[this.el.selectedIndex]);
-         }
+         this.ddlist.addItem({value: this.options.selectValues[this.el.selectedIndex], label: this.options.selectOptions[this.el.selectedIndex]});
          
          // mark option disabled
          this.el.childNodes[this.el.selectedIndex].disabled = true;
@@ -6056,17 +6126,28 @@ YAHOO.lang.extend(inputEx.MultiSelectField, inputEx.SelectField,{
     */
    setValue: function(value, sendUpdatedEvt) {
       
-      this.ddlist.setValue(value);
+      var i, length, index, label, ddlistValue = [];
+      
+      if (!YAHOO.lang.isArray(value)) { return; }
       
       // Re-enable all options
-      for(var i = 0 ; i < this.el.childNodes.length ; i++) {
+      for(i = 0, length=this.el.childNodes.length ; i < length ; i++) {
          this.el.childNodes[i].disabled = false;
       }
-      // disable selected options
-      for(i = 0 ; i < value.length ; i++) {
-         var index = inputEx.indexOf(value[i], this.options.selectValues);
+      
+      // disable selected options and fill ddlist value
+      for(i = 0, length=value.length ; i < length ; i++) {
+         
+         index = inputEx.indexOf(value[i], this.options.selectValues);
+         label = this.options.selectOptions[index];
+         ddlistValue.push({value: value[i], label: label});
+         
          this.el.childNodes[index].disabled = true;
       }
+      
+      // set ddlist value
+      this.ddlist.setValue(ddlistValue);
+      
 	   
 	   if(sendUpdatedEvt !== false) {
 	      // fire update event
