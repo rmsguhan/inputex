@@ -159,7 +159,7 @@ lang.extend(inputEx.TypeField, inputEx.Field, {
          fieldOptions.type = this.getValue().type;
          fieldOptions.parentEl = this.fieldValueWrapper;
          
-         this.fieldValue = inputEx(fieldOptions);
+         this.fieldValue = inputEx(fieldOptions,this);
       
          // Refire the event when the fieldValue is updated
          this.fieldValue.updatedEvt.subscribe(this.fireUpdatedEvt, this, true);

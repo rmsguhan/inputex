@@ -18,9 +18,10 @@
  * @class inputEx
  * @static
  * @param {Object} fieldOptions
+ * @param {inputEx.Group|inputEx.Form|inputEx.ListField|inputEx.CombineField} (optional) parentField The parent field instance
  * @return {inputEx.Field} Created field instance
  */
-inputEx = function(fieldOptions) {
+inputEx = function(fieldOptions, parentField) {
    var fieldClass = null,
        inputInstance;
    
@@ -42,6 +43,11 @@ inputEx = function(fieldOptions) {
    } else {
       inputInstance = new fieldClass(fieldOptions);
    }
+
+	// If the parentField argument is provided
+	if(parentField) {
+		inputInstance.setParentField(parentField);
+	}
 
    // Add the flatten attribute if present in the params
    /*if(fieldOptions.flatten) {

@@ -126,7 +126,7 @@ lang.extend(inputEx.Group, inputEx.Field, {
    renderField: function(fieldOptions) {
 
       // Instanciate the field
-      var fieldInstance = inputEx(fieldOptions);      
+      var fieldInstance = inputEx(fieldOptions,this);
       
 	   this.inputs.push(fieldInstance);
       

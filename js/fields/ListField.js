@@ -233,7 +233,7 @@ lang.extend(inputEx.ListField,inputEx.Field, {
          opts.value = value;
       }
 	   
-	   var el = inputEx(opts);
+	   var el = inputEx(opts,this);
 	   
 	   var subFieldEl = el.getEl();
 	   Dom.setStyle(subFieldEl, 'margin-left', '4px');

@@ -358,7 +358,24 @@ inputEx.Field.prototype = {
     */
    isEmpty: function() {
       return this.getValue() === '';
-   }
+   },
+
+	/**
+	 * Set the parentField.
+	 * Generally use by composable fields (ie. Group,Form,ListField,CombineField,...}
+	 * @param {inputEx.Group|inputEx.Form|inputEx.ListField|inputEx.CombineField} parentField The parent field instance
+	 */
+	setParentField: function(parentField) {
+		this.parentField = parentField;
+	},
+	
+	/**
+	 * Return the parent field instance
+	 * @return {inputEx.Group|inputEx.Form|inputEx.ListField|inputEx.CombineField}
+	 */
+	getParentField: function() {
+		return this.parentField;
+	}
    
 };
 

@@ -47,7 +47,7 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
       this.editorContainer = inputEx.cn('div', {className: CSS_PREFIX+'editor'}, {display: 'none'});
       
       // Render the editor field
-      this.editorField = inputEx(this.options.editorField);
+      this.editorField = inputEx(this.options.editorField,this);
       var editorFieldEl = this.editorField.getEl();
       
       this.editorContainer.appendChild( editorFieldEl );
