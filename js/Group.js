@@ -89,7 +89,7 @@ lang.extend(inputEx.Group, inputEx.Field, {
       }
    
       if(!lang.isUndefined(this.options.legend) && this.options.legend !== ''){
-         this.legend.appendChild( document.createTextNode(" "+this.options.legend) );
+         this.legend.appendChild( inputEx.cn("span", null, null, " "+this.options.legend) );
       }
    
       if( this.options.collapsible || (!lang.isUndefined(this.options.legend) && this.options.legend !== '') ) {
