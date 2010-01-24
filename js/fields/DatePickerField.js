@@ -24,9 +24,10 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
    setOptions: function(options) {
       inputEx.DatePickerField.superclass.setOptions.call(this, options);
       
-      // Overwrite options
+      // Overwrite default options
       this.options.className = options.className ? options.className : 'inputEx-Field inputEx-DateField inputEx-PickerField inputEx-DatePickerField';
-      this.options.readonly = true;
+
+      this.options.readonly = YAHOO.lang.isUndefined(options.readonly) ? true : options.readonly;
       
       // Added options
       this.options.calendar = options.calendar || inputEx.messages.defautCalendarOpts;
@@ -54,16 +55,18 @@ lang.extend(inputEx.DatePickerField, inputEx.DateField, {
       // HACK: Set position absolute to the overlay
       Dom.setStyle(this.oOverlay.body.parentNode, "position", "absolute");
       
-      
-      Event.addListener(this.el,'click',function(){
-         // calendar may not have been rendered yet
-         this.renderCalendar();
+      // Subscribe the click handler on the field only if readonly
+		if(this.options.readonly) {
+	      Event.addListener(this.el,'click',function(){
+	         // calendar may not have been rendered yet
+	         this.renderCalendar();
          
-         if (!this.oOverlay.justHidden) {
-            this.button._showMenu();
-         }
-      },this,true);
-      
+	         if (!this.oOverlay.justHidden) {
+	            this.button._showMenu();
+	         }
+	      },this,true);
+      }
+
       this.oOverlay.hideEvent.subscribe(function() {
          this.oOverlay.justHidden = true;
          YAHOO.lang.later(250,this,function(){this.oOverlay.justHidden=false;});
