@@ -5,12 +5,18 @@
  * @extend inputEx.KeyValueField
  */
 inputEx.KeyOpValueField = function(searchFormDef) {
-	
+
    this.nameIndex = {};
    var fieldNames = [], fieldLabels = [];
    for(var i = 0 ; i < searchFormDef.fields.length ; i++) {
       var field =  searchFormDef.fields[i];
-      this.nameIndex[field.name] = field;
+		var fieldCopy = {};
+		for(var k in field) {
+			if(field.hasOwnProperty(k) && k != "label") {
+				fieldCopy[k] = field[k];
+			}
+		}
+      this.nameIndex[field.name] = fieldCopy;
       fieldNames.push(field.name);
 		fieldLabels.push(field.label || field.name);
    }
@@ -19,12 +25,11 @@ inputEx.KeyOpValueField = function(searchFormDef) {
       fields: [
          {type: 'select', selectValues: fieldNames, selectOptions: fieldLabels },
 			{type: 'select', selectValues: ["=", ">", "<", ">=", "<=", "!=", "LIKE", "NOT LIKE", "IS NULL", "IS NOT NULL"] },
-         searchFormDef.fields[0]
+			this.nameIndex[searchFormDef.fields[0].name]
       ],
 		parentEl: searchFormDef.parentEl
    };
-
-
+   
    inputEx.KeyValueField.superclass.constructor.call(this, opts);
 };
 YAHOO.lang.extend( inputEx.KeyOpValueField, inputEx.KeyValueField, {});
