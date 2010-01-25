@@ -70,6 +70,60 @@
 </div>
 
 
+
+<!-- Example 2 -->
+<div class='exampleDiv'>
+	<p class="title">XML serialization</p>
+	<p>There is an issue because ObjTree needs only 1 root element :</p>
+	<div class='demoContainer' id='container2'></div>
+	<div class='codeContainer'>
+		<textarea name="code" class="JScript">
+			var field = new inputEx.SerializeField({
+				parentEl: 'container2', 
+				label: 'Your name',
+				description: 'Please enter your name',
+				
+				serializer: 'xml',
+				
+				subfield: {
+							type: 'group',
+							fields: [
+								{
+									type: 'group',
+									name: 'person',
+									fields: [
+										{ name: 'firstname', typeInvite: 'firstname' },
+										{ name: 'lastname', typeInvite: 'lastname' }
+									]
+								}
+							]
+				}
+				
+			});
+
+		   var el = YAHOO.util.Dom.get('container2');
+			
+			var button2 = inputEx.cn('button', null, null, "SetValue");
+			el.appendChild(button2);
+			YAHOO.util.Event.addListener(button2, "click" ,function() {
+				var xml = String.fromCharCode(60)+'?xml version="1.0" encoding="UTF-8" ?'+String.fromCharCode(62)+String.fromCharCode(60)+'person'+String.fromCharCode(62)+String.fromCharCode(60)+'firstname'+String.fromCharCode(62)+'Jimi'+String.fromCharCode(60)+'/firstname'+String.fromCharCode(62)+String.fromCharCode(60)+'lastname'+String.fromCharCode(62)+'Hendrix'+String.fromCharCode(60)+'/lastname'+String.fromCharCode(62)+String.fromCharCode(60)+'/person'+String.fromCharCode(62);
+				field.setValue(xml);
+			});
+
+			var logDiv = inputEx.cn('div', null, null, "Log :");
+			el.appendChild(logDiv);
+			field.updatedEvt.subscribe(function(e,params) {
+				var value = params[0].replace( new RegExp(String.fromCharCode(60),"g") , '&lt;' ).replace( new RegExp(String.fromCharCode(62),"g") , '&gt;' );
+				logDiv.innerHTML += "Updated at "+(new Date())+" with value "+value;
+				logDiv.appendChild(inputEx.cn('br'));
+			});
+		</textarea>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="../lib/XML/ObjTree.js"></script>
+
 <!-- YUI Library -->
 <script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>
 <script type="text/javascript" src="../lib/yui/container/container-min.js"></script>
