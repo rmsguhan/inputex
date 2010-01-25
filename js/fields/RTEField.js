@@ -10,7 +10,7 @@
  * @param {Object} options Added options:
  * <ul>
  *   <li>opts: the options to be added when calling the RTE constructor (see YUI RTE)</li>
- *   <li>type: if == 'simple', the field will use the SimpleEditor. Any other value will use the Editor class.</li>
+ *   <li>editorType: if == 'simple', the field will use the SimpleEditor. Any other value will use the Editor class.</li>
  * </ul>
  */
 inputEx.RTEField = function(options) {
@@ -25,7 +25,7 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
   	   inputEx.RTEField.superclass.setOptions.call(this, options);
   	   
   	   this.options.opts = options.opts || {};
-  	   this.options.type = options.type;
+  	   this.options.editorType = options.editorType;
    },
    
 	/**
@@ -57,8 +57,8 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	            _def[i] = o[i];
 	        }
 	   }
-	   //Check if options.type is present and set to simple, if it is use SimpleEditor instead of Editor
-	   var editorType = ((this.options.type && (this.options.type == 'simple')) ? YAHOO.widget.SimpleEditor : YAHOO.widget.Editor);
+	   //Check if options.editorType is present and set to simple, if it is use SimpleEditor instead of Editor
+	   var editorType = ((this.options.editorType && (this.options.editorType == 'simple')) ? YAHOO.widget.SimpleEditor : YAHOO.widget.Editor);
 	
 	   //If this fails then the code is not loaded on the page
 	   if (editorType) {
