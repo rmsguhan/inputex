@@ -212,7 +212,7 @@ div#container3 { width:400px }
                   type: 'submit',
                   value: 'Set form value',
                   
-                  onClick: function(e) {
+                  onClick: function(e) { // e === clickEvent (inputEx.widget.Button custom event)
                      
                      // valueObject : object to be passed to setValue function
                      //               its structure is { field_name : field_value, ... }
@@ -230,7 +230,7 @@ div#container3 { width:400px }
                      
                      form6.setValue(valueObject);
                      
-                     YAHOO.util.Event.preventDefault(e); // stop button click, to prevent form submitting
+                     return false; // stop clickEvent, to prevent form submitting
                      
                   }
                },
@@ -238,13 +238,14 @@ div#container3 { width:400px }
                   type: 'submit',
                   value: 'Get form value',
                   
-                  onClick:function(e) {
+                  onClick:function(e) { // e === clickEvent (inputEx.widget.Button custom event)
                      
                      var valueAsJsObject = form6.getValue();
                      var valueAsJsonString = YAHOO.lang.JSON.stringify(valueAsJsObject);
                      
                      alert(valueAsJsonString);
-                     YAHOO.util.Event.preventDefault(e); // stop button click, to prevent form submitting
+                     
+                     return false; // stop clickEvent, to prevent form submitting
                   }
                }
             ],
@@ -270,7 +271,7 @@ div#container3 { width:400px }
             buttons: [
                {type: 'submit', value: 'Submit'},
                {type: 'submit-link', value: 'Submit'},
-               {type: 'link', value: 'Reset form', onClick:function(e) {form7.clear();}}
+               {type: 'link', value: 'Reset form', onClick:function() {form7.clear();}}
             ],
             parentEl: 'container7'
          });
@@ -307,6 +308,7 @@ div#container3 { width:400px }
 <script src="../js/fields/UrlField.js"  type='text/javascript'></script>
 <script src="../js/fields/SelectField.js"  type='text/javascript'></script>
 <script src="../js/Group.js"  type='text/javascript'></script>
+<script src="../js/widgets/Button.js"  type='text/javascript'></script>
 <script src="../js/Form.js"  type='text/javascript'></script>
 
 <!-- inputEx examples -->

@@ -93,14 +93,20 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
  	  	   varName: 'inputEx.widget.dtInPlaceEdit',
  			requires: ['inputex-datatable']
  		},
-		{
-
- 			name: 'inputex-jsontreeinspector',
- 			type: 'js',
- 	  	   fullpath: pathToInputEx+'js/widgets/json-tree-inspector.js',
- 	  	   varName: 'inputEx.widget.JsonTreeInspector',
- 			requires: ['inputex']
- 		},
+      {
+         name: 'inputex-jsontreeinspector',
+         type: 'js',
+         fullpath: pathToInputEx+'js/widgets/json-tree-inspector.js',
+         varName: 'inputEx.widget.JsonTreeInspector',
+         requires: ['inputex']
+      },
+      {
+         name: 'inputex-button',
+         type: 'js',
+         fullpath: pathToInputEx+'js/widgets/Button.js',
+         varName: 'inputEx.widget.Button',
+         requires: ['inputex']
+      },
 		// MetaFields
 		{
 			name: 'inputex-group',
@@ -114,7 +120,7 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 			type: 'js',
 	  	   fullpath: pathToInputEx+'js/Form.js',
 	  	   varName: 'inputEx.Form',
-			requires: ['inputex-group']
+			requires: ['inputex-group','inputex-button']
 		},
 		{
 			name: 'inputex-listfield',

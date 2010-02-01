@@ -1667,7 +1667,7 @@ inputEx.registerType("group", inputEx.Group, [
 
 
 })();(function () {
-   var util = YAHOO.util, lang = YAHOO.lang, Event = YAHOO.util.Event, Dom = util.Dom;
+   var util = YAHOO.util, lang = YAHOO.lang, Event = util.Event, Dom = util.Dom;
 
 /**
  * Create a group of fields within a FORM tag and adds buttons
@@ -1766,66 +1766,38 @@ lang.extend(inputEx.Form, inputEx.Group, {
     */
    renderButtons: function() {
        
-      var button, buttonEl, innerSpan, i, buttonsNb = this.options.buttons.length;
-	   
+      var buttonConf, button, i, buttonsNb = this.options.buttons.length;
+      
       this.buttonDiv = inputEx.cn('div', {className: 'inputEx-Form-buttonBar'});
 
-	   for(i = 0 ; i < buttonsNb ; i++ ) {
-	      button = this.options.buttons[i];
-	
-			// Throw Error if button is undefined
-			if(!button) {
-				throw new Error("inputEx.Form: One of the provided button is undefined ! (check trailing comma)");
-			}
-			
-			// custom submit button, rendered as "link"
-			if (button.type === "link" || button.type === "submit-link") {
-			   
-			   buttonEl = inputEx.cn('a', {name: button.name, className:"inputEx-Form-Button", href:"#"});
-			   Dom.addClass(buttonEl,button.type === "link" ? "inputEx-Form-Button-Link" : "inputEx-Form-Button-Submit-Link");
-   	      
-			   innerSpan = inputEx.cn('span', null, null, button.value);
-			   
-			   buttonEl.appendChild(innerSpan);
-   	      
-			// default type is "submit" input
-			} else {
-			   
-			   buttonEl = inputEx.cn('input', {type: "submit", value: button.value, name: button.name, className:"inputEx-Form-Button"});
-   	      Dom.addClass(buttonEl,"inputEx-Form-Button-Submit");
-			}
-			
-			// add id and/or classname
-			if (!lang.isUndefined(button.id)) { inputEx.sn(buttonEl,{id:button.id}); }
-			if (!lang.isUndefined(button.className)) { Dom.addClass(buttonEl,button.className); }
-			
-			// add onClick listener
-			if( button.onClick ) {
-			   Event.addListener(buttonEl,"click",button.onClick,buttonEl,true);
-			}
-			
-			// "submit-link" should submit the form !
-			// (after "onClick" to mimic 'submit' type behavior)
-			if (button.type === "submit-link") {
-			   
-			   Event.addListener(buttonEl,"click",this.options.onSubmit || this.onSubmit,this,true);
-			
-			// prevent default behavior on "link" : this is NOT a regular link !
-			} else if (button.type === "link") {
-			   
-			   Event.addListener(buttonEl,"click",function(e) {Event.preventDefault(e);});
-			   
-			}
-			
-			// save and add to Dom
-	      this.buttons.push(buttonEl);
-	      this.buttonDiv.appendChild(buttonEl);
-	   }
-	   
-	   // useful for link buttons re-styling (float required on <a>'s ... )
+      for(i = 0 ; i < buttonsNb ; i++ ) {
+         buttonConf = this.options.buttons[i];
+   
+         // Throw Error if button is undefined
+         if(!buttonConf) {
+            throw new Error("inputEx.Form: One of the provided button is undefined ! (check trailing comma)");
+         }
+         
+         button = new inputEx.widget.Button(buttonConf);
+         button.render(this.buttonDiv);
+         
+         this.buttons.push(button);
+         
+         
+         // "submit-link" should submit the form !
+         // (after "onClick" to mimic 'submit' type behavior)
+         if (buttonConf.type === "submit-link") {
+            
+            button.clickEvent.subscribe(this.options.onSubmit || this.onSubmit,this,true);
+            
+         }
+         
+      }
+      
+      // useful for link buttons re-styling (float required on <a>'s ... )
       this.buttonDiv.appendChild(inputEx.cn('div',null,{clear:'both'}));
       
-	   this.form.appendChild(this.buttonDiv);
+      this.form.appendChild(this.buttonDiv);
    },
 
 
@@ -2004,8 +1976,9 @@ lang.extend(inputEx.Form, inputEx.Group, {
     */
    enable: function() {
       inputEx.Form.superclass.enable.call(this);
+      
       for (var i = 0 ; i < this.buttons.length ; i++) {
- 	      this.buttons[i].disabled = false;
+ 	      this.buttons[i].enable();
       }
    },
 
@@ -2014,8 +1987,9 @@ lang.extend(inputEx.Form, inputEx.Group, {
     */
    disable: function() {
       inputEx.Form.superclass.disable.call(this);
+      
       for (var i = 0 ; i < this.buttons.length ; i++) {
- 	      this.buttons[i].disabled = true;
+ 	      this.buttons[i].disable();
       }
    }
 
@@ -5036,7 +5010,7 @@ inputEx.registerType("radio", inputEx.RadioField, [
  * @param {Object} options Added options:
  * <ul>
  *   <li>opts: the options to be added when calling the RTE constructor (see YUI RTE)</li>
- *   <li>type: if == 'simple', the field will use the SimpleEditor. Any other value will use the Editor class.</li>
+ *   <li>editorType: if == 'simple', the field will use the SimpleEditor. Any other value will use the Editor class.</li>
  * </ul>
  */
 inputEx.RTEField = function(options) {
@@ -5051,7 +5025,7 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
   	   inputEx.RTEField.superclass.setOptions.call(this, options);
   	   
   	   this.options.opts = options.opts || {};
-  	   this.options.type = options.type;
+  	   this.options.editorType = options.editorType;
    },
    
 	/**
@@ -5083,8 +5057,8 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	            _def[i] = o[i];
 	        }
 	   }
-	   //Check if options.type is present and set to simple, if it is use SimpleEditor instead of Editor
-	   var editorType = ((this.options.type && (this.options.type == 'simple')) ? YAHOO.widget.SimpleEditor : YAHOO.widget.Editor);
+	   //Check if options.editorType is present and set to simple, if it is use SimpleEditor instead of Editor
+	   var editorType = ((this.options.editorType && (this.options.editorType == 'simple')) ? YAHOO.widget.SimpleEditor : YAHOO.widget.Editor);
 	
 	   //If this fails then the code is not loaded on the page
 	   if (editorType) {

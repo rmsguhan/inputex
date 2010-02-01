@@ -15,10 +15,10 @@ version 0.4.1 :
 
 - API changes:
    * remove "inputParams" syntax when defining fields inside a group or form definition
+	* form buttons extracted in a widget class : inputEx.widget.Button (3 types : 'submit', 'submit-link', 'link')
 
 - Field enhancements:
 	* id and className on form buttons
-	* form buttons rendered as links (type:"link" instead of type:"submit")
 	
 - Bug fixes
 	* fixing setValue bug on checkboxes
