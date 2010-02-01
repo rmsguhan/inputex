@@ -11,7 +11,7 @@
  * <ul>
  *	   <li>menuItems : contains descriptions of menu items</li>
  *	   <li>menuTrigger : event to trigger menu show</li>
- *    <li>menuInvite : text to display when no selection made</li>
+ *    <li>typeInvite : text to display when no selection made</li>
  *    <li>menuPosition : array of corners positions (syntax : ['menu popup corner','invite div corner'])</li>
  * </ul>
  */
@@ -31,7 +31,7 @@ lang.extend(inputEx.MenuField, inputEx.Field, {
 	   this.options.className = options.className ? options.className : 'inputEx-Field inputEx-MenuField';
 	   
 	   // New options
-	   this.options.menuInvite = options.menuInvite || inputEx.messages.menuInvite;
+	   this.options.typeInvite = options.typeInvite || inputEx.messages.typeInvite;
 	   this.options.menuTrigger = options.menuTrigger || "click";
 	   this.options.menuPosition = options.menuPosition || ["tl","tr"];
 	   this.options.menuItems = options.menuItems;
@@ -44,7 +44,7 @@ lang.extend(inputEx.MenuField, inputEx.Field, {
    renderComponent: function() {
       
       // Div to display the invite, then the selected text
-      this.el = inputEx.cn('div', {className:'inputEx-Result'}, null, this.options.menuInvite);
+      this.el = inputEx.cn('div', {className:'inputEx-Result'}, null, this.options.typeInvite);
       YAHOO.util.Dom.addClass(this.el, (this.options.menuPosition[1] == "tr") ? "inputEx-RightArrow" : "inputEx-DownArrow");
       this.fieldContainer.appendChild(this.el);
       
@@ -79,7 +79,13 @@ lang.extend(inputEx.MenuField, inputEx.Field, {
 	      var item;
 	      for (var i=0, length = conf.length; i < length; i++) {
 	         item = conf[i];
-            
+             if (YAHOO.lang.isUndefined(item.text) && !YAHOO.lang.isUndefined(item.value)) {
+	            item.text = item.value;
+	         }
+	         if (YAHOO.lang.isUndefined(item.value) && !YAHOO.lang.isUndefined(item.text)) {
+	            item.value = item.text;
+	         }
+	        
             // item with submenu
             //   -> explore deeper
 	         if (!YAHOO.lang.isUndefined(item.submenu)) {
@@ -146,7 +152,7 @@ lang.extend(inputEx.MenuField, inputEx.Field, {
    
    setValue: function(value, sendUpdatedEvt) {
       // update text
-      this.el.innerHTML = this._textFromValue[value] || this.options.menuInvite;
+      this.el.innerHTML = this._textFromValue[value] || this.options.typeInvite;
       
       // set value
       this.hiddenEl.value = (!!this._textFromValue[value]) ? value : '';
@@ -155,7 +161,7 @@ lang.extend(inputEx.MenuField, inputEx.Field, {
    
 });
 
-inputEx.messages.menuInvite = "Click here to select";
+inputEx.messages.typeInvite = "Click here to select";
 
 // Register this class as "menu" type
 inputEx.registerType("menu", inputEx.MenuField);

@@ -34,6 +34,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
       this.options.datasource = options.datasource;
       this.options.autoComp = options.autoComp;
       this.options.returnValue = options.returnValue;
+      this.options.generateRequest = options.generateRequest;
    },
    
    /**
@@ -101,7 +102,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
       
       // Instantiate AutoComplete
       this.oAutoComp = new YAHOO.widget.AutoComplete(this.el.id, this.listEl.id, this.options.datasource, this.options.autoComp);
-
+      this.oAutoComp.generateRequest = this.options.generateRequest;
       // subscribe to the itemSelect event
       this.oAutoComp.itemSelectEvent.subscribe(this.itemSelectHandler, this, true);
       
