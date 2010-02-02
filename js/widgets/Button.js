@@ -13,9 +13,7 @@
 inputEx.widget.Button = function(options) {
    
    this.setOptions(options || {});
-   
-   this.clickEvent = new util.CustomEvent("click");
-   
+      
    if (!!this.options.parentEl) {
       this.render(this.options.parentEl);
    }
@@ -38,6 +36,8 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
       
       // value is the text displayed inside the button (<input type="submit" value="Submit" /> convention...)
       this.options.value = options.value;
+      
+      this.options.disabled = !!options.disabled;
       
       if (options.onClick) {
          this.options.onClick = options.onClick;
@@ -68,6 +68,10 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
       
       parentEl.appendChild(this.el);
       
+      if (this.options.disabled) {
+         this.disable();
+      }
+      
       this.initEvents();
       
       return this.el;
@@ -76,34 +80,42 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
    
    initEvents: function() {
       
+      this.clickEvent = new util.CustomEvent("click");
+      this.submitEvent = new util.CustomEvent("submit");
+      
+      
       Event.addListener(this.el,"click",function(e) {
          
-         var stopEvent;
+         var fireSubmitEvent;
          
-         // link buttons should NOT behave as regular links !
-         if (this.options.type === "link") {
-            Event.preventDefault(e);
-         }
-         
-         // enabled : fire clickEvent
-         if (!this.disabled) {
-            stopEvent = !this.clickEvent.fire();
-         } else {
-            stopEvent = true;
-         }
-         
-         // One of this cases :
-         //   1. field is disabled
-         //   2. at least one clickEvent handler returned false
+         // stop click event, so :
          //
-         // Stop "click" dom-event + also prevents form "submit" event
-         if (stopEvent) {
-            Event.stopEvent(e);
+         //  1. buttons of 'link' or 'submit-link' type don't link to any url
+         //  2. buttons of 'submit' type (<input type="submit" />) don't fire a 'submit' event
+         Event.stopEvent(e);
+         
+         // button disabled : don't fire clickEvent, and stop here
+         if (this.disabled) {
+            fireSubmitEvent = false;
+            
+         // button enabled : fire clickEvent
+         } else {
+            // submit event will be fired if not prevented by clickEvent
+            fireSubmitEvent = this.clickEvent.fire();
+         }
+         
+         // link buttons should NOT fire a submit event
+         if (this.options.type === "link") {
+            fireSubmitEvent = false;
+         }
+         
+         if (fireSubmitEvent) {
+            this.submitEvent.fire();
          }
          
       },this,true);
       
-      
+      // Subscribe onClick handler
       if (this.options.onClick) {
          this.clickEvent.subscribe(this.options.onClick,this,true);
       }

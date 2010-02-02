@@ -18,7 +18,9 @@ version 0.4.1 :
 	* form buttons extracted in a widget class : inputEx.widget.Button (3 types : 'submit', 'submit-link', 'link')
 
 - Field enhancements:
-	* id and className on form buttons
+	* id, className, and disabled options on buttons
+	* event facade for form submit : form.submitEvent
+	* event facades for buttons : button.clickEvent, button.submitEvent
 	
 - Bug fixes
 	* fixing setValue bug on checkboxes

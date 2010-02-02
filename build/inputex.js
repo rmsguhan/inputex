@@ -1681,9 +1681,7 @@ inputEx.registerType("group", inputEx.Group, [
 inputEx.widget.Button = function(options) {
    
    this.setOptions(options || {});
-   
-   this.clickEvent = new util.CustomEvent("click");
-   
+      
    if (!!this.options.parentEl) {
       this.render(this.options.parentEl);
    }
@@ -1706,6 +1704,8 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
       
       // value is the text displayed inside the button (<input type="submit" value="Submit" /> convention...)
       this.options.value = options.value;
+      
+      this.options.disabled = !!options.disabled;
       
       if (options.onClick) {
          this.options.onClick = options.onClick;
@@ -1736,6 +1736,10 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
       
       parentEl.appendChild(this.el);
       
+      if (this.options.disabled) {
+         this.disable();
+      }
+      
       this.initEvents();
       
       return this.el;
@@ -1744,34 +1748,42 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
    
    initEvents: function() {
       
+      this.clickEvent = new util.CustomEvent("click");
+      this.submitEvent = new util.CustomEvent("submit");
+      
+      
       Event.addListener(this.el,"click",function(e) {
          
-         var stopEvent;
+         var fireSubmitEvent;
          
-         // link buttons should NOT behave as regular links !
-         if (this.options.type === "link") {
-            Event.preventDefault(e);
-         }
-         
-         // enabled : fire clickEvent
-         if (!this.disabled) {
-            stopEvent = !this.clickEvent.fire();
-         } else {
-            stopEvent = true;
-         }
-         
-         // One of this cases :
-         //   1. field is disabled
-         //   2. at least one clickEvent handler returned false
+         // stop click event, so :
          //
-         // Stop "click" dom-event + also prevents form "submit" event
-         if (stopEvent) {
-            Event.stopEvent(e);
+         //  1. buttons of 'link' or 'submit-link' type don't link to any url
+         //  2. buttons of 'submit' type (<input type="submit" />) don't fire a 'submit' event
+         Event.stopEvent(e);
+         
+         // button disabled : don't fire clickEvent, and stop here
+         if (this.disabled) {
+            fireSubmitEvent = false;
+            
+         // button enabled : fire clickEvent
+         } else {
+            // submit event will be fired if not prevented by clickEvent
+            fireSubmitEvent = this.clickEvent.fire();
+         }
+         
+         // link buttons should NOT fire a submit event
+         if (this.options.type === "link") {
+            fireSubmitEvent = false;
+         }
+         
+         if (fireSubmitEvent) {
+            this.submitEvent.fire();
          }
          
       },this,true);
       
-      
+      // Subscribe onClick handler
       if (this.options.onClick) {
          this.clickEvent.subscribe(this.options.onClick,this,true);
       }
@@ -1922,15 +1934,6 @@ lang.extend(inputEx.Form, inputEx.Group, {
          
          this.buttons.push(button);
          
-         
-         // "submit-link" should submit the form !
-         // (after "onClick" to mimic 'submit' type behavior)
-         if (buttonConf.type === "submit-link") {
-            
-            button.clickEvent.subscribe(this.options.onSubmit || this.onSubmit,this,true);
-            
-         }
-         
       }
       
       // useful for link buttons re-styling (float required on <a>'s ... )
@@ -1944,10 +1947,44 @@ lang.extend(inputEx.Form, inputEx.Group, {
     * Init the events
     */
    initEvents: function() {
+      
+      var i, length;
+      
       inputEx.Form.superclass.initEvents.call(this);
-
-      // Handle the submit event
-      Event.addListener(this.form, 'submit', this.options.onSubmit || this.onSubmit,this,true);
+      
+      
+      // Custom event to normalize form submits
+      this.submitEvent = new util.CustomEvent("submit");
+      
+      
+      // Two ways to trigger the form submitEvent firing
+      //
+      //
+      // 1. catch a 'submit' event on form (say a user pressed <Enter> in a field)
+      //
+         Event.addListener(this.form, 'submit', function(e) {
+         
+            // always stop event
+            Event.stopEvent(e);
+         
+            // replace with custom event
+            this.submitEvent.fire();
+         
+         },this,true);
+      
+      
+      //
+      // 2. click on a 'submit' or 'submit-link' button
+      //
+         for(i=0, length=this.buttons.length; i<length; i++) {
+         
+            this.buttons[i].submitEvent.subscribe(function() { this.submitEvent.fire(); }, this, true);
+         
+         }
+      
+      
+      // When form submitEvent is fired, call onSubmit
+      this.submitEvent.subscribe(this.options.onSubmit || this.onSubmit, this, true);
    },
 
    /**
@@ -1956,9 +1993,6 @@ lang.extend(inputEx.Form, inputEx.Group, {
     * @param {Event} e The original onSubmit event
     */
    onSubmit: function(e) {
-      
-      Event.stopEvent(e); // stop submit event (if button.type == "submit")
-                          //   or click event (if button.type = "submit-link")
 	   
       // do nothing if does not validate
 	   if ( !this.validate() ) {
@@ -1971,6 +2005,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 	   }
 	   
 	   // normal submit finally
+	   // (won't fire a dom "submit" event, so no risk to loop)
 	   this.form.submit();
    },
 

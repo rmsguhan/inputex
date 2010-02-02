@@ -115,15 +115,6 @@ lang.extend(inputEx.Form, inputEx.Group, {
          
          this.buttons.push(button);
          
-         
-         // "submit-link" should submit the form !
-         // (after "onClick" to mimic 'submit' type behavior)
-         if (buttonConf.type === "submit-link") {
-            
-            button.clickEvent.subscribe(this.options.onSubmit || this.onSubmit,this,true);
-            
-         }
-         
       }
       
       // useful for link buttons re-styling (float required on <a>'s ... )
@@ -137,10 +128,44 @@ lang.extend(inputEx.Form, inputEx.Group, {
     * Init the events
     */
    initEvents: function() {
+      
+      var i, length;
+      
       inputEx.Form.superclass.initEvents.call(this);
-
-      // Handle the submit event
-      Event.addListener(this.form, 'submit', this.options.onSubmit || this.onSubmit,this,true);
+      
+      
+      // Custom event to normalize form submits
+      this.submitEvent = new util.CustomEvent("submit");
+      
+      
+      // Two ways to trigger the form submitEvent firing
+      //
+      //
+      // 1. catch a 'submit' event on form (say a user pressed <Enter> in a field)
+      //
+         Event.addListener(this.form, 'submit', function(e) {
+         
+            // always stop event
+            Event.stopEvent(e);
+         
+            // replace with custom event
+            this.submitEvent.fire();
+         
+         },this,true);
+      
+      
+      //
+      // 2. click on a 'submit' or 'submit-link' button
+      //
+         for(i=0, length=this.buttons.length; i<length; i++) {
+         
+            this.buttons[i].submitEvent.subscribe(function() { this.submitEvent.fire(); }, this, true);
+         
+         }
+      
+      
+      // When form submitEvent is fired, call onSubmit
+      this.submitEvent.subscribe(this.options.onSubmit || this.onSubmit, this, true);
    },
 
    /**
@@ -149,9 +174,6 @@ lang.extend(inputEx.Form, inputEx.Group, {
     * @param {Event} e The original onSubmit event
     */
    onSubmit: function(e) {
-      
-      Event.stopEvent(e); // stop submit event (if button.type == "submit")
-                          //   or click event (if button.type = "submit-link")
 	   
       // do nothing if does not validate
 	   if ( !this.validate() ) {
@@ -164,6 +186,7 @@ lang.extend(inputEx.Form, inputEx.Group, {
 	   }
 	   
 	   // normal submit finally
+	   // (won't fire a dom "submit" event, so no risk to loop)
 	   this.form.submit();
    },
 
