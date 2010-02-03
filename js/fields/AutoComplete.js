@@ -35,6 +35,8 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
       this.options.autoComp = options.autoComp;
       this.options.returnValue = options.returnValue;
       this.options.generateRequest = options.generateRequest;
+      this.options.responseSchema = options.responseSchema;
+      this.options.scriptCallbackParam = options.scriptCallbackParam;
    },
    
    /**
@@ -99,10 +101,24 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
       if(!this._nElementsReady) { this._nElementsReady = 0; }
       this._nElementsReady++;
       if(this._nElementsReady != 2) return;
+
+      if(!lang.isUndefined(this.options.responseSchema))
+      {
+          this.options.datasource.responseSchema = this.options.responseSchema;
+      }
+
+      if(!lang.isUndefined(this.options.scriptCallbackParam))
+      {
+          this.options.datasource.scriptCallbackParam = this.options.scriptCallbackParam;
+      }
+
       
       // Instantiate AutoComplete
       this.oAutoComp = new YAHOO.widget.AutoComplete(this.el.id, this.listEl.id, this.options.datasource, this.options.autoComp);
-      this.oAutoComp.generateRequest = this.options.generateRequest;
+      if(!lang.isUndefined(this.options.generateRequest))
+      {
+          this.oAutoComp.generateRequest = this.options.generateRequest;
+      }
       // subscribe to the itemSelect event
       this.oAutoComp.itemSelectEvent.subscribe(this.itemSelectHandler, this, true);
       
