@@ -105,7 +105,6 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
       {
          for (param in this.options.datasourceParameters)
          {
-// alert("this.options.datasource."+param + " = " + this.options.datasourceParameters[param]);
             var t = eval("this.options.datasource."+param);
 			this.options.datasource[param] = this.options.datasourceParameters[param];
          }
