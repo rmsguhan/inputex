@@ -105,8 +105,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
       {
          for (param in this.options.datasourceParameters)
          {
-            var t = eval("this.options.datasource."+param);
-			this.options.datasource[param] = this.options.datasourceParameters[param];
+            this.options.datasource[param] = this.options.datasourceParameters[param];
          }
       }
 
@@ -143,7 +142,6 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
     */
    onChange: function(e) {
       this.setClassFromState();
-
       // Clear the field when no value 
       lang.later(50, this, function() {
          if(this.el.value == "") {
