@@ -9,8 +9,8 @@
  * @extends inputEx.StringField
  * @param {Object} options Added options for Autocompleter
  * <ul>
- *	  <li>datasource: the datasource</li>
- *	  <li>autoComp: autocompleter options</li>
+ *  <li>datasource: the datasource</li>
+ *  <li>autoComp: autocompleter options</li>
  *   <li>returnValue: function to format the returned value (optional)</li>
  * </ul>
  */
@@ -35,8 +35,7 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
       this.options.autoComp = options.autoComp;
       this.options.returnValue = options.returnValue;
       this.options.generateRequest = options.generateRequest;
-      this.options.responseSchema = options.responseSchema;
-      this.options.scriptCallbackParam = options.scriptCallbackParam;
+      this.options.datasourceParameters = options.datasourceParameters;
    },
    
    /**
@@ -46,11 +45,11 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
     *   <li>listener to autocompleter textboxBlurEvent added in buildAutocomplete method</li>
     * </ul>
     */
-   initEvents: function() {	
-	   inputEx.AutoComplete.superclass.initEvents.call(this);
-	   
-	   // remove standard blur listener
-	   Event.removeBlurListener(this.el, this.onBlur);
+   initEvents: function() {
+      inputEx.AutoComplete.superclass.initEvents.call(this);
+
+      // remove standard blur listener
+      Event.removeBlurListener(this.el, this.onBlur);
    },
 
    /**
@@ -102,14 +101,14 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
       this._nElementsReady++;
       if(this._nElementsReady != 2) return;
 
-      if(!lang.isUndefined(this.options.responseSchema))
+      if(!lang.isUndefined(this.options.datasourceParameters))
       {
-          this.options.datasource.responseSchema = this.options.responseSchema;
-      }
-
-      if(!lang.isUndefined(this.options.scriptCallbackParam))
-      {
-          this.options.datasource.scriptCallbackParam = this.options.scriptCallbackParam;
+         for (param in this.options.datasourceParameters)
+         {
+// alert("this.options.datasource."+param + " = " + this.options.datasourceParameters[param]);
+            var t = eval("this.options.datasource."+param);
+			this.options.datasource[param] = this.options.datasourceParameters[param];
+         }
       }
 
       
@@ -135,24 +134,24 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
     * @param {} aArgs
     */
    itemSelectHandler: function(sType, aArgs) {
-   	var aData = aArgs[2];
-   	this.setValue( this.options.returnValue ? this.options.returnValue(aData) : aData[0] );
+      var aData = aArgs[2];
+      this.setValue( this.options.returnValue ? this.options.returnValue(aData) : aData[0] );
    },
    
    /**
     * onChange event handler
     * @param {Event} e The original 'change' event
     */
-	onChange: function(e) {
-	   this.setClassFromState();
-	   
-	   // Clear the field when no value 
+   onChange: function(e) {
+      this.setClassFromState();
+
+      // Clear the field when no value 
       lang.later(50, this, function() {
          if(this.el.value == "") {
             this.setValue("");
          }
       });
-	},
+   },
    
    /**
     * Set the value
@@ -160,17 +159,17 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
     * @param {boolean} [sendUpdatedEvt] (optional) Wether this setValue should fire the updatedEvt or not (default is true, pass false to NOT send the event)
     */
    setValue: function(value, sendUpdatedEvt) {
-	
+
       this.hiddenEl.value = value || "";
       
       // "inherited" from inputex.Field :
       //    (can't inherit of inputex.StringField because would set this.el.value...)
       //
-	   // set corresponding style
-   	this.setClassFromState();
-	   
-	   if(sendUpdatedEvt !== false) {
-	      // fire update event
+   // set corresponding style
+   this.setClassFromState();
+
+   if(sendUpdatedEvt !== false) {
+      // fire update event
          this.fireUpdatedEvt();
       }
    },

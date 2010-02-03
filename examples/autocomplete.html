@@ -91,23 +91,6 @@
 
 			// Delicious DataSource using a JSFunction
 			// Delicious.posts is set by the http://feeds.delicious.com/feeds/json/neyric?count=100 script included in the page
-
-			var deliciousDS = new YAHOO.widget.DS_JSFunction( function (sQuery) {
-		    	if (!sQuery || sQuery.length == 0) {
-					return false;
-				}
-				var query = sQuery.toLowerCase();
-			  	var aResults = [];
-				for(var i = 0 ; i != Delicious.posts.length-1 ; i++) {
-					var desc = Delicious.posts[i].d.toLowerCase();
-					if( desc.indexOf(query) != -1) {
-						aResults.push([Delicious.posts[i].d, Delicious.posts[i]]);
-					}
-				}
-				return aResults;
-		 	});
-			deliciousDS.maxCacheEntries = 100;
-
 			
 			var deliciousAC = inputEx({
 				type: "autocomplete",
@@ -115,7 +98,23 @@
 				description: 'Try "javascript" or "rails"',
 				parentEl: 'container2', 
 				name: 'chosen_url',
-				datasource: deliciousDS,
+				datasource: new YAHOO.widget.DS_JSFunction( function (sQuery) {
+			    	if (!sQuery || sQuery.length == 0) {
+						return false;
+					}
+					var query = sQuery.toLowerCase();
+				  	var aResults = [];
+					for(var i = 0 ; i != Delicious.posts.length-1 ; i++) {
+						var desc = Delicious.posts[i].d.toLowerCase();
+						if( desc.indexOf(query) != -1) {
+							aResults.push([Delicious.posts[i].d, Delicious.posts[i]]);
+						}
+					}
+					return aResults;
+			 	}),
+				datasourceParameters: {
+					maxCacheEntries: 100
+				},
 				// Format the hidden value (value returned by the form)
 				returnValue: function(oResultItem) {
 					var post = oResultItem[1];
@@ -159,15 +158,8 @@
 
 			// Example 3: YUI autocompleter
 
-
-			var yuiDS = YAHOO.util.ScriptNodeDataSource("http://search.yahooapis.com/WebSearchService/V1/webSearch");
-		    oDS.responseSchema = {
-		        resultsList: "ResultSet.Result",
-		        fields: ["Title","Url","ClickUrl"]
-		    };
 		    // Setting to default value for demonstration purposes.
 		    // The webservice needs to support execution of a callback function.
-		    oDS.scriptCallbackParam = "callback";
 
 			var yuiAC = inputEx({
 				type: "autocomplete",
@@ -175,11 +167,18 @@
 				description: 'Try "javascript" or "Tree"',
 				parentEl: 'container3',
 				name: 'chosen_url',
-				datasource: yuiDS,
+				datasource: new YAHOO.util.ScriptNodeDataSource("http://search.yahooapis.com/WebSearchService/V1/webSearch"),
 				// Format the hidden value (value returned by the form)
 				returnValue: function(oResultItem) {
 					var post = oResultItem[1];
 					return post.u;
+				},
+				datasourceParameters: {
+					scriptCallbackParam : "callback",
+					responseSchema : {
+						resultsList: "ResultSet.Result",
+						fields: ["Title","Url","ClickUrl"]
+				    }
 				},
 				// Autocompleter options
 				autoComp: {
@@ -227,7 +226,6 @@
 <!-- inputEx examples -->
 <script src="js/dpSyntaxHighlighter.js"></script>
 <script src="inputex-examples.js"></script>
-
 
  </body>
 </html>
