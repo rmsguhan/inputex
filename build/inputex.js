@@ -338,6 +338,20 @@ lang.augmentObject(inputEx, {
 					  replace(/[ç]/g,"c").
 					  replace(/[œ]/g,"oe").
 					  replace(/[æ]/g,"ae");
+	},
+	
+	/**
+	 * Returns a new string without whitespace characters at the beginning and end
+	 * @static
+	 * @param {String} str The string
+	 * @return {String} The trimmed string
+	 */
+	trim: function(str) {
+	   if (typeof String.prototype.trim === "function") {
+	      return str.trim();
+	   }
+	   
+	   return str.replace(/^\s+|\s+$/g, "");
 	}
    
 });
@@ -1171,13 +1185,14 @@ inputEx.Field.prototype = {
       // Unsubscribe all listeners on the updatedEvt
       this.updatedEvt.unsubscribeAll();
       
+      // Purge element (remove listeners on el and childNodes recursively)
+      util.Event.purgeElement(el, true);
+      
       // Remove from DOM
       if(Dom.inDocument(el)) {
          el.parentNode.removeChild(el);
       }
       
-      // recursively purge element
-      util.Event.purgeElement(el, true);
    },
    
    /**
@@ -1319,7 +1334,7 @@ lang.extend(inputEx.Group, inputEx.Field, {
    	   this.divEl.id = this.options.id;
    	}
   	   
-  	   this.renderFields(this.divEl);  	  
+  	   this.renderFields(this.divEl);
   	   
   	   if(this.options.disabled) {
   	      this.disable();
@@ -1650,7 +1665,26 @@ lang.extend(inputEx.Group, inputEx.Field, {
 				}
 			}
 		}
-	}
+	},
+
+   
+   /**
+    * Purge all event listeners and remove the component from the dom
+    */
+   destroy: function() {
+      
+      var i, length, field;
+      
+      // Recursively destroy inputs
+      for (i = 0, length = this.inputs.length ; i < length ; i++) {
+         field = this.inputs[i];
+         field.destroy();
+      }
+      
+      // Destroy group itself
+      inputEx.Group.superclass.destroy.call(this);
+      
+   }
    
    
 });
@@ -1812,6 +1846,26 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
       if (this.options.type === "submit") {
          this.el.disabled = false;
       }
+   },
+   
+   
+   /**
+    * Purge all event listeners and remove the component from the dom
+    */
+   destroy: function() {
+      
+      // Unsubscribe all listeners to click and submit events
+      this.clickEvent.unsubscribeAll();
+      this.submitEvent.unsubscribeAll();
+      
+      // Purge element (remove listeners on el and childNodes recursively)
+      util.Event.purgeElement(this.el, true);
+      
+      // Remove from DOM
+      if(Dom.inDocument(this.el)) {
+         this.el.parentNode.removeChild(this.el);
+      }
+      
    }
    
    
@@ -2163,8 +2217,30 @@ lang.extend(inputEx.Form, inputEx.Group, {
       inputEx.Form.superclass.disable.call(this);
       
       for (var i = 0 ; i < this.buttons.length ; i++) {
- 	      this.buttons[i].disable();
+         this.buttons[i].disable();
       }
+   },
+   
+   
+   /**
+    * Purge all event listeners and remove the component from the dom
+    */
+   destroy: function() {
+      
+      var i, length, button;
+      
+      // Unsubscribe all listeners to submit event
+      this.submitEvent.unsubscribeAll();
+      
+      // Recursively destroy buttons
+      for (i = 0, length = this.buttons.length ; i < length ; i++) {
+         button = this.buttons[i];
+         button.destroy();
+      }
+      
+      // destroy Form itself (+ inputs)
+      inputEx.Form.superclass.destroy.call(this);
+      
    }
 
 });
@@ -5210,7 +5286,7 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	   
 	   var id = "inputEx-RTEField-"+inputEx.RTEfieldsNumber;
 	   var attributes = {id:id};
-      if(this.options.name) attributes.name = this.options.name;
+      if(this.options.name) { attributes.name = this.options.name; }
       
 	   this.el = inputEx.cn('textarea', attributes);
 	   
@@ -5221,7 +5297,8 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	   var _def = {
 	       height: '300px',
 	       width: '580px',
-	       dompath: true
+	       dompath: true,
+	       filterWord:true // get rid of the MS word junk
 	   };
 	   //The options object
 	   var o = this.options.opts;
@@ -5273,11 +5350,38 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	 * @return {String} the html string
 	 */
 	getValue: function() {
+	   
+	   var html;
+	   
 	   try {
-	      this.editor.saveHTML();
-         return this.el.value;
+	      html = this.editor.saveHTML();
+	      html = this.filter_msword_extended(html);
+	      return html;
 	   }
 	   catch(ex) { return null; }
+	},
+	
+	
+	/**
+	 * Filters out msword html comments, classes, and other junk
+	 * (complementary with YAHOO.widget.SimpleEditor.prototype.filter_msword, when filterWord option is true)
+	 * @param {String} value The html string
+	 * @return {String} The html string
+	 */
+	filter_msword_extended: function(html) {
+	   
+	   // if we don't filter ms word junk
+	   if (!this.editor.get('filterWord')) {
+	      return html;
+	   }
+	   
+	   html = html.replace( /<!--[^>][\s\S]*-->/gi, ''); // strip (meta-)comments
+      html = html.replace( /<\/?meta[^>]*>/gi, ''); // strip meta tags
+      html = html.replace( /<\/?link[^>]*>/gi, ''); // strip link tags
+      html = html.replace( / class=('|")?MsoNormal('|")?/gi, ''); // strip MS office class
+      html = inputEx.trim(html); // trim spaces
+      
+      return html;
 	}
 	
 });

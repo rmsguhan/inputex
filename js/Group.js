@@ -65,7 +65,7 @@ lang.extend(inputEx.Group, inputEx.Field, {
    	   this.divEl.id = this.options.id;
    	}
   	   
-  	   this.renderFields(this.divEl);  	  
+  	   this.renderFields(this.divEl);
   	   
   	   if(this.options.disabled) {
   	      this.disable();
@@ -396,7 +396,26 @@ lang.extend(inputEx.Group, inputEx.Field, {
 				}
 			}
 		}
-	}
+	},
+
+   
+   /**
+    * Purge all event listeners and remove the component from the dom
+    */
+   destroy: function() {
+      
+      var i, length, field;
+      
+      // Recursively destroy inputs
+      for (i = 0, length = this.inputs.length ; i < length ; i++) {
+         field = this.inputs[i];
+         field.destroy();
+      }
+      
+      // Destroy group itself
+      inputEx.Group.superclass.destroy.call(this);
+      
+   }
    
    
 });

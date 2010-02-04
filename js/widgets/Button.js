@@ -144,6 +144,26 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
       if (this.options.type === "submit") {
          this.el.disabled = false;
       }
+   },
+   
+   
+   /**
+    * Purge all event listeners and remove the component from the dom
+    */
+   destroy: function() {
+      
+      // Unsubscribe all listeners to click and submit events
+      this.clickEvent.unsubscribeAll();
+      this.submitEvent.unsubscribeAll();
+      
+      // Purge element (remove listeners on el and childNodes recursively)
+      util.Event.purgeElement(this.el, true);
+      
+      // Remove from DOM
+      if(Dom.inDocument(this.el)) {
+         this.el.parentNode.removeChild(this.el);
+      }
+      
    }
    
    

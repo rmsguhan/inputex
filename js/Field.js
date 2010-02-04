@@ -306,13 +306,14 @@ inputEx.Field.prototype = {
       // Unsubscribe all listeners on the updatedEvt
       this.updatedEvt.unsubscribeAll();
       
+      // Purge element (remove listeners on el and childNodes recursively)
+      util.Event.purgeElement(el, true);
+      
       // Remove from DOM
       if(Dom.inDocument(el)) {
          el.parentNode.removeChild(el);
       }
       
-      // recursively purge element
-      util.Event.purgeElement(el, true);
    },
    
    /**

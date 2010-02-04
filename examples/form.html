@@ -262,7 +262,7 @@ div#container3 { width:400px }
    <div class='demoContainer' id='container7'></div>
    <div class='codeContainer'>
       <textarea name="code" class="JScript">
-         form7 = new inputEx.Form( { 
+         var form7 = new inputEx.Form( { 
             fields: [ 
                {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'], value:'Mr' },
                {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
@@ -294,6 +294,46 @@ div#container3 { width:400px }
 </div>
 
 
+<!-- Example 8 -->
+<div class='exampleDiv'>
+   <p class="title">Destroy a form</p>
+   <p>Remove DOM nodes, remove event listeners, free memory...</p>
+   <div class='demoContainer' id='container8'></div>
+   <div class='codeContainer'>
+      <textarea name="code" class="JScript">
+         var form8 = new inputEx.Form( { 
+            fields: [ 
+               {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'], value:'Mr' },
+               {label: 'Firstname', name: 'firstname', required: true, value:'Jacques' },
+               {label: 'Lastname', name: 'lastname', value:'Dupont' }
+            ], 
+            buttons: [
+               {type: 'submit', value: 'Submit'}
+            ],
+            parentEl: 'container8'
+         });
+         
+         var container = inputEx.cn('div',{id:'destroyButtonContainer'});
+         YAHOO.util.Dom.get('container8').appendChild(container);
+         
+         var destroyButton = new inputEx.widget.Button({
+            parentEl: 'destroyButtonContainer',
+            id: 'destroyButton',
+            type: 'submit',
+            value: 'Destroy the form',
+            onClick: function() {
+               alert('clicked : form will be destroyed');
+               form8.destroy(); // remove nodes from DOM, remove event listeners
+               delete form8;  // free memory (no references to removed DOM nodes)
+            }
+         });
+         
+         container.appendChild(inputEx.cn('div',null,{clear:'both'}));
+         
+         
+      </textarea>
+   </div>
+</div>
 
 <!-- YUI Library -->
 <script type="text/javascript" src="../lib/yui/utilities/utilities.js"></script>

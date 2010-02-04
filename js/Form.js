@@ -344,8 +344,30 @@ lang.extend(inputEx.Form, inputEx.Group, {
       inputEx.Form.superclass.disable.call(this);
       
       for (var i = 0 ; i < this.buttons.length ; i++) {
- 	      this.buttons[i].disable();
+         this.buttons[i].disable();
       }
+   },
+   
+   
+   /**
+    * Purge all event listeners and remove the component from the dom
+    */
+   destroy: function() {
+      
+      var i, length, button;
+      
+      // Unsubscribe all listeners to submit event
+      this.submitEvent.unsubscribeAll();
+      
+      // Recursively destroy buttons
+      for (i = 0, length = this.buttons.length ; i < length ; i++) {
+         button = this.buttons[i];
+         button.destroy();
+      }
+      
+      // destroy Form itself (+ inputs)
+      inputEx.Form.superclass.destroy.call(this);
+      
    }
 
 });
