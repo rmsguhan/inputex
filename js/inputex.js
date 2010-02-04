@@ -314,20 +314,6 @@ lang.augmentObject(inputEx, {
 					  replace(/[ç]/g,"c").
 					  replace(/[œ]/g,"oe").
 					  replace(/[æ]/g,"ae");
-	},
-	
-	/**
-	 * Returns a new string without whitespace characters at the beginning and end
-	 * @static
-	 * @param {String} str The string
-	 * @return {String} The trimmed string
-	 */
-	trim: function(str) {
-	   if (typeof String.prototype.trim === "function") {
-	      return str.trim();
-	   }
-	   
-	   return str.replace(/^\s+|\s+$/g, "");
 	}
    
 });

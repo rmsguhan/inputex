@@ -68,6 +68,32 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	   } else {
 	    alert('Editor is not on the page');
 	   }
+	   
+	   
+	   /**
+   	 * Filters out msword html comments, classes, and other junk
+   	 * (complementary with YAHOO.widget.SimpleEditor.prototype.filter_msword, when filterWord option is true)
+   	 * @param {String} value The html string
+   	 * @return {String} The html string
+   	 */
+   	this.editor.filter_msword = function(html) {
+   	   
+   	   html = editorType.prototype.filter_msword.call(this,html);
+   	   
+   	   // if we don't filter ms word junk
+   	   if (!this.get('filterWord')) {
+   	      return html;
+   	   }
+
+   	   html = html.replace( /<!--[^>][\s\S]*-->/gi, ''); // strip (meta-)comments
+         html = html.replace( /<\/?meta[^>]*>/gi, ''); // strip meta tags
+         html = html.replace( /<\/?link[^>]*>/gi, ''); // strip link tags
+         html = html.replace( / class=('|")?MsoNormal('|")?/gi, ''); // strip MS office class
+         html = YAHOO.lang.trim(html); // trim spaces
+         
+         return html;
+   	};
+   	
 	},
 	
 	/**
@@ -104,35 +130,14 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	   var html;
 	   
 	   try {
+	      // trigger HTML cleaning (strip MS word or internal junk)
+	      // + save to hidden textarea (required for classic HTML 'submit')
 	      html = this.editor.saveHTML();
-	      html = this.filter_msword_extended(html);
 	      return html;
 	   }
 	   catch(ex) { return null; }
-	},
-	
-	
-	/**
-	 * Filters out msword html comments, classes, and other junk
-	 * (complementary with YAHOO.widget.SimpleEditor.prototype.filter_msword, when filterWord option is true)
-	 * @param {String} value The html string
-	 * @return {String} The html string
-	 */
-	filter_msword_extended: function(html) {
-	   
-	   // if we don't filter ms word junk
-	   if (!this.editor.get('filterWord')) {
-	      return html;
-	   }
-	   
-	   html = html.replace( /<!--[^>][\s\S]*-->/gi, ''); // strip (meta-)comments
-      html = html.replace( /<\/?meta[^>]*>/gi, ''); // strip meta tags
-      html = html.replace( /<\/?link[^>]*>/gi, ''); // strip link tags
-      html = html.replace( / class=('|")?MsoNormal('|")?/gi, ''); // strip MS office class
-      html = inputEx.trim(html); // trim spaces
-      
-      return html;
 	}
+	
 	
 });
 	

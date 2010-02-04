@@ -21,6 +21,7 @@ version 0.4.1 :
 	* id, className, and disabled options on buttons
 	* event facade for form submit : form.submitEvent
 	* event facades for buttons : button.clickEvent, button.submitEvent
+	* destroy method on group and form fields
 	
 - Bug fixes
 	* fixing setValue bug on checkboxes
