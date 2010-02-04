@@ -36,7 +36,7 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	   
 	   var id = "inputEx-RTEField-"+inputEx.RTEfieldsNumber;
 	   var attributes = {id:id};
-      if(this.options.name) attributes.name = this.options.name;
+      if(this.options.name) { attributes.name = this.options.name; }
       
 	   this.el = inputEx.cn('textarea', attributes);
 	   
@@ -47,7 +47,8 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	   var _def = {
 	       height: '300px',
 	       width: '580px',
-	       dompath: true
+	       dompath: true,
+	       filterWord:true // get rid of the MS word junk
 	   };
 	   //The options object
 	   var o = this.options.opts;
@@ -99,11 +100,38 @@ lang.extend(inputEx.RTEField, inputEx.Field, {
 	 * @return {String} the html string
 	 */
 	getValue: function() {
+	   
+	   var html;
+	   
 	   try {
-	      this.editor.saveHTML();
-         return this.el.value;
+	      html = this.editor.saveHTML();
+	      html = this.filter_msword_extended(html);
+	      return html;
 	   }
 	   catch(ex) { return null; }
+	},
+	
+	
+	/**
+	 * Filters out msword html comments, classes, and other junk
+	 * (complementary with YAHOO.widget.SimpleEditor.prototype.filter_msword, when filterWord option is true)
+	 * @param {String} value The html string
+	 * @return {String} The html string
+	 */
+	filter_msword_extended: function(html) {
+	   
+	   // if we don't filter ms word junk
+	   if (!this.editor.get('filterWord')) {
+	      return html;
+	   }
+	   
+	   html = html.replace( /<!--[^>][\s\S]*-->/gi, ''); // strip (meta-)comments
+      html = html.replace( /<\/?meta[^>]*>/gi, ''); // strip meta tags
+      html = html.replace( /<\/?link[^>]*>/gi, ''); // strip link tags
+      html = html.replace( / class=('|")?MsoNormal('|")?/gi, ''); // strip MS office class
+      html = inputEx.trim(html); // trim spaces
+      
+      return html;
 	}
 	
 });
