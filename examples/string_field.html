@@ -171,8 +171,8 @@
 
 <!-- Example 11 -->
 <div class='exampleDiv'>
-	<p class="title">Multiple options</p>
-	<p>Check multiple options config : typeInvite, required, minLength  &nbsp;--&nbsp; Test setValue and getValue methods</p>
+	<p class="title">Various options</p>
+	<p>Config with various options : typeInvite, required, minLength, trim  &nbsp;--&nbsp; Test setValue and getValue methods</p>
 	<div class='demoContainer' id='container11'></div>
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript" cols="60" rows="1">
@@ -181,6 +181,7 @@
 				typeInvite: 'lastname', 
 				description: 'Enter your lastname', 
 				minLength:10, 
+				trim:true, // getValue will return a trimed value
 				required:true, 
 				showMsg:true
 			});

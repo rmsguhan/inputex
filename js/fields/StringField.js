@@ -40,6 +40,7 @@ lang.extend(inputEx.StringField, inputEx.Field, {
 	   this.options.typeInvite = options.typeInvite;
 	   this.options.readonly = options.readonly;
 	   this.options.autocomplete = (options.autocomplete === false || options.autocomplete === "off") ? false : true;
+	   this.options.trim = (options.trim === true) ? true : false;
    },
 
 
@@ -95,7 +96,16 @@ lang.extend(inputEx.StringField, inputEx.Field, {
     * @param {String} The string value
     */
    getValue: function() {
-	   return (this.options.typeInvite && this.el.value == this.options.typeInvite) ? '' : this.el.value;
+      
+      var value;
+      
+      value = (this.options.typeInvite && this.el.value == this.options.typeInvite) ? '' : this.el.value;
+      
+      if (this.options.trim) {
+         value = YAHOO.lang.trim(value);
+      }
+      
+	   return value;
    },
 
    /**
