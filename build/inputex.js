@@ -1440,6 +1440,38 @@ lang.extend(inputEx.Group, inputEx.Field, {
       }
       return response;
    },
+	
+	/**
+	 * Alternative method to validate for advanced error handling
+	 * @returns {Object} with all Forms's fields state, error message
+	 * and validate containing a boolean for the global Form validation
+	 */
+	getFieldsStates: function() {
+		var input, inputName, state, message,
+		returnedObj = { fields:{}, validate:true };
+      
+      // Loop on all the sub fields
+      for (var i = 0 ; i < this.inputs.length ; i++) {
+	
+   	   input = this.inputs[i];
+			inputName = input.options.name;
+   	   state = input.getState();
+			message = input.getStateString(state);
+						
+			returnedObj.fields[inputName] = {};
+			returnedObj.fields[inputName].valid = true;
+			returnedObj.fields[inputName].message = message;
+			
+			// check if subfield validates
+   	   if( state == inputEx.stateRequired || state == inputEx.stateInvalid ) {
+				returnedObj.fields[inputName].valid = false;
+				returnedObj.validate = false;
+   	   }
+
+      }
+
+      return returnedObj;
+	},
    
    /**
     * Enable all fields in the group
@@ -2452,6 +2484,7 @@ lang.extend(inputEx.StringField, inputEx.Field, {
 	   this.options.typeInvite = options.typeInvite;
 	   this.options.readonly = options.readonly;
 	   this.options.autocomplete = (options.autocomplete === false || options.autocomplete === "off") ? false : true;
+	   this.options.trim = (options.trim === true) ? true : false;
    },
 
 
@@ -2507,7 +2540,16 @@ lang.extend(inputEx.StringField, inputEx.Field, {
     * @param {String} The string value
     */
    getValue: function() {
-	   return (this.options.typeInvite && this.el.value == this.options.typeInvite) ? '' : this.el.value;
+      
+      var value;
+      
+      value = (this.options.typeInvite && this.el.value == this.options.typeInvite) ? '' : this.el.value;
+      
+      if (this.options.trim) {
+         value = YAHOO.lang.trim(value);
+      }
+      
+	   return value;
    },
 
    /**
@@ -3806,7 +3848,12 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
     * @return {String} The email string
     */
    getValue: function() {
-      return inputEx.removeAccents(this.el.value.toLowerCase());
+      
+      var value;
+      
+      value = inputEx.EmailField.superclass.getValue.call(this);
+      
+      return inputEx.removeAccents(value.toLowerCase());
    }
 
 });
