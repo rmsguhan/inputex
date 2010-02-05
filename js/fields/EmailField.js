@@ -28,7 +28,12 @@ YAHOO.lang.extend(inputEx.EmailField, inputEx.StringField, {
     * @return {String} The email string
     */
    getValue: function() {
-      return inputEx.removeAccents(this.el.value.toLowerCase());
+      
+      var value;
+      
+      value = inputEx.EmailField.superclass.getValue.call(this);
+      
+      return inputEx.removeAccents(value.toLowerCase());
    }
 
 });

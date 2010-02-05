@@ -22,9 +22,11 @@ version 0.4.1 :
 	* event facade for form submit : form.submitEvent
 	* event facades for buttons : button.clickEvent, button.submitEvent
 	* destroy method on group and form fields
+	* getFieldsStates method on group to know which fields do not validate (+error messages)
 	
 - Bug fixes
-	* fixing setValue bug on checkboxes
+	* fix setValue bug on checkboxes
+	* fix typeInvite on emailField
 
 
 version 0.4.0 :
