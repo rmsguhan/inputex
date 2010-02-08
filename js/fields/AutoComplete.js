@@ -50,8 +50,6 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
       inputEx.AutoComplete.superclass.initEvents.call(this);
 
       // remove standard blur listener
-      // Event.removeBlurListener(this.el, this.onBlur);
-      // Event.removeFocusListener(this.el, this.onFocus);
    },
 
    /**
@@ -139,7 +137,6 @@ lang.extend(inputEx.AutoComplete, inputEx.StringField, {
    },
 
    onBlur: function(e){
-	 YAHOO.log("onBlur h:"+ this.hiddenEl.value + "| v:"+this.el.value + " inv:" + this.options.typeInvite + " " + this.isEmpty());
 	 if (this.hiddenEl.value != this.el.value && this.el.value != this.options.typeInvite) this.el.value = this.hiddenEl.value;
 	   if(this.el.value == '' && this.options.typeInvite) {
 	         Dom.addClass(this.divEl, "inputEx-typeInvite");
