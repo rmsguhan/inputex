@@ -100,7 +100,8 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
     * @param {boolean} [sendUpdatedEvt] (optional) Wether this setValue should fire the updatedEvt or not (default is true, pass false to NOT send the event)
 	 */
 	setValue: function(value, sendUpdatedEvt) {
-	   if (value===this.checkedValue) {
+	   if (value===this.checkedValue || (typeof(value) == 'string' && typeof(this.checkedValue) == 'boolean' &&
+		Boolean(value) === this.checkedValue)) {
 			this.hiddenEl.value = this.checkedValue;
 			
 			// check checkbox (all browsers)
