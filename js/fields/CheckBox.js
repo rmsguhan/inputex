@@ -101,7 +101,7 @@ lang.extend(inputEx.CheckBox, inputEx.Field, {
 	 */
 	setValue: function(value, sendUpdatedEvt) {
 	   if (value===this.checkedValue || (typeof(value) == 'string' && typeof(this.checkedValue) == 'boolean' &&
-		Boolean(value) === this.checkedValue)) {
+		value === String(this.checkedValue))) {
 			this.hiddenEl.value = this.checkedValue;
 			
 			// check checkbox (all browsers)
