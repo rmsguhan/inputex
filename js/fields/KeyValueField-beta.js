@@ -53,12 +53,16 @@ YAHOO.lang.extend( inputEx.KeyValueField, inputEx.CombineField, {
 		
 		var selectFieldConfig = this.generateSelectConfig(options.availableFields);
 	
-		options.fields = [
-			selectFieldConfig,
-			this.nameIndex[options.availableFields[0].name]
-		];
+		var newOptions = {
+			fields: [
+				selectFieldConfig,
+				this.nameIndex[options.availableFields[0].name]
+			]
+		};
 		
-		inputEx.KeyValueField.superclass.setOptions.call(this, options);
+		YAHOO.lang.augmentObject(newOptions, options);
+		
+		inputEx.KeyValueField.superclass.setOptions.call(this, newOptions);
 	},
    
    /**

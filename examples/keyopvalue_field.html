@@ -95,5 +95,33 @@
 </div>
 
 
+
+<!-- Example 3 -->
+<div class='exampleDiv'>
+ <p class="title">Changing the operators and setting labels for operators</p>
+ <p>Two more options are available for this field: "operators" and "operatorLabels"</p>
+ <div class='demoContainer' id='container3'></div>
+ <div class='codeContainer'>
+  <textarea name="code" class="JScript">
+		var field = new inputEx.KeyOpValueField({
+			parentEl: 'container3',
+			availableFields: [
+				{type: 'string', name: 'lastname', label: 'Lastname' },
+				{type: 'string', name: 'firstname', label: 'Firstname' },
+				{type: 'select', name: 'gender', label: 'Gender', selectValues: ["Mr", "Mme","Mlle"] }
+			],
+			
+			operators: ["=","!="],
+			operatorLabels: ["equals", "different"]
+		});
+		
+		var button = inputEx.cn('button', null, null, 'getValue()');
+		YAHOO.util.Dom.get('container3').appendChild(button); 
+		YAHOO.util.Event.addListener(button, 'click', function() { alert( YAHOO.lang.JSON.stringify(field.getValue())); });  
+		
+  </textarea>
+ </div>
+</div>
+
  </body>
 </html>

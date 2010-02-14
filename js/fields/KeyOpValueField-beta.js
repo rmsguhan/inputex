@@ -16,14 +16,22 @@ YAHOO.lang.extend( inputEx.KeyOpValueField, inputEx.KeyValueField, {
 	setOptions: function(options) {
 		
 		var selectFieldConfig = this.generateSelectConfig(options.availableFields);
-	
-		options.fields = [
-			selectFieldConfig,
-			{type: 'select', selectValues: ["=", ">", "<", ">=", "<=", "!=", "LIKE", "NOT LIKE", "IS NULL", "IS NOT NULL"] },
-			this.nameIndex[options.availableFields[0].name]
-		];
 		
-		inputEx.KeyValueField.superclass.setOptions.call(this, options);
+		var newOptions = {
+			fields: [
+				selectFieldConfig,
+				{type: 'select', selectValues: options.operators || ["=", ">", "<", ">=", "<=", "!=", "LIKE", "NOT LIKE", "IS NULL", "IS NOT NULL"] },
+				this.nameIndex[options.availableFields[0].name]
+			]
+		};
+		
+		if(options.operatorLabels) {
+			newOptions.fields[1].selectOptions = options.operatorLabels;
+		}
+		
+		YAHOO.lang.augmentObject(newOptions, options);
+		
+		inputEx.KeyValueField.superclass.setOptions.call(this, newOptions);
 	}
 	
 });
