@@ -3,34 +3,10 @@
  * @class inputEx.KeyValueField
  * @constructor
  * @extends inputEx.CombineField
- * @param {Object} searchFormDef InputEx definition object
+ * @param {Object} options InputEx definition object with the "availableFields"
  */
-inputEx.KeyValueField = function(searchFormDef) {
-   
-   this.nameIndex = {};
-   var fieldNames = [], fieldLabels = [];
-   for(var i = 0 ; i < searchFormDef.fields.length ; i++) {
-      var field =  searchFormDef.fields[i];
-		var fieldCopy = {};
-		for(var k in field) {
-			if(field.hasOwnProperty(k) && k != "label") {
-				fieldCopy[k] = field[k];
-			}
-		}
-      this.nameIndex[field.name] = fieldCopy;
-      fieldNames.push(field.name);
-		fieldLabels.push(field.label || field.name);
-   }
-   
-   var opts = {
-      fields: [
-         {type: 'select', selectValues: fieldNames, selectOptions: fieldLabels },
-			this.nameIndex[searchFormDef.fields[0].name]
-      ],
-		parentEl: searchFormDef.parentEl
-   };
-   
-   inputEx.KeyValueField.superclass.constructor.call(this, opts);
+inputEx.KeyValueField = function(options) {
+   inputEx.KeyValueField.superclass.constructor.call(this, options);
 };
 
 YAHOO.lang.extend( inputEx.KeyValueField, inputEx.CombineField, {
@@ -43,6 +19,47 @@ YAHOO.lang.extend( inputEx.KeyValueField, inputEx.CombineField, {
 
       this.inputs[0].updatedEvt.subscribe(this.onSelectFieldChange, this, true); 
    },
+
+
+	/**
+	 * Generate
+	 */
+	generateSelectConfig: function(availableFields) {
+	
+		this.nameIndex = {};
+		
+	   var fieldNames = [], fieldLabels = [],i, field, fieldCopy, k, l;
+	
+	   for( i = 0 , l = availableFields.length ; i < l ; i++) {
+	      field =  availableFields[i];
+			fieldCopy = {};
+			for(k in field) {
+				if(field.hasOwnProperty(k) && k != "label") {
+					fieldCopy[k] = field[k];
+				}
+			}
+	      this.nameIndex[field.name] = fieldCopy;
+	      fieldNames.push(field.name);
+			fieldLabels.push(field.label || field.name);
+	   }
+		
+		return {type: 'select', selectValues: fieldNames, selectOptions: fieldLabels };
+	},
+
+	/**
+	 * Setup the options.fields from the availableFields option
+	 */
+	setOptions: function(options) {
+		
+		var selectFieldConfig = this.generateSelectConfig(options.availableFields);
+	
+		options.fields = [
+			selectFieldConfig,
+			this.nameIndex[options.availableFields[0].name]
+		];
+		
+		inputEx.KeyValueField.superclass.setOptions.call(this, options);
+	},
    
    /**
     * Rebuild the value field

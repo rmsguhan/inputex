@@ -53,7 +53,7 @@
   <textarea name="code" class="JScript">
 		var field = new inputEx.KeyOpValueField({
 			parentEl: 'container1',
-			fields: [
+			availableFields: [
 				{type: 'string', name: 'lastname', label: 'Lastname' },
 				{type: 'string', name: 'firstname', label: 'Firstname' },
 				{type: 'select', name: 'gender', label: 'Gender', selectValues: ["Mr", "Mme","Mlle"] }
@@ -83,7 +83,7 @@
 		parentEl: 'container2',
 		elementType: {
 			type: 'keyopvalue',
-			fields: [
+			availableFields: [
 				{type: 'string', name: 'lastname', label: 'Lastname' },
 				{type: 'string', name: 'firstname', label: 'Firstname' },
 				{type: 'select', name: 'gender', label: 'Gender', selectValues: ["Mr", "Mme","Mlle"] }

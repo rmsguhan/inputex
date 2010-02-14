@@ -3,35 +3,29 @@
  * @class inputEx.KeyOpValueField
  * @constructor
  * @extend inputEx.KeyValueField
+ * @param {Object} options InputEx definition object with the "availableFields"
  */
-inputEx.KeyOpValueField = function(searchFormDef) {
-
-   this.nameIndex = {};
-   var fieldNames = [], fieldLabels = [];
-   for(var i = 0 ; i < searchFormDef.fields.length ; i++) {
-      var field =  searchFormDef.fields[i];
-		var fieldCopy = {};
-		for(var k in field) {
-			if(field.hasOwnProperty(k) && k != "label") {
-				fieldCopy[k] = field[k];
-			}
-		}
-      this.nameIndex[field.name] = fieldCopy;
-      fieldNames.push(field.name);
-		fieldLabels.push(field.label || field.name);
-   }
-   
-   var opts = {
-      fields: [
-         {type: 'select', selectValues: fieldNames, selectOptions: fieldLabels },
-			{type: 'select', selectValues: ["=", ">", "<", ">=", "<=", "!=", "LIKE", "NOT LIKE", "IS NULL", "IS NOT NULL"] },
-			this.nameIndex[searchFormDef.fields[0].name]
-      ],
-		parentEl: searchFormDef.parentEl
-   };
-   
-   inputEx.KeyValueField.superclass.constructor.call(this, opts);
+inputEx.KeyOpValueField = function(options) {
+   inputEx.KeyValueField.superclass.constructor.call(this, options);
 };
-YAHOO.lang.extend( inputEx.KeyOpValueField, inputEx.KeyValueField, {});
+YAHOO.lang.extend( inputEx.KeyOpValueField, inputEx.KeyValueField, {
+	
+	/**
+	 * Setup the options.fields from the availableFields option
+	 */
+	setOptions: function(options) {
+		
+		var selectFieldConfig = this.generateSelectConfig(options.availableFields);
+	
+		options.fields = [
+			selectFieldConfig,
+			{type: 'select', selectValues: ["=", ">", "<", ">=", "<=", "!=", "LIKE", "NOT LIKE", "IS NULL", "IS NOT NULL"] },
+			this.nameIndex[options.availableFields[0].name]
+		];
+		
+		inputEx.KeyValueField.superclass.setOptions.call(this, options);
+	}
+	
+});
 
 inputEx.registerType("keyopvalue", inputEx.KeyOpValueField, {});

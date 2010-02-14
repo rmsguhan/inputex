@@ -27,6 +27,7 @@ version 0.4.1 :
 	* destroy method on group and form fields
 	* getFieldsStates method on group to know which fields do not validate (+error messages)
 	* trim option on StringField
+	* Fixing all standard parameters for KeyValueField and KeyOpValueField and changing the API
 
 - Widgets:
    * new normalized buttons : inputEx.widget.Button
