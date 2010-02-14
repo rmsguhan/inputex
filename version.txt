@@ -15,10 +15,14 @@ version 0.4.1 :
 
 - API changes:
    * remove "inputParams" syntax when defining fields inside a group or form definition
-	* form buttons extracted in a widget class : inputEx.widget.Button (3 types : 'submit', 'submit-link', 'link')
+	 * form buttons extracted in a widget class : inputEx.widget.Button (3 types : 'submit', 'submit-link', 'link')
+	 * Adding setParentField/getParentField methods to all fields + 
+	implementation in Group (+Form,Combine), InPlaceEdit, ListField, TreeField 
+	and TypeField
 
 - Added Fields
    * TimeRange field
+   * SerializeField
 
 - Field enhancements:
 	* id, className, and disabled options on buttons
@@ -27,7 +31,9 @@ version 0.4.1 :
 	* destroy method on group and form fields
 	* getFieldsStates method on group to know which fields do not validate (+error messages)
 	* trim option on StringField
-	* Fixing all standard parameters for KeyValueField and KeyOpValueField and changing the API
+	* RTEField: Changing the "type" option to "editorType"
+	* Group: Adding a span element to group labels
+	* Overridable readonly option in DatePickerField
 
 - Widgets:
    * new normalized buttons : inputEx.widget.Button
@@ -35,6 +41,11 @@ version 0.4.1 :
 - Bug fixes
 	* fix setValue bug on checkboxes
 	* fix typeInvite on emailField
+	* Fixing all standard parameters for KeyValueField and KeyOpValueField and changing the API
+	* Bufix on enable/disable functions for RadioField and DatePickerField
+	* Fixed bug in checkbox where a string of "true" is passed and compared to 
+	the default of a type boolean, hence always returning false.  Added test 
+	to convert type if needed.
 
 
 version 0.4.0 :
