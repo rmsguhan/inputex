@@ -26,9 +26,13 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
    setOptions: function(options) {
       inputEx.InPlaceEdit.superclass.setOptions.call(this, options);
       
-      this.options.animColors = options.animColors || {from: '#ffff99' , to: '#ffffff'};
       this.options.visu = options.visu;
+      
       this.options.editorField = options.editorField;
+      
+      this.options.buttonTypes = options.buttonTypes || {ok:"submit",cancel:"link"};
+      
+      this.options.animColors = options.animColors || null;
    },
 
    /**
@@ -53,18 +57,25 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
       this.editorContainer.appendChild( editorFieldEl );
       Dom.addClass( editorFieldEl , CSS_PREFIX+'editorDiv');
       
-      this.okButton = inputEx.cn('a', {className: CSS_PREFIX+'OkButton'}, null, inputEx.messages.okEditor);
-      this.okButton.href = ""; // IE required (here, not in the cn fct)
-      this.editorContainer.appendChild(this.okButton);
-      
-      this.cancelLink = inputEx.cn('a', {className: CSS_PREFIX+'CancelLink'}, null, inputEx.messages.cancelEditor);
-      this.cancelLink.href = ""; // IE required (here, not in the cn fct)
-      this.editorContainer.appendChild(this.cancelLink);
+      this.okButton = new inputEx.widget.Button({
+         type: this.options.buttonTypes.ok,
+         parentEl: this.editorContainer,
+         value: inputEx.messages.okEditor,
+         className: "inputEx-Button "+CSS_PREFIX+'OkButton',
+         onClick: {fn: this.onOkEditor, scope:this}
+      });
+
+      this.cancelLink = new inputEx.widget.Button({
+         type: this.options.buttonTypes.cancel,
+         parentEl: this.editorContainer,
+         value: inputEx.messages.cancelEditor,
+         className: "inputEx-Button "+CSS_PREFIX+'CancelLink',
+         onClick: {fn: this.onCancelEditor, scope:this}
+      });
       
       // Line breaker ()
       this.editorContainer.appendChild( inputEx.cn('div',null, {clear: 'both'}) );
       
-      //this.divEl.appendChild(this.editorContainer);
       this.fieldContainer.appendChild(this.editorContainer);
       
    },
@@ -91,7 +102,7 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
       }
       this.colorAnim = new YAHOO.util.ColorAnim(this.formattedContainer, {backgroundColor: this.options.animColors}, 1);
       this.colorAnim.onComplete.subscribe(function() { Dom.setStyle(this.formattedContainer, 'background-color', ''); }, this, true);
-      this.colorAnim.animate();   
+      this.colorAnim.animate();
    },
    
    /**
@@ -120,14 +131,12 @@ lang.extend(inputEx.InPlaceEdit, inputEx.Field, {
    initEvents: function() {  
       Event.addListener(this.formattedContainer, "click", this.openEditor, this, true);
             
-      // For color animation
-      Event.addListener(this.formattedContainer, 'mouseover', this.onVisuMouseOver, this, true);
-      Event.addListener(this.formattedContainer, 'mouseout', this.onVisuMouseOut, this, true);
-         
-      // Editor: 
-      Event.addListener(this.okButton, 'click', this.onOkEditor, this, true);
-      Event.addListener(this.cancelLink, 'click', this.onCancelEditor, this, true);
-         
+      // For color animation (if specified)
+      if (this.options.animColors) {
+         Event.addListener(this.formattedContainer, 'mouseover', this.onVisuMouseOver, this, true);
+         Event.addListener(this.formattedContainer, 'mouseout', this.onVisuMouseOut, this, true);
+      }
+      
       if(this.editorField.el) {
          // Register some listeners
          Event.addListener(this.editorField.el, "keyup", this.onKeyUp, this, true);

@@ -256,33 +256,15 @@ a.inputEx-List-link:hover {
 /**
  * inputEx.InPlaceEdit
  */
-div.inputEx-InPlaceEdit-visu {
-   cursor: pointer;
-   padding: 3px;
+div.inputEx-InPlaceEdit-visu { cursor: pointer; padding: 3px; }
+
+.inputEx-InPlaceEdit-editor .inputEx-InPlaceEdit-editorDiv {
+  float: left;
+  margin-bottom:0; /* remove 0.2em bottom margin because no need to cumulate field and editor-field margins */
 }
 
-div.inputEx-InPlaceEdit-visu:hover {
-   background-color: #ffff99;
-}
+.inputEx-InPlaceEdit-OkButton { margin-left: 5px; }
 
-.inputEx-InPlaceEdit-editorDiv {
-   float: left;
-}
-
-a.inputEx-InPlaceEdit-OkButton {
-   margin-top: 3px;
-   margin-left: 5px;
-   float: left;
-   font-size: 120%;
-   text-decoration: none;
-}
-
-a.inputEx-InPlaceEdit-CancelLink {
-   margin-left:5px;
-   margin-top:5px;
-   float: left;
-   text-decoration: none;
-}
 
 /**
  * inputEx.AutoComplete

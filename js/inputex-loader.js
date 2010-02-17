@@ -148,7 +148,7 @@ YAHOO.addInputExModules = function(yuiLoader, inputExPath) {
 			type: 'js',
 	  	   fullpath: pathToInputEx+'js/fields/InPlaceEdit.js',
 	  	   varName: 'inputEx.InPlaceEdit',
-			requires: ['inputex-field', 'animation']
+			requires: ['inputex-field', 'inputex-button', 'animation'] // animation is optional, required if animColors option
 		},
 		{
 			name: 'inputex-lens',
