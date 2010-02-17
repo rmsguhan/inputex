@@ -15,10 +15,9 @@ version 0.4.1 :
 
 - API changes:
    * remove "inputParams" syntax when defining fields inside a group or form definition
-	 * form buttons extracted in a widget class : inputEx.widget.Button (3 types : 'submit', 'submit-link', 'link')
-	 * Adding setParentField/getParentField methods to all fields + 
-	implementation in Group (+Form,Combine), InPlaceEdit, ListField, TreeField 
-	and TypeField
+   * form buttons extracted in a widget class : inputEx.widget.Button (3 types : 'submit', 'submit-link', 'link')
+   * Adding setParentField/getParentField methods to all fields + 
+     implementation in Group (+Form,Combine), InPlaceEdit, ListField, TreeField and TypeField
 
 - Added Fields
    * TimeRange field
@@ -34,6 +33,7 @@ version 0.4.1 :
 	* RTEField: Changing the "type" option to "editorType"
 	* Group: Adding a span element to group labels
 	* Overridable readonly option in DatePickerField
+	* InPlaceEdit editor now rely on inputEx.widget.Button
 
 - Widgets:
    * new normalized buttons : inputEx.widget.Button
