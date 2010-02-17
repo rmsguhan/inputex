@@ -262,6 +262,19 @@ div#container3 { width:400px }
    <div class='demoContainer' id='container7'></div>
    <div class='codeContainer'>
       <textarea name="code" class="JScript">
+         
+         var confirmation = {
+            
+            message : "Are you sure you want to submit ?",
+            
+            handler : function() {
+               if (!confirm(this.message)) {
+                  return false;  // return false to prevent form submit
+               }
+            }
+            
+         };
+         
          var form7 = new inputEx.Form( { 
             fields: [ 
                {type: 'select', label: 'Title', name: 'title', selectValues: ['Mr','Mrs','Mme'], value:'Mr' },
@@ -271,7 +284,19 @@ div#container3 { width:400px }
             buttons: [
                {type: 'submit', value: 'Submit'},
                {type: 'submit-link', value: 'Submit'},
-               {type: 'link', value: 'Reset form', onClick:function() {form7.clear();}}
+               {
+                  type: 'submit-link',
+                  value: 'Confirm and submit',
+                  onClick: {
+                     fn: confirmation.handler, // function called on click
+                     scope : confirmation // will become 'this' inside fn, when fn is called
+                  }
+               },
+               {
+                  type: 'link',
+                  value: 'Reset form',
+                  onClick: function() {form7.clear();} // when scope doesn't matter, simpler syntax to attach a click handler
+               }
             ],
             parentEl: 'container7'
          });

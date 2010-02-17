@@ -39,8 +39,11 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
       
       this.options.disabled = !!options.disabled;
       
-      if (options.onClick) {
-         this.options.onClick = options.onClick;
+      if (lang.isFunction(options.onClick)) {
+         this.options.onClick = {fn: options.onClick, scope:this};
+         
+      } else if (lang.isObject(options.onClick)) {
+         this.options.onClick = {fn: options.onClick.fn, scope: options.onClick.scope || this};
       }
       
    },
@@ -117,7 +120,7 @@ lang.augmentObject(inputEx.widget.Button.prototype,{
       
       // Subscribe onClick handler
       if (this.options.onClick) {
-         this.clickEvent.subscribe(this.options.onClick,this,true);
+         this.clickEvent.subscribe(this.options.onClick.fn,this.options.onClick.scope,true);
       }
       
    },
