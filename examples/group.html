@@ -36,7 +36,10 @@
 							{label: 'Firstname', name: 'firstname', required: true},
 							{label: 'Lastname', name: 'lastname', value:'Dupont'},
 							{type:'email', label: 'Email', name: 'email', required: true, showMsg: true},
-							{type:'boolean', label: 'Happy to be there ?', name: 'happy'},
+                     {type:'radio', label: 'Happy to be there ?', name: 'happy', values:["y","n"], choices:["yes","no"]},
+                     {type:'boolean', label: 'Favorite colors ?', name: 'yellow', rightLabel:"yellow"},
+                     {type:'boolean', label: ' ', name: 'blue', rightLabel:"blue"},
+                     {type:'boolean', label: ' ', name: 'red', rightLabel:"red"},
 							{type:'url', label: 'Website', name:'website'}
 					];
 					new inputEx.Group({parentEl: 'container1', fields: contactFormFields, legend: 'Tell us about yourself...'});
@@ -86,10 +89,14 @@
 					title: 'Mme',
 					firstname: 'Eric',
 					lastname: 'Abouaf', 
-					happy: false,
+					happy: "y",
 					email: 'something@email.com',
-					website: 'http://javascript.neyric.com/inputex'
+					website: 'http://javascript.neyric.com/inputex',
+					yellow: true
 				});
+				// when you don't pass all values, default values are applied
+				// to missing fields (e.g. : 'blue' and 'red' fields)
+				
 			});
 			el.appendChild(setValueButton);
 		</textarea>
@@ -279,11 +286,12 @@
 <script src="../js/Field.js"  type='text/javascript'></script>
 <script src="../js/Group.js"  type='text/javascript'></script>
 <script src="../js/fields/StringField.js"  type='text/javascript'></script>
-<script src="../js/fields/SelectField.js"  type='text/javascript'></script>
 <script src="../js/fields/EmailField.js"  type='text/javascript'></script>
-<script src="../js/fields/UrlField.js"  type='text/javascript'></script>
-<script src="../js/fields/ListField.js"  type='text/javascript'></script>
+<script src="../js/fields/SelectField.js"  type='text/javascript'></script>
 <script src="../js/fields/CheckBox.js"  type='text/javascript'></script>
+<script src="../js/fields/RadioField.js"  type='text/javascript'></script>
+<script src="../js/fields/ListField.js"  type='text/javascript'></script>
+<script src="../js/fields/UrlField.js"  type='text/javascript'></script>
 
 <!-- inputEx examples -->
 <script src="js/dpSyntaxHighlighter.js"></script>

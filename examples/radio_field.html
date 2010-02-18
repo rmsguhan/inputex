@@ -59,24 +59,13 @@
 
 	<p class="title">Styling RadioField</p>
 	
-	<p>Display the choices vertically. (add an id to the field and set "float" style to "none")</p>
+	<p>Display the choices vertically (display:'vertically' instead of default display:'inline')</p>
 
-	<style>
-	#verticalChoiceField div.inputEx-RadioField-choice {
-		float: none;
-	}
-	</style>
 	<div class='demoContainer' id='container3'></div>
 
 	<div class='codeContainer'>
 		<textarea name="code" class="JScript">
-			new inputEx.RadioField({label: 'Where did you learn about inputEx ?', name: 'example3', choices: ['Ajaxian','YUI blog','other'], parentEl: 'container3', id: 'verticalChoiceField'});
-			
-			/* Style :
-			#verticalChoiceField div.inputEx-RadioField-choice {
-				float: none;
-			}
-			*/
+			new inputEx.RadioField({label: 'Where did you learn about inputEx ?', display:'vertically', name: 'example3', choices: ['Ajaxian','YUI blog','other'], parentEl: 'container3'});
 		</textarea>
 	</div>
 

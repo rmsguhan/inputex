@@ -19,7 +19,7 @@ version 0.4.1 :
    * Adding setParentField/getParentField methods to all fields + 
      implementation in Group (+Form,Combine), InPlaceEdit, ListField, TreeField and TypeField
 
-- Added Fields
+- Added Fields:
    * TimeRange field
    * SerializeField
 
@@ -34,18 +34,22 @@ version 0.4.1 :
 	* Group: Adding a span element to group labels
 	* Overridable readonly option in DatePickerField
 	* InPlaceEdit editor now rely on inputEx.widget.Button
+	* RadioField option to display inputs inline or vertically
 
 - Widgets:
    * new normalized buttons : inputEx.widget.Button
 
-- Bug fixes
+- Bug fixes:
 	* fix setValue bug on checkboxes
 	* fix typeInvite on emailField
 	* Fixing all standard parameters for KeyValueField and KeyOpValueField and changing the API
-	* Bufix on enable/disable functions for RadioField and DatePickerField
+	* Fixing enable/disable functions for RadioField and DatePickerField
 	* Fixed bug in checkbox where a string of "true" is passed and compared to 
 	the default of a type boolean, hence always returning false.  Added test 
 	to convert type if needed.
+	
+- Various:
+   * cross-browser CSS improvements on Radios and Checkboxes
 
 
 version 0.4.0 :
