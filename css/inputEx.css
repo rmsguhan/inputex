@@ -299,7 +299,7 @@ div.inputEx-PickerField, div.inputEx-PickerField input {
 
 div.inputEx-PickerField {
    background: none;
-   padding-left: 3px;
+   padding-left: 0;
 }
 
 div.inputEx-PickerField .yui-menu-button button {
