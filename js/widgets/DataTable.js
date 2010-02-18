@@ -238,8 +238,8 @@ inputEx.widget.DataTable.prototype = {
 				         type: 'form',
 			            fields: this.options.fields,
 			            buttons: [
-			               {type: 'button', value: msgs.saveText, onClick: function() { that.onDialogSave();} },
-			               {type: 'button', value: msgs.cancelText, onClick: function() { that.onDialogCancel(); } }
+			               {type: 'submit', value: msgs.saveText, onClick: function() { that.onDialogSave(); return false; /* prevent form submit */} },
+			               {type: 'link', value: msgs.cancelText, onClick: function() { that.onDialogCancel(); } }
 			            ]
 				      },
 				title: this.options.dialogLabel,

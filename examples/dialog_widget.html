@@ -47,10 +47,11 @@
 											{type:'url', label: 'Website',name:'website'}
 										],
 			            buttons: [
-			               {type: 'button', value: 'Send', onClick: function() { 
+			               {type: 'submit', value: 'Send', onClick: function() { 
 													alert(YAHOO.lang.JSON.stringify(Example1.myPanel.getForm().getValue())); 
+													return false; // prevent form submit
 										 }},
-			               {type: 'button', value: 'Cancel', onClick: function() { Example1.myPanel.hide(); } }
+			               {type: 'link', value: 'Cancel', onClick: function() { Example1.myPanel.hide(); } }
 			            ]
 				      }
 				Example1.myPanel = new inputEx.widget.Dialog({
@@ -88,10 +89,11 @@
 													{type:'text', label: 'Your comment',name:'comments'}
 												],
 					            buttons: [
-					               {type: 'button', value: 'Send', onClick: function() { 
-															alert(YAHOO.lang.JSON.stringify(Example2.myPanel.getForm().getValue())); 
+					               {type: 'submit', value: 'Send', onClick: function() { 
+															alert(YAHOO.lang.JSON.stringify(Example2.myPanel.getForm().getValue()));
+															return false;
 												 }},
-					               {type: 'button', value: 'Cancel', onClick: function() { Example2.myPanel.hide(); } }
+					               {type: 'link', value: 'Cancel', onClick: function() { Example2.myPanel.hide(); } }
 					            ]
 						      },
 						title: 'Please post a comment !',
@@ -135,10 +137,11 @@ function init() {
 								{type:'url', label: 'Website',name:'website'}
 							],
             buttons: [
-               {type: 'button', value: 'Send', onClick: function() { 
-										alert(YAHOO.lang.JSON.stringify(Example1.myPanel.getForm().getValue())); 
+               {type: 'submit', value: 'Send', onClick: function() { 
+										alert(YAHOO.lang.JSON.stringify(Example1.myPanel.getForm().getValue()));
+										return false; // prevent form submit
 							 }},
-               {type: 'button', value: 'Cancel', onClick: function() { Example1.myPanel.hide(); } }
+               {type: 'link', value: 'Cancel', onClick: function() { Example1.myPanel.hide(); } }
             ]
 	      };
 	Example1.myPanel = new inputEx.widget.Dialog({
@@ -158,10 +161,11 @@ function init() {
 										{type:'text', label: 'Your comment',name:'comments'}
 									],
 		            buttons: [
-		               {type: 'button', value: 'Send', onClick: function() { 
+		               {type: 'submit', value: 'Send', onClick: function() { 
 												alert(YAHOO.lang.JSON.stringify(Example2.myPanel.getForm().getValue())); 
+												return false; // prevent form submit
 									 }},
-		               {type: 'button', value: 'Cancel', onClick: function() { Example2.myPanel.hide(); } }
+		               {type: 'link', value: 'Cancel', onClick: function() { Example2.myPanel.hide(); } }
 		            ]
 			      },
 			title: 'Please post a comment !',
