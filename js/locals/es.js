@@ -40,7 +40,7 @@
    msgs.stringTooShort = ["Este campo debe contener al menos "," caracteres (letras o números)"];
    msgs.stringTooLong = ["Este campo debe contener como mucho "," caracteres (letras o números)"];
    msgs.ajaxWait = "Enviando...";
-   msgs.menuInvite = "Haga click aquí para seleccionar";
+   msgs.menuTypeInvite = "Haga click aquí para seleccionar";
    
    // List
    msgs.listAddLink = "Añadir";

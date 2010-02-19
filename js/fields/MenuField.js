@@ -31,7 +31,7 @@ lang.extend(inputEx.MenuField, inputEx.Field, {
 	   this.options.className = options.className ? options.className : 'inputEx-Field inputEx-MenuField';
 	   
 	   // New options
-	   this.options.typeInvite = options.typeInvite || inputEx.messages.typeInvite;
+	   this.options.typeInvite = options.typeInvite || inputEx.messages.menuTypeInvite;
 	   this.options.menuTrigger = options.menuTrigger || "click";
 	   this.options.menuPosition = options.menuPosition || ["tl","tr"];
 	   this.options.menuItems = options.menuItems;
@@ -161,7 +161,7 @@ lang.extend(inputEx.MenuField, inputEx.Field, {
    
 });
 
-inputEx.messages.typeInvite = "Click here to select";
+inputEx.messages.menuTypeInvite = "Click here to select";
 
 // Register this class as "menu" type
 inputEx.registerType("menu", inputEx.MenuField);
